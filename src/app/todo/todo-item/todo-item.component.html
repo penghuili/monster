@@ -1,0 +1,5 @@
+<span class="m-todo-item" *ngIf="todo" (click)="click.emit(todo.id)">
+  <span>{{ todo.title }}</span>
+  <span class="m-todo-item-action" (click)="finish.emit(todo.id)" *ngIf="todo.status === TodoStatus.InProgress">Y</span>
+  <span class="m-todo-item-action" (click)="remove.emit(todo.id)" *ngIf="todo.status === TodoStatus.Done">X</span>
+</span>

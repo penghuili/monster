@@ -1,0 +1,13 @@
+@import '../../static/variables';
+
+.m-todo-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+
+  border: 1px solid $border-color;
+}
+.m-todo-item-action {
+  cursor: pointer;
+}

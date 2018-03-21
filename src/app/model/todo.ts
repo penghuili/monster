@@ -1,4 +1,5 @@
 export interface TodoBase {
+  id: string;
   createdAt: number;
   updatedAt?: number;
   title: string;
@@ -17,6 +18,7 @@ export enum TodoHappenOn {
   Someday
 }
 export enum TodoStatus {
-  Inprogress,
-  Done
+  InProgress,
+  Done,
+  InTrash
 }
