@@ -1,1 +1,32 @@
-<monster-todo-item *ngFor="let todo of todos" [todo]="todo"></monster-todo-item>
+<monster-wrapper
+  mainAxis="center" crossAxis="center"
+  padding="0 0 1rem"
+  (click)="onCreate()">
+  <monster-icon-add></monster-icon-add>
+</monster-wrapper>
+
+<monster-wrapper
+  mainAxis="center" crossAxis="center"
+  padding="1rem 0"
+  color="primary"
+  cursor="pointer"
+  (click)="onShowProjects()">{{ currentProject.title }}</monster-wrapper>
+<monster-todo-item *ngFor="let todo of inProgress; let i = index;"
+  [todo]="todo"
+  [isLast]="i === inProgressLength - 1"
+  (click)="onClick(todo.id)"
+  (finish)="onFinish($event)"></monster-todo-item>
+
+<monster-wrapper
+  mainAxis="center" crossAxis="center"
+  padding="1rem 0">Done</monster-wrapper>
+<monster-todo-item *ngFor="let todo of doneRecently; let i = index;"
+  [todo]="todo"
+  [isLast]="i === doneRecentlyLength - 1"
+  (click)="onUndo(todo.id)"
+  (delete)="onDelete($event)"></monster-todo-item>
+
+<monster-projects
+  [projects]="projects"
+  [activeId]="currentProject.id"
+  (selected)="onChangeProject($event)"></monster-projects>

@@ -1,8 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { ROUTES } from './static/routes';
+
 const appRoutes: Routes = [
-  { path: '',   redirectTo: 'todo', pathMatch: 'full' },
+  { path: '',   redirectTo: ROUTES.TODOS, pathMatch: 'full' },
+  { path: '**', redirectTo: ROUTES.TODOS }
 ];
 
 @NgModule({

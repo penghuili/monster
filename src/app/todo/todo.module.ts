@@ -1,16 +1,29 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
+import { IconModule } from '../shared/icon/icon.module';
+import { InputModule } from '../shared/input/input.module';
+import { StructureModule } from '../shared/structure/structure.module';
+import { ProjectsComponent } from './projects/projects.component';
+import { ProjectService } from './services/project.service';
+import { TodoService } from './services/todo.service';
+import { TodoCreateComponent } from './todo-create/todo-create.component';
+import { TodoDetailComponent } from './todo-detail/todo-detail.component';
+import { TodoItemComponent } from './todo-item/todo-item.component';
 import { TodoRoutingModule } from './todo-routing.module';
 import { TodosComponent } from './todos/todos.component';
-import { TodoItemComponent } from './todo-item/todo-item.component';
 
 @NgModule({
   imports: [
-    CommonModule,
+    IconModule,
+    StructureModule,
+    InputModule,
 
     TodoRoutingModule
   ],
-  declarations: [TodosComponent, TodoItemComponent]
+  declarations: [TodosComponent, TodoItemComponent, TodoCreateComponent, TodoDetailComponent, ProjectsComponent],
+  providers: [
+    ProjectService,
+    TodoService
+  ]
 })
 export class TodoModule { }

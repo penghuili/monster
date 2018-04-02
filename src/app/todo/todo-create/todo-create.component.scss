@@ -1,0 +1,16 @@
+.mst-todo-create-title {
+  min-height: 2rem;
+  width: 100%;
+  padding-top: 2rem;
+}
+.mst-todo-create-title:focus {
+  outline: none;
+}
+
+.mst-todo-create-note {
+  width: 100%;
+  min-height: 3rem;
+}
+.mst-todo-create-note:focus {
+  outline: none;
+}

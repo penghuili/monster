@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { Todo, TodoStatus } from '../../model/todo';
 
@@ -10,9 +10,18 @@ import { Todo, TodoStatus } from '../../model/todo';
 })
 export class TodoItemComponent {
   @Input() todo: Todo;
+  @Input() isLast: boolean;
   @Output() finish = new EventEmitter<string>();
-  @Output() click = new EventEmitter<string>();
-  @Output() remove = new EventEmitter<string>();
+  @Output() delete = new EventEmitter<string>();
 
   TodoStatus = TodoStatus;
+
+  onDelete(id: string, event: MouseEvent) {
+    event.stopPropagation();
+    this.delete.emit(id);
+  }
+  onFinish(id: string, event: MouseEvent) {
+    event.stopPropagation();
+    this.finish.emit(id);
+  }
 }

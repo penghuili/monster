@@ -1,0 +1,17 @@
+<monster-input
+  [control]="titleControl" [autoFocus]="true"
+  padding="2rem 0 1rem"></monster-input>
+
+<monster-wrapper
+  padding="1rem"
+  [borderAll]="true">
+  <monster-input
+    [control]="titleControl"
+    minHeight="3rem"></monster-input>
+  <!-- <div #note contenteditable="true" class="mst-todo-create-note"></div> -->
+</monster-wrapper>
+
+<monster-wrapper mainAxis="end">
+  <monster-icon-close [isFilled]="false" (click)="onBack()"></monster-icon-close>
+  <monster-icon-done [isFilled]="false" (click)="onCreate()"></monster-icon-done>
+</monster-wrapper>

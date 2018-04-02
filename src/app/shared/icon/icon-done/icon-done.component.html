@@ -1,0 +1,12 @@
+  <monster-wrapper
+    mainAxis="center" crossAxis="center"
+    [width]="isFilled ? '1rem' : '1.5rem'"
+    [height]="isFilled ? '1rem' : '1.5rem'"
+    padding="0.25rem"
+  
+    [theme]="isFilled ? 'primary' : null"
+    [color]="isFilled ? 'white' : 'primary'"
+    [isCircle]="isFilled"
+    cursor="pointer">
+    <mat-icon svgIcon="ic_done_24px"></mat-icon>
+  </monster-wrapper>
