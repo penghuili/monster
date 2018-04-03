@@ -1,13 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 
 import { Project } from '../../model/project';
-import { Todo } from '../../model/todo';
+import { filterTodo, Todo } from '../../model/todo';
 import { Unsub } from '../../static/class/unsub';
-import { ROUTES } from '../../static/routes';
 import { ProjectsComponent } from '../projects/projects.component';
 import { ProjectService } from '../services/project.service';
 import { TodoService } from '../services/todo.service';
+import { TodoCreateComponent } from '../todo-create/todo-create.component';
 
 @Component({
   selector: 'monster-todos',
@@ -15,12 +16,13 @@ import { TodoService } from '../services/todo.service';
   styleUrls: ['./todos.component.scss']
 })
 export class TodosComponent extends Unsub implements OnInit {
+  @ViewChild(TodoCreateComponent) createC: TodoCreateComponent;
   @ViewChild(ProjectsComponent) projectsC: ProjectsComponent;
   inProgress: Todo[];
   inProgressLength: number;
   doneRecently: Todo[];
   doneRecentlyLength: number;
-
+  currentTodo: Todo;
   projects: Project[];
   currentProject: Project;
 
@@ -34,8 +36,12 @@ export class TodosComponent extends Unsub implements OnInit {
 
   ngOnInit() {
     this.addSubscription(
-      this.todoService.getInProgress().subscribe(data => {
-        this.inProgress = data;
+      combineLatest(
+        this.todoService.getInProgress(),
+        this.projectService.getCurrent()
+      ).subscribe(([ todos, currentProject ]) => {
+        this.currentProject = currentProject;
+        this.inProgress = filterTodo(todos, currentProject);
         this.inProgressLength = this.inProgress.length;
       })
     );
@@ -45,34 +51,42 @@ export class TodosComponent extends Unsub implements OnInit {
         this.doneRecentlyLength = data.length;
       })
     );
-    this.addSubscription(
-      this.projectService.getProjects().subscribe(data => {
-        this.projects = data;
-      })
-    );
-    this.currentProject = this.projectService.getCurrent();
   }
 
-  onCreate() {
-    this.router.navigate([ ROUTES.CREATE ], { relativeTo: this.route });
+  // create/edit todo
+  onShowCreate() {
+    this.createC.show();
   }
-  onClick(id: string) {
+  onShowDetail(todo: Todo) {
+    this.currentTodo = todo;
+    this.createC.show();
   }
+  onNewTodo(todo: Todo) {
+    if (this.currentTodo && todo.id === this.currentTodo.id) {
+      this.todoService.update(todo);
+    } else {
+      this.todoService.create(todo);
+    }
+  }
+  onCloseCreate() {
+    this.currentTodo = undefined;
+  }
+
+  // finish/delete/undo
   onFinish(id: string) {
     this.todoService.finishTodo(id);
   }
-
+  onDelete(id: string) {
+  }
   onUndo(id: string) {
     this.todoService.undoTodo(id);
   }
-  onDelete(id: string) {
-  }
 
+  // switch projects
   onShowProjects() {
     this.projectsC.show();
   }
   onChangeProject(project: Project) {
-    this.currentProject = project;
     this.projectService.setCurrent(project);
   }
 

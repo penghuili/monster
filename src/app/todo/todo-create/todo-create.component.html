@@ -1,17 +1,45 @@
-<monster-input
-  [control]="titleControl" [autoFocus]="true"
-  padding="2rem 0 1rem"></monster-input>
+<monster-overlay *ngIf="isShow" (click)="onCreate()">
+  <div (click)="onStop($event)">
+    <monster-input
+      [control]="titleControl"
+      [value]="currentTodo ? currentTodo.title : ''"
+      [hasError]="hasError"
+      [autoFocus]="!currentTodo"></monster-input>
 
-<monster-wrapper
-  padding="1rem"
-  [borderAll]="true">
-  <monster-input
-    [control]="titleControl"
-    minHeight="3rem"></monster-input>
-  <!-- <div #note contenteditable="true" class="mst-todo-create-note"></div> -->
-</monster-wrapper>
+    <monster-wrapper padding="0 0 0.5rem">
+      <monster-wrapper
+        color="primary"
+        cursor="pointer"
+        (click)="onShowProjects()">{{ selectProject.title }}</monster-wrapper>
 
-<monster-wrapper mainAxis="end">
-  <monster-icon-close [isFilled]="false" (click)="onBack()"></monster-icon-close>
-  <monster-icon-done [isFilled]="false" (click)="onCreate()"></monster-icon-done>
-</monster-wrapper>
+      <monster-wrapper
+        display="block" width="2rem" padding="0 1rem 0"
+        [borderBottom]="true">
+        <monster-input
+          [control]="hoursControl"
+          [value]="currentTodo ? currentTodo.hours : ''"></monster-input>
+      </monster-wrapper>
+      <span>Hours</span>
+    </monster-wrapper>
+
+    <monster-wrapper
+      display="block"
+      padding="1rem"
+      [borderAll]="true">
+      <monster-input
+        [control]="noteControl"
+        [value]="currentTodo ? currentTodo.note : ''"
+        minHeight="3rem"></monster-input>
+    </monster-wrapper>
+    
+    <monster-wrapper mainAxis="end">
+      <monster-icon-close [isFilled]="false" (click)="hide()"></monster-icon-close>
+      <monster-icon-done [isFilled]="false" (click)="onCreate()"></monster-icon-done>
+    </monster-wrapper>
+  </div>
+</monster-overlay>
+
+<monster-projects
+  [current]="currentProject"
+  [showAll]="false"
+  (selected)="onChangeProject($event)"></monster-projects>

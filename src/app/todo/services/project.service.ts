@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { append, prepend } from 'ramda';
+import { append, concat } from 'ramda';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { filter } from 'rxjs/operators';
@@ -11,22 +11,27 @@ import { ALL, INBOX } from '../../static/config';
 @Injectable()
 export class ProjectService {
   private projects$ = new BehaviorSubject<Project[]>([]);
+  private currentProjects$ = new BehaviorSubject<Project>(null);
 
   constructor() {
     const projects = MonsterStorage.get('projects');
     this.projects$.next(this.addDefault(projects));
+
+    const current = MonsterStorage.get('current-project') || INBOX;
+    this.currentProjects$.next(current);
   }
 
-  getProjects(projectId?: string): Observable<Project[]> {
+  getProjects(): Observable<Project[]> {
     return this.projects$.asObservable().pipe(
       filter(data => !!data)
     );
   }
-  getCurrent(): Project {
-    return MonsterStorage.get('current-project') || INBOX;
+  getCurrent(): Observable<Project> {
+    return this.currentProjects$.asObservable();
   }
   setCurrent(project: Project) {
     MonsterStorage.set('current-project', project);
+    this.currentProjects$.next(project);
   }
   create(data: Project) {
     const p = createProject(data);
@@ -37,6 +42,6 @@ export class ProjectService {
   }
 
   private addDefault(projects: Project[]): Project[] {
-    return prepend(INBOX, prepend(ALL, projects));
+    return concat([INBOX, ALL], projects);
   }
 }

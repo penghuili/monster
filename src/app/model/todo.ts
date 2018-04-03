@@ -1,9 +1,10 @@
-import { INBOX } from '../static/config';
+import { ALL, INBOX } from '../static/config';
+import { Project } from './project';
 
 export interface Todo {
   id?: string;
   title?: string;
-  projectId?: string;
+  project?: Project;
   note?: string;
   happenOn?: number;
   hours?: number;
@@ -26,7 +27,7 @@ export function createTodo(data: Todo): Todo {
   return {
     id: `t${timestamp}`,
     title: data.title,
-    projectId: data.projectId || INBOX.id,
+    project: data.project || INBOX,
     note: data.note,
     happenOn: data.happenOn,
     hours: data.hours,
@@ -34,10 +35,10 @@ export function createTodo(data: Todo): Todo {
     createdAt: data.createdAt
   };
 }
-export function filterTodo(todos: Todo[], projectId?: string): Todo[] {
-  if (!todos || !projectId) {
+export function filterTodo(todos: Todo[], project?: Project): Todo[] {
+  if (!todos || !project || project.id === ALL.id) {
     return todos;
   } else {
-    return todos.filter(a => a.projectId === projectId);
+    return todos.filter(a => a.project.id === project.id);
   }
 }

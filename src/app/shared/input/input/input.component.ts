@@ -7,10 +7,12 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
   styleUrls: ['./input.component.scss']
 })
 export class InputComponent implements AfterViewInit {
+  @Input() control: BehaviorSubject<string>;
+  @Input() value: string;
   @Input() minHeight = '1.5rem';
   @Input() autoFocus = false;
-  @Input() control: BehaviorSubject<string>;
   @Input() padding: string;
+  @Input() hasError = false;
   @Output() enter = new EventEmitter<boolean>();
 
   @ViewChild('input') private inputEl: ElementRef;
@@ -18,6 +20,10 @@ export class InputComponent implements AfterViewInit {
   ngAfterViewInit() {
     if (this.autoFocus) {
       this.inputEl.nativeElement.focus();
+    }
+    if (this.value !== undefined) {
+      this.inputEl.nativeElement.innerText = this.value;
+      this.control.next(this.value);
     }
   }
 

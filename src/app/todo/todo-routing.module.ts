@@ -9,21 +9,7 @@ import { TodosComponent } from './todos/todos.component';
 const todoRoutes: Routes = [
   {
     path: ROUTES.TODOS,
-    children: [
-      {
-        path: ROUTES.CREATE,
-        component: TodoCreateComponent
-      },
-      {
-        path: `:project/:todo`,
-        component: TodoDetailComponent
-      },
-      {
-        path: '',
-        component: TodosComponent,
-        pathMatch: 'full'
-      }
-    ]
+    component: TodosComponent
   }
 ];
 

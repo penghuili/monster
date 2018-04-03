@@ -38,6 +38,12 @@
   [class.mst-wrapper--border-y]="borderY"
   [class.mst-wrapper--border-all]="borderAll"
 
+  [class.mst-wrapper-border--grey]="borderColor === 'grey'"
+  [class.mst-wrapper-border--positive]="borderColor === 'positive'"
+  [class.mst-wrapper-border--accent]="borderColor === 'accent'"
+  [class.mst-wrapper-border--error]="borderColor === 'error'"
+  [class.mst-wrapper-border--primary]="borderColor === 'primary'"
+
   [class.mst-wrapper--circle]="isCircle"
 
   [style.width]="width"

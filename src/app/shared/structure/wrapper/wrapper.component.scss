@@ -112,3 +112,19 @@
 .mst-wrapper--border-all.mst-wrapper {
   border: 1px solid $grey-light;
 }
+
+.mst-wrapper-border--grey.mst-wrapper {
+  border-color: $grey-light;
+}
+.mst-wrapper-border--positive.mst-wrapper {
+  border-color: $positive;
+}
+.mst-wrapper-border--accent.mst-wrapper {
+  border-color: $accent;
+}
+.mst-wrapper-border--primary.mst-wrapper {
+  border-color: $primary;
+}
+.mst-wrapper-border--error.mst-wrapper {
+  border-color: $error;
+}

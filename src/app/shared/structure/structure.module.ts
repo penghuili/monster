@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
+import { OverlayComponent } from './overlay/overlay.component';
 import { WrapperComponent } from './wrapper/wrapper.component';
 
 @NgModule({
@@ -8,10 +9,12 @@ import { WrapperComponent } from './wrapper/wrapper.component';
     CommonModule
   ],
   declarations: [
-    WrapperComponent
+    WrapperComponent,
+    OverlayComponent
   ],
   exports: [
-    WrapperComponent,
+    OverlayComponent,
+    WrapperComponent
   ]
 })
 export class StructureModule { }

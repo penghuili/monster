@@ -1,7 +1,7 @@
 <monster-wrapper
   mainAxis="center" crossAxis="center"
   padding="0 0 1rem"
-  (click)="onCreate()">
+  (click)="onShowCreate()">
   <monster-icon-add></monster-icon-add>
 </monster-wrapper>
 
@@ -14,7 +14,7 @@
 <monster-todo-item *ngFor="let todo of inProgress; let i = index;"
   [todo]="todo"
   [isLast]="i === inProgressLength - 1"
-  (click)="onClick(todo.id)"
+  (click)="onShowDetail(todo)"
   (finish)="onFinish($event)"></monster-todo-item>
 
 <monster-wrapper
@@ -26,7 +26,13 @@
   (click)="onUndo(todo.id)"
   (delete)="onDelete($event)"></monster-todo-item>
 
+
+
+<monster-todo-create
+  [currentTodo]="currentTodo"
+  [currentProject]="currentProject"
+  (newTodo)="onNewTodo($event)"
+  (close)="onCloseCreate()"></monster-todo-create>
 <monster-projects
-  [projects]="projects"
-  [activeId]="currentProject.id"
+  [current]="currentProject"
   (selected)="onChangeProject($event)"></monster-projects>

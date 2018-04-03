@@ -27,6 +27,8 @@ export class WrapperComponent {
   @Input() borderY: boolean;
   @Input() borderAll: boolean;
 
+  @Input() borderColor = 'grey';
+
   @Input() theme: string;
   @Input() color: string;
   @Input() cursor = 'default';

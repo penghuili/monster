@@ -1,35 +1,88 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  ViewChild,
+  ViewEncapsulation,
+} from '@angular/core';
+import { merge } from 'ramda';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-import { TodoService } from '../services/todo.service';
+import { Project } from '../../model/project';
+import { Todo } from '../../model/todo';
+import { INBOX } from '../../static/config';
+import { ProjectsComponent } from '../projects/projects.component';
 
 @Component({
   selector: 'monster-todo-create',
   templateUrl: './todo-create.component.html',
-  styleUrls: ['./todo-create.component.scss']
+  styleUrls: ['./todo-create.component.scss'],
+  encapsulation: ViewEncapsulation.Emulated
 })
-export class TodoCreateComponent implements OnInit {
+export class TodoCreateComponent implements OnChanges {
+  @Input() currentTodo: Todo;
+  @Input() currentProject: Project;
+  @Output() newTodo = new EventEmitter<Todo>();
+  @Output() close = new EventEmitter<boolean>();
+  @ViewChild(ProjectsComponent) projectsC: ProjectsComponent;
+
   titleControl = new BehaviorSubject<string>('');
   noteControl = new BehaviorSubject<string>('');
+  hoursControl = new BehaviorSubject<string>('');
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private todoService: TodoService) {}
+  selectProject: Project;
+  isShow = false;
+  hasError = false;
 
-  ngOnInit() {
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['currentTodo'] || changes['currentProject']) {
+      this.selectProject = this.currentTodo ? this.currentTodo.project : (this.currentProject || INBOX);
+    }
   }
 
+  show() {
+    this.isShow = true;
+  }
+  hide() {
+    this.isShow = false;
+    this.close.emit(true);
+    this.reset();
+  }
+  onStop(e: MouseEvent) {
+    e.stopPropagation();
+  }
+  onShowProjects() {
+    this.projectsC.show();
+  }
+  onChangeProject(project: Project) {
+    this.selectProject = project;
+  }
   onCreate() {
     const title = this.titleControl.getValue();
     const note = this.noteControl.getValue();
+    const hours = +this.hoursControl.getValue();
+    const project = this.selectProject;
     if (title) {
-      this.todoService.create({ title, note });
-      this.onBack();
+      this.hasError = false;
+      const todo = this.currentTodo ? merge(this.currentTodo, { title, note, project, hours, updatedAt: new Date().getTime() }) :
+        { title, note, project, hours };
+      this.newTodo.emit(todo);
+      this.hide();
+    } else {
+      this.hasError = true;
     }
   }
-  onBack() {
-    this.router.navigate(['../'], { relativeTo: this.route });
+
+  private reset() {
+    this.currentTodo = undefined;
+    this.currentProject = INBOX;
+    this.selectProject = undefined;
+    this.hasError = false;
+    this.titleControl.next('');
+    this.noteControl.next('');
+    this.hoursControl.next('');
   }
 }
