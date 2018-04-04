@@ -42,6 +42,7 @@ export class ProjectService {
   }
 
   private addDefault(projects: Project[]): Project[] {
-    return concat([INBOX, ALL], projects);
+    const defaultP = [INBOX, ALL];
+    return projects ? concat(defaultP, projects) : defaultP;
   }
 }
