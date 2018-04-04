@@ -18,6 +18,7 @@ export class ProjectService {
     this.projects$.next(this.addDefault(projects));
 
     const current = MonsterStorage.get('current-project') || INBOX;
+    console.log(current)
     this.currentProjects$.next(current);
   }
 
