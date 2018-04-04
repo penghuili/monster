@@ -5,7 +5,7 @@
   <monster-icon-add></monster-icon-add>
 </monster-wrapper>
 
-<monster-wrapper *ngIf="currentProject"
+<monster-wrapper *ngIf="currentProject && inProgress && inProgress.length > 0"
   mainAxis="center" crossAxis="center"
   padding="1rem 0"
   color="primary"
@@ -17,7 +17,7 @@
   (click)="onShowDetail(todo)"
   (finish)="onFinish($event)"></monster-todo-item>
 
-<monster-wrapper
+<monster-wrapper *ngIf="doneRecently && doneRecently.length > 0"
   mainAxis="center" crossAxis="center"
   padding="1rem 0">Done</monster-wrapper>
 <monster-todo-item *ngFor="let todo of doneRecently; let i = index;"
