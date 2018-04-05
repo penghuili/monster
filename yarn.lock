@@ -171,6 +171,12 @@
   dependencies:
     tslib "^1.7.1"
 
+"@angular/service-worker@^5.2.9":
+  version "5.2.9"
+  resolved "https://registry.yarnpkg.com/@angular/service-worker/-/service-worker-5.2.9.tgz#47ee439f2f896ac701fee271d046589a6c46b6af"
+  dependencies:
+    tslib "^1.7.1"
+
 "@ngtools/json-schema@1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@ngtools/json-schema/-/json-schema-1.2.0.tgz#06e5ecd29e9a37d260a447dd873ea2becd228c4f"
