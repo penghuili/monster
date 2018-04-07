@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { IconsService } from './core/services/icons.service';
+import { ROUTES } from './static/routes';
 
 const { version: appVersion } = require('../../package.json');
 
@@ -11,6 +12,8 @@ const { version: appVersion } = require('../../package.json');
 })
 export class AppComponent implements OnInit {
   appVersion: string;
+  routes = ROUTES;
+
   constructor(private iconsService: IconsService) {
   }
 
