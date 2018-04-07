@@ -9,6 +9,9 @@
     "experimentalDecorators": true,
     "target": "es5",
     "baseUrl": "src",
+    "types": [
+      "node"
+    ],
     "typeRoots": [
       "node_modules/@types"
     ],
