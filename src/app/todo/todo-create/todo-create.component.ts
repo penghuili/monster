@@ -65,11 +65,10 @@ export class TodoCreateComponent implements OnChanges {
     const note = this.noteControl.getValue();
     const hours = +this.hoursControl.getValue();
     const project = this.selectProject;
-    const now = new Date().getTime();
     if (title) {
       this.hasError = false;
-      const todo = this.currentTodo ? merge(this.currentTodo, { title, note, project, hours, updatedAt: now }) :
-        { title, note, project, hours, createdAt: now };
+      const todo = this.currentTodo ? merge(this.currentTodo, { title, note, project, hours, updatedAt: new Date().getTime() }) :
+        { title, note, project, hours };
       this.newTodo.emit(todo);
       this.hide();
     } else {

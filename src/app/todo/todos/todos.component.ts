@@ -35,7 +35,7 @@ export class TodosComponent extends Unsub implements OnInit {
   }
 
   ngOnInit() {
-    this.todoService.addCreatedAt()
+    this.todoService.process();
     this.addSubscription(
       combineLatest(
         this.todoService.getInProgress(),

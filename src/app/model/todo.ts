@@ -32,7 +32,7 @@ export function createTodo(data: Todo): Todo {
     happenOn: data.happenOn,
     hours: data.hours,
     status: TodoStatus.InProgress,
-    createdAt: data.createdAt
+    createdAt: timestamp
   };
 }
 export function filterTodo(todos: Todo[], project?: Project): Todo[] {

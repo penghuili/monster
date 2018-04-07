@@ -102,30 +102,21 @@ export class TodoService {
 
 
   process() {
-    const inProgress: Todo[] = MonsterStorage.get('in-progress');
-    const doneReacently: Todo[] = MonsterStorage.get('done-recently');
+    // const inProgress: Todo[] = MonsterStorage.get('in-progress');
+    // const doneReacently: Todo[] = MonsterStorage.get('done-recently');
 
-    const updatedInProgress = inProgress.map(t => {
-      delete (<any>t).projectId;
-      return merge(t, { project: INBOX });
-    });
-    const updatedDone = doneReacently.filter(t => {
-      delete (<any>t).projectId;
-      return merge(t, { project: INBOX });
-    });
-    MonsterStorage.set('in-progress', updatedInProgress);
-    MonsterStorage.set('done-recently', updatedDone);
-  }
-  addCreatedAt() {
-    const inProgress: Todo[] = MonsterStorage.get('in-progress');
-    const doneReacently: Todo[] = MonsterStorage.get('done-recently');
-    const updatedInProgress = inProgress.map(t => {
-      return merge(t, { createdAt: +t.id.slice(1) });
-    });
-    const updatedDone = doneReacently.map(t => {
-      return merge(t, { createdAt: +t.id.slice(1) });
-    });
-    MonsterStorage.set('in-progress', updatedInProgress);
-    MonsterStorage.set('done-recently', updatedDone);
+    // const updatedInProgress = inProgress.map(t => {
+    //   delete (<any>t).projectId;
+    //   return merge(t, { project: INBOX });
+    // });
+    // const updatedDone = doneReacently.filter(t => {
+    //   delete (<any>t).projectId;
+    //   return merge(t, { project: INBOX });
+    // });
+    // MonsterStorage.set('in-progress', updatedInProgress);
+    // MonsterStorage.set('done-recently', updatedDone);
+    const projects = MonsterStorage.get('projects');
+    const updatedProjects = projects.map(a => merge(a, { createdAt: +a.id.slice(1), title: (<string>a.title).trim().toLowerCase() }));
+    MonsterStorage.set('projects', updatedProjects);
   }
 }

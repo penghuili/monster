@@ -39,7 +39,7 @@ export class ProjectsComponent extends Unsub implements OnInit {
     this.isAdding = true;
   }
   onFinish() {
-    const data: Project = { title: this.control.getValue() };
+    const data: Project = { title: this.control.getValue().trim() };
     this.projectService.create(data);
     this.isAdding = false;
   }
