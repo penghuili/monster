@@ -42,3 +42,15 @@ export function filterTodo(todos: Todo[], project?: Project): Todo[] {
     return todos.filter(a => a.project.id === project.id);
   }
 }
+export function newerTodo(a: Todo, b: Todo): Todo {
+  if (!a || !b) {
+    return a || b;
+  }
+  if (a.createdAt > b.createdAt) {
+    return a;
+  } else if (a.createdAt < b.createdAt) {
+    return b;
+  } else {
+    return +a.updatedAt - +b.updatedAt > 0 ? a : b;
+  }
+}

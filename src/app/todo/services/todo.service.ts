@@ -116,4 +116,16 @@ export class TodoService {
     MonsterStorage.set('in-progress', updatedInProgress);
     MonsterStorage.set('done-recently', updatedDone);
   }
+  addCreatedAt() {
+    const inProgress: Todo[] = MonsterStorage.get('in-progress');
+    const doneReacently: Todo[] = MonsterStorage.get('done-recently');
+    const updatedInProgress = inProgress.map(t => {
+      return merge(t, { createdAt: +t.id.slice(1) });
+    });
+    const updatedDone = doneReacently.map(t => {
+      return merge(t, { createdAt: +t.id.slice(1) });
+    });
+    MonsterStorage.set('in-progress', updatedInProgress);
+    MonsterStorage.set('done-recently', updatedDone);
+  }
 }

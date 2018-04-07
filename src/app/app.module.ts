@@ -6,6 +6,7 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
+import { MergeModule } from './merge/merge.module';
 import { TodoModule } from './todo/todo.module';
 
 @NgModule({
@@ -19,6 +20,7 @@ import { TodoModule } from './todo/todo.module';
 
     CoreModule,
     TodoModule,
+    MergeModule,
     AppRoutingModule
   ],
   bootstrap: [AppComponent]
