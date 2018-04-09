@@ -1,3 +1,5 @@
+import { now } from './utils';
+
 export interface Project {
   id?: string;
   title?: string;
@@ -14,9 +16,9 @@ export enum ProjectStatus {
 }
 
 export function createProject(data: Project): Project {
-  const timestamp = new Date().getTime();
+  const timestamp = now();
   return {
-    id: `t${timestamp}`,
+    id: `p${timestamp}`,
     title: data.title,
     note: data.note,
     status: ProjectStatus.InProgress,

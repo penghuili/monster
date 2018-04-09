@@ -1,46 +1,63 @@
 import { Component } from '@angular/core';
-import { concat } from 'ramda';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { newerTodo, Todo } from '../../model/todo';
+import { Todo } from '../../model/todo';
 import { MonsterStorage } from '../../model/utils';
+import { InputControl } from '../../shared/input/input-control';
+import { TodoService } from '../../todo/services/todo.service';
 
 @Component({
   templateUrl: './merge-storage.component.html',
   styleUrls: ['./merge-storage.component.scss']
 })
 export class MergeStorageComponent {
-  inProgressControl = new BehaviorSubject<string>('');
-  doneRecentlyControl = new BehaviorSubject<string>('');
-  projectsControl = new BehaviorSubject<string>('');
+  inProgressControl = new InputControl('');
+  doneRecentlyControl = new InputControl('');
 
-  onMerge(table: string) {
+  inProgressHasError = false;
+  doneRecentlyHasError = false;
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private todoService: TodoService) {}
+
+  onMergeInProgress() {
     const income = this.inProgressControl.getValue();
     if (income) {
-      const incomeArr: Todo[] = JSON.parse(income);
-      const sourceArr: Todo[] = MonsterStorage.get(table);
-      const incomeLen = incomeArr.length;
-      const sourceLen = sourceArr.length;
-      let merged = [];
-      let short: Todo[];
-      let long: Todo[];
-      let extra: Todo[];
-      if (incomeLen < sourceLen) {
-        short = incomeArr;
-        long = sourceArr;
-        extra = sourceArr.slice(incomeLen);
-      } else {
-        short = sourceArr;
-        long = incomeArr;
-        extra = incomeArr.slice(sourceLen);
+      let incomeArr: Todo[];
+      let sourceArr: Todo[];
+      try {
+        incomeArr = JSON.parse(income);
+      } catch (e) {
+        this.inProgressHasError = true;
+        return;
       }
-      short.forEach((a, i) => {
-        const b = long[i];
-        merged.push(newerTodo(a, b));
-      });
-      merged = concat(merged, extra);
+      this.inProgressHasError = false;
+      sourceArr = MonsterStorage.get('in-progress');
+      const merged = this.todoService.merge(incomeArr, sourceArr);
+      this.todoService.updateInProgress(merged);
 
-      MonsterStorage.set(table, merged);
+      this.router.navigate([ '../' ], { relativeTo: this.route });
+    }
+  }
+  onMergeDoneRecently() {
+    const income = this.doneRecentlyControl.getValue();
+    if (income) {
+      let incomeArr: Todo[];
+      let sourceArr: Todo[];
+      try {
+        incomeArr = JSON.parse(income);
+      } catch (e) {
+        this.doneRecentlyHasError = true;
+        return;
+      }
+      this.doneRecentlyHasError = false;
+      sourceArr = MonsterStorage.get('done-recently');
+      const merged = this.todoService.merge(incomeArr, sourceArr);
+      this.todoService.updateDoneRecently(merged);
+
+      this.router.navigate([ '../' ], { relativeTo: this.route });
     }
   }
 }

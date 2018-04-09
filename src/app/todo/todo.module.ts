@@ -11,6 +11,7 @@ import { TodoDetailComponent } from './todo-detail/todo-detail.component';
 import { TodoItemComponent } from './todo-item/todo-item.component';
 import { TodoRoutingModule } from './todo-routing.module';
 import { TodosComponent } from './todos/todos.component';
+import { TodosWrapperComponent } from './todos-wrapper/todos-wrapper.component';
 
 @NgModule({
   imports: [
@@ -20,7 +21,7 @@ import { TodosComponent } from './todos/todos.component';
 
     TodoRoutingModule
   ],
-  declarations: [TodosComponent, TodoItemComponent, TodoCreateComponent, TodoDetailComponent, ProjectsComponent],
+  declarations: [TodosComponent, TodoItemComponent, TodoCreateComponent, TodoDetailComponent, ProjectsComponent, TodosWrapperComponent],
   providers: [
     ProjectService,
     TodoService

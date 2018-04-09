@@ -1,34 +1,36 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+
+import { Unsub } from '../../../static/class/unsub';
+import { InputControl } from '../input-control';
 
 @Component({
   selector: 'monster-input',
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.scss']
 })
-export class InputComponent implements AfterViewInit {
-  @Input() control: BehaviorSubject<string>;
-  @Input() value: string;
-  @Input() minHeight = '1.5rem';
+export class InputComponent extends Unsub implements OnInit {
+  @Input() control: InputControl;
   @Input() autoFocus = false;
+  @Input() minHeight = '1.5rem';
   @Input() padding: string;
   @Input() hasError = false;
   @Output() enter = new EventEmitter<boolean>();
 
   @ViewChild('input') private inputEl: ElementRef;
 
-  ngAfterViewInit() {
+  ngOnInit() {
     if (this.autoFocus) {
       this.inputEl.nativeElement.focus();
     }
-    if (this.value !== undefined) {
-      this.inputEl.nativeElement.innerText = this.value;
-      this.control.next(this.value);
-    }
+    this.addSubscription(
+      this.control.setValue$.subscribe(value => {
+        this.inputEl.nativeElement.innerText = value;
+      })
+    );
   }
 
   onKeyup(e: KeyboardEvent) {
-    this.control.next(this.getText());
+    this.control.receiveValue(this.getText());
     if (e.keyCode === 13) {
       this.enter.emit(true);
     }

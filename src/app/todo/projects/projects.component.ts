@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { Project } from '../../model/project';
+import { InputControl } from '../../shared/input/input-control';
 import { Unsub } from '../../static/class/unsub';
 import { ALL } from '../../static/config';
 import { ProjectService } from '../services/project.service';
@@ -13,19 +13,18 @@ import { ProjectService } from '../services/project.service';
   encapsulation: ViewEncapsulation.Emulated
 })
 export class ProjectsComponent extends Unsub implements OnInit {
-  @Input() current: Project;
+  @Input() activeProject: Project;
   @Input() showAll = true;
   @Output() selected = new EventEmitter<Project>();
-  @Output() create = new EventEmitter<Project>();
 
   projects: Project[];
-  control = new BehaviorSubject<string>('');
-  isShow = false;
+  control = new InputControl('');
   isAdding = false;
 
   constructor(private projectService: ProjectService) {
     super();
   }
+
   ngOnInit() {
     this.addSubscription(
       this.projectService.getProjects().subscribe(data => {
@@ -34,26 +33,18 @@ export class ProjectsComponent extends Unsub implements OnInit {
     );
   }
 
-  onCreate(e: MouseEvent) {
+  onSelect(project: Project) {
+    if (!this.activeProject || project.id !== this.activeProject.id) {
+      this.selected.emit(project);
+    }
+  }
+  onShowInput(e: MouseEvent) {
     e.stopPropagation();
     this.isAdding = true;
   }
-  onFinish() {
+  onCreate() {
     const data: Project = { title: this.control.getValue().trim() };
     this.projectService.create(data);
     this.isAdding = false;
   }
-
-  show() {
-    this.isShow = true;
-  }
-  hide() {
-    this.isShow = false;
-  }
-  onSelect(project: Project) {
-    if (!this.current || project.id !== this.current.id) {
-      this.selected.emit(project);
-    }
-  }
-
 }

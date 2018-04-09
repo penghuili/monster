@@ -1,19 +1,19 @@
-<monster-overlay *ngIf="isShow" (click)="hide()">
+<monster-overlay>
   <monster-wrapper
     display="block"
     padding="0 1.75rem 1rem"
     height="2rem">
     <monster-icon-add *ngIf="!isAdding"
-      (click)="onCreate($event)"></monster-icon-add>
+      (click)="onShowInput($event)"></monster-icon-add>
     <monster-input *ngIf="isAdding"
       [control]="control" [autoFocus]="true"
       padding="0.5rem 0.5rem 0"
-      (enter)="onFinish()"></monster-input>
+      (enter)="onCreate()"></monster-input>
   </monster-wrapper>
 
   <monster-wrapper *ngFor="let p of projects"
     padding="0.5rem 2rem"
-    [color]="current && current.id === p.id ? 'primary' : null"
+    [color]="activeProject && activeProject.id === p.id ? 'primary' : null"
     cursor="pointer"
     [styles]="{ 'font-size': '1.25rem' }"
     (click)="onSelect(p)">{{ p.title }}</monster-wrapper>

@@ -6,12 +6,4 @@ import { Component } from '@angular/core';
   styleUrls: ['./overlay.component.scss']
 })
 export class OverlayComponent {
-  // isShow = false;
-
-  // show() {
-  //   this.isShow = true;
-  // }
-  // hide() {
-  //   this.isShow = false;
-  // }
 }

@@ -1,8 +1,7 @@
 <monster-wrapper
   mainAxis="center" crossAxis="center"
-  padding="0 0 1rem"
-  (click)="onShowCreate()">
-  <monster-icon-add></monster-icon-add>
+  padding="0 0 1rem">
+  <monster-icon-add (click)="onGotoCreate()"></monster-icon-add>
 </monster-wrapper>
 
 <monster-wrapper *ngIf="currentProject"
@@ -27,12 +26,7 @@
   (delete)="onDelete($event)"></monster-todo-item>
 
 
-
-<monster-todo-create
-  [currentTodo]="currentTodo"
-  [currentProject]="currentProject"
-  (newTodo)="onNewTodo($event)"
-  (close)="onCloseCreate()"></monster-todo-create>
-<monster-projects
-  [current]="currentProject"
+<monster-projects *ngIf="showProjects"
+  [activeProject]="currentProject"
   (selected)="onChangeProject($event)"></monster-projects>
+  

@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
-import { filter, find, merge, prepend } from 'ramda';
+import { concat, filter, find, merge, prepend } from 'ramda';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { filter as filterO, map } from 'rxjs/operators';
 
 import { Project } from '../../model/project';
-import { createTodo, filterTodo, Todo, TodoStatus } from '../../model/todo';
-import { MonsterStorage } from '../../model/utils';
-import { INBOX } from '../../static/config';
+import { createTodo, newerTodo, Todo, TodoStatus } from '../../model/todo';
+import { MonsterStorage, now } from '../../model/utils';
 
 /**
  * in-progress
@@ -37,86 +36,136 @@ export class TodoService {
       filterO(data => !!data)
     );
   }
+  updateInProgress(todos: Todo[]) {
+    MonsterStorage.set('in-progress', todos);
+    this.inProgress$.next(todos);
+  }
+  updateDoneRecently(todos: Todo[]) {
+    MonsterStorage.set('done-recently', todos);
+    this.doneRecently$.next(todos);
+  }
+  getById(id: string): Observable<Todo> {
+    return this.getInProgress().pipe(
+      map(todos => todos.find(a => a.id === id))
+    );
+  }
+  deleteById(id: string) {
+    const doneReacently: Todo[] = MonsterStorage.get('done-recently');
+    const target = find(x => x.id === id, doneReacently);
+    if (target) {
+      const updatedDone = filter(a => a.id !== id, doneReacently);
+      this.updateDoneRecently(updatedDone);
+    }
+  }
   create(data: Todo) {
     const todo = createTodo(data);
     const inProgress = MonsterStorage.get('in-progress');
     const added = prepend(todo, inProgress);
-    MonsterStorage.set('in-progress', added);
-    this.inProgress$.next(added);
+    this.updateInProgress(added);
   }
   update(todo: Todo) {
     const inProgress: Todo[] = MonsterStorage.get('in-progress');
     const target = find(a => a.id === todo.id, inProgress);
     if (target) {
       const updatedInProgress = inProgress.map(a => a.id === todo.id ? todo : a);
-      MonsterStorage.set('in-progress', updatedInProgress);
-      this.inProgress$.next(updatedInProgress);
+      this.updateInProgress(updatedInProgress);
     }
   }
-  finishTodo(id: string) {
+  finish(id: string) {
     const inProgress: Todo[] = MonsterStorage.get('in-progress');
     const target = find(t => t.id === id, inProgress);
     if (target) {
-      const now = new Date().getTime();
+      const timestamp = now();
       const t: Todo = {
-        finishAt: now,
+        finishAt: timestamp,
         status: TodoStatus.Done,
-        updatedAt: now
+        updatedAt: timestamp
       };
       const todo = merge(target, t);
 
       const updatedInProgress = filter(a => a.id !== id, inProgress);
-      MonsterStorage.set('in-progress', updatedInProgress);
 
       const doneReacently = MonsterStorage.get('done-recently');
       const updatedDone = prepend(todo, doneReacently);
-      MonsterStorage.set('done-recently', updatedDone);
 
-      this.inProgress$.next(updatedInProgress);
-      this.doneRecently$.next(updatedDone);
+      this.updateInProgress(updatedInProgress);
+      this.updateDoneRecently(updatedDone);
     }
   }
-  undoTodo(id: string) {
+  undo(id: string) {
     const doneReacently: Todo[] = MonsterStorage.get('done-recently');
     const target = find(x => x.id === id, doneReacently);
     if (target) {
       const t: Todo = {
         finishAt: undefined,
         status: TodoStatus.InProgress,
-        updatedAt: new Date().getTime()
+        updatedAt: now()
       };
       const todo = merge(target, t);
 
       const inProgress: Todo[] = MonsterStorage.get('in-progress');
       const updatedInProgress = prepend(todo, inProgress);
-      MonsterStorage.set('in-progress', updatedInProgress);
 
       const updatedDone = filter(a => a.id !== id, doneReacently);
-      MonsterStorage.set('done-recently', updatedDone);
 
-      this.inProgress$.next(updatedInProgress);
-      this.doneRecently$.next(updatedDone);
+      this.updateInProgress(updatedInProgress);
+      this.updateDoneRecently(updatedDone);
     }
+  }
+  merge(incomeArr: Todo[], sourceArr: Todo[]) {
+    let merged = [];
+    let newer: Todo;
+    Array(incomeArr.length + sourceArr.length).fill(1).forEach(() => {
+      const incomeHead = incomeArr[0];
+      const sourceHead = sourceArr[0];
+      if (incomeHead && sourceHead) {
+        newer = newerTodo(incomeHead, sourceHead);
+        merged.push(newer);
+        if (newer.id === incomeHead.id) {
+          incomeArr = incomeArr.slice(1);
+        } else {
+          sourceArr = sourceArr.slice(1);
+        }
+      } else if (!incomeHead && sourceHead) {
+        merged = concat(merged, sourceArr);
+        return;
+      } else if (incomeHead && !sourceHead) {
+        merged = concat(merged, incomeArr);
+        return;
+      } else {
+        return;
+      }
+    });
+
+    return merged;
   }
 
 
 
   process() {
-    // const inProgress: Todo[] = MonsterStorage.get('in-progress');
-    // const doneReacently: Todo[] = MonsterStorage.get('done-recently');
+    const inProgress: Todo[] = MonsterStorage.get('in-progress');
+    const doneReacently: Todo[] = MonsterStorage.get('done-recently');
 
-    // const updatedInProgress = inProgress.map(t => {
-    //   delete (<any>t).projectId;
-    //   return merge(t, { project: INBOX });
-    // });
-    // const updatedDone = doneReacently.filter(t => {
-    //   delete (<any>t).projectId;
-    //   return merge(t, { project: INBOX });
-    // });
-    // MonsterStorage.set('in-progress', updatedInProgress);
-    // MonsterStorage.set('done-recently', updatedDone);
-    const projects = MonsterStorage.get('projects');
-    const updatedProjects = projects.map(a => merge(a, { createdAt: +a.id.slice(1), title: (<string>a.title).trim().toLowerCase() }));
+    const updatedInProgress = inProgress.map(t => {
+      const p = (<any>t).project;
+      const projectId = p ? p.id : t.projectId;
+      const pid = projectId && projectId[0] === 't' ? 'p' + projectId.slice(1) : projectId;
+      delete (<any>t).project;
+      return merge(t, { projectId: pid });
+    });
+    const updatedDone = doneReacently.map(t => {
+      const p = (<any>t).project;
+      const projectId = p ? p.id : t.projectId;
+      const pid = projectId && projectId[0] === 't' ? 'p' + projectId.slice(1) : projectId;
+      delete (<any>t).project;
+      return merge(t, { projectId: pid });
+    });
+    this.updateInProgress(updatedInProgress);
+    this.updateDoneRecently(updatedDone);
+
+
+    const projects: Project[] = MonsterStorage.get('projects');
+    const updatedProjects = projects.map(a => a.id[0] === 't' ? merge(a, { id: 'p' + a.id.slice(1) }) : a);
     MonsterStorage.set('projects', updatedProjects);
   }
 }

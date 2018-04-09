@@ -26,6 +26,9 @@ export class ProjectService {
       filter(data => !!data)
     );
   }
+  getById(id: string): Project {
+    return this.projects$.getValue().find(a => a.id === id);
+  }
   getCurrent(): Observable<Project> {
     return this.currentProjects$.asObservable();
   }

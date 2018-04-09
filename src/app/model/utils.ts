@@ -19,3 +19,7 @@ export const MonsterStorage = {
     localStorage.removeItem(key);
   }
 };
+
+export function now() {
+  return new Date().getTime();
+}

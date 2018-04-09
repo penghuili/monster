@@ -1,19 +1,14 @@
 In Progress
 <monster-input
   minHeight="3rem"
+  [hasError]="inProgressHasError"
   [control]="inProgressControl"></monster-input>
-<monster-icon-done [isFilled]="false" (click)="onMerge('in-progress')"></monster-icon-done>
+<monster-icon-done [isFilled]="false" (click)="onMergeInProgress()"></monster-icon-done>
 
 
 Done Recently
 <monster-input
   minHeight="3rem"
+  [hasError]="doneRecentlyHasError"
   [control]="doneRecentlyControl"></monster-input>
-<monster-icon-done [isFilled]="false" (click)="onMerge('done-recently')"></monster-icon-done>
-
-
-Projects
-<monster-input
-  minHeight="3rem"
-  [control]="projectsControl"></monster-input>
-<monster-icon-done [isFilled]="false" (click)="onMerge('projects')"></monster-icon-done>
+<monster-icon-done [isFilled]="false" (click)="onMergeDoneRecently()"></monster-icon-done>

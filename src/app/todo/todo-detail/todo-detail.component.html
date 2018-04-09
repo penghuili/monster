@@ -1,3 +1,40 @@
-<p>
-  todo-detail works!
-</p>
+<ng-container *ngIf="todo && currentProject">
+  <monster-input
+    [control]="titleControl"
+    [hasError]="hasError"></monster-input>
+
+  <monster-wrapper padding="0 0 0.5rem">
+    <monster-wrapper
+      color="primary"
+      cursor="pointer"
+      (click)="onShowProjects()">{{ currentProject.title }}</monster-wrapper>
+  
+    <monster-wrapper
+      display="block" width="3rem" padding="0 0.5rem 0"
+      [borderBottom]="true">
+      <monster-input
+        [control]="hoursControl"></monster-input>
+    </monster-wrapper>
+    <span>Hours</span>
+  </monster-wrapper>
+  
+  <monster-wrapper
+    display="block"
+    padding="1rem"
+    [borderAll]="true">
+    <monster-input
+      [control]="noteControl"
+      minHeight="3rem"></monster-input>
+  </monster-wrapper>
+  
+  <monster-wrapper mainAxis="end">
+    <monster-icon-close [isFilled]="false" (click)="onCancel()"></monster-icon-close>
+    <monster-icon-done [isFilled]="false" (click)="onUpdate()"></monster-icon-done>
+  </monster-wrapper>
+  
+</ng-container>
+  
+<monster-projects *ngIf="showProjects"
+  [activeProject]="currentProject"
+  [showAll]="false"
+  (selected)="onSelectProject($event)"></monster-projects>

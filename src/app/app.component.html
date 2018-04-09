@@ -1,8 +1,8 @@
-<span class="mst-wrapper">
+<div class="mst-wrapper">
   {{ appVersion }}
-  <div>
+  <div [style.padding-bottom]="'1rem'">
     <a [routerLink]="routes.TODOS">todos</a>
     <a [routerLink]="routes.MERGE">merge</a>
   </div>
   <router-outlet></router-outlet>
-</span>
+</div>

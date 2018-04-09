@@ -1,10 +1,11 @@
 import { ALL, INBOX } from '../static/config';
 import { Project } from './project';
+import { now } from './utils';
 
 export interface Todo {
   id?: string;
   title?: string;
-  project?: Project;
+  projectId?: string;
   note?: string;
   happenOn?: number;
   hours?: number;
@@ -23,11 +24,11 @@ export enum TodoStatus {
 }
 
 export function createTodo(data: Todo): Todo {
-  const timestamp = new Date().getTime();
+  const timestamp = now();
   return {
     id: `t${timestamp}`,
     title: data.title,
-    project: data.project || INBOX,
+    projectId: data.projectId || INBOX.id,
     note: data.note,
     happenOn: data.happenOn,
     hours: data.hours,
@@ -39,7 +40,7 @@ export function filterTodo(todos: Todo[], project?: Project): Todo[] {
   if (!todos || !project || project.id === ALL.id) {
     return todos;
   } else {
-    return todos.filter(a => a.project.id === project.id);
+    return todos.filter(a => a.projectId === project.id);
   }
 }
 export function newerTodo(a: Todo, b: Todo): Todo {
