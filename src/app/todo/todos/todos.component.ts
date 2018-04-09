@@ -44,9 +44,12 @@ export class TodosComponent extends Unsub implements OnInit {
       })
     );
     this.addSubscription(
-      this.todoService.getDoneRecently().subscribe(data => {
-        this.doneRecently = data;
-        this.doneRecentlyLength = data.length;
+      combineLatest(
+        this.todoService.getDoneRecently(),
+        this.projectService.getCurrent()
+      ).subscribe(([ todos, currentProject ]) => {
+        this.doneRecently = filterTodo(todos, currentProject);
+        this.doneRecentlyLength = this.doneRecently.length;
       })
     );
   }
