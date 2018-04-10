@@ -23,3 +23,6 @@ export const MonsterStorage = {
 export function now() {
   return new Date().getTime();
 }
+export function add0(a: number): string {
+  return a >= 0 && a <= 9 ? `0${a}` : a.toString();
+}

@@ -163,7 +163,6 @@ export class TodoService {
     this.updateInProgress(updatedInProgress);
     this.updateDoneRecently(updatedDone);
 
-
     const projects: Project[] = MonsterStorage.get('projects');
     const updatedProjects = projects.map(a => a.id[0] === 't' ? merge(a, { id: 'p' + a.id.slice(1) }) : a);
     MonsterStorage.set('projects', updatedProjects);

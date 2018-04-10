@@ -8,6 +8,7 @@ import { ProjectService } from './services/project.service';
 import { TodoService } from './services/todo.service';
 import { TodoCreateComponent } from './todo-create/todo-create.component';
 import { TodoDetailComponent } from './todo-detail/todo-detail.component';
+import { TodoTimerComponent } from './todo-detail/todo-timer/todo-timer.component';
 import { TodoItemComponent } from './todo-item/todo-item.component';
 import { TodoRoutingModule } from './todo-routing.module';
 import { TodosComponent } from './todos/todos.component';
@@ -25,7 +26,8 @@ import { TodosComponent } from './todos/todos.component';
     TodoItemComponent,
     TodoCreateComponent,
     TodoDetailComponent,
-    ProjectsComponent
+    ProjectsComponent,
+    TodoTimerComponent
   ],
   providers: [
     ProjectService,
