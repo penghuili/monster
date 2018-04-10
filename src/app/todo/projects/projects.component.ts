@@ -34,9 +34,7 @@ export class ProjectsComponent extends Unsub implements OnInit {
   }
 
   onSelect(project: Project) {
-    if (!this.activeProject || project.id !== this.activeProject.id) {
-      this.selected.emit(project);
-    }
+    this.selected.emit(project);
   }
   onShowInput(e: MouseEvent) {
     e.stopPropagation();
