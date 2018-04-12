@@ -1,7 +1,7 @@
 {
-  "name": "Monster",
-  "short_name": "Monster",
-  "description": "Monster",  
+  "name": "monster",
+  "short_name": "monster",
+  "description": "monster",  
   "icons": [{
     "src": "assets/logo/monster-192x192.png",
       "sizes": "192x192",
