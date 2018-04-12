@@ -7,7 +7,6 @@
 <monster-wrapper *ngIf="currentProject"
   mainAxis="center" crossAxis="center"
   padding="1rem 0"
-  color="primary"
   cursor="pointer"
   (click)="onShowProjects()">{{ currentProject.title }}</monster-wrapper>
 <monster-todo-item *ngFor="let todo of inProgress; let i = index;"

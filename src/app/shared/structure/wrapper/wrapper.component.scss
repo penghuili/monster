@@ -1,7 +1,7 @@
 @import '../../../static/variables';
 
 .mst-wrapper {
-  color: $default;
+  color: $primary;
 }
 .mst-wrapper--flex.mst-wrapper {
   display: flex;
@@ -62,9 +62,6 @@
 .mst-wrapper--grey.mst-wrapper {
   background-color: $grey;
 }
-.mst-wrapper--positive.mst-wrapper {
-  background-color: $positive;
-}
 .mst-wrapper--accent.mst-wrapper {
   background-color: $accent;
 }
@@ -75,14 +72,8 @@
 .mst-wrapper-text--grey.mst-wrapper {
   color: $grey;
 }
-.mst-wrapper-text--positive.mst-wrapper {
-  color: $positive;
-}
 .mst-wrapper-text--accent.mst-wrapper {
   color: $accent;
-}
-.mst-wrapper-text--primary.mst-wrapper {
-  color: $primary;
 }
 .mst-wrapper-text--white.mst-wrapper {
   color: $white;
@@ -115,9 +106,6 @@
 
 .mst-wrapper-border--grey.mst-wrapper {
   border-color: $grey-light;
-}
-.mst-wrapper-border--positive.mst-wrapper {
-  border-color: $positive;
 }
 .mst-wrapper-border--accent.mst-wrapper {
   border-color: $accent;

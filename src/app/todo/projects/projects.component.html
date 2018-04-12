@@ -13,7 +13,7 @@
 
   <monster-wrapper *ngFor="let p of projects"
     padding="0.5rem 2rem"
-    [color]="activeProject && activeProject.id === p.id ? 'primary' : null"
+    [color]="activeProject && activeProject.id === p.id ? 'accent' : null"
     cursor="pointer"
     [styles]="{ 'font-size': '1.25rem' }"
     (click)="onSelect(p)">{{ p.title }}</monster-wrapper>
