@@ -21,5 +21,11 @@ export class IconsService {
     this.matIconRegistry.addSvgIconSet(
       this.domSanitizer.bypassSecurityTrustResourceUrl(getIconUrl('svg-sprite-content'))
     );
+    this.matIconRegistry.addSvgIconSet(
+      this.domSanitizer.bypassSecurityTrustResourceUrl(getIconUrl('svg-sprite-av'))
+    );
+    this.matIconRegistry.addSvgIconSet(
+      this.domSanitizer.bypassSecurityTrustResourceUrl(getIconUrl('svg-sprite-image'))
+    );
   }
 }
