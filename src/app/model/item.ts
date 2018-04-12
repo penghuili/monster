@@ -34,6 +34,8 @@ export function mergeItems(income: Item[], source: Item[]): Item[] {
     });
 
     return merged;
+  } else if (income || source) {
+    return income || source;
   } else {
     return [];
   }
