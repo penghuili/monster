@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
+import { mergeItems } from '../../model/item';
+import { Project } from '../../model/project';
 import { Todo } from '../../model/todo';
 import { MonsterStorage } from '../../model/utils';
 import { InputControl } from '../../shared/input/input-control';
+import { ProjectService } from '../../todo/services/project.service';
 import { TodoService } from '../../todo/services/todo.service';
 
 @Component({
@@ -13,13 +16,16 @@ import { TodoService } from '../../todo/services/todo.service';
 export class MergeStorageComponent {
   inProgressControl = new InputControl('');
   doneRecentlyControl = new InputControl('');
+  projectsControl = new InputControl('');
 
   inProgressHasError = false;
   doneRecentlyHasError = false;
+  projectsHasError = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private projectService: ProjectService,
     private todoService: TodoService) {}
 
   onMergeInProgress() {
@@ -35,7 +41,7 @@ export class MergeStorageComponent {
       }
       this.inProgressHasError = false;
       sourceArr = MonsterStorage.get('in-progress');
-      const merged = this.todoService.merge(incomeArr, sourceArr);
+      const merged = mergeItems(incomeArr, sourceArr);
       this.todoService.updateInProgress(merged);
 
       this.router.navigate([ '../' ], { relativeTo: this.route });
@@ -54,8 +60,27 @@ export class MergeStorageComponent {
       }
       this.doneRecentlyHasError = false;
       sourceArr = MonsterStorage.get('done-recently');
-      const merged = this.todoService.merge(incomeArr, sourceArr);
+      const merged = mergeItems(incomeArr, sourceArr);
       this.todoService.updateDoneRecently(merged);
+
+      this.router.navigate([ '../' ], { relativeTo: this.route });
+    }
+  }
+  onMergeProjects() {
+    const income = this.projectsControl.getValue();
+    if (income) {
+      let incomeArr: Project[];
+      let sourceArr: Project[];
+      try {
+        incomeArr = JSON.parse(income);
+      } catch (e) {
+        this.projectsHasError = true;
+        return;
+      }
+      this.projectsHasError = false;
+      sourceArr = MonsterStorage.get('projects');
+      const merged = mergeItems(incomeArr, sourceArr);
+      this.projectService.updateProjects(merged);
 
       this.router.navigate([ '../' ], { relativeTo: this.route });
     }

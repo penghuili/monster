@@ -15,7 +15,7 @@ export class ProjectService {
 
   constructor() {
     const projects = MonsterStorage.get('projects');
-    this.projects$.next(this.addDefault(projects));
+    this.projects$.next(this.addDefaults(projects));
 
     const current = MonsterStorage.get('current-project') || INBOX;
     this.currentProjects$.next(current);
@@ -26,25 +26,28 @@ export class ProjectService {
       filter(data => !!data)
     );
   }
-  getById(id: string): Project {
-    return this.projects$.getValue().find(a => a.id === id);
-  }
   getCurrent(): Observable<Project> {
     return this.currentProjects$.asObservable();
   }
-  setCurrent(project: Project) {
+  getById(id: string): Project {
+    return this.projects$.getValue().find(a => a.id === id);
+  }
+  updateCurrent(project: Project) {
     MonsterStorage.set('current-project', project);
     this.currentProjects$.next(project);
+  }
+  updateProjects(projectsWithoutDefaults: Project[]) {
+    const projectsWithInbox = this.addDefaults(projectsWithoutDefaults);
+    MonsterStorage.set('projects', projectsWithoutDefaults);
+    this.projects$.next(projectsWithInbox);
   }
   create(data: Project) {
     const p = createProject(data);
     const projects = append(p, MonsterStorage.get('projects'));
-    const projectsWithInbox = this.addDefault(projects);
-    MonsterStorage.set('projects', projects);
-    this.projects$.next(projectsWithInbox);
+    this.updateProjects(projects);
   }
 
-  private addDefault(projects: Project[]): Project[] {
+  private addDefaults(projects: Project[]): Project[] {
     const defaultP = [INBOX, ALL];
     return projects ? concat(defaultP, projects) : defaultP;
   }

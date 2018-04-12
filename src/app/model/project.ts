@@ -1,13 +1,10 @@
+import { Item } from './item';
 import { now } from './utils';
 
-export interface Project {
-  id?: string;
-  title?: string;
+export interface Project extends Item {
   note?: string;
   status?: ProjectStatus;
   finishAt?: number;
-  createdAt?: number;
-  updatedAt?: number;
 }
 
 export enum ProjectStatus {

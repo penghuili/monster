@@ -1,8 +1,9 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Project } from '../../model/project';
 import { InputControl } from '../../shared/input/input-control';
+import { Unsub } from '../../static/class/unsub';
 import { INBOX } from '../../static/config';
 import { ProjectService } from '../services/project.service';
 import { TodoService } from '../services/todo.service';
@@ -13,7 +14,7 @@ import { TodoService } from '../services/todo.service';
   styleUrls: ['./todo-create.component.scss'],
   encapsulation: ViewEncapsulation.Emulated
 })
-export class TodoCreateComponent {
+export class TodoCreateComponent extends Unsub implements OnInit {
   titleControl = new InputControl('');
   noteControl = new InputControl('');
   hoursControl = new InputControl('');
@@ -26,7 +27,17 @@ export class TodoCreateComponent {
     private projectService: ProjectService,
     private route: ActivatedRoute,
     private router: Router,
-    private todoService: TodoService) {}
+    private todoService: TodoService) {
+      super();
+    }
+
+  ngOnInit() {
+    this.addSubscription(
+      this.projectService.getCurrent().subscribe(p => {
+        this.currentProject = p;
+      })
+    );
+  }
 
   onShowProjects() {
     this.showProjects = true;

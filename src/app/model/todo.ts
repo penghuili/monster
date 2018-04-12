@@ -1,20 +1,17 @@
 import { ALL, INBOX } from '../static/config';
+import { Item } from './item';
 import { Project } from './project';
 import { now } from './utils';
 
-export interface Todo {
-  id?: string;
-  title?: string;
+export interface Todo extends Item {
   projectId?: string;
   note?: string;
   happenOn?: number;
   hours?: number;
   status?: TodoStatus;
   finishAt?: number;
-  createdAt?: number;
   startAt?: number;
   endAt?: number;
-  updatedAt?: number;
 }
 
 export enum TodoStatus {
@@ -41,17 +38,5 @@ export function filterTodo(todos: Todo[], project?: Project): Todo[] {
     return todos;
   } else {
     return todos.filter(a => a.projectId === project.id);
-  }
-}
-export function newerTodo(a: Todo, b: Todo): Todo {
-  if (!a || !b) {
-    return a || b;
-  }
-  if (a.createdAt > b.createdAt) {
-    return a;
-  } else if (a.createdAt < b.createdAt) {
-    return b;
-  } else {
-    return +a.updatedAt - +b.updatedAt > 0 ? a : b;
   }
 }

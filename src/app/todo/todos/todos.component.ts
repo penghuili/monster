@@ -70,7 +70,7 @@ export class TodosComponent extends Unsub implements OnInit {
     this.showProjects = true;
   }
   onChangeProject(project: Project) {
-    this.projectService.setCurrent(project);
+    this.projectService.updateCurrent(project);
     this.showProjects = false;
   }
 

@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { concat, filter, find, merge, prepend } from 'ramda';
+import { filter, find, merge, prepend } from 'ramda';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { filter as filterO, map } from 'rxjs/operators';
 
 import { Project } from '../../model/project';
-import { createTodo, newerTodo, Todo, TodoStatus } from '../../model/todo';
+import { createTodo, Todo, TodoStatus } from '../../model/todo';
 import { MonsterStorage, now } from '../../model/utils';
 
 /**
@@ -111,33 +111,6 @@ export class TodoService {
       this.updateInProgress(updatedInProgress);
       this.updateDoneRecently(updatedDone);
     }
-  }
-  merge(incomeArr: Todo[], sourceArr: Todo[]) {
-    let merged = [];
-    let newer: Todo;
-    Array(incomeArr.length + sourceArr.length).fill(1).forEach(() => {
-      const incomeHead = incomeArr[0];
-      const sourceHead = sourceArr[0];
-      if (incomeHead && sourceHead) {
-        newer = newerTodo(incomeHead, sourceHead);
-        merged.push(newer);
-        if (newer.id === incomeHead.id) {
-          incomeArr = incomeArr.slice(1);
-        } else {
-          sourceArr = sourceArr.slice(1);
-        }
-      } else if (!incomeHead && sourceHead) {
-        merged = concat(merged, sourceArr);
-        return;
-      } else if (incomeHead && !sourceHead) {
-        merged = concat(merged, incomeArr);
-        return;
-      } else {
-        return;
-      }
-    });
-
-    return merged;
   }
 
 
