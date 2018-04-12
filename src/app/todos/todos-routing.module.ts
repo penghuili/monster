@@ -6,7 +6,7 @@ import { TodoCreateComponent } from './todo-create/todo-create.component';
 import { TodoDetailComponent } from './todo-detail/todo-detail.component';
 import { TodosComponent } from './todos/todos.component';
 
-const todoRoutes: Routes = [
+const todosRoutes: Routes = [
   {
     path: ROUTES.TODOS,
     children: [
@@ -28,11 +28,11 @@ const todoRoutes: Routes = [
 @NgModule({
   imports: [
     RouterModule.forChild(
-      todoRoutes
+      todosRoutes
     )
   ],
   exports: [
     RouterModule
   ]
 })
-export class TodoRoutingModule {}
+export class TodosRoutingModule {}

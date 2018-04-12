@@ -7,7 +7,7 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SettingsModule } from './settings/settings.module';
-import { TodoModule } from './todo/todo.module';
+import { TodosModule } from './todos/todos.module';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,7 @@ import { TodoModule } from './todo/todo.module';
     environment.production ? ServiceWorkerModule.register('ngsw-worker.js') : [],
 
     CoreModule,
-    TodoModule,
+    TodosModule,
     SettingsModule,
     AppRoutingModule
   ],
