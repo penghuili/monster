@@ -1,0 +1,26 @@
+In Progress
+<div [style.padding]="'1rem'">
+  <monster-copy-text [text]="inProgressText" (success)="onCopyInProgress($event)"></monster-copy-text>
+  <span *ngIf="inProgressSuccess !== undefined">
+    <ng-container *ngIf="inProgressSuccess">success :)</ng-container>
+    <ng-container *ngIf="!inProgressSuccess">failed ;)</ng-container>
+  </span>
+</div>
+
+Done Recently
+<div [style.padding]="'1rem'">
+  <monster-copy-text [text]="doneRecentlyText" (success)="onCopyDoneRecently($event)"></monster-copy-text>
+  <span *ngIf="doneRecentlySuccess !== undefined">
+    <ng-container *ngIf="doneRecentlySuccess">success :)</ng-container>
+    <ng-container *ngIf="!doneRecentlySuccess">failed ;)</ng-container>
+  </span>
+</div>
+
+Projects
+<div [style.padding]="'1rem'">
+  <monster-copy-text [text]="projectsText" (success)="onCopyProjects($event)"></monster-copy-text>
+  <span *ngIf="projectsSuccess !== undefined">
+    <ng-container *ngIf="projectsSuccess">success :)</ng-container>
+    <ng-container *ngIf="!projectsSuccess">failed ;)</ng-container>
+  </span>
+</div>

@@ -1,5 +1,7 @@
 export const ROUTES = {
   TODOS: 'todos',
   CREATE: 'create',
-  MERGE: 'merge'
+  SETTINGS: 'settings',
+  MERGE: 'merge',
+  COPY: 'copy',
 };

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService, TodoService } from '@app/core';
 import { mergeItems, MonsterStorage, Project, Todo } from '@app/model';
@@ -8,7 +8,7 @@ import { InputControl } from '@app/shared';
   templateUrl: './merge-storage.component.html',
   styleUrls: ['./merge-storage.component.scss']
 })
-export class MergeStorageComponent {
+export class MergeStorageComponent implements OnInit {
   inProgressControl = new InputControl('');
   doneRecentlyControl = new InputControl('');
   projectsControl = new InputControl('');
@@ -17,12 +17,17 @@ export class MergeStorageComponent {
   doneRecentlyHasError = false;
   projectsHasError = false;
 
+  projectsStr: string;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private projectService: ProjectService,
     private todoService: TodoService) {}
 
+  ngOnInit() {
+    this.projectsStr = JSON.stringify(MonsterStorage.get('projects'));
+  }
   onMergeInProgress() {
     const income = this.inProgressControl.getValue();
     if (income) {
