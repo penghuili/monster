@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
-import { IconsService } from './core/services/icons.service';
-import { ROUTES } from './static/routes';
+import { IconsService } from '@app/core';
+import { ROUTES } from '@app/static';
 
 const { version: appVersion } = require('../../package.json');
 

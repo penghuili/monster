@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Unsub } from '@app/static';
 
-import { Unsub } from '../../../static/class/unsub';
 import { InputControl } from '../input-control';
 
 @Component({

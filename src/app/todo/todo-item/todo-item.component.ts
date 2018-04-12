@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-
-import { Todo, TodoStatus } from '../../model/todo';
+import { Todo, TodoStatus } from '@app/model';
 
 @Component({
   selector: 'monster-todo-item',

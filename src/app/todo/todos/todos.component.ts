@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ProjectService, TodoService } from '@app/core';
+import { filterTodo, Project, Todo } from '@app/model';
+import { ROUTES, Unsub } from '@app/static';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 
-import { Project } from '../../model/project';
-import { filterTodo, Todo } from '../../model/todo';
-import { Unsub } from '../../static/class/unsub';
-import { ROUTES } from '../../static/routes';
-import { ProjectService } from '../services/project.service';
-import { TodoService } from '../services/todo.service';
 
 @Component({
   selector: 'monster-todos',

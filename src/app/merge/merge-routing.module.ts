@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ROUTES } from '@app/static';
 
-import { ROUTES } from '../static/routes';
 import { MergeStorageComponent } from './merge-storage/merge-storage.component';
 
 const mergeRoutes: Routes = [

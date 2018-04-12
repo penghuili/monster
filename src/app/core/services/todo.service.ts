@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
+import { createTodo, MonsterStorage, now, Project, Todo, TodoStatus } from '@app/model';
 import { filter, find, merge, prepend } from 'ramda';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { filter as filterO, map } from 'rxjs/operators';
-
-import { Project } from '../../model/project';
-import { createTodo, Todo, TodoStatus } from '../../model/todo';
-import { MonsterStorage, now } from '../../model/utils';
 
 /**
  * in-progress

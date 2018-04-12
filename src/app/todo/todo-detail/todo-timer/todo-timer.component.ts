@@ -1,11 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { add0, Todo } from '@app/model';
+import { Unsub } from '@app/static';
 import { interval } from 'rxjs/observable/interval';
 import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs/Subscription';
-
-import { Todo } from '../../../model/todo';
-import { add0 } from '../../../model/utils';
-import { Unsub } from '../../../static/class/unsub';
 
 @Component({
   selector: 'monster-todo-timer',

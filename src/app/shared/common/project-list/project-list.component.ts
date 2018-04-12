@@ -1,18 +1,17 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { ProjectService } from '@app/core';
+import { Project } from '@app/model';
+import { ALL, Unsub } from '@app/static';
 
-import { Project } from '../../model/project';
-import { InputControl } from '../../shared/input/input-control';
-import { Unsub } from '../../static/class/unsub';
-import { ALL } from '../../static/config';
-import { ProjectService } from '../services/project.service';
+import { InputControl } from '../../input/input-control';
 
 @Component({
   selector: 'monster-projects',
-  templateUrl: './projects.component.html',
-  styleUrls: ['./projects.component.scss'],
+  templateUrl: './project-list.component.html',
+  styleUrls: ['./project-list.component.scss'],
   encapsulation: ViewEncapsulation.Emulated
 })
-export class ProjectsComponent extends Unsub implements OnInit {
+export class ProjectListComponent extends Unsub implements OnInit {
   @Input() activeProject: Project;
   @Input() showAll = true;
   @Output() selected = new EventEmitter<Project>();

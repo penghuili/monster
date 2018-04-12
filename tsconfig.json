@@ -9,6 +9,11 @@
     "experimentalDecorators": true,
     "target": "es5",
     "baseUrl": "src",
+    "paths": {
+      "@app/*": [
+        "./app/*"
+      ]
+    },
     "types": [
       "node"
     ],

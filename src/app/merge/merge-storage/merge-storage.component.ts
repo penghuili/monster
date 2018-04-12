@@ -1,13 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
-import { mergeItems } from '../../model/item';
-import { Project } from '../../model/project';
-import { Todo } from '../../model/todo';
-import { MonsterStorage } from '../../model/utils';
-import { InputControl } from '../../shared/input/input-control';
-import { ProjectService } from '../../todo/services/project.service';
-import { TodoService } from '../../todo/services/todo.service';
+import { ProjectService, TodoService } from '@app/core';
+import { mergeItems, MonsterStorage, Project, Todo } from '@app/model';
+import { InputControl } from '@app/shared';
 
 @Component({
   templateUrl: './merge-storage.component.html',

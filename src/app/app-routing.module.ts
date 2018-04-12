@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
-import { ROUTES } from './static/routes';
+import { ROUTES } from '@app/static';
 
 const appRoutes: Routes = [
   { path: '',   redirectTo: ROUTES.TODOS, pathMatch: 'full' },

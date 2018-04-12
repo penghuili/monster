@@ -1,11 +1,6 @@
 import { NgModule } from '@angular/core';
+import { IconModule, InputModule, MonsterCommonModule, StructureModule } from '@app/shared';
 
-import { IconModule } from '../shared/icon/icon.module';
-import { InputModule } from '../shared/input/input.module';
-import { StructureModule } from '../shared/structure/structure.module';
-import { ProjectsComponent } from './projects/projects.component';
-import { ProjectService } from './services/project.service';
-import { TodoService } from './services/todo.service';
 import { TodoCreateComponent } from './todo-create/todo-create.component';
 import { TodoDetailComponent } from './todo-detail/todo-detail.component';
 import { TodoTimerComponent } from './todo-detail/todo-timer/todo-timer.component';
@@ -18,6 +13,7 @@ import { TodosComponent } from './todos/todos.component';
     IconModule,
     StructureModule,
     InputModule,
+    MonsterCommonModule,
 
     TodoRoutingModule
   ],
@@ -26,12 +22,7 @@ import { TodosComponent } from './todos/todos.component';
     TodoItemComponent,
     TodoCreateComponent,
     TodoDetailComponent,
-    ProjectsComponent,
     TodoTimerComponent
-  ],
-  providers: [
-    ProjectService,
-    TodoService
   ]
 })
 export class TodoModule { }

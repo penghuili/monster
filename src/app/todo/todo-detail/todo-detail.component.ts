@@ -1,14 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ProjectService, TodoService } from '@app/core';
+import { now, Project, Todo } from '@app/model';
+import { InputControl } from '@app/shared';
+import { Unsub } from '@app/static';
 import { merge } from 'ramda';
 
-import { Project } from '../../model/project';
-import { Todo } from '../../model/todo';
-import { now } from '../../model/utils';
-import { InputControl } from '../../shared/input/input-control';
-import { Unsub } from '../../static/class/unsub';
-import { ProjectService } from '../services/project.service';
-import { TodoService } from '../services/todo.service';
 
 @Component({
   selector: 'monster-todo-detail',
