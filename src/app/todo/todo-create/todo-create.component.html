@@ -32,7 +32,7 @@
 </monster-wrapper>
 
 
-<monster-projects *ngIf="showProjects"
+<monster-project-list *ngIf="showProjects"
   [activeProject]="currentProject"
   [showAll]="false"
-  (selected)="onSelectProject($event)"></monster-projects>
+  (selected)="onSelectProject($event)"></monster-project-list>

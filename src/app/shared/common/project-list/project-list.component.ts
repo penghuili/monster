@@ -6,7 +6,7 @@ import { ALL, Unsub } from '@app/static';
 import { InputControl } from '../../input/input-control';
 
 @Component({
-  selector: 'monster-projects',
+  selector: 'monster-project-list',
   templateUrl: './project-list.component.html',
   styleUrls: ['./project-list.component.scss'],
   encapsulation: ViewEncapsulation.Emulated

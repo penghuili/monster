@@ -25,7 +25,7 @@
   (delete)="onDelete($event)"></monster-todo-item>
 
 
-<monster-projects *ngIf="showProjects"
+<monster-project-list *ngIf="showProjects"
   [activeProject]="currentProject"
-  (selected)="onChangeProject($event)"></monster-projects>
+  (selected)="onChangeProject($event)"></monster-project-list>
   

@@ -35,10 +35,10 @@
   <!-- <monster-todo-timer [todo]="todo"></monster-todo-timer> -->
 </ng-container>
   
-<monster-projects *ngIf="showProjects"
+<monster-project-list *ngIf="showProjects"
   [activeProject]="currentProject"
   [showAll]="false"
-  (selected)="onSelectProject($event)"></monster-projects>
+  (selected)="onSelectProject($event)"></monster-project-list>
 
 
 <!-- <monster-icon name="timer"></monster-icon>
