@@ -6,7 +6,6 @@
     "ng": "ng",
     "start": "ng serve --port 2333",
     "build": "ng build --sourcemap --prod --output-path docs --base-href /monster/ && cd docs && cp index.html 404.html && cd ..",
-    "deploy": "yarn build && yarn version",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
