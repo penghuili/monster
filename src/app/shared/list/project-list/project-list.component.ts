@@ -33,6 +33,7 @@ export class ProjectListComponent extends Unsub implements OnInit {
   }
 
   onSelect(project: Project) {
+    this.projectService.updateCurrent(project);
     this.selected.emit(project);
   }
   onShowInput() {
