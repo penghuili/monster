@@ -113,28 +113,28 @@ export class TodoService {
 
 
   process() {
-    const inProgress: Todo[] = MonsterStorage.get('in-progress');
-    const doneReacently: Todo[] = MonsterStorage.get('done-recently');
+    // const inProgress: Todo[] = MonsterStorage.get('in-progress');
+    // const updatedInProgress = [];
+    // inProgress.forEach(p => {
+    //   const finded = find(a => a.id === p.id, updatedInProgress);
+    //   if (!finded) {
+    //     updatedInProgress.push(p);
+    //   }
+    // });
+    this.updateInProgress([]);
 
-    const updatedInProgress = inProgress.map(t => {
-      const p = (<any>t).project;
-      const projectId = p ? p.id : t.projectId;
-      const pid = projectId && projectId[0] === 't' ? 'p' + projectId.slice(1) : projectId;
-      delete (<any>t).project;
-      return merge(t, { projectId: pid });
-    });
-    const updatedDone = doneReacently.map(t => {
-      const p = (<any>t).project;
-      const projectId = p ? p.id : t.projectId;
-      const pid = projectId && projectId[0] === 't' ? 'p' + projectId.slice(1) : projectId;
-      delete (<any>t).project;
-      return merge(t, { projectId: pid });
-    });
-    this.updateInProgress(updatedInProgress);
-    this.updateDoneRecently(updatedDone);
+    // const doneReacently: Todo[] = MonsterStorage.get('done-recently');
+    // const updatedDone = doneReacently.map(t => {
+    //   const p = (<any>t).project;
+    //   const projectId = p ? p.id : t.projectId;
+    //   const pid = projectId && projectId[0] === 't' ? 'p' + projectId.slice(1) : projectId;
+    //   delete (<any>t).project;
+    //   return merge(t, { projectId: pid });
+    // });
+    // this.updateDoneRecently(updatedDone);
 
-    const projects: Project[] = MonsterStorage.get('projects');
-    const updatedProjects = projects.map(a => a.id[0] === 't' ? merge(a, { id: 'p' + a.id.slice(1) }) : a);
-    MonsterStorage.set('projects', updatedProjects);
+    // const projects: Project[] = MonsterStorage.get('projects');
+    // const updatedProjects = projects.map(a => a.id[0] === 't' ? merge(a, { id: 'p' + a.id.slice(1) }) : a);
+    // MonsterStorage.set('projects', updatedProjects);
   }
 }

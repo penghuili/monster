@@ -4,6 +4,7 @@ import { ROUTES } from '@app/static';
 
 import { CopyStorageComponent } from './copy-storage/copy-storage.component';
 import { MergeStorageComponent } from './merge-storage/merge-storage.component';
+import { ProcessDataComponent } from './process-data/process-data.component';
 import { SettingsComponent } from './settings/settings.component';
 
 const settingsRoutes: Routes = [
@@ -18,6 +19,10 @@ const settingsRoutes: Routes = [
       {
         path: ROUTES.COPY,
         component: CopyStorageComponent
+      },
+      {
+        path: ROUTES.PROCESS,
+        component: ProcessDataComponent
       }
     ]
   }

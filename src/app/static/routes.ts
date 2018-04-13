@@ -4,5 +4,6 @@ export const ROUTES = {
   SETTINGS: 'settings',
   MERGE: 'merge',
   COPY: 'copy',
+  PROCESS: 'process',
   TAGS: 'tags'
 };
