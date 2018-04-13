@@ -1,9 +1,9 @@
 <div class="mst-wrapper">
   {{ appVersion }}
   <div [style.padding-bottom]="'1rem'">
-    <a [routerLink]="routes.TODOS">todos</a>
-    <a [routerLink]="routes.TAGS">tags</a>
-    <a [routerLink]="routes.SETTINGS">settings</a>
+    <monster-link [route]="routes.TODOS">todos</monster-link>
+    <monster-link [route]="routes.TAGS">tags</monster-link>
+    <monster-link [route]="routes.SETTINGS">settings</monster-link>
   </div>
   <router-outlet></router-outlet>
 </div>
