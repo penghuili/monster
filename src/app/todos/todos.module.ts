@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { IconModule, InputModule, MonsterCommonModule, StructureModule } from '@app/shared';
+import { IconModule, InputModule, ListModule, StructureModule } from '@app/shared';
 
 import { TodoCreateComponent } from './todo-create/todo-create.component';
 import { TodoDetailComponent } from './todo-detail/todo-detail.component';
@@ -13,7 +13,7 @@ import { TodosComponent } from './todos/todos.component';
     IconModule,
     StructureModule,
     InputModule,
-    MonsterCommonModule,
+    ListModule,
 
     TodosRoutingModule
   ],

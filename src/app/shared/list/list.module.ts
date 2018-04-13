@@ -4,8 +4,9 @@ import { NgModule } from '@angular/core';
 import { IconModule } from '../icon/icon.module';
 import { InputModule } from '../input/input.module';
 import { StructureModule } from '../structure/structure.module';
-import { CopyTextComponent } from './copy-text/copy-text.component';
-
+import { ListItemComponent } from './list-item/list-item.component';
+import { ProjectListComponent } from './project-list/project-list.component';
+import { TagListComponent } from './tag-list/tag-list.component';
 
 @NgModule({
   imports: [
@@ -15,10 +16,14 @@ import { CopyTextComponent } from './copy-text/copy-text.component';
     StructureModule
   ],
   declarations: [
-    CopyTextComponent,
+    ProjectListComponent,
+    TagListComponent,
+    ListItemComponent
   ],
   exports: [
-    CopyTextComponent,
+    ProjectListComponent,
+    TagListComponent,
+    ListItemComponent
   ]
 })
-export class MonsterCommonModule { }
+export class ListModule { }

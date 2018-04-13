@@ -1,4 +1,4 @@
-export * from './common/project-list/project-list.component';
+export * from './common/copy-text/copy-text.component';
 export * from './common/common.module';
 
 export * from './icon/icon/icon.component';
@@ -14,3 +14,9 @@ export * from './input/input.module';
 export * from './structure/overlay/overlay.component';
 export * from './structure/wrapper/wrapper.component';
 export * from './structure/structure.module';
+
+export * from './list/project-list/project-list.component';
+export * from './list/tag-list/tag-list.component';
+export * from './list/list-item/list-item.component';
+export * from './list/list.module';
+
