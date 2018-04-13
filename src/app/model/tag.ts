@@ -21,7 +21,8 @@ export function createOneTag(data: Tag): Tag {
   return {
     id: `ta${timestamp}`,
     categoryId: data.categoryId,
-    createdAt: timestamp
+    createdAt: timestamp,
+    updatedAt: timestamp
   };
 }
 export function filterTags(tags: Tag[], category?: TagCategory): Tag[] {
