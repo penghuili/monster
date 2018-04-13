@@ -11,8 +11,7 @@ export function mergeItems(income: Item[], source: Item[]): Item[] {
   if (income && source) {
     let merged = [];
     let newer: Item;
-    const length = income.length > source.length ? income.length : source.length;
-    Array(length).fill(1).some(() => {
+    Array(income.length + source.length).fill(1).some(() => {
       const incomeHead = income[0];
       const sourceHead = source[0];
       if (incomeHead && sourceHead) {
