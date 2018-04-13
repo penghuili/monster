@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 
 import { IconsService } from './services/icons.service';
 import { ProjectService } from './services/project.service';
+import { TagService } from './services/tag.service';
 import { TodoService } from './services/todo.service';
 
 @NgModule({
@@ -14,7 +15,8 @@ import { TodoService } from './services/todo.service';
   providers: [
     IconsService,
     ProjectService,
-    TodoService
+    TodoService,
+    TagService
   ],
   declarations: []
 })

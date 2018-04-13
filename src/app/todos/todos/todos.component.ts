@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService, TodoService } from '@app/core';
-import { filterTodo, Project, Todo } from '@app/model';
+import { filterTodos, Project, Todo } from '@app/model';
 import { ROUTES, Unsub } from '@app/static';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 
@@ -16,7 +16,6 @@ export class TodosComponent extends Unsub implements OnInit {
   inProgressLength: number;
   doneRecently: Todo[];
   doneRecentlyLength: number;
-  projects: Project[];
   currentProject: Project;
   showProjects: boolean;
 
@@ -35,7 +34,7 @@ export class TodosComponent extends Unsub implements OnInit {
         this.projectService.getCurrent()
       ).subscribe(([ todos, currentProject ]) => {
         this.currentProject = currentProject;
-        this.inProgress = filterTodo(todos, currentProject);
+        this.inProgress = filterTodos(todos, currentProject);
         this.inProgressLength = this.inProgress.length;
       })
     );
@@ -44,7 +43,7 @@ export class TodosComponent extends Unsub implements OnInit {
         this.todoService.getDoneRecently(),
         this.projectService.getCurrent()
       ).subscribe(([ todos, currentProject ]) => {
-        this.doneRecently = filterTodo(todos, currentProject);
+        this.doneRecently = filterTodos(todos, currentProject);
         this.doneRecentlyLength = this.doneRecently.length;
       })
     );

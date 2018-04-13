@@ -1,0 +1,13 @@
+<monster-wrapper
+  cursor="pointer"
+  (click)="onShowCategories()">{{ currentCategory.title }}</monster-wrapper>
+
+<monster-wrapper mainAxis="between" padding="1rem 0 0">
+  <monster-icon-close [isFilled]="false" (click)="onCancel()"></monster-icon-close>
+  <monster-icon-done [isFilled]="false" (click)="onCreate()"></monster-icon-done>
+</monster-wrapper>
+
+
+<monster-tag-list *ngIf="showCategories"
+  [active]="currentCategory"
+  (selected)="onSelectCategory($event)"></monster-tag-list>

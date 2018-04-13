@@ -26,7 +26,7 @@ export class ProjectListComponent extends Unsub implements OnInit {
 
   ngOnInit() {
     this.addSubscription(
-      this.projectService.getProjects().subscribe(data => {
+      this.projectService.getAll().subscribe(data => {
         this.projects = this.showAll ? data : data.filter(a => a.id !== ALL.id);
       })
     );
@@ -35,8 +35,7 @@ export class ProjectListComponent extends Unsub implements OnInit {
   onSelect(project: Project) {
     this.selected.emit(project);
   }
-  onShowInput(e: MouseEvent) {
-    e.stopPropagation();
+  onShowInput() {
     this.isAdding = true;
   }
   onCreate() {

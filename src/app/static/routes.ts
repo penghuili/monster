@@ -4,4 +4,5 @@ export const ROUTES = {
   SETTINGS: 'settings',
   MERGE: 'merge',
   COPY: 'copy',
+  TAGS: 'tags'
 };

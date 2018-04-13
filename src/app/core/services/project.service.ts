@@ -21,16 +21,16 @@ export class ProjectService {
     this.currentProjects$.next(current);
   }
 
-  getProjects(): Observable<Project[]> {
+  getAll(): Observable<Project[]> {
     return this.projects$.asObservable().pipe(
       filter(data => !!data)
     );
   }
-  getCurrent(): Observable<Project> {
-    return this.currentProjects$.asObservable();
-  }
   getById(id: string): Project {
     return this.projects$.getValue().find(a => a.id === id);
+  }
+  getCurrent(): Observable<Project> {
+    return this.currentProjects$.asObservable();
   }
   updateCurrent(project: Project) {
     MonsterStorage.set('current-project', project);

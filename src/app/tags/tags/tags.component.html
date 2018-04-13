@@ -1,0 +1,27 @@
+<monster-wrapper
+  mainAxis="center" crossAxis="center"
+  padding="0 0 1rem">
+  <monster-icon-add (click)="onGotoCreate()"></monster-icon-add>
+</monster-wrapper>
+
+<monster-wrapper *ngIf="currentCategory"
+  mainAxis="center" crossAxis="center"
+  padding="1rem 0"
+  cursor="pointer"
+  (click)="onShowCategories()">{{ currentCategory.title }}</monster-wrapper>
+
+<monster-list-item *ngFor="let tag of tags; let i = index;"
+  [showBorderBottom]="i === tagsLength - 1">
+  <monster-wrapper theme="primary" color="white" padding="0.25rem" content>
+     {{ getCategory(tag.categoryId).title }}
+  </monster-wrapper>
+ 
+   <span right>
+     {{ tag.createdAt | date:'short' }}
+   </span>
+ </monster-list-item>
+
+
+ <monster-tag-list *ngIf="showCategories"
+  [active]="currentCategory"
+  (selected)="onChangeCategory($event)"></monster-tag-list>

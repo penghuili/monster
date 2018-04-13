@@ -1,0 +1,11 @@
+<monster-wrapper
+  mainAxis="between" padding="0.5rem"
+  [borderX]="true" [borderTop]="true" [borderBottom]="showBorderBottom">
+
+  <monster-wrapper
+    padding="0 1rem 0 0">
+    <ng-content select="[content]"></ng-content>
+  </monster-wrapper>
+
+  <ng-content select="[right]"></ng-content>
+</monster-wrapper>

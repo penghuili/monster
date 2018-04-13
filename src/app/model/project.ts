@@ -19,6 +19,6 @@ export function createProject(data: Project): Project {
     title: data.title,
     note: data.note,
     status: ProjectStatus.InProgress,
-    createdAt: data.createdAt
+    createdAt: timestamp
   };
 }

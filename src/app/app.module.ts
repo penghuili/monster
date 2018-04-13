@@ -7,6 +7,7 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SettingsModule } from './settings/settings.module';
+import { TagsModule } from './tags/tags.module';
 import { TodosModule } from './todos/todos.module';
 
 @NgModule({
@@ -20,6 +21,7 @@ import { TodosModule } from './todos/todos.module';
 
     CoreModule,
     TodosModule,
+    TagsModule,
     SettingsModule,
     AppRoutingModule
   ],

@@ -1,13 +1,10 @@
-import { Project } from '../model/project';
+import { Item } from '@app/model';
 
-export const CONFIG = {
-};
-
-export const INBOX: Project = {
+export const INBOX: Item = {
   id: 'p1522616727393',
   title: 'inbox'
 };
-export const ALL: Project = {
+export const ALL: Item = {
   id: '',
   title: 'all'
 };

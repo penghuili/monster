@@ -33,7 +33,7 @@ export function createTodo(data: Todo): Todo {
     createdAt: timestamp
   };
 }
-export function filterTodo(todos: Todo[], project?: Project): Todo[] {
+export function filterTodos(todos: Todo[], project?: Project): Todo[] {
   if (!todos || !project || project.id === ALL.id) {
     return todos;
   } else {

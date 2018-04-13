@@ -1,21 +1,19 @@
-<monster-wrapper *ngIf="todo"
-  mainAxis="between" padding="0.5rem"
-  [borderX]="true" [borderTop]="true" [borderBottom]="isLast"
-  [styles]="{
-    'text-decoration': todo.status === TodoStatus.Done ? 'line-through' : 'none'
-  }">
+<monster-list-item *ngIf="todo"
+ [showBorderBottom]="isLast">
 
-  <monster-wrapper
-    [color]="todo.status === TodoStatus.Done ? 'grey' : null"
-    padding="0 1rem 0 0">
-    {{ todo.title }}
-  </monster-wrapper>
+  <span content 
+    [ngStyle]="{
+      'color': todo.status === TodoStatus.Done ? 'grey' : null,
+      'text-decoration': todo.status === TodoStatus.Done ? 'line-through' : 'none'
+    }">{{ todo.title }}</span>
 
-  <monster-icon-done *ngIf="todo.status === TodoStatus.InProgress"
-    cursor="pointer"
-    (click)="onFinish(todo.id, $event)"></monster-icon-done>
-  <monster-icon-close *ngIf="todo.status === TodoStatus.Done"
-    cursor="pointer"
-    (click)="onDelete(todo.id, $event)"></monster-icon-close>
+  <span right>
+    <monster-icon-done *ngIf="todo.status === TodoStatus.InProgress"
+      cursor="pointer"
+      (click)="onFinish(todo.id, $event)"></monster-icon-done>
+    <monster-icon-close *ngIf="todo.status === TodoStatus.Done"
+      cursor="pointer"
+      (click)="onDelete(todo.id, $event)"></monster-icon-close>
+  </span>
 
-</monster-wrapper>
+</monster-list-item>

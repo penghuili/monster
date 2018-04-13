@@ -11,10 +11,10 @@
       (enter)="onCreate()"></monster-input>
   </monster-wrapper>
 
-  <monster-wrapper *ngFor="let p of projects"
+  <monster-wrapper *ngFor="let c of categories"
     padding="0.5rem 2rem"
-    [color]="activeProject && activeProject.id === p.id ? 'accent' : null"
+    [color]="active && active.id === c.id ? 'accent' : null"
     cursor="pointer"
     [styles]="{ 'font-size': '1.25rem' }"
-    (click)="onSelect(p)">{{ p.title }}</monster-wrapper>
+    (click)="onSelect(c)">{{ c.title }}</monster-wrapper>
 </monster-overlay>
