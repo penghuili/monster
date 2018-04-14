@@ -15,6 +15,7 @@ export class TodoCreateComponent extends Unsub implements OnInit {
   titleControl = new InputControl('');
   noteControl = new InputControl('');
   hoursControl = new InputControl('');
+  happenOn: number;
   hasError = false;
 
   currentProject: Project = INBOX;
@@ -43,14 +44,18 @@ export class TodoCreateComponent extends Unsub implements OnInit {
     this.currentProject = project;
     this.showProjects = false;
   }
+  onFinishPickDate(date: number) {
+    this.happenOn = date;
+  }
   onCreate() {
     const title = this.titleControl.getValue();
     const note = this.noteControl.getValue();
     const hours = +this.hoursControl.getValue();
     const project = this.currentProject;
+    const happenOn = this.happenOn;
     if (title) {
       this.hasError = false;
-      const todo = { title, note, projectId: project.id, hours };
+      const todo = { title, note, projectId: project.id, hours, happenOn };
       this.todoService.create(todo);
       this.router.navigate([ '../' ], { relativeTo: this.route });
     } else {

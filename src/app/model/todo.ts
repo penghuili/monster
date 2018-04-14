@@ -1,7 +1,7 @@
 import { ALL, INBOX } from '../static/config';
 import { Item } from './item';
 import { Project } from './project';
-import { now } from './utils';
+import { now } from './time';
 
 export interface Todo extends Item {
   projectId?: string;

@@ -1,0 +1,24 @@
+<div class="mst-datepicker-month-nav">
+  <monster-icon name="keyboard_arrow_left" (click)="prevMonth()"></monster-icon>
+  <div class="mst-no-select">{{ selectedDate | date:'MMMM yyyy' }}</div>
+  <monster-icon name="keyboard_arrow_right" (click)="nextMonth()"></monster-icon>
+</div>
+<monster-datepicker-month-row [days]="weeks"></monster-datepicker-month-row>
+<monster-datepicker-month-row
+  [days]="row1" [activeDay]="activeDay"
+  (selectDay)="onSelectDate($event)"></monster-datepicker-month-row>
+<monster-datepicker-month-row
+  [days]="row2" [activeDay]="activeDay"
+  (selectDay)="onSelectDate($event)"></monster-datepicker-month-row>
+<monster-datepicker-month-row
+  [days]="row3" [activeDay]="activeDay"
+  (selectDay)="onSelectDate($event)"></monster-datepicker-month-row>
+<monster-datepicker-month-row
+  [days]="row4" [activeDay]="activeDay"
+  (selectDay)="onSelectDate($event)"></monster-datepicker-month-row>
+<monster-datepicker-month-row
+  [days]="row5" [activeDay]="activeDay"
+  (selectDay)="onSelectDate($event)"></monster-datepicker-month-row>
+<monster-datepicker-month-row
+  [days]="row6" [activeDay]="activeDay"
+  (selectDay)="onSelectDate($event)"></monster-datepicker-month-row>

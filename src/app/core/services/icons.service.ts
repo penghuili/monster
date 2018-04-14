@@ -30,5 +30,8 @@ export class IconsService {
     this.matIconRegistry.addSvgIconSet(
       this.domSanitizer.bypassSecurityTrustResourceUrl(getIconUrl('svg-sprite-editor'))
     );
+    this.matIconRegistry.addSvgIconSet(
+      this.domSanitizer.bypassSecurityTrustResourceUrl(getIconUrl('svg-sprite-hardware'))
+    );
   }
 }

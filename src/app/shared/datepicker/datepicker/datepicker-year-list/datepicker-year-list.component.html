@@ -1,0 +1,7 @@
+<div class="mst-datepicker-year-list">
+  <div class="mst-datepicker-year-item" *ngFor="let y of years"
+    [class.active]="y === activeYear"
+    (click)="onSelect(y)">
+    {{ y }}
+  </div>
+</div>

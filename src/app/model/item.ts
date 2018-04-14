@@ -1,7 +1,7 @@
 import { ALL, INBOX } from '@app/static';
 import { concat, findIndex, insert, merge, update } from 'ramda';
 
-import { now } from './utils';
+import { now } from './time';
 
 export interface Item {
   id?: string;

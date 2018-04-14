@@ -1,0 +1,14 @@
+@import '../../../../static/variables';
+
+.mst-datepicker-year-list {
+  padding-top: 2rem;
+}
+.mst-datepicker-year-item {
+  padding: 0.5rem 0;
+
+  user-select: none;
+  text-align: center;
+  &.active {
+    color: $accent;
+  }
+}

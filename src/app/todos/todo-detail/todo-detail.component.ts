@@ -17,6 +17,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   titleControl = new InputControl('');
   noteControl = new InputControl('');
   hoursControl = new InputControl('');
+  happenOn: number;
   hasError = false;
 
   currentProject: Project;
@@ -38,6 +39,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
         this.titleControl.setValue(this.todo.title);
         this.noteControl.setValue(this.todo.note);
         this.hoursControl.setValue(this.todo.hours ? this.todo.hours.toString() : '');
+        this.happenOn = todo.happenOn;
       })
     );
   }
@@ -49,6 +51,9 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     this.currentProject = project;
     this.showProjects = false;
   }
+  onFinishPickDate(date: number) {
+    this.happenOn = date;
+  }
   onCancel() {
     this.router.navigate([ '../' ], { relativeTo: this.route });
   }
@@ -57,14 +62,18 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     const note = this.noteControl.getValue();
     const hours = +this.hoursControl.getValue();
     const project = this.currentProject;
+    const happenOn = this.happenOn;
     if (title) {
       this.hasError = false;
-      const todo = merge(this.todo, { title, note, projectId: project.id, hours, updatedAt: now() });
+      const todo = merge(this.todo, {
+        title, note, hours, happenOn,
+        projectId: project.id,
+        updatedAt: now()
+      });
       this.todoService.update(todo);
       this.router.navigate([ '../' ], { relativeTo: this.route });
     } else {
       this.hasError = true;
     }
   }
-
 }

@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { IconModule } from '../icon/icon.module';
 import { InputModule } from '../input/input.module';
 import { StructureModule } from '../structure/structure.module';
+import { CancelConfirmComponent } from './cancel-confirm/cancel-confirm.component';
 import { CopyTextComponent } from './copy-text/copy-text.component';
 import { LinkComponent } from './link/link.component';
 
@@ -20,10 +21,12 @@ import { LinkComponent } from './link/link.component';
   declarations: [
     CopyTextComponent,
     LinkComponent,
+    CancelConfirmComponent,
   ],
   exports: [
     CopyTextComponent,
-    LinkComponent
+    LinkComponent,
+    CancelConfirmComponent
   ]
 })
 export class MonsterCommonModule { }

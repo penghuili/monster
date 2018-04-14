@@ -3,19 +3,16 @@
     [control]="titleControl"
     [hasError]="hasError"></monster-input>
 
-  <monster-wrapper padding="0 0 0.5rem">
-    <monster-wrapper
-      cursor="pointer"
-      (click)="onShowProjects()">{{ currentProject.title }}</monster-wrapper>
-  
-    <monster-wrapper
-      display="block" width="3rem" padding="0 0.5rem 0"
-      [borderBottom]="true">
-      <monster-input
-        [control]="hoursControl"></monster-input>
-    </monster-wrapper>
+  <monster-wrapper
+    cursor="pointer"
+    (click)="onShowProjects()">{{ currentProject.title }}</monster-wrapper>
+  <monster-wrapper>
+    <div [style.width]="'3rem'"><monster-input [control]="hoursControl"></monster-input></div>
     <span>Hours</span>
   </monster-wrapper>
+  <monster-datepicker
+    [defaultDate]="happenOn"
+    (finish)="onFinishPickDate($event)"></monster-datepicker>
   
   <monster-wrapper
     display="block"
@@ -26,11 +23,10 @@
       minHeight="3rem"></monster-input>
   </monster-wrapper>
   
-  <monster-wrapper mainAxis="between" padding="1rem 0 0">
-    <monster-icon-close [isFilled]="false" (click)="onCancel()"></monster-icon-close>
-    <monster-icon-done [isFilled]="false" (click)="onUpdate()"></monster-icon-done>
-  </monster-wrapper>
-  
+  <monster-cancel-confirm
+    (confirm)="onUpdate()"
+    (cancel)="onCancel()"></monster-cancel-confirm>
+
 
   <!-- <monster-todo-timer [todo]="todo"></monster-todo-timer> -->
 </ng-container>
@@ -41,6 +37,5 @@
   (selected)="onSelectProject($event)"></monster-project-list>
 
 
-<!-- <monster-icon name="timer"></monster-icon>
+<monster-icon name="timer"></monster-icon>
 <monster-icon name="play_arrow"></monster-icon>
-<monster-icon name="date_range"></monster-icon> -->

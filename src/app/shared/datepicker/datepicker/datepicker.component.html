@@ -1,0 +1,23 @@
+<monster-wrapper [height]="'2rem'" [crossAxis]="'center'">
+  <monster-icon name="date_range"
+    (click)="onOpenDatepicker()"></monster-icon>
+  <span>{{ date | date:'shortDate' }}</span>
+</monster-wrapper>
+
+<monster-overlay *ngIf="isShowDatepicker">
+  <div class="mst-datepicker-wrapper">
+    <monster-datepicker-title [date]="date" (openYear)="onOpenYear()"></monster-datepicker-title>
+
+    <monster-datepicker-month *ngIf="!isShowYear"
+      [activeDate]="date"
+      (selectDate)="onSelectDate($event)"></monster-datepicker-month>
+
+    <monster-datepicker-year-list *ngIf="isShowYear"
+      [activeDate]="date"
+      (selectYear)="onSelectYear($event)"></monster-datepicker-year-list>
+
+    <monster-cancel-confirm
+      (confirm)="onFinish()"
+      (cancel)="onCancel()"></monster-cancel-confirm>
+  </div>
+</monster-overlay>

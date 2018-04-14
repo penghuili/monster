@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { CoreModule } from '@app/core';
-import { MonsterCommonModule, NotificationModule } from '@app/shared';
+import { DatepickerModule, MonsterCommonModule, NotificationModule } from '@app/shared';
 
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
@@ -23,6 +23,8 @@ import { TodosModule } from './todos/todos.module';
     CoreModule,
     MonsterCommonModule,
     NotificationModule,
+    DatepickerModule,
+
     TodosModule,
     TagsModule,
     SettingsModule,

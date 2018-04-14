@@ -4,6 +4,9 @@ img,legend{border:0}legend,td,th{padding:0}html{font-family:sans-serif;-ms-text-
 a {
   color: $primary;
 }
+.mst-no-select {
+  user-select: none;
+}
 
 // drag drop
 [draggable=true] {

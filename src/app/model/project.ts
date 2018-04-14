@@ -1,5 +1,5 @@
 import { Item } from './item';
-import { now } from './utils';
+import { now } from './time';
 
 export interface Project extends Item {
   note?: string;

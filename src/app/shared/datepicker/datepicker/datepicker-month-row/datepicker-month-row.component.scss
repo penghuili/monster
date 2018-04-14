@@ -1,0 +1,23 @@
+@import '../../../../static/variables';
+
+.mst-datepicker-row {
+  display: flex;
+  justify-content: space-between;
+}
+.mst-datepicker-day {
+  width: 2rem;
+  height: 2rem;
+  padding: 0.5rem;
+  display: inline-flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  user-select: none;
+
+  &.active {
+    justify-content: center;
+    border-radius: 50%;
+    background-color: $accent;
+    color: $white;
+  }
+}
