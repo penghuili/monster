@@ -10,6 +10,10 @@
   <div [style.width]="'3rem'"><monster-input [control]="hoursControl"></monster-input></div>
   <span>Hours</span>
 </monster-wrapper>
+
+
+
+
 <monster-datepicker (finish)="onFinishPickDate($event)"></monster-datepicker>
 
 <monster-wrapper
@@ -30,3 +34,8 @@
   [activeProject]="currentProject"
   [showAll]="false"
   (selected)="onSelectProject($event)"></monster-project-list>
+
+
+
+  <monster-days-hours-picker>
+  </monster-days-hours-picker>

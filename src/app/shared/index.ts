@@ -26,3 +26,9 @@ export * from './notification/notification.service';
 
 export * from './datepicker/datepicker.module';
 export * from './datepicker/datepicker/datepicker.component';
+
+export * from './slider/slider.module';
+export * from './slider/slider/slider.component';
+
+export * from './days-hours-picker/days-hours-picker.module';
+export * from './days-hours-picker/days-hours-picker/days-hours-picker.component';

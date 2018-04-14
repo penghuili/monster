@@ -1,5 +1,13 @@
 import { NgModule } from '@angular/core';
-import { DatepickerModule, IconModule, InputModule, ListModule, MonsterCommonModule, StructureModule } from '@app/shared';
+import {
+  DatepickerModule,
+  DaysHoursPickerModule,
+  IconModule,
+  InputModule,
+  ListModule,
+  MonsterCommonModule,
+  StructureModule,
+} from '@app/shared';
 import { DndModule } from 'ngx-drag-drop';
 
 import { TodoCreateComponent } from './todo-create/todo-create.component';
@@ -18,6 +26,7 @@ import { TodosComponent } from './todos/todos.component';
     DndModule,
     MonsterCommonModule,
     DatepickerModule,
+    DaysHoursPickerModule,
 
     TodosRoutingModule
   ],

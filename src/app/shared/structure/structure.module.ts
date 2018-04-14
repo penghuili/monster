@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { OverlayComponent } from './overlay/overlay.component';
 import { WrapperComponent } from './wrapper/wrapper.component';
+import { PaddingDirective } from './padding.directive';
 
 @NgModule({
   imports: [
@@ -10,7 +11,8 @@ import { WrapperComponent } from './wrapper/wrapper.component';
   ],
   declarations: [
     WrapperComponent,
-    OverlayComponent
+    OverlayComponent,
+    PaddingDirective
   ],
   exports: [
     OverlayComponent,

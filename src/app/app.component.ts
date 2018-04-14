@@ -13,9 +13,6 @@ export class AppComponent implements OnInit {
   appVersion: string;
   routes = ROUTES;
 
-  date: number;
-  showDatepicker = true;
-
   constructor(private iconsService: IconsService) {
   }
 
