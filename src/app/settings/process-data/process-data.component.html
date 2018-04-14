@@ -1,4 +1,37 @@
+In Progress
+<div>
+  <monster-wrapper [display]="'inline'" padding="1rem">
+    <monster-copy-text [text]="inProgressText" (success)="onCopyInProgress($event)"></monster-copy-text>
+  </monster-wrapper>
+  <monster-wrapper [display]="'inline'" padding="1rem">
+    <monster-icon name="delete" (click)="onDeleteInProgress()"></monster-icon>
+  </monster-wrapper>
+</div>
+
+Done Recently
+<div>
+  <monster-wrapper [display]="'inline'" padding="1rem">
+    <monster-copy-text [text]="doneRecentlyText" (success)="onCopyDoneRecently($event)"></monster-copy-text>
+  </monster-wrapper>
+  <monster-wrapper [display]="'inline'" padding="1rem">
+    <monster-icon name="delete" (click)="onDeleteDoneRecently()"></monster-icon>
+  </monster-wrapper>
+</div>
+
+Projects
+<div>
+  <monster-wrapper [display]="'inline'" padding="1rem">
+    <monster-copy-text [text]="projectsText" (success)="onCopyProjects($event)"></monster-copy-text>
+  </monster-wrapper>
+  <monster-wrapper [display]="'inline'" padding="1rem">
+    <monster-icon name="delete" (click)="onDeleteProjects()"></monster-icon>
+  </monster-wrapper>
+</div>
+
+
 Todos
-<div [style.padding]="'1rem'">
-  <monster-icon name="gavel" (click)="onProcessTodo()"></monster-icon>
+<div>
+  <monster-wrapper [display]="'inline'" padding="1rem">
+    <monster-icon name="gavel" (click)="onProcessTodo()"></monster-icon>
+  </monster-wrapper>
 </div>

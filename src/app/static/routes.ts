@@ -3,7 +3,6 @@ export const ROUTES = {
   CREATE: 'create',
   SETTINGS: 'settings',
   MERGE: 'merge',
-  COPY: 'copy',
   PROCESS: 'process',
   TAGS: 'tags'
 };

@@ -32,7 +32,6 @@ export class WrapperComponent {
   @Input() theme: string;
   @Input() color: string;
   @Input() cursor = 'default';
-  @Input() isInline = false;
   @Input() isCircle = false;
 
   @Input() styles: any;
