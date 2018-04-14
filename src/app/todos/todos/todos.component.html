@@ -9,11 +9,14 @@
   padding="1rem 0"
   cursor="pointer"
   (click)="onShowProjects()">{{ currentProject.title }}</monster-wrapper>
-<monster-todo-item *ngFor="let todo of inProgress; let i = index;"
-  [todo]="todo"
-  [isLast]="i === inProgressLength - 1"
-  (click)="onShowDetail(todo)"
-  (finish)="onFinish($event)"></monster-todo-item>
+
+<div>
+  <monster-todo-item *ngFor="let todo of inProgress; let i = index;"
+    [todo]="todo"
+    [isLast]="i === inProgressLength - 1"
+    (click)="onShowDetail(todo)"
+    (finish)="onFinish($event)"></monster-todo-item>
+</div>
 
 <monster-wrapper *ngIf="doneRecently && doneRecently.length > 0"
   mainAxis="center" crossAxis="center"

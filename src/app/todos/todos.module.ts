@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { IconModule, InputModule, ListModule, StructureModule } from '@app/shared';
+import { DndModule } from 'ngx-drag-drop';
 
 import { TodoCreateComponent } from './todo-create/todo-create.component';
 import { TodoDetailComponent } from './todo-detail/todo-detail.component';
@@ -14,6 +15,7 @@ import { TodosComponent } from './todos/todos.component';
     StructureModule,
     InputModule,
     ListModule,
+    DndModule,
 
     TodosRoutingModule
   ],
