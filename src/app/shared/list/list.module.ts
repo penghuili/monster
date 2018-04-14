@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { DndModule } from 'ngx-drag-drop';
 
 import { IconModule } from '../icon/icon.module';
 import { InputModule } from '../input/input.module';
@@ -13,7 +14,8 @@ import { TagListComponent } from './tag-list/tag-list.component';
     CommonModule,
     IconModule,
     InputModule,
-    StructureModule
+    StructureModule,
+    DndModule
   ],
   declarations: [
     ProjectListComponent,

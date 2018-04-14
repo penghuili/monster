@@ -27,5 +27,8 @@ export class IconsService {
     this.matIconRegistry.addSvgIconSet(
       this.domSanitizer.bypassSecurityTrustResourceUrl(getIconUrl('svg-sprite-image'))
     );
+    this.matIconRegistry.addSvgIconSet(
+      this.domSanitizer.bypassSecurityTrustResourceUrl(getIconUrl('svg-sprite-editor'))
+    );
   }
 }

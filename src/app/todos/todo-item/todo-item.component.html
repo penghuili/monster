@@ -1,13 +1,6 @@
 <monster-list-item *ngIf="todo"
  [showBorderBottom]="isLast">
-
-  <span content 
-    [ngStyle]="{
-      'color': todo.status === TodoStatus.Done ? 'grey' : null,
-      'text-decoration': todo.status === TodoStatus.Done ? 'line-through' : 'none'
-    }">{{ todo.title }}</span>
-
-  <span right>
+  <span left>
     <monster-icon-done *ngIf="todo.status === TodoStatus.InProgress"
       cursor="pointer"
       (click)="onFinish(todo.id, $event)"></monster-icon-done>
@@ -15,5 +8,12 @@
       cursor="pointer"
       (click)="onDelete(todo.id, $event)"></monster-icon-close>
   </span>
+  <span content 
+    [ngStyle]="{
+      'text-align': 'left',
+      'color': todo.status === TodoStatus.Done ? 'grey' : null,
+      'text-decoration': todo.status === TodoStatus.Done ? 'line-through' : 'none'
+    }">{{ todo.title }}</span>
+  <ng-content right></ng-content>
 
 </monster-list-item>

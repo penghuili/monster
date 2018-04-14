@@ -1,0 +1,12 @@
+@import '../../../static/variables';
+
+.mst-notification {
+  position: fixed;
+  top: 0;
+  right: 0;
+  max-width: 40%;
+
+  padding: 0.5rem;
+  background-color: $primary;
+  color: $white;
+}

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { IconModule, InputModule, ListModule, StructureModule } from '@app/shared';
+import { IconModule, InputModule, ListModule, NotificationModule, StructureModule } from '@app/shared';
 import { DndModule } from 'ngx-drag-drop';
 
 import { TodoCreateComponent } from './todo-create/todo-create.component';

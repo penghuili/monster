@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService, TodoService } from '@app/core';
-import { filterTodos, Project, Todo } from '@app/model';
+import { dragImageOffsetFunction, filterTodos, moveItem, Project, Todo } from '@app/model';
+import { NotificationService } from '@app/shared';
 import { ROUTES, Unsub } from '@app/static';
+import { DndDropEvent } from 'ngx-drag-drop';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 
 
@@ -19,7 +21,11 @@ export class TodosComponent extends Unsub implements OnInit {
   currentProject: Project;
   showProjects: boolean;
 
+  dragImageOffsetFunction = dragImageOffsetFunction();
+  private draggingIndex: number;
+
   constructor(
+    private notificationService: NotificationService,
     private route: ActivatedRoute,
     private router: Router,
     private projectService: ProjectService,
@@ -75,5 +81,19 @@ export class TodosComponent extends Unsub implements OnInit {
   }
   onShowDetail(todo: Todo) {
     this.router.navigate([ todo.id ], { relativeTo: this.route });
+  }
+
+  // drag and drop
+  onDragStart(todoIndex: number) {
+    this.draggingIndex = todoIndex;
+  }
+  onDrop(event: DndDropEvent) {
+    if (event.index !== undefined && event.data) {
+      const to = event.index > this.draggingIndex ? event.index - 1 : event.index;
+      if (to !== this.draggingIndex) {
+        this.todoService.updateInProgress(moveItem(this.draggingIndex, to, this.inProgress));
+      }
+    }
+    this.draggingIndex = undefined;
   }
 }

@@ -20,3 +20,6 @@ export * from './list/tag-list/tag-list.component';
 export * from './list/list-item/list-item.component';
 export * from './list/list.module';
 
+export * from './notification/notification.module';
+export * from './notification/notification/notification.component';
+export * from './notification/notification.service';

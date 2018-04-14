@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TagService } from '@app/core';
-import { TagCategory } from '@app/model';
+import { dragImageOffsetFunction, filterDefaults, moveItem, TagCategory } from '@app/model';
 import { Unsub } from '@app/static';
+import { DndDropEvent } from 'ngx-drag-drop';
 
 import { InputControl } from '../../input/input-control';
 
@@ -17,6 +18,9 @@ export class TagListComponent extends Unsub implements OnInit {
   categories: TagCategory[];
   control = new InputControl('');
   isAdding = false;
+
+  dragImageOffsetFunction = dragImageOffsetFunction();
+  private draggingIndex: number;
 
   constructor(private tagService: TagService) {
     super();
@@ -40,5 +44,19 @@ export class TagListComponent extends Unsub implements OnInit {
     const data: TagCategory = { title: this.control.getValue().trim() };
     this.tagService.createCategory(data);
     this.isAdding = false;
+  }
+
+  onDragStart(index: number) {
+    this.draggingIndex = index;
+  }
+  onDrop(event: DndDropEvent) {
+    if (event.index !== undefined && event.data) {
+      const to = event.index > this.draggingIndex ? event.index - 1 : event.index;
+      if (to !== this.draggingIndex) {
+        const categories = filterDefaults(moveItem(this.draggingIndex, to, this.categories));
+        this.tagService.updateCategories(categories);
+      }
+    }
+    this.draggingIndex = undefined;
   }
 }

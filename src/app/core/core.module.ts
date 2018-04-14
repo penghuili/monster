@@ -17,7 +17,6 @@ import { TodoService } from './services/todo.service';
     ProjectService,
     TodoService,
     TagService
-  ],
-  declarations: []
+  ]
 })
 export class CoreModule { }

@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { ProjectService } from '@app/core';
-import { Project } from '@app/model';
+import { dragImageOffsetFunction, filterDefaults, moveItem, Project } from '@app/model';
 import { ALL, Unsub } from '@app/static';
+import { DndDropEvent } from 'ngx-drag-drop';
 
 import { InputControl } from '../../input/input-control';
 
@@ -19,6 +20,9 @@ export class ProjectListComponent extends Unsub implements OnInit {
   projects: Project[];
   control = new InputControl('');
   isAdding = false;
+
+  dragImageOffsetFunction = dragImageOffsetFunction();
+  private draggingIndex: number;
 
   constructor(private projectService: ProjectService) {
     super();
@@ -43,5 +47,19 @@ export class ProjectListComponent extends Unsub implements OnInit {
     const data: Project = { title: this.control.getValue().trim() };
     this.projectService.create(data);
     this.isAdding = false;
+  }
+
+  onDragStart(index: number) {
+    this.draggingIndex = index;
+  }
+  onDrop(event: DndDropEvent) {
+    if (event.index !== undefined && event.data) {
+      const to = event.index > this.draggingIndex ? event.index - 1 : event.index;
+      if (to !== this.draggingIndex) {
+        const projects = filterDefaults(moveItem(this.draggingIndex, to, this.projects));
+        this.projectService.updateProjects(projects);
+      }
+    }
+    this.draggingIndex = undefined;
   }
 }

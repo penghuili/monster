@@ -56,7 +56,7 @@ export class TagService {
       filter(data => !!data)
     );
   }
-  updateInProgress(tags: Tag[]) {
+  updateTags(tags: Tag[]) {
     MonsterStorage.set('tags', tags);
     this.tags$.next(tags);
   }
@@ -69,7 +69,7 @@ export class TagService {
     const tag = createOneTag(data);
     const tags = MonsterStorage.get('tags');
     const added = prepend(tag, tags);
-    this.updateInProgress(added);
+    this.updateTags(added);
   }
 
   private addDefault(categories: TagCategory[]): TagCategory[] {

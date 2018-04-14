@@ -4,3 +4,23 @@ img,legend{border:0}legend,td,th{padding:0}html{font-family:sans-serif;-ms-text-
 a {
   color: $primary;
 }
+
+// drag drop
+[draggable=true] {
+  cursor: pointer;
+}
+[draggable].dndDraggableDisabled {
+  cursor: not-allowed;
+  opacity: .7;
+}
+[dndDropzone].dndDropzoneDisabled {
+  cursor: no-drop;
+  opacity: .7;
+}
+[dndPlaceholderRef] {
+  height: 2rem;
+  background-color: $grey-light;
+}
+.dndDraggingSource {
+  display: none;
+}

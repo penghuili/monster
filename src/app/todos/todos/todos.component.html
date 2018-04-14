@@ -10,12 +10,24 @@
   cursor="pointer"
   (click)="onShowProjects()">{{ currentProject.title }}</monster-wrapper>
 
-<div>
-  <monster-todo-item *ngFor="let todo of inProgress; let i = index;"
-    [todo]="todo"
-    [isLast]="i === inProgressLength - 1"
-    (click)="onShowDetail(todo)"
-    (finish)="onFinish($event)"></monster-todo-item>
+<div dndDropzone
+  dndEffectAllowed="move"
+  (dndDrop)="onDrop($event)">
+  <div dndPlaceholderRef></div>
+
+  <div *ngFor="let todo of inProgress; let i = index;"
+    [dndDraggable]="todo"
+    [dndDragImageOffsetFunction]="dragImageOffsetFunction"
+    dndEffectAllowed="move"
+    (dndStart)="onDragStart(i)">
+    <monster-todo-item
+      [todo]="todo"
+      [isLast]="i === inProgressLength - 1"
+      (click)="onShowDetail(todo)"
+      (finish)="onFinish($event)">
+      <monster-icon name="drag_handle" dndHandle></monster-icon>
+    </monster-todo-item>
+  </div>
 </div>
 
 <monster-wrapper *ngIf="doneRecently && doneRecently.length > 0"

@@ -1,3 +1,5 @@
+import { DndDragImageOffsetFunction } from 'ngx-drag-drop';
+
 import { environment } from '../../environments/environment';
 
 export function getIconUrl(icon: string): string {
@@ -25,4 +27,7 @@ export function now() {
 }
 export function add0(a: number): string {
   return a >= 0 && a <= 9 ? `0${a}` : a.toString();
+}
+export function dragImageOffsetFunction(): DndDragImageOffsetFunction {
+  return () => ({ x: -150, y: 0 });
 }

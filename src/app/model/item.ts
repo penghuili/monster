@@ -1,4 +1,7 @@
-import { concat } from 'ramda';
+import { ALL, INBOX } from '@app/static';
+import { concat, findIndex, insert, merge, update } from 'ramda';
+
+import { now } from './utils';
 
 export interface Item {
   id?: string;
@@ -41,17 +44,48 @@ export function mergeItems(income: Item[], source: Item[]): Item[] {
     return [];
   }
 }
+export function swapItems(a: Item, b: Item, items: Item[]) {
+  if (!a || !b) {
+    return items;
+  }
+  const aIndex = findIndex(i => i.id === a.id, items);
+  const bIndex = findIndex(i => i.id === b.id, items);
+  if (aIndex < 0 || bIndex < 0) {
+    return items;
+  }
+  const updateA = update(aIndex, b, items);
+  const updateB = update(bIndex, a, updateA);
+  return updateB;
+}
+export function moveItem(from: number, to: number, items: Item[]) {
+  if (!items) {
+    return items;
+  }
+  const source = merge(items[from], { updatedAt: now() });
+  if (!source) {
+    return items;
+  }
+  to = to >= items.length ? items.length - 1 : to;
+  const withoutMe = items.filter(a => a.id !== source.id);
+  const inserted = insert(to, source, withoutMe);
+  return inserted;
+}
+export function filterDefaults(items: Item[]) {
+  return items.filter(a => a.id !== INBOX.id && a.id !== ALL.id);
+}
 
 function newerItem(a: Item, b: Item): Item {
   if (!a || !b) {
     return a || b;
   }
-  if (a.createdAt > b.createdAt) {
+  const aUpdate = +a.updatedAt;
+  const bUpdate = +b.updatedAt;
+  if (aUpdate > bUpdate) {
     return a;
-  } else if (a.createdAt < b.createdAt) {
+  } else if (aUpdate < bUpdate) {
     return b;
   } else {
-    return +a.updatedAt - +b.updatedAt > 0 ? a : b;
+    return a.createdAt - b.createdAt > 0 ? a : b;
   }
 }
 

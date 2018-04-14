@@ -11,10 +11,27 @@
       (enter)="onCreate()"></monster-input>
   </monster-wrapper>
 
-  <monster-wrapper *ngFor="let p of projects"
-    padding="0.5rem 2rem"
-    [color]="activeProject && activeProject.id === p.id ? 'accent' : null"
-    cursor="pointer"
-    [styles]="{ 'font-size': '1.25rem' }"
-    (click)="onSelect(p)">{{ p.title }}</monster-wrapper>
+    <div dndDropzone
+      dndEffectAllowed="move"
+      (dndDrop)="onDrop($event)">
+      <div dndPlaceholderRef></div>
+
+      <div *ngFor="let p of projects; let i = index;"
+        [dndDraggable]="p"
+        [dndDragImageOffsetFunction]="dragImageOffsetFunction"
+        dndEffectAllowed="move"
+        (dndStart)="onDragStart(i)">
+        <monster-wrapper
+          [mainAxis]="'between'"
+          padding="0.5rem 2rem"
+          [color]="activeProject && activeProject.id === p.id ? 'accent' : null"
+          cursor="pointer"
+          [styles]="{ 'font-size': '1.25rem' }"
+          (click)="onSelect(p)">
+          <span>{{ p.title }}</span>
+          <monster-icon name="drag_handle" dndHandle></monster-icon>
+        </monster-wrapper>
+      </div>
+    </div>
+
 </monster-overlay>
