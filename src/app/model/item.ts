@@ -1,5 +1,5 @@
 import { ALL, INBOX } from '@app/static';
-import { concat, findIndex, insert, merge, update } from 'ramda';
+import { append, concat, drop, find, findIndex, insert, merge, update } from 'ramda';
 
 import { now } from './time';
 
@@ -19,11 +19,14 @@ export function mergeItems(income: Item[], source: Item[]): Item[] {
       const sourceHead = source[0];
       if (incomeHead && sourceHead) {
         newer = newerItem(incomeHead, sourceHead);
-        merged.push(newer);
-        if (newer.id === incomeHead.id) {
-          income = income.slice(1);
+        merged = appendOrUpdate(newer, merged);
+        if (incomeHead.id === sourceHead.id) {
+          income = drop(1, income);
+          source = drop(1, source);
+        } else if (newer.id === incomeHead.id) {
+          income = drop(1, income);
         } else {
-          source = source.slice(1);
+          source = drop(1, source);
         }
         return false;
       } else if (!incomeHead && sourceHead) {
@@ -73,6 +76,19 @@ export function moveItem(from: number, to: number, items: Item[]) {
 export function filterDefaults(items: Item[]) {
   return items.filter(a => a.id !== INBOX.id && a.id !== ALL.id);
 }
+export function dropRepeats(items: Item[]): Item[] {
+  if (!items || items.length === 0) {
+    return items;
+  }
+  const updated = [];
+  items.forEach(p => {
+    const finded = find(a => a.id === p.id, updated);
+    if (!finded) {
+      updated.push(p);
+    }
+  });
+  return updated;
+}
 
 function newerItem(a: Item, b: Item): Item {
   if (!a || !b) {
@@ -86,6 +102,17 @@ function newerItem(a: Item, b: Item): Item {
     return b;
   } else {
     return a.createdAt - b.createdAt > 0 ? a : b;
+  }
+}
+function appendOrUpdate(item: Item, items: Item[]): Item[] {
+  if (!item || !items) {
+    return items;
+  }
+  const index = findIndex(a => a.id === item.id, items);
+  if (index > -1) {
+    return update(index, newerItem(items[index], item), items);
+  } else {
+    return append(item, items);
   }
 }
 
