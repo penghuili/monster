@@ -3,7 +3,7 @@ import { now } from '@app/model';
 import { addMonths, format, getDaysInMonth, setDate, startOfMonth } from 'date-fns';
 
 @Component({
-  selector: 'monster-datepicker-month',
+  selector: 'mst-datepicker-month',
   templateUrl: './datepicker-month.component.html',
   styleUrls: ['./datepicker-month.component.scss']
 })

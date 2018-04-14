@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
-  selector: 'monster-cancel-confirm',
+  selector: 'mst-cancel-confirm',
   templateUrl: './cancel-confirm.component.html',
   styleUrls: ['./cancel-confirm.component.scss']
 })

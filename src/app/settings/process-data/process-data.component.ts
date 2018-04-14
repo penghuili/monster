@@ -4,7 +4,7 @@ import { MonsterStorage } from '@app/model';
 import { NotificationService } from '@app/shared';
 
 @Component({
-  selector: 'monster-process-data',
+  selector: 'mst-process-data',
   templateUrl: './process-data.component.html',
   styleUrls: ['./process-data.component.scss']
 })

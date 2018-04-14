@@ -8,7 +8,7 @@ import { merge } from 'ramda';
 
 
 @Component({
-  selector: 'monster-todo-detail',
+  selector: 'mst-todo-detail',
   templateUrl: './todo-detail.component.html',
   styleUrls: ['./todo-detail.component.scss']
 })

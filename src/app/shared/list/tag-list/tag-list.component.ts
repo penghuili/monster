@@ -7,7 +7,7 @@ import { DndDropEvent } from 'ngx-drag-drop';
 import { InputControl } from '../../input/input-control';
 
 @Component({
-  selector: 'monster-tag-list',
+  selector: 'mst-tag-list',
   templateUrl: './tag-list.component.html',
   styleUrls: ['./tag-list.component.scss']
 })

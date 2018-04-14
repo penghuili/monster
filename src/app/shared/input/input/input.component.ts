@@ -4,7 +4,7 @@ import { Unsub } from '@app/static';
 import { InputControl } from '../input-control';
 
 @Component({
-  selector: 'monster-input',
+  selector: 'mst-input',
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.scss']
 })

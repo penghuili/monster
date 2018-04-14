@@ -123,13 +123,13 @@
     "directive-selector": [
       true,
       "attribute",
-      "monster",
+      "mst",
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "monster",
+      "mst",
       "kebab-case"
     ],
     "no-output-on-prefix": true,

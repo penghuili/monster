@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'monster-datepicker-month-row',
+  selector: 'mst-datepicker-month-row',
   templateUrl: './datepicker-month-row.component.html',
   styleUrls: ['./datepicker-month-row.component.scss']
 })

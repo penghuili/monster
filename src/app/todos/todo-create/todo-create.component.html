@@ -1,41 +1,41 @@
-<monster-input
+<mst-input
   [control]="titleControl"
   [hasError]="hasError"
-  [autoFocus]="true"></monster-input>
+  [autoFocus]="true"></mst-input>
 
-<monster-wrapper
+<mst-wrapper
   cursor="pointer"
-  (click)="onShowProjects()">{{ currentProject.title }}</monster-wrapper>
-<monster-wrapper>
-  <div [style.width]="'3rem'"><monster-input [control]="hoursControl"></monster-input></div>
+  (click)="onShowProjects()">{{ currentProject.title }}</mst-wrapper>
+<mst-wrapper>
+  <div [style.width]="'3rem'"><mst-input [control]="hoursControl"></mst-input></div>
   <span>Hours</span>
-</monster-wrapper>
+</mst-wrapper>
 
 
 
 
-<monster-datepicker (finish)="onFinishPickDate($event)"></monster-datepicker>
+<mst-datepicker (finish)="onFinishPickDate($event)"></mst-datepicker>
 
-<monster-wrapper
+<mst-wrapper
   display="block"
   padding="1rem"
   [borderAll]="true">
-  <monster-input
+  <mst-input
     [control]="noteControl"
-    minHeight="3rem"></monster-input>
-</monster-wrapper>
+    minHeight="3rem"></mst-input>
+</mst-wrapper>
 
-<monster-cancel-confirm
+<mst-cancel-confirm
   (confirm)="onCreate()"
-  (cancel)="onCancel()"></monster-cancel-confirm>
+  (cancel)="onCancel()"></mst-cancel-confirm>
 
 
-<monster-project-list *ngIf="showProjects"
+<mst-project-list *ngIf="showProjects"
   [activeProject]="currentProject"
   [showAll]="false"
-  (selected)="onSelectProject($event)"></monster-project-list>
+  (selected)="onSelectProject($event)"></mst-project-list>
 
 
 
-  <monster-days-hours-picker>
-  </monster-days-hours-picker>
+  <mst-days-hours-picker>
+  </mst-days-hours-picker>

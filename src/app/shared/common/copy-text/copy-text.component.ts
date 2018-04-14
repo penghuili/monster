@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 
 @Component({
-  selector: 'monster-copy-text',
+  selector: 'mst-copy-text',
   templateUrl: './copy-text.component.html',
   styleUrls: ['./copy-text.component.scss']
 })

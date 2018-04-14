@@ -1,37 +1,37 @@
 In Progress
 <div>
-  <monster-wrapper [display]="'inline'" padding="1rem">
-    <monster-copy-text [text]="inProgressText" (success)="onCopyInProgress($event)"></monster-copy-text>
-  </monster-wrapper>
-  <monster-wrapper [display]="'inline'" padding="1rem">
-    <monster-icon name="delete" (click)="onDeleteInProgress()"></monster-icon>
-  </monster-wrapper>
+  <mst-wrapper [display]="'inline'" padding="1rem">
+    <mst-copy-text [text]="inProgressText" (success)="onCopyInProgress($event)"></mst-copy-text>
+  </mst-wrapper>
+  <mst-wrapper [display]="'inline'" padding="1rem">
+    <mst-icon name="delete" (click)="onDeleteInProgress()"></mst-icon>
+  </mst-wrapper>
 </div>
 
 Done Recently
 <div>
-  <monster-wrapper [display]="'inline'" padding="1rem">
-    <monster-copy-text [text]="doneRecentlyText" (success)="onCopyDoneRecently($event)"></monster-copy-text>
-  </monster-wrapper>
-  <monster-wrapper [display]="'inline'" padding="1rem">
-    <monster-icon name="delete" (click)="onDeleteDoneRecently()"></monster-icon>
-  </monster-wrapper>
+  <mst-wrapper [display]="'inline'" padding="1rem">
+    <mst-copy-text [text]="doneRecentlyText" (success)="onCopyDoneRecently($event)"></mst-copy-text>
+  </mst-wrapper>
+  <mst-wrapper [display]="'inline'" padding="1rem">
+    <mst-icon name="delete" (click)="onDeleteDoneRecently()"></mst-icon>
+  </mst-wrapper>
 </div>
 
 Projects
 <div>
-  <monster-wrapper [display]="'inline'" padding="1rem">
-    <monster-copy-text [text]="projectsText" (success)="onCopyProjects($event)"></monster-copy-text>
-  </monster-wrapper>
-  <monster-wrapper [display]="'inline'" padding="1rem">
-    <monster-icon name="delete" (click)="onDeleteProjects()"></monster-icon>
-  </monster-wrapper>
+  <mst-wrapper [display]="'inline'" padding="1rem">
+    <mst-copy-text [text]="projectsText" (success)="onCopyProjects($event)"></mst-copy-text>
+  </mst-wrapper>
+  <mst-wrapper [display]="'inline'" padding="1rem">
+    <mst-icon name="delete" (click)="onDeleteProjects()"></mst-icon>
+  </mst-wrapper>
 </div>
 
 
 Todos
 <div>
-  <monster-wrapper [display]="'inline'" padding="1rem">
-    <monster-icon name="gavel" (click)="onProcessTodo()"></monster-icon>
-  </monster-wrapper>
+  <mst-wrapper [display]="'inline'" padding="1rem">
+    <mst-icon name="gavel" (click)="onProcessTodo()"></mst-icon>
+  </mst-wrapper>
 </div>

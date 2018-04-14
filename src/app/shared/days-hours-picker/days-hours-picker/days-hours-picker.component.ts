@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'monster-days-hours-picker',
+  selector: 'mst-days-hours-picker',
   templateUrl: './days-hours-picker.component.html',
   styleUrls: ['./days-hours-picker.component.scss']
 })

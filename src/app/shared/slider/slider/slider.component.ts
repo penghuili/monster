@@ -3,7 +3,7 @@ import { Unsub } from '@app/static';
 import * as Hammer from 'hammerjs';
 
 @Component({
-  selector: 'monster-slider',
+  selector: 'mst-slider',
   templateUrl: './slider.component.html',
   styleUrls: ['./slider.component.scss']
 })

@@ -1,41 +1,41 @@
 <ng-container *ngIf="todo && currentProject">
-  <monster-input
+  <mst-input
     [control]="titleControl"
-    [hasError]="hasError"></monster-input>
+    [hasError]="hasError"></mst-input>
 
-  <monster-wrapper
+  <mst-wrapper
     cursor="pointer"
-    (click)="onShowProjects()">{{ currentProject.title }}</monster-wrapper>
-  <monster-wrapper>
-    <div [style.width]="'3rem'"><monster-input [control]="hoursControl"></monster-input></div>
+    (click)="onShowProjects()">{{ currentProject.title }}</mst-wrapper>
+  <mst-wrapper>
+    <div [style.width]="'3rem'"><mst-input [control]="hoursControl"></mst-input></div>
     <span>Hours</span>
-  </monster-wrapper>
-  <monster-datepicker
+  </mst-wrapper>
+  <mst-datepicker
     [defaultDate]="happenOn"
-    (finish)="onFinishPickDate($event)"></monster-datepicker>
+    (finish)="onFinishPickDate($event)"></mst-datepicker>
   
-  <monster-wrapper
+  <mst-wrapper
     display="block"
     padding="1rem"
     [borderAll]="true">
-    <monster-input
+    <mst-input
       [control]="noteControl"
-      minHeight="3rem"></monster-input>
-  </monster-wrapper>
+      minHeight="3rem"></mst-input>
+  </mst-wrapper>
   
-  <monster-cancel-confirm
+  <mst-cancel-confirm
     (confirm)="onUpdate()"
-    (cancel)="onCancel()"></monster-cancel-confirm>
+    (cancel)="onCancel()"></mst-cancel-confirm>
 
 
-  <!-- <monster-todo-timer [todo]="todo"></monster-todo-timer> -->
+  <!-- <mst-todo-timer [todo]="todo"></mst-todo-timer> -->
 </ng-container>
   
-<monster-project-list *ngIf="showProjects"
+<mst-project-list *ngIf="showProjects"
   [activeProject]="currentProject"
   [showAll]="false"
-  (selected)="onSelectProject($event)"></monster-project-list>
+  (selected)="onSelectProject($event)"></mst-project-list>
 
 
-<monster-icon name="timer"></monster-icon>
-<monster-icon name="play_arrow"></monster-icon>
+<mst-icon name="timer"></mst-icon>
+<mst-icon name="play_arrow"></mst-icon>

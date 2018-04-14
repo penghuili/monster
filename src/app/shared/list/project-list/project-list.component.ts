@@ -7,7 +7,7 @@ import { DndDropEvent } from 'ngx-drag-drop';
 import { InputControl } from '../../input/input-control';
 
 @Component({
-  selector: 'monster-project-list',
+  selector: 'mst-project-list',
   templateUrl: './project-list.component.html',
   styleUrls: ['./project-list.component.scss'],
   encapsulation: ViewEncapsulation.Emulated

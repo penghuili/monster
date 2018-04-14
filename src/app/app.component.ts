@@ -5,7 +5,7 @@ import { ROUTES } from '@app/static';
 const { version: appVersion } = require('../../package.json');
 
 @Component({
-  selector: 'monster-root',
+  selector: 'mst-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

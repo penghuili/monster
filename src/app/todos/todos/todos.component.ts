@@ -9,7 +9,7 @@ import { combineLatest } from 'rxjs/observable/combineLatest';
 
 
 @Component({
-  selector: 'monster-todos',
+  selector: 'mst-todos',
   templateUrl: './todos.component.html',
   styleUrls: ['./todos.component.scss']
 })

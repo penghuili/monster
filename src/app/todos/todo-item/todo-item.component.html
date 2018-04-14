@@ -1,12 +1,12 @@
-<monster-list-item *ngIf="todo"
+<mst-list-item *ngIf="todo"
  [showBorderBottom]="isLast">
   <span left>
-    <monster-icon-done *ngIf="todo.status === TodoStatus.InProgress"
+    <mst-icon-done *ngIf="todo.status === TodoStatus.InProgress"
       cursor="pointer"
-      (click)="onFinish(todo.id, $event)"></monster-icon-done>
-    <monster-icon-close *ngIf="todo.status === TodoStatus.Done"
+      (click)="onFinish(todo.id, $event)"></mst-icon-done>
+    <mst-icon-close *ngIf="todo.status === TodoStatus.Done"
       cursor="pointer"
-      (click)="onDelete(todo.id, $event)"></monster-icon-close>
+      (click)="onDelete(todo.id, $event)"></mst-icon-close>
   </span>
   <span content 
     [ngStyle]="{
@@ -16,4 +16,4 @@
     }">{{ todo.title }}</span>
   <ng-content right></ng-content>
 
-</monster-list-item>
+</mst-list-item>

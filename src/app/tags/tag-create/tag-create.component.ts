@@ -5,7 +5,7 @@ import { Tag, TagCategory } from '@app/model';
 import { ALL, Unsub } from '@app/static';
 
 @Component({
-  selector: 'monster-tag-create',
+  selector: 'mst-tag-create',
   templateUrl: './tag-create.component.html',
   styleUrls: ['./tag-create.component.scss']
 })

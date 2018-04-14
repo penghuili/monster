@@ -1,15 +1,15 @@
-<monster-overlay>
-  <monster-wrapper
+<mst-overlay>
+  <mst-wrapper
     display="block"
     padding="0 1.75rem 1rem"
     height="2rem">
-    <monster-icon-add *ngIf="!isAdding"
-      (click)="onShowInput()"></monster-icon-add>
-    <monster-input *ngIf="isAdding"
+    <mst-icon-add *ngIf="!isAdding"
+      (click)="onShowInput()"></mst-icon-add>
+    <mst-input *ngIf="isAdding"
       [control]="control" [autoFocus]="true"
       padding="0.5rem 0.5rem 0"
-      (enter)="onCreate()"></monster-input>
-  </monster-wrapper>
+      (enter)="onCreate()"></mst-input>
+  </mst-wrapper>
 
   <div dndDropzone
     dndEffectAllowed="move"
@@ -21,16 +21,16 @@
       [dndDragImageOffsetFunction]="dragImageOffsetFunction"
       dndEffectAllowed="move"
       (dndStart)="onDragStart(i)">
-      <monster-wrapper
+      <mst-wrapper
         padding="0.5rem 2rem"
         [color]="active && active.id === c.id ? 'accent' : null"
         cursor="pointer"
         [styles]="{ 'font-size': '1.25rem' }"
         (click)="onSelect(c)">
         <span>{{ c.title }}</span>
-        <monster-icon name="drag_handle" dndHandle></monster-icon>
-      </monster-wrapper>
+        <mst-icon name="drag_handle" dndHandle></mst-icon>
+      </mst-wrapper>
     </div>
   </div>
 
-</monster-overlay>
+</mst-overlay>

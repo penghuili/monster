@@ -3,7 +3,7 @@ import { now } from '@app/model';
 import { setYear } from 'date-fns';
 
 @Component({
-  selector: 'monster-datepicker',
+  selector: 'mst-datepicker',
   templateUrl: './datepicker.component.html',
   styleUrls: ['./datepicker.component.scss']
 })

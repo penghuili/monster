@@ -1,23 +1,23 @@
-<monster-wrapper [height]="'2rem'" [crossAxis]="'center'">
-  <monster-icon name="date_range"
-    (click)="onOpenDatepicker()"></monster-icon>
+<mst-wrapper [height]="'2rem'" [crossAxis]="'center'">
+  <mst-icon name="date_range"
+    (click)="onOpenDatepicker()"></mst-icon>
   <span>{{ date | date:'shortDate' }}</span>
-</monster-wrapper>
+</mst-wrapper>
 
-<monster-overlay *ngIf="isShowDatepicker">
+<mst-overlay *ngIf="isShowDatepicker">
   <div class="mst-datepicker-wrapper">
-    <monster-datepicker-title [date]="date" (openYear)="onOpenYear()"></monster-datepicker-title>
+    <mst-datepicker-title [date]="date" (openYear)="onOpenYear()"></mst-datepicker-title>
 
-    <monster-datepicker-month *ngIf="!isShowYear"
+    <mst-datepicker-month *ngIf="!isShowYear"
       [activeDate]="date"
-      (selectDate)="onSelectDate($event)"></monster-datepicker-month>
+      (selectDate)="onSelectDate($event)"></mst-datepicker-month>
 
-    <monster-datepicker-year-list *ngIf="isShowYear"
+    <mst-datepicker-year-list *ngIf="isShowYear"
       [activeDate]="date"
-      (selectYear)="onSelectYear($event)"></monster-datepicker-year-list>
+      (selectYear)="onSelectYear($event)"></mst-datepicker-year-list>
 
-    <monster-cancel-confirm
+    <mst-cancel-confirm
       (confirm)="onFinish()"
-      (cancel)="onCancel()"></monster-cancel-confirm>
+      (cancel)="onCancel()"></mst-cancel-confirm>
   </div>
-</monster-overlay>
+</mst-overlay>

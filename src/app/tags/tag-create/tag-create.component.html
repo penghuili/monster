@@ -1,12 +1,12 @@
-<monster-wrapper
+<mst-wrapper
   cursor="pointer"
-  (click)="onShowCategories()">{{ currentCategory.title }}</monster-wrapper>
+  (click)="onShowCategories()">{{ currentCategory.title }}</mst-wrapper>
 
-<monster-cancel-confirm
+<mst-cancel-confirm
   (confirm)="onCreate()"
-  (cancel)="onCancel()"></monster-cancel-confirm>
+  (cancel)="onCancel()"></mst-cancel-confirm>
 
 
-<monster-tag-list *ngIf="showCategories"
+<mst-tag-list *ngIf="showCategories"
   [active]="currentCategory"
-  (selected)="onSelectCategory($event)"></monster-tag-list>
+  (selected)="onSelectCategory($event)"></mst-tag-list>

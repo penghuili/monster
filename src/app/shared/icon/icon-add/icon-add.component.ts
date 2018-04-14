@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'monster-icon-add',
+  selector: 'mst-icon-add',
   templateUrl: './icon-add.component.html',
   styleUrls: ['./icon-add.component.scss']
 })

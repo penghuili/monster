@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ROUTES } from '@app/static';
 
 @Component({
-  selector: 'monster-settings',
+  selector: 'mst-settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss']
 })

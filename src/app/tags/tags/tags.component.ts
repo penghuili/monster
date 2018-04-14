@@ -6,7 +6,7 @@ import { ROUTES, Unsub } from '@app/static';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 
 @Component({
-  selector: 'monster-tags',
+  selector: 'mst-tags',
   templateUrl: './tags.component.html',
   styleUrls: ['./tags.component.scss']
 })

@@ -1,14 +1,14 @@
-<monster-wrapper
+<mst-wrapper
   mainAxis="center" crossAxis="center"
   padding="0 0 1rem">
-  <monster-icon-add (click)="onGotoCreate()"></monster-icon-add>
-</monster-wrapper>
+  <mst-icon-add (click)="onGotoCreate()"></mst-icon-add>
+</mst-wrapper>
 
-<monster-wrapper *ngIf="currentProject"
+<mst-wrapper *ngIf="currentProject"
   mainAxis="center" crossAxis="center"
   padding="1rem 0"
   cursor="pointer"
-  (click)="onShowProjects()">{{ currentProject.title }}</monster-wrapper>
+  (click)="onShowProjects()">{{ currentProject.title }}</mst-wrapper>
 
 <div dndDropzone
   dndEffectAllowed="move"
@@ -20,27 +20,27 @@
     [dndDragImageOffsetFunction]="dragImageOffsetFunction"
     dndEffectAllowed="move"
     (dndStart)="onDragStart(i)">
-    <monster-todo-item
+    <mst-todo-item
       [todo]="todo"
       [isLast]="i === inProgressLength - 1"
       (click)="onShowDetail(todo)"
       (finish)="onFinish($event)">
-      <monster-icon name="drag_handle" dndHandle></monster-icon>
-    </monster-todo-item>
+      <mst-icon name="drag_handle" dndHandle></mst-icon>
+    </mst-todo-item>
   </div>
 </div>
 
-<monster-wrapper *ngIf="doneRecently && doneRecently.length > 0"
+<mst-wrapper *ngIf="doneRecently && doneRecently.length > 0"
   mainAxis="center" crossAxis="center"
-  padding="1rem 0">Done</monster-wrapper>
-<monster-todo-item *ngFor="let todo of doneRecently; let i = index;"
+  padding="1rem 0">Done</mst-wrapper>
+<mst-todo-item *ngFor="let todo of doneRecently; let i = index;"
   [todo]="todo"
   [isLast]="i === doneRecentlyLength - 1"
   (click)="onUndo(todo.id)"
-  (delete)="onDelete($event)"></monster-todo-item>
+  (delete)="onDelete($event)"></mst-todo-item>
 
 
-<monster-project-list *ngIf="showProjects"
+<mst-project-list *ngIf="showProjects"
   [activeProject]="currentProject"
-  (selected)="onChangeProject($event)"></monster-project-list>
+  (selected)="onChangeProject($event)"></mst-project-list>
   

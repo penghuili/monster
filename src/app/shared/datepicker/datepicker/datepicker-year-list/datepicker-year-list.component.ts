@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { now } from '@app/model';
 
 @Component({
-  selector: 'monster-datepicker-year-list',
+  selector: 'mst-datepicker-year-list',
   templateUrl: './datepicker-year-list.component.html',
   styleUrls: ['./datepicker-year-list.component.scss']
 })

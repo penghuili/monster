@@ -6,7 +6,7 @@ import { InputControl } from '@app/shared';
 import { INBOX, Unsub } from '@app/static';
 
 @Component({
-  selector: 'monster-todo-create',
+  selector: 'mst-todo-create',
   templateUrl: './todo-create.component.html',
   styleUrls: ['./todo-create.component.scss'],
   encapsulation: ViewEncapsulation.Emulated

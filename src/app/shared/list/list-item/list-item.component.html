@@ -1,12 +1,12 @@
-<monster-wrapper
+<mst-wrapper
   padding="0.5rem"
   [borderX]="true" [borderTop]="true" [borderBottom]="showBorderBottom">
 
   <ng-content select="[left]"></ng-content>
-  <monster-wrapper [style.flex-grow]="'1'"
+  <mst-wrapper [style.flex-grow]="'1'"
     padding="0 1rem 0">
     <ng-content select="[content]"></ng-content>
-  </monster-wrapper>
+  </mst-wrapper>
 
   <ng-content select="[right]"></ng-content>
-</monster-wrapper>
+</mst-wrapper>

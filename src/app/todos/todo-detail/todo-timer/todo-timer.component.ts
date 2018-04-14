@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
-  selector: 'monster-todo-timer',
+  selector: 'mst-todo-timer',
   templateUrl: './todo-timer.component.html',
   styleUrls: ['./todo-timer.component.scss']
 })

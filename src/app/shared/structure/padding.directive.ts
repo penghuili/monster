@@ -1,7 +1,7 @@
 import { Directive } from '@angular/core';
 
 @Directive({
-  selector: '[monsterPadding]'
+  selector: '[mstPadding]'
 })
 export class PaddingDirective {
 

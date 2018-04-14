@@ -4,7 +4,7 @@ import { Unsub } from '@app/static';
 import { NotificationService } from '../notification.service';
 
 @Component({
-  selector: 'monster-notification',
+  selector: 'mst-notification',
   templateUrl: './notification.component.html',
   styleUrls: ['./notification.component.scss']
 })
