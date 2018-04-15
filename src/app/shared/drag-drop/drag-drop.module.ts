@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { DndModule } from 'ngx-drag-drop';
+import { DndHandleDirective, DndModule } from 'ngx-drag-drop';
 
 import { IconModule } from '../icon/icon.module';
 import { OverlayModule } from '../overlay/overlay.module';
 import { StylingModule } from '../styling/styling.module';
-import { DragDropItemComponent } from './drag-drop-list/drag-drop-item/drag-drop-item.component';
 import { DragDropListComponent } from './drag-drop-list/drag-drop-list.component';
+import { DragItemComponent } from './drag-item/drag-item.component';
+import { DropZoneComponent } from './drop-zone/drop-zone.component';
 
 @NgModule({
   imports: [
@@ -20,11 +21,13 @@ import { DragDropListComponent } from './drag-drop-list/drag-drop-list.component
   ],
   declarations: [
     DragDropListComponent,
-    DragDropItemComponent
+    DragItemComponent,
+    DropZoneComponent,
   ],
   exports: [
     DragDropListComponent,
-    DragDropItemComponent
+    DragItemComponent,
+    DropZoneComponent,
   ]
 })
 export class DragDropModule { }

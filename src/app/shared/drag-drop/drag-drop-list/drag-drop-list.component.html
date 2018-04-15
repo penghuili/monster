@@ -9,13 +9,8 @@
 </div>
 
 <mst-overlay *ngIf="showList">
-  <div dndDropzone
-    dndEffectAllowed="move"
-    (dndDrop)="onDrop($event)">
-
-    <div dndPlaceholderRef></div>
-
-    <mst-drag-drop-item *ngFor="let item of list; let i = index;"
+  <mst-drop-zone [dragIndex]="draggingIndex" (drop)="onDrop($event)">
+    <mst-drag-item *ngFor="let item of list; let i = index;"
       [item]="item"
       [index]="i"
       (start)="onDragStart($event)">
@@ -28,6 +23,6 @@
         <span *ngIf="showValueFn && pipe.type === PipeType.None">{{ showValueFn(item) }}</span>
         <span *ngIf="showValueFn && pipe.type === PipeType.Date">{{ showValueFn(item) | date:pipe.params }}</span>
       </div>
-    </mst-drag-drop-item>
-  </div>
+    </mst-drag-item>
+  </mst-drop-zone>
 </mst-overlay>

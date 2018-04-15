@@ -8,31 +8,16 @@
   <mst-project-list [activeProject]="currentProject"></mst-project-list>
 </div>
 
-<div dndDropzone
-  dndEffectAllowed="move"
-  (dndDrop)="onDrop($event)">
-  <div dndPlaceholderRef></div>
-
-  <div *ngFor="let todo of inProgress; let i = index;"
-    [dndDraggable]="todo"
-    [dndDragImageOffsetFunction]="dragImageOffsetFunction"
-    dndEffectAllowed="move"
-    (dndStart)="onDragStart(i)">
+<mst-drop-zone [dragIndex]="dragIndex" (drop)="onDrop($event)">
+  <mst-drag-item *ngFor="let todo of inProgress; let i = index;"
+    [item]="todo"
+    [index]="i"
+    (start)="onDragStart($event)">
     <mst-todo-item
       [todo]="todo"
       [isLast]="i === inProgressLength - 1"
       (click)="onShowDetail(todo)"
       (finish)="onFinish($event)">
-      <mst-icon name="drag_handle" dndHandle></mst-icon>
     </mst-todo-item>
-  </div>
-</div>
-
-<mst-wrapper *ngIf="doneRecently && doneRecently.length > 0"
-  mainAxis="center" crossAxis="center"
-  padding="1rem 0">Done</mst-wrapper>
-<mst-todo-item *ngFor="let todo of doneRecently; let i = index;"
-  [todo]="todo"
-  [isLast]="i === doneRecentlyLength - 1"
-  (click)="onUndo(todo.id)"
-  (delete)="onDelete($event)"></mst-todo-item>
+  </mst-drag-item>
+</mst-drop-zone>

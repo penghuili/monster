@@ -61,7 +61,7 @@ export function swapItems(a: Item, b: Item, items: Item[]) {
   return updateB;
 }
 export function moveItem(from: number, to: number, items: Item[]) {
-  if (!items) {
+  if (!items || from === to) {
     return items;
   }
   const source = merge(items[from], { updatedAt: now() });

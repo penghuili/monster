@@ -19,7 +19,7 @@ export class DragDropListComponent {
   showList = false;
   PipeType = PipeType;
   dragImageOffsetFunction = getDragImageOffsetFunction();
-  private draggingIndex: number;
+  draggingIndex: number;
 
   onOpen() {
     this.showList = true;
@@ -27,13 +27,10 @@ export class DragDropListComponent {
   onDragStart(index: number) {
     this.draggingIndex = index;
   }
-  onDrop(event: DndDropEvent) {
-    if (event.index !== undefined && event.data) {
-      const to = event.index > this.draggingIndex ? event.index - 1 : event.index;
-      if (to !== this.draggingIndex) {
-        const list = filterDefaults(moveItem(this.draggingIndex, to, this.list));
-        this.reorder.emit(list);
-      }
+  onDrop(dropIndex: number) {
+    if (dropIndex !== this.draggingIndex) {
+      const list = filterDefaults(moveItem(this.draggingIndex, dropIndex, this.list));
+      this.reorder.emit(list);
     }
     this.draggingIndex = undefined;
   }

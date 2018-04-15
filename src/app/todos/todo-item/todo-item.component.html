@@ -1,6 +1,5 @@
-<mst-list-item *ngIf="todo"
- [showBorderBottom]="isLast">
-  <span left>
+<div fxLayout="row" fxLayoutAlign="start center">
+  <span>
     <mst-icon-done *ngIf="todo.status === TodoStatus.InProgress"
       cursor="pointer"
       (click)="onFinish(todo.id, $event)"></mst-icon-done>
@@ -8,12 +7,11 @@
       cursor="pointer"
       (click)="onDelete(todo.id, $event)"></mst-icon-close>
   </span>
-  <span content [class.mst-first-letter]="todo.note"
+  <span [class.mst-first-letter]="todo.note"
+    [mstPadding]="'0 1rem'"
+    [mstTextAlign]="'left'"
+    [mstColor]="todo.status === TodoStatus.Done ? 'grey' : null"
     [ngStyle]="{
-      'text-align': 'left',
-      'color': todo.status === TodoStatus.Done ? 'grey' : null,
       'text-decoration': todo.status === TodoStatus.Done ? 'line-through' : 'none'
     }">{{ todo.title }}</span>
-  <ng-content right></ng-content>
-
-</mst-list-item>
+</div>
