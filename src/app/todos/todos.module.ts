@@ -6,7 +6,7 @@ import {
   InputModule,
   ListModule,
   MonsterCommonModule,
-  StructureModule,
+  StylingModule,
 } from '@app/shared';
 import { DndModule } from 'ngx-drag-drop';
 
@@ -20,7 +20,7 @@ import { TodosComponent } from './todos/todos.component';
 @NgModule({
   imports: [
     IconModule,
-    StructureModule,
+    StylingModule,
     InputModule,
     ListModule,
     DndModule,

@@ -6,13 +6,10 @@
 <mst-wrapper
   cursor="pointer"
   (click)="onShowProjects()">{{ currentProject.title }}</mst-wrapper>
-<mst-wrapper>
-  <div [style.width]="'3rem'"><mst-input [control]="hoursControl"></mst-input></div>
-  <span>Hours</span>
-</mst-wrapper>
 
-
-
+<div mstSize="60%">
+  <mst-days-hours-picker></mst-days-hours-picker>
+</div>
 
 <mst-datepicker (finish)="onFinishPickDate($event)"></mst-datepicker>
 
@@ -34,8 +31,3 @@
   [activeProject]="currentProject"
   [showAll]="false"
   (selected)="onSelectProject($event)"></mst-project-list>
-
-
-
-  <mst-days-hours-picker>
-  </mst-days-hours-picker>

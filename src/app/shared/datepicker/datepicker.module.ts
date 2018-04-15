@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { MonsterCommonModule } from '../common/common.module';
 import { IconModule } from '../icon/icon.module';
-import { StructureModule } from '../structure/structure.module';
+import { StylingModule } from '../styling/styling.module';
 import { DatepickerMonthRowComponent } from './datepicker/datepicker-month-row/datepicker-month-row.component';
 import { DatepickerMonthComponent } from './datepicker/datepicker-month/datepicker-month.component';
 import { DatepickerTitleComponent } from './datepicker/datepicker-title/datepicker-title.component';
@@ -13,7 +13,7 @@ import { DatepickerComponent } from './datepicker/datepicker.component';
 @NgModule({
   imports: [
     CommonModule,
-    StructureModule,
+    StylingModule,
     IconModule,
     MonsterCommonModule
   ],

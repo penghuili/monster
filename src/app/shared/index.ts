@@ -11,9 +11,10 @@ export * from './input/input/input.component';
 export * from './input/input-control';
 export * from './input/input.module';
 
-export * from './structure/overlay/overlay.component';
-export * from './structure/wrapper/wrapper.component';
-export * from './structure/structure.module';
+export * from './styling/overlay/overlay.component';
+export * from './styling/wrapper/wrapper.component';
+export * from './styling/padding.directive';
+export * from './styling/styling.module';
 
 export * from './list/project-list/project-list.component';
 export * from './list/tag-list/tag-list.component';

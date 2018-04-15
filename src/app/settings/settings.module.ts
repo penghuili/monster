@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { IconModule, InputModule, MonsterCommonModule, StructureModule } from '@app/shared';
+import { IconModule, InputModule, MonsterCommonModule, StylingModule } from '@app/shared';
 
 import { MergeStorageComponent } from './merge-storage/merge-storage.component';
 import { ProcessDataComponent } from './process-data/process-data.component';
@@ -14,7 +14,7 @@ import { SettingsComponent } from './settings/settings.component';
     InputModule,
     IconModule,
     MonsterCommonModule,
-    StructureModule
+    StylingModule
   ],
   declarations: [
     MergeStorageComponent,
