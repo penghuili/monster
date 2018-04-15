@@ -3,10 +3,13 @@
     [control]="titleControl"
     [hasError]="hasError"></mst-input>
 
-  <mst-project-list-picker
+  <mst-project-list
     [activeProject]="currentProject"
     [showAll]="false"
-    (selected)="onSelectProject($event)"></mst-project-list-picker>
+    (selected)="onSelectProject($event)">
+    <mst-icon name="folder_open" left></mst-icon>
+  </mst-project-list>
+
   <mst-days-hours-picker [days]="todo.days" [hours]="todo.hours" (dayChange)="onDayChange($event)" (hourChange)="onHourChange($event)"></mst-days-hours-picker>
   <mst-datepicker [defaultDate]="happenOn" (finish)="onFinishPickDate($event)"></mst-datepicker>
   

@@ -1,0 +1,5 @@
+<mst-drag-drop-list [defaultValue]="activeProject" [list]="projects"
+  (selected)="onSelect($event)" (reorder)="onReorder($event)">
+  <span left><ng-content select="[left]"></ng-content></span>
+  <span right><ng-content select="[right]"></ng-content></span>
+</mst-drag-drop-list>

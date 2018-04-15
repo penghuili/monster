@@ -2,7 +2,8 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { ColorDirective } from './color.directive';
-import { OverlayComponent } from './overlay/overlay.component';
+import { CursorDirective } from './cursor.directive';
+import { FontDirective } from './font.directive';
 import { PaddingDirective } from './padding.directive';
 import { SizeDirective } from './size.directive';
 import { TextAlignDirective } from './text-align.directive';
@@ -14,20 +15,22 @@ import { WrapperComponent } from './wrapper/wrapper.component';
   ],
   declarations: [
     WrapperComponent,
-    OverlayComponent,
     PaddingDirective,
     ColorDirective,
     SizeDirective,
-    TextAlignDirective
+    TextAlignDirective,
+    CursorDirective,
+    FontDirective
   ],
   exports: [
-    OverlayComponent,
     WrapperComponent,
 
     PaddingDirective,
     ColorDirective,
     SizeDirective,
-    TextAlignDirective
+    TextAlignDirective,
+    CursorDirective,
+    FontDirective
   ]
 })
 export class StylingModule { }

@@ -11,7 +11,6 @@ import { ALL, Unsub } from '@app/static';
 })
 export class TagCreateComponent extends Unsub implements OnInit {
   currentCategory: TagCategory = ALL;
-  showCategories = false;
 
   constructor(
     private tagService: TagService,
@@ -28,12 +27,8 @@ export class TagCreateComponent extends Unsub implements OnInit {
     );
   }
 
-  onShowCategories() {
-    this.showCategories = true;
-  }
   onSelectCategory(category: TagCategory) {
     this.currentCategory = category;
-    this.showCategories = false;
   }
   onCreate() {
     const category = this.currentCategory;

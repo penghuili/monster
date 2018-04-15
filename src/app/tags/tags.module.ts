@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { IconModule, ListModule, MonsterCommonModule, StylingModule } from '@app/shared';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { DragDropModule, IconModule, ListModule, MonsterCommonModule, StylingModule } from '@app/shared';
 
+import { TagCategoryListComponent } from './tag-category-list/tag-category-list.component';
 import { TagCreateComponent } from './tag-create/tag-create.component';
 import { TagsRoutingModule } from './tags-routing.module';
 import { TagsComponent } from './tags/tags.component';
@@ -13,8 +15,14 @@ import { TagsComponent } from './tags/tags.component';
     StylingModule,
     IconModule,
     ListModule,
-    MonsterCommonModule
+    MonsterCommonModule,
+    FlexLayoutModule,
+    DragDropModule
   ],
-  declarations: [TagsComponent, TagCreateComponent]
+  declarations: [
+    TagsComponent,
+    TagCreateComponent,
+    TagCategoryListComponent
+  ]
 })
 export class TagsModule { }

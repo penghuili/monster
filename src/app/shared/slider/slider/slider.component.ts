@@ -9,7 +9,7 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { FONT_SIZE, Unsub } from '@app/static';
+import { FONT_SIZE } from '@app/static';
 import * as Hammer from 'hammerjs';
 
 @Component({
@@ -17,7 +17,7 @@ import * as Hammer from 'hammerjs';
   templateUrl: './slider.component.html',
   styleUrls: ['./slider.component.scss']
 })
-export class SliderComponent extends Unsub implements OnChanges, OnInit {
+export class SliderComponent implements OnChanges, OnInit {
   @Input() min = 0;
   @Input() max = 100;
   @Input() defaultValue = 0;
@@ -28,10 +28,6 @@ export class SliderComponent extends Unsub implements OnChanges, OnInit {
   left: number;
   deltaX: number;
   private barWidth: number;
-
-  constructor() {
-    super();
-  }
 
   ngOnInit() {
     this.barWidth = this.bar.nativeElement.clientWidth;

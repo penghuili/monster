@@ -1,0 +1,11 @@
+<div
+  [dndDraggable]="item"
+  [dndDragImageOffsetFunction]="dragImageOffsetFunction"
+  dndEffectAllowed="move"
+  (dndStart)="start.emit(index)">
+  <div fxLayout="row" fxLayoutAlign="space-between"
+    mstPadding="0.5rem 2rem">
+    <div><ng-content></ng-content></div>
+    <mst-icon name="drag_handle" dndHandle></mst-icon>
+  </div>
+</div>

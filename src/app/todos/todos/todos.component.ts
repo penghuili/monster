@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService, TodoService } from '@app/core';
-import { dragImageOffsetFunction, filterTodos, moveItem, Project, Todo } from '@app/model';
+import { filterTodos, getDragImageOffsetFunction, moveItem, Project, Todo } from '@app/model';
 import { NotificationService } from '@app/shared';
 import { ROUTES, Unsub } from '@app/static';
 import { DndDropEvent } from 'ngx-drag-drop';
 import { combineLatest } from 'rxjs/observable/combineLatest';
-
 
 @Component({
   selector: 'mst-todos',
@@ -19,9 +18,8 @@ export class TodosComponent extends Unsub implements OnInit {
   doneRecently: Todo[];
   doneRecentlyLength: number;
   currentProject: Project;
-  showProjects: boolean;
 
-  dragImageOffsetFunction = dragImageOffsetFunction();
+  dragImageOffsetFunction = getDragImageOffsetFunction();
   private draggingIndex: number;
 
   constructor(
@@ -64,15 +62,6 @@ export class TodosComponent extends Unsub implements OnInit {
   }
   onUndo(id: string) {
     this.todoService.undo(id);
-  }
-
-  // switch projects
-  onShowProjects() {
-    this.showProjects = true;
-  }
-  onChangeProject(project: Project) {
-    this.projectService.updateCurrent(project);
-    this.showProjects = false;
   }
 
   // go to create/edit todo

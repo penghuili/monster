@@ -25,6 +25,6 @@ export const MonsterStorage = {
 export function add0(a: number): string {
   return a >= 0 && a <= 9 ? `0${a}` : a.toString();
 }
-export function dragImageOffsetFunction(): DndDragImageOffsetFunction {
+export function getDragImageOffsetFunction(): DndDragImageOffsetFunction {
   return () => ({ x: -150, y: 0 });
 }

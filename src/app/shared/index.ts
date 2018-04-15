@@ -11,15 +11,11 @@ export * from './input/input/input.component';
 export * from './input/input-control';
 export * from './input/input.module';
 
-export * from './styling/overlay/overlay.component';
 export * from './styling/wrapper/wrapper.component';
 export * from './styling/padding.directive';
 export * from './styling/styling.module';
 
-export * from './list/project-list/project-list.component';
-export * from './list/tag-list/tag-list.component';
 export * from './list/list-item/list-item.component';
-export * from './list/project-list-picker/project-list-picker.component';
 export * from './list/list.module';
 
 export * from './notification/notification.module';
@@ -34,3 +30,7 @@ export * from './slider/slider/slider.component';
 
 export * from './days-hours-picker/days-hours-picker.module';
 export * from './days-hours-picker/days-hours-picker/days-hours-picker.component';
+
+export * from './drag-drop/drag-drop.module';
+
+export * from './overlay/overlay.module';

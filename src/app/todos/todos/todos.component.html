@@ -4,11 +4,9 @@
   <mst-icon-add (click)="onGotoCreate()"></mst-icon-add>
 </mst-wrapper>
 
-<mst-wrapper *ngIf="currentProject"
-  mainAxis="center" crossAxis="center"
-  padding="1rem 0"
-  cursor="pointer"
-  (click)="onShowProjects()">{{ currentProject.title }}</mst-wrapper>
+<div fxLayout="row" fxLayoutAlign="center" [mstPadding]="'1rem 0'">
+  <mst-project-list [activeProject]="currentProject"></mst-project-list>
+</div>
 
 <div dndDropzone
   dndEffectAllowed="move"
@@ -38,9 +36,3 @@
   [isLast]="i === doneRecentlyLength - 1"
   (click)="onUndo(todo.id)"
   (delete)="onDelete($event)"></mst-todo-item>
-
-
-<mst-project-list *ngIf="showProjects"
-  [activeProject]="currentProject"
-  (selected)="onChangeProject($event)"></mst-project-list>
-  

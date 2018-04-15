@@ -1,27 +1,30 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { DndModule } from 'ngx-drag-drop';
 
-import { MonsterCommonModule } from '../common/common.module';
 import { IconModule } from '../icon/icon.module';
 import { OverlayModule } from '../overlay/overlay.module';
-import { SliderModule } from '../slider/slider.module';
 import { StylingModule } from '../styling/styling.module';
-import { DaysHoursPickerComponent } from './days-hours-picker/days-hours-picker.component';
+import { DragDropItemComponent } from './drag-drop-list/drag-drop-item/drag-drop-item.component';
+import { DragDropListComponent } from './drag-drop-list/drag-drop-list.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    SliderModule,
-    FlexLayoutModule,
     StylingModule,
+    FlexLayoutModule,
+    DndModule,
     IconModule,
-    MonsterCommonModule,
     OverlayModule
   ],
-  declarations: [DaysHoursPickerComponent],
+  declarations: [
+    DragDropListComponent,
+    DragDropItemComponent
+  ],
   exports: [
-    DaysHoursPickerComponent
+    DragDropListComponent,
+    DragDropItemComponent
   ]
 })
-export class DaysHoursPickerModule { }
+export class DragDropModule { }

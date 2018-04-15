@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import {
   DatepickerModule,
   DaysHoursPickerModule,
+  DragDropModule,
   IconModule,
   InputModule,
   ListModule,
@@ -10,6 +12,7 @@ import {
 } from '@app/shared';
 import { DndModule } from 'ngx-drag-drop';
 
+import { ProjectListComponent } from './project-list/project-list.component';
 import { TodoCreateComponent } from './todo-create/todo-create.component';
 import { TodoDetailComponent } from './todo-detail/todo-detail.component';
 import { TodoTimerComponent } from './todo-detail/todo-timer/todo-timer.component';
@@ -27,6 +30,8 @@ import { TodosComponent } from './todos/todos.component';
     MonsterCommonModule,
     DatepickerModule,
     DaysHoursPickerModule,
+    FlexLayoutModule,
+    DragDropModule,
 
     TodosRoutingModule
   ],
@@ -35,7 +40,8 @@ import { TodosComponent } from './todos/todos.component';
     TodoItemComponent,
     TodoCreateComponent,
     TodoDetailComponent,
-    TodoTimerComponent
+    TodoTimerComponent,
+    ProjectListComponent
   ]
 })
 export class TodosModule { }

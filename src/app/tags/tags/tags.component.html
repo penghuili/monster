@@ -4,11 +4,11 @@
   <mst-icon-add (click)="onGotoCreate()"></mst-icon-add>
 </mst-wrapper>
 
-<mst-wrapper *ngIf="currentCategory"
-  mainAxis="center" crossAxis="center"
-  padding="1rem 0"
-  cursor="pointer"
-  (click)="onShowCategories()">{{ currentCategory.title }}</mst-wrapper>
+<div fxLayout="row" fxLayoutAlign="center" [mstPadding]="'0 0 1rem 0'">
+  <mst-tag-category-list
+    [active]="currentCategory"
+    (selected)="onChangeCategory($event)"></mst-tag-category-list>
+</div>
 
 <mst-list-item *ngFor="let tag of tags; let i = index;"
   [showBorderBottom]="i === tagsLength - 1">
@@ -20,8 +20,4 @@
      {{ tag.createdAt | date:'short' }}
    </span>
  </mst-list-item>
-
-
- <mst-tag-list *ngIf="showCategories"
-  [active]="currentCategory"
-  (selected)="onChangeCategory($event)"></mst-tag-list>
+ 

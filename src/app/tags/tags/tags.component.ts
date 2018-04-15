@@ -14,7 +14,6 @@ export class TagsComponent extends Unsub implements OnInit {
   tags: Tag[];
   tagsLength: number;
   currentCategory: TagCategory;
-  showCategories: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -42,12 +41,8 @@ export class TagsComponent extends Unsub implements OnInit {
   onGotoCreate() {
     this.router.navigate([ ROUTES.CREATE ], { relativeTo: this.route });
   }
-  onShowCategories() {
-    this.showCategories = true;
-  }
   onChangeCategory(category: TagCategory) {
     this.tagService.updateCurrentCategory(category);
-    this.showCategories = false;
   }
 
 }
