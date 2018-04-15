@@ -8,7 +8,7 @@
       cursor="pointer"
       (click)="onDelete(todo.id, $event)"></mst-icon-close>
   </span>
-  <span content 
+  <span content [class.mst-first-letter]="todo.note"
     [ngStyle]="{
       'text-align': 'left',
       'color': todo.status === TodoStatus.Done ? 'grey' : null,
