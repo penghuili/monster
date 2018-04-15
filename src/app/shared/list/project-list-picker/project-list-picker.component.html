@@ -1,0 +1,10 @@
+<div fxLayout="row" fxLayoutAlign="start center">
+  <mst-icon name="folder_open" (click)="onOpenList()"></mst-icon>
+  <span *ngIf="project">{{ project.title }}</span>
+</div>
+
+
+<mst-project-list *ngIf="showList"
+  [activeProject]="activeProject"
+  [showAll]="showAll"
+  (selected)="onSelect($event)"></mst-project-list>

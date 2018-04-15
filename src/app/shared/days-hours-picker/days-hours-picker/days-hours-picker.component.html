@@ -5,15 +5,17 @@
 </div>
 
 <mst-overlay *ngIf="showSlider">
-  <div fxLayout="row" mstPadding="0 0 2rem 0">
-    <div mstSize="6rem" [mstColor]="!isDaysActive ? 'accent' : null" (click)="onClickHours()">
-      hours: {{ hours }}
+  <div mstPadding="0 1.5rem">
+    <div fxLayout="row" mstPadding="0 0 2rem 0">
+      <div mstSize="6rem" [mstColor]="!isDaysActive ? 'accent' : null" (click)="onClickHours()">
+        hours: {{ hours }}
+      </div>
+      <div mstSize="6rem" [mstColor]="isDaysActive ? 'accent' : null" (click)="onClickDays()">
+        days: {{ days }}
+      </div>
     </div>
-    <div mstSize="6rem" [mstColor]="isDaysActive ? 'accent' : null" (click)="onClickDays()">
-      days: {{ days }}
-    </div>
+    <mst-slider [min]="min" [max]="max" [defaultValue]="defaultValue" (valueChange)="onValueChange($event)"></mst-slider>
+  
+    <mst-cancel-confirm (cancel)="onCancel()" (confirm)="onConfirm()"></mst-cancel-confirm>
   </div>
-  <mst-slider [min]="min" [max]="max" [defaultValue]="defaultValue" (valueChange)="onValueChange($event)"></mst-slider>
-
-  <mst-cancel-confirm (cancel)="onCancel()" (confirm)="onConfirm()"></mst-cancel-confirm>
 </mst-overlay>

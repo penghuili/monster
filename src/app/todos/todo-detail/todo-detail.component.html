@@ -3,16 +3,12 @@
     [control]="titleControl"
     [hasError]="hasError"></mst-input>
 
-  <mst-wrapper
-    cursor="pointer"
-    (click)="onShowProjects()">{{ currentProject.title }}</mst-wrapper>
-  <mst-wrapper>
-    <div [style.width]="'3rem'"><mst-input [control]="hoursControl"></mst-input></div>
-    <span>Hours</span>
-  </mst-wrapper>
-  <mst-datepicker
-    [defaultDate]="happenOn"
-    (finish)="onFinishPickDate($event)"></mst-datepicker>
+  <mst-project-list-picker
+    [activeProject]="currentProject"
+    [showAll]="false"
+    (selected)="onSelectProject($event)"></mst-project-list-picker>
+  <mst-days-hours-picker [days]="todo.days" [hours]="todo.hours" (dayChange)="onDayChange($event)" (hourChange)="onHourChange($event)"></mst-days-hours-picker>
+  <mst-datepicker [defaultDate]="happenOn" (finish)="onFinishPickDate($event)"></mst-datepicker>
   
   <mst-wrapper
     display="block"
@@ -30,12 +26,6 @@
 
   <!-- <mst-todo-timer [todo]="todo"></mst-todo-timer> -->
 </ng-container>
-  
-<mst-project-list *ngIf="showProjects"
-  [activeProject]="currentProject"
-  [showAll]="false"
-  (selected)="onSelectProject($event)"></mst-project-list>
 
-
-<mst-icon name="timer"></mst-icon>
-<mst-icon name="play_arrow"></mst-icon>
+<!-- <mst-icon name="timer"></mst-icon>
+<mst-icon name="play_arrow"></mst-icon> -->

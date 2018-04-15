@@ -11,27 +11,27 @@
       (enter)="onCreate()"></mst-input>
   </mst-wrapper>
 
-    <div dndDropzone
-      dndEffectAllowed="move"
-      (dndDrop)="onDrop($event)">
-      <div dndPlaceholderRef></div>
+  <div dndDropzone
+    dndEffectAllowed="move"
+    (dndDrop)="onDrop($event)">
+    <div dndPlaceholderRef></div>
 
-      <div *ngFor="let p of projects; let i = index;"
-        [dndDraggable]="p"
-        [dndDragImageOffsetFunction]="dragImageOffsetFunction"
-        dndEffectAllowed="move"
-        (dndStart)="onDragStart(i)">
-        <mst-wrapper
-          [mainAxis]="'between'"
-          padding="0.5rem 2rem"
-          [color]="activeProject && activeProject.id === p.id ? 'accent' : null"
-          cursor="pointer"
-          [styles]="{ 'font-size': '1.25rem' }"
-          (click)="onSelect(p)">
-          <span>{{ p.title }}</span>
-          <mst-icon name="drag_handle" dndHandle></mst-icon>
-        </mst-wrapper>
-      </div>
+    <div *ngFor="let p of projects; let i = index;"
+      [dndDraggable]="p"
+      [dndDragImageOffsetFunction]="dragImageOffsetFunction"
+      dndEffectAllowed="move"
+      (dndStart)="onDragStart(i)">
+      <mst-wrapper
+        [mainAxis]="'between'"
+        padding="0.5rem 2rem"
+        [color]="activeProject && activeProject.id === p.id ? 'accent' : null"
+        cursor="pointer"
+        [styles]="{ 'font-size': '1.25rem' }"
+        (click)="onSelect(p)">
+        <span>{{ p.title }}</span>
+        <mst-icon name="drag_handle" dndHandle></mst-icon>
+      </mst-wrapper>
     </div>
+  </div>
 
 </mst-overlay>

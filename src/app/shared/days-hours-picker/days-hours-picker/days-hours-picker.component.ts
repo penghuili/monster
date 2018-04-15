@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'mst-days-hours-picker',
@@ -6,10 +6,10 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./days-hours-picker.component.scss']
 })
 export class DaysHoursPickerComponent {
+  @Input() days = 0;
+  @Input() hours = 0;
   @Output() dayChange = new EventEmitter<number>();
   @Output() hourChange = new EventEmitter<number>();
-  days = 0;
-  hours = 0;
   isDaysActive = false;
 
   // hours: [0, 6], days: [0, 14]

@@ -16,12 +16,12 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   todo: Todo;
   titleControl = new InputControl('');
   noteControl = new InputControl('');
-  hoursControl = new InputControl('');
+  days: number;
+  hours: number;
   happenOn: number;
   hasError = false;
 
   currentProject: Project;
-  showProjects = false;
 
   constructor(
     private projectService: ProjectService,
@@ -38,18 +38,21 @@ export class TodoDetailComponent extends Unsub implements OnInit {
         this.currentProject = this.projectService.getById(this.todo.projectId);
         this.titleControl.setValue(this.todo.title);
         this.noteControl.setValue(this.todo.note);
-        this.hoursControl.setValue(this.todo.hours ? this.todo.hours.toString() : '');
+        this.days = todo.days;
+        this.hours = todo.hours;
         this.happenOn = todo.happenOn;
       })
     );
   }
 
-  onShowProjects() {
-    this.showProjects = true;
+  onDayChange(days: number) {
+    this.days = days;
+  }
+  onHourChange(hours: number) {
+    this.hours = hours;
   }
   onSelectProject(project: Project) {
     this.currentProject = project;
-    this.showProjects = false;
   }
   onFinishPickDate(date: number) {
     this.happenOn = date;
@@ -60,13 +63,14 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   onUpdate() {
     const title = this.titleControl.getValue();
     const note = this.noteControl.getValue();
-    const hours = +this.hoursControl.getValue();
+    const days = this.days;
+    const hours = this.hours;
     const project = this.currentProject;
     const happenOn = this.happenOn;
     if (title) {
       this.hasError = false;
       const todo = merge(this.todo, {
-        title, note, hours, happenOn,
+        title, note, days, hours, happenOn,
         projectId: project.id,
         updatedAt: now()
       });

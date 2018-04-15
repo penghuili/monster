@@ -3,13 +3,12 @@
   [hasError]="hasError"
   [autoFocus]="true"></mst-input>
 
-<mst-wrapper
-  cursor="pointer"
-  (click)="onShowProjects()">{{ currentProject.title }}</mst-wrapper>
+<mst-project-list-picker
+  [activeProject]="currentProject"
+  [showAll]="false"
+  (selected)="onSelectProject($event)"></mst-project-list-picker>
 
-<div mstSize="60%">
-  <mst-days-hours-picker></mst-days-hours-picker>
-</div>
+<mst-days-hours-picker (dayChange)="onDayChange($event)" (hourChange)="onHourChange($event)"></mst-days-hours-picker>
 
 <mst-datepicker (finish)="onFinishPickDate($event)"></mst-datepicker>
 
@@ -25,9 +24,4 @@
 <mst-cancel-confirm
   (confirm)="onCreate()"
   (cancel)="onCancel()"></mst-cancel-confirm>
-
-
-<mst-project-list *ngIf="showProjects"
-  [activeProject]="currentProject"
-  [showAll]="false"
-  (selected)="onSelectProject($event)"></mst-project-list>
+  

@@ -7,6 +7,7 @@ export interface Todo extends Item {
   projectId?: string;
   note?: string;
   happenOn?: number;
+  days?: number;
   hours?: number;
   status?: TodoStatus;
   finishAt?: number;

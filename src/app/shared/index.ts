@@ -19,6 +19,7 @@ export * from './styling/styling.module';
 export * from './list/project-list/project-list.component';
 export * from './list/tag-list/tag-list.component';
 export * from './list/list-item/list-item.component';
+export * from './list/project-list-picker/project-list-picker.component';
 export * from './list/list.module';
 
 export * from './notification/notification.module';
