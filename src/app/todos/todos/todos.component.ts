@@ -17,6 +17,11 @@ export class TodosComponent extends Unsub implements OnInit {
 
   dragIndex: number;
 
+  TODAY = 'today';
+  IN3DAYS = '3days';
+  IN7DAYS = '7days';
+  activeTab = this.TODAY;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -38,6 +43,9 @@ export class TodosComponent extends Unsub implements OnInit {
     );
   }
 
+  onChangeTab(tab: string) {
+    this.activeTab = tab;
+  }
   onFinish(id: string) {
     this.todoService.finish(id);
   }
