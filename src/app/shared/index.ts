@@ -34,3 +34,5 @@ export * from './days-hours-picker/days-hours-picker/days-hours-picker.component
 export * from './drag-drop/drag-drop.module';
 
 export * from './overlay/overlay.module';
+
+export * from './button/button.module';

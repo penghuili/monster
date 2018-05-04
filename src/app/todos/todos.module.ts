@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {
+  ButtonModule,
   DatepickerModule,
   DaysHoursPickerModule,
   DragDropModule,
@@ -22,6 +23,7 @@ import { TodosComponent } from './todos/todos.component';
 
 @NgModule({
   imports: [
+    ButtonModule,
     IconModule,
     StylingModule,
     InputModule,

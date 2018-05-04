@@ -1,0 +1,13 @@
+<button class="gm-button gm-u-no-bigger-than-md gm-action-button-plus"
+  [class.gm-action-button-plus--show]="showPlus"
+  [class.gm-action-button-plus--rotate]="showContent"
+  (click)="onClick()">
+    +
+</button>
+
+<div class="gm-action-button-overlay gm-u-no-bigger-than-md" 
+  [class.gm-action-button-overlay--show]="showContent" (click)="onHideContent()">
+    <div class="gm-action-buttons-wrapper" [class.gm-action-buttons-wrapper--show]="showContent">
+      <ng-content></ng-content>
+    </div>
+</div>

@@ -1,0 +1,62 @@
+@import '../../../static/variables';
+
+$order-button-width: 19rem;
+
+.gm-action-button-plus {
+  position: fixed;
+  right: 3rem;
+  bottom: 2rem;
+  z-index: 11;
+
+  width: 3rem;
+  min-width: 3rem;
+  height: 3rem;
+  line-height: 3rem;
+  text-align: center;
+  
+  transition: transform .1s ease-in-out;
+  transform: scale(0);
+
+  color: $white;
+  background-color: $primary;
+  border: 0;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  font-weight: 300;
+  box-shadow: 0 0 4px rgba(0,0,0,.14), 0 4px 8px rgba(0,0,0,.28);
+  user-select: none;
+  cursor: default;
+}
+.gm-action-button-plus--show {
+  transform: scale(1);
+}
+.gm-action-button-plus--rotate {
+  transform: rotate(-45deg);
+}
+
+.gm-action-button-overlay {
+  position: fixed;
+  height: 100vh;
+  width: $order-button-width + 1rem;
+  right: -($order-button-width + 3rem);
+  bottom: 0;
+  transition: all 130ms ease-in;
+}
+.gm-action-button-overlay--show {
+  width: 100vw;
+  right: 0;
+}
+.gm-action-buttons-wrapper {
+  position: absolute;
+  bottom: 5rem;
+  right: 2rem;
+  display: flex;
+  flex-direction: column;
+
+  transform: skewX(-45deg);
+  transform-origin: right bottom;
+  transition: all 300ms ease-in-out;
+}
+.gm-action-buttons-wrapper--show {
+  transform: skewX(0);
+}

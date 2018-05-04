@@ -1,9 +1,3 @@
-<mst-wrapper
-  mainAxis="center" crossAxis="center"
-  padding="0 0 1rem">
-  <mst-icon-add (click)="onGotoCreate()"></mst-icon-add>
-</mst-wrapper>
-
 <div fxLayout="row" fxLayoutAlign="center" [mstPadding]="'1rem 0'">
   <mst-project-list [activeProject]="currentProject"></mst-project-list>
 </div>
@@ -21,3 +15,5 @@
     </mst-todo-item>
   </mst-drag-item>
 </mst-drop-zone>
+
+<mst-action-button [showPlus]="true" (clicked)="onGotoCreate()"></mst-action-button>
