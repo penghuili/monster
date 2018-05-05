@@ -1,22 +1,52 @@
+import { Todo } from '@app/model';
+
 import { Item } from './item';
 import { now } from './time';
 
-export interface Project extends Item {
+interface ProjectBase extends Item {
+  startDate: number;
+  endDate: number;
+  result: string;
+  status: ProjectStatus;
   note?: string;
-  status?: ProjectStatus;
   finishAt?: number;
+}
+export interface Project extends ProjectBase {
+  subprojects: Subproject[];
+}
+export interface Subproject extends ProjectBase {
+  todos: Todo[];
 }
 
 export enum ProjectStatus {
   InProgress,
-  Archive
+  Done
 }
 
-export function createProject(data: Project): Project {
+export function createProject(data: any): Project {
   const timestamp = now();
   return {
     id: `p${timestamp}`,
     title: data.title,
+    startDate: data.startDate,
+    endDate: data.endDate,
+    result: data.result,
+    subprojects: data.subprojects,
+    note: data.note,
+    status: ProjectStatus.InProgress,
+    createdAt: timestamp,
+    updatedAt: timestamp
+  };
+}
+export function createSubproject(data: any): Subproject {
+  const timestamp = now();
+  return {
+    id: `sp${timestamp}`,
+    title: data.title,
+    startDate: data.startDate,
+    endDate: data.endDate,
+    result: data.result,
+    todos: data.todos,
     note: data.note,
     status: ProjectStatus.InProgress,
     createdAt: timestamp,
