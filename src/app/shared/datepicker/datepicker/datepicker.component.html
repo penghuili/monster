@@ -8,6 +8,7 @@
 
     <mst-datepicker-month *ngIf="!isShowYear"
       [activeDate]="innerDate"
+      [startDate]="startDate"
       (selectDate)="onSelectDate($event)"></mst-datepicker-month>
 
     <mst-datepicker-year-list *ngIf="isShowYear"

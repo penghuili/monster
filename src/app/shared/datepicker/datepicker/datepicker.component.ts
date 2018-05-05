@@ -12,6 +12,7 @@ export class DatepickerComponent {
     this.date = value;
     this.innerDate = value;
   }
+  @Input() startDate = now();
   @Output() finish = new EventEmitter<number>();
   date = now();
   isShowDatepicker = false;

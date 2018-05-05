@@ -1,39 +1,52 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { now } from '@app/model';
 import { addMonths, format, getDaysInMonth, setDate, startOfMonth } from 'date-fns';
 
 @Component({
   selector: 'mst-datepicker-month',
   templateUrl: './datepicker-month.component.html',
-  styleUrls: ['./datepicker-month.component.scss']
+  styleUrls: ['./datepicker-month.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DatepickerMonthComponent {
+export class DatepickerMonthComponent implements OnChanges {
   @Input() set activeDate(value: number) {
     this.originalDate = value;
-    if (this.selectedDate !== this.originalDate) {
-      this.selectedDate = value !== undefined ? value : now();
-      this.createRows(this.selectedDate);
-    }
+    this.selectedDate = value !== undefined ? value : now();
   }
+  @Input() startDate: number;
   @Output() selectDate = new EventEmitter<number>();
-  weeks = [ 'M', 'T', 'W', 'T', 'F', 'S', 'S' ];
+  weeks: DayItem[] = [
+    { value: 'M', selected: false, valid: true},
+    { value: 'T', selected: false, valid: true},
+    { value: 'W', selected: false, valid: true},
+    { value: 'T', selected: false, valid: true},
+    { value: 'F', selected: false, valid: true},
+    { value: 'S', selected: false, valid: true},
+    { value: 'S', selected: false, valid: true},
+  ];
   row1: DayItem[];
   row2: DayItem[];
   row3: DayItem[];
   row4: DayItem[];
   row5: DayItem[];
   row6: DayItem[];
-  activeDay: number;
 
   selectedDate: number;
   private originalDate: number;
 
+  ngOnChanges() {
+    if (this.startDate && this.selectedDate) {
+      this.createRows();
+    }
+  }
+
   nextMonth() {
     this.selectedDate = addMonths(this.selectedDate, 1).getTime();
-    this.createRows(this.selectedDate);
+    this.createRows();
   }
   prevMonth() {
     this.selectedDate = addMonths(this.selectedDate, -1).getTime();
+    this.createRows();
   }
   onSelectDate(day: number) {
     this.selectDate.emit(setDate(this.selectedDate, day).getTime());
@@ -47,39 +60,50 @@ export class DatepickerMonthComponent {
     const selected = format(this.selectedDate, 'YYYYMM') + day;
     return original === selected;
   }
-  private createRows(date: number) {
+  private isValid(day: number): boolean {
+    if (!day || this.selectedDate === undefined || !this.startDate) {
+      return true;
+    }
+    const thisDate = format(setDate(this.selectedDate, day), 'YYYYMMDD');
+    const startDate = format(this.startDate, 'YYYYMMDD');
+    return thisDate >= startDate;
+  }
+  private createRows() {
     this.row1 = [];
     this.row2 = [];
     this.row3 = [];
     this.row4 = [];
     this.row5 = [];
     this.row6 = [];
-    this.activeDay = undefined;
 
-    const totalDays = getDaysInMonth(date);
-    const weekDayOfFirstDay = startOfMonth(date).getDay() || 7;
+    const totalDays = getDaysInMonth(this.selectedDate);
+    const weekDayOfFirstDay = startOfMonth(this.selectedDate).getDay() || 7;
     Array(42).fill(1).forEach((a, i) => {
       const j = i + 1;
       const value = j < weekDayOfFirstDay || j > (weekDayOfFirstDay + totalDays - 1) ? '' : j - weekDayOfFirstDay + 1;
-      if (this.isSelected(+value)) {
-        this.activeDay = +value;
-      }
+      const valid = this.isValid(+value);
+      const selected = valid && this.isSelected(+value);
+      const data = { value, selected, valid };
       if (j <= 7) {
-        this.row1.push(value);
+        this.row1.push(data);
       } else if (j <= 14) {
-        this.row2.push(value);
+        this.row2.push(data);
       } else if (j <= 21) {
-        this.row3.push(value);
+        this.row3.push(data);
       } else if (j <= 28) {
-        this.row4.push(value);
+        this.row4.push(data);
       } else if (j <= 35) {
-        this.row5.push(value);
+        this.row5.push(data);
       } else {
-        this.row6.push(value);
+        this.row6.push(data);
       }
     });
   }
 
 }
 
-type DayItem = number | string;
+export interface DayItem {
+  value: string | number;
+  selected: boolean;
+  valid: boolean;
+}

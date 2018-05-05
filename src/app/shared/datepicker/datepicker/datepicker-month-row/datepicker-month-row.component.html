@@ -1,7 +1,8 @@
 <div class="mst-datepicker-row">
   <div class="mst-datepicker-day" *ngFor="let d of days"
-    [class.active]="isActive(d)"
+    [class.active]="d.selected"
+    [class.invalid]="!d.valid"
     (click)="onClick(d)">
-    {{ d }}
+    {{ d.value }}
   </div>
 </div>

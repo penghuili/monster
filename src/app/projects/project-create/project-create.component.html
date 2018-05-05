@@ -1,3 +1,15 @@
-<p>
-  project-create works!
-</p>
+<mst-input
+  [control]="titleControl"
+  [hasError]="hasError"
+  [autoFocus]="true"></mst-input>
+
+<div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'1rem 3rem'">
+  <mst-datepicker [defaultDate]="startDate" (finish)="onPickStartDate($event)"></mst-datepicker>
+  <mst-datepicker [defaultDate]="endDate" [startDate]="endDateStartDate" (finish)="onPickEndDate($event)"></mst-datepicker>
+</div>
+
+<div [mstPadding]="'0.5rem'" class="class-project-create-textarea">
+  <mst-input
+    [control]="resultControl"
+    minHeight="3rem"></mst-input>
+</div>
