@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TodoService } from '@app/core';
-import { moveItem, now, Todo } from '@app/model';
+import { MonsterStorage, now, Todo } from '@app/model';
 import { ROUTES, Unsub } from '@app/static';
 import { addDays, endOfDay } from 'date-fns';
 
@@ -18,7 +18,7 @@ export class TodosComponent extends Unsub implements OnInit {
   TODAY = 'today';
   IN3DAYS = '3days';
   IN7DAYS = '7days';
-  activeTab = this.TODAY;
+  activeTab: string;
 
   private todos: Todo[];
 
@@ -30,6 +30,7 @@ export class TodosComponent extends Unsub implements OnInit {
   }
 
   ngOnInit() {
+    this.activeTab = MonsterStorage.get('activeTab') || this.TODAY;
     this.addSubscription(
       this.todoService.getTodos().subscribe(todos => {
         this.todos = todos;
@@ -39,6 +40,7 @@ export class TodosComponent extends Unsub implements OnInit {
   }
 
   onChangeTab(tab: string) {
+    MonsterStorage.set('activeTab', tab);
     this.activeTab = tab;
     this.activeTodos = this.getActiveTodos(this.todos, this.activeTab);
   }
