@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { createTodo, MonsterStorage, now, Todo, TodoStatus } from '@app/model';
+import { differenceInDays } from 'date-fns';
 import { findIndex, merge, prepend } from 'ramda';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
@@ -21,11 +22,13 @@ export class TodoService {
     this.doneRecently$.next(doneReacently);
   }
 
-  getTodos(): Observable<Todo[]> {
-    return this.todos$.asObservable();
+  get7Days(): Observable<Todo[]> {
+    return this.todos$.asObservable().pipe(
+      map(todos => todos.filter(a => differenceInDays(a.happenDate, now()) <= 7))
+    );
   }
   getById(id: string): Observable<Todo> {
-    return this.getTodos().pipe(
+    return this.get7Days().pipe(
       map(todos => todos.find(a => a.id === id))
     );
   }

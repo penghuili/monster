@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TodoService } from '@app/core';
 import { MonsterStorage, now, Todo, TodoStatus } from '@app/model';
-import { ROUTES, Unsub } from '@app/static';
+import { INBOX, ROUTES, Unsub } from '@app/static';
 import { addDays, endOfDay } from 'date-fns';
 
 @Component({
@@ -19,6 +19,7 @@ export class TodosComponent extends Unsub implements OnInit {
   TODAY = 'today';
   IN3DAYS = '3days';
   IN7DAYS = '7days';
+  INBOX = 'inbox';
   activeTab: string;
 
   private todos: Todo[];
@@ -33,7 +34,7 @@ export class TodosComponent extends Unsub implements OnInit {
   ngOnInit() {
     this.activeTab = MonsterStorage.get('activeTab') || this.TODAY;
     this.addSubscription(
-      this.todoService.getTodos().subscribe(todos => {
+      this.todoService.get7Days().subscribe(todos => {
         this.todos = todos.sort((a, b) => b.position > a.position ? 1 : -1);
         this.updateActiveTodos(this.todos, this.activeTab);
       })
@@ -66,21 +67,17 @@ export class TodosComponent extends Unsub implements OnInit {
     const endOfToday = endOfDay(now()).getTime();
     const endof3Days = endOfDay(addDays(now(), 3)).getTime();
     const endOf7Days = endOfDay(addDays(now(), 7)).getTime();
+    let filtered: Todo[];
     if (activeTab === this.TODAY) {
-      const ts = todos.filter(a => a.happenDate - endOfToday <= 0);
-      this.activeTodos = ts.filter(a => a.status === TodoStatus.InProgress);
-      this.activeDoneTodos = ts.filter(a => a.status === TodoStatus.Done);
+      filtered = todos.filter(a => a.projectId !== INBOX.id && a.happenDate - endOfToday <= 0);
     } else if (activeTab === this.IN3DAYS) {
-      const ts = todos.filter(a => a.happenDate > endOfToday && a.happenDate <= endof3Days);
-      this.activeTodos = ts.filter(a => a.status === TodoStatus.InProgress);
-      this.activeDoneTodos = ts.filter(a => a.status === TodoStatus.Done);
+      filtered = todos.filter(a => a.projectId !== INBOX.id && a.happenDate > endOfToday && a.happenDate <= endof3Days);
     } else if (activeTab === this.IN7DAYS) {
-      const ts = todos.filter(a => a.happenDate > endof3Days && a.happenDate <= endOf7Days);
-      this.activeTodos = ts.filter(a => a.status === TodoStatus.InProgress);
-      this.activeDoneTodos = ts.filter(a => a.status === TodoStatus.Done);
+      filtered = todos.filter(a => a.projectId !== INBOX.id && a.happenDate > endof3Days && a.happenDate <= endOf7Days);
     } else {
-      this.activeTodos = [];
-      this.activeDoneTodos = [];
+      filtered = todos.filter(a => a.projectId === INBOX.id);
     }
+    this.activeTodos = filtered.filter(a => a.status === TodoStatus.InProgress);
+    this.activeDoneTodos = filtered.filter(a => a.status === TodoStatus.Done);
   }
 }

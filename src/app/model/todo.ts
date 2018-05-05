@@ -1,4 +1,4 @@
-import { ALL, INBOX } from '../static/config';
+import { INBOX } from '../static/config';
 import { Item } from './item';
 import { Project } from './project';
 import { now } from './time';
@@ -40,11 +40,4 @@ export function createTodo(data: any): Todo {
     createdAt: timestamp,
     updatedAt: timestamp
   };
-}
-export function filterTodos(todos: Todo[], project?: Project): Todo[] {
-  if (!todos || !project || project.id === ALL.id) {
-    return todos;
-  } else {
-    return todos.filter(a => a.projectId === project.id);
-  }
 }
