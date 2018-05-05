@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { append, concat } from 'ramda';
+import { append, find, prepend } from 'ramda';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { filter } from 'rxjs/operators';
 
-import { createProject, Project } from '../../model/project';
+import { createProject, Project, ProjectStatus } from '../../model/project';
 import { MonsterStorage } from '../../model/utils';
-import { ALL, INBOX } from '../../static/config';
+import { INBOX } from '../../static/config';
 
 @Injectable()
 export class ProjectService {
@@ -14,9 +14,16 @@ export class ProjectService {
   private currentProjects$ = new BehaviorSubject<Project>(null);
 
   constructor() {
+    /**
+     * @todo delete this
+     */
+    this.addDefaults();
     const projects = MonsterStorage.get('projects');
-    this.projects$.next(this.addDefaults(projects));
+    this.projects$.next(projects);
 
+    /**
+     * @todo maybe not need this
+     */
     const current = MonsterStorage.get('current-project') || INBOX;
     this.currentProjects$.next(current);
   }
@@ -36,19 +43,31 @@ export class ProjectService {
     MonsterStorage.set('current-project', project);
     this.currentProjects$.next(project);
   }
-  updateProjects(projectsWithoutDefaults: Project[]) {
-    const projectsWithInbox = this.addDefaults(projectsWithoutDefaults);
-    MonsterStorage.set('projects', projectsWithoutDefaults);
-    this.projects$.next(projectsWithInbox);
+  updateProjects(projects: Project[]) {
+    MonsterStorage.set('projects', projects);
+    this.projects$.next(projects);
   }
-  create(data: Project) {
+  create(data: any) {
     const p = createProject(data);
     const projects = append(p, MonsterStorage.get('projects'));
     this.updateProjects(projects);
   }
 
-  private addDefaults(projects: Project[]): Project[] {
-    const defaultP = [INBOX, ALL];
-    return projects ? concat(defaultP, projects) : defaultP;
+  private addDefaults() {
+    const projects: Project[] = MonsterStorage.get('projects');
+    const inbox: Project = {
+      id: INBOX.id,
+      title: 'inbox',
+      startDate: 0,
+      endDate: 0,
+      subprojects: [],
+      result: '',
+      status: ProjectStatus.InProgress
+    };
+    const p = find(a => a.id === inbox.id, projects);
+    if (!p) {
+      const ps = prepend(p, projects);
+      this.updateProjects(ps);
+    }
   }
 }

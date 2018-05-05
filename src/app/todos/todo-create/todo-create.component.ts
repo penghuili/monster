@@ -17,7 +17,7 @@ export class TodoCreateComponent extends Unsub implements OnInit {
   expectedTime = 0;
   hasError = false;
 
-  currentProject: Project = <Project>INBOX;
+  currentProject: Project = <any>INBOX;
   INBOX = INBOX;
 
   constructor(
