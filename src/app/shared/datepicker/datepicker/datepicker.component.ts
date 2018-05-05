@@ -26,6 +26,9 @@ export class DatepickerComponent {
   onOpenYear() {
     this.isShowYear = true;
   }
+  onGotoToday() {
+    this.innerDate = now();
+  }
   onSelectYear(y: number) {
     this.isShowYear = false;
     this.innerDate = setYear(this.innerDate, y).getTime();

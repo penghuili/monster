@@ -4,7 +4,7 @@
 
 <mst-overlay *ngIf="isShowDatepicker">
   <div class="mst-datepicker-wrapper">
-    <mst-datepicker-title [date]="innerDate" (openYear)="onOpenYear()"></mst-datepicker-title>
+    <mst-datepicker-title [date]="innerDate" (openYear)="onOpenYear()" (today)="onGotoToday()"></mst-datepicker-title>
 
     <mst-datepicker-month *ngIf="!isShowYear"
       [activeDate]="innerDate"

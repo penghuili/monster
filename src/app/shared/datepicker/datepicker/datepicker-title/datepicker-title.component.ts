@@ -8,4 +8,5 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class DatepickerTitleComponent {
   @Input() date: number;
   @Output() openYear = new EventEmitter<boolean>();
+  @Output() today = new EventEmitter<boolean>();
 }

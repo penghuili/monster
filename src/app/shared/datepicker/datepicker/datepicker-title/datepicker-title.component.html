@@ -1,2 +1,7 @@
-<div mstNoSelect (click)="openYear.emit(true)">{{ date | date:'yyyy' }}</div>
-<div mstNoSelect>{{ date | date:'E, MMM d' }}</div>
+<div fxLayout="row" fxLayoutAlign="space-between">
+  <div>
+    <div mstNoSelect (click)="openYear.emit(true)">{{ date | date:'yyyy' }}</div>
+    <div mstNoSelect>{{ date | date:'E, MMM d' }}</div>
+  </div>
+  <a [style.text-decoration]="'underline'" mstNoSelect (click)="today.emit(true)">Today</a>
+</div>
