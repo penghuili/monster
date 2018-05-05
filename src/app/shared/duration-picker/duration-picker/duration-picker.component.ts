@@ -56,14 +56,13 @@ export class DurationPickerComponent {
   onValueChange(value: number) {
     if (this.isHoursActive) {
       this.hours = Math.round(value);
-      this.change.emit(this.getDuration(this.hours, this.minutes));
     } else {
       this.minutes = Math.round(value / 10) * 10;
-      this.change.emit(this.getDuration(this.hours, this.minutes));
     }
   }
   onConfirm() {
     this.showSlider = false;
+    this.change.emit(this.getDuration(this.hours, this.minutes));
   }
   onCancel() {
     this.showSlider = false;

@@ -1,6 +1,5 @@
-<div fxLayout="row" fxLayoutAlign="start center" mstNoSelect>
-  <mst-icon name="hourglass_empty" (click)="onShowSlider()"></mst-icon>
-  <span>{{ hours | mstAdd0 }}:{{ minutes | mstAdd0 }}</span>
+<div fxLayout="row" fxLayoutAlign="start center" mstNoSelect (click)="onShowSlider()">
+  {{ hours | mstAdd0 }}:{{ minutes | mstAdd0 }}
 </div>
 
 <mst-overlay *ngIf="showSlider">

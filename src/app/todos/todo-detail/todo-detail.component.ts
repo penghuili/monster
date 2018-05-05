@@ -5,7 +5,7 @@ import { now, Project, Todo } from '@app/model';
 import { InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
 import { merge } from 'ramda';
-
+import { debounceTime, first } from 'rxjs/operators';
 
 @Component({
   selector: 'mst-todo-detail',
@@ -16,10 +16,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   todo: Todo;
   titleControl = new InputControl('');
   noteControl = new InputControl('');
-  expectedTime: number;
-  happenDate: number;
   hasError = false;
-
   currentProject: Project;
 
   constructor(
@@ -32,44 +29,58 @@ export class TodoDetailComponent extends Unsub implements OnInit {
 
   ngOnInit() {
     this.addSubscription(
-      this.todoService.getById(this.route.snapshot.paramMap.get('id')).subscribe(todo => {
+      this.todoService.getById(this.route.snapshot.paramMap.get('id')).pipe(
+        first()
+      ).subscribe(todo => {
         this.todo = todo;
         this.currentProject = this.projectService.getById(this.todo.projectId);
         this.titleControl.setValue(this.todo.title);
         this.noteControl.setValue(this.todo.note);
-        this.expectedTime = todo.expectedTime;
-        this.happenDate = todo.happenDate;
+      })
+    );
+
+    this.addSubscription(
+      this.titleControl.value$.pipe(
+        debounceTime(300)
+      ).subscribe(title => {
+        this.update({ title });
+      })
+    );
+
+    this.addSubscription(
+      this.noteControl.value$.pipe(
+        debounceTime(300)
+      ).subscribe(note => {
+        this.update({ note });
       })
     );
   }
 
   onDurationChange(duration: number) {
-    this.expectedTime = duration;
+    this.update({ expectedTime: duration });
   }
   onSelectProject(project: Project) {
-    this.currentProject = project;
+    this.update({ projectId: project.id });
   }
   onFinishPickDate(date: number) {
-    this.happenDate = date;
+    this.update({ happenDate: date });
   }
   onCancel() {
     this.router.navigate([ '../' ], { relativeTo: this.route });
   }
   onUpdate() {
+    this.router.navigate([ '../' ], { relativeTo: this.route });
+  }
+
+  private update(data: any) {
     const title = this.titleControl.getValue();
-    const note = this.noteControl.getValue();
-    const expectedTime = this.expectedTime;
-    const project = this.currentProject;
-    const happenDate = this.happenDate;
     if (title) {
       this.hasError = false;
       const todo = merge(this.todo, {
-        title, note, expectedTime, happenDate,
-        projectId: project.id,
+        ...data,
         updatedAt: now()
       });
       this.todoService.update(todo);
-      this.router.navigate([ '../' ], { relativeTo: this.route });
     } else {
       this.hasError = true;
     }

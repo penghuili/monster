@@ -1,19 +1,17 @@
-<mst-wrapper [height]="'2rem'" [crossAxis]="'center'">
-  <mst-icon name="date_range"
-    (click)="onOpenDatepicker()"></mst-icon>
-  <span mstNoSelect>{{ date | date:'shortDate' }}</span>
-</mst-wrapper>
+<div mstNoSelect (click)="onOpenDatepicker()">
+  {{ date | date:'shortDate' }}
+</div>
 
 <mst-overlay *ngIf="isShowDatepicker">
   <div class="mst-datepicker-wrapper">
-    <mst-datepicker-title [date]="date" (openYear)="onOpenYear()"></mst-datepicker-title>
+    <mst-datepicker-title [date]="innerDate" (openYear)="onOpenYear()"></mst-datepicker-title>
 
     <mst-datepicker-month *ngIf="!isShowYear"
-      [activeDate]="date"
+      [activeDate]="innerDate"
       (selectDate)="onSelectDate($event)"></mst-datepicker-month>
 
     <mst-datepicker-year-list *ngIf="isShowYear"
-      [activeDate]="date"
+      [activeDate]="innerDate"
       (selectYear)="onSelectYear($event)"></mst-datepicker-year-list>
 
     <mst-cancel-confirm

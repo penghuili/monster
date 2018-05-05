@@ -10,14 +10,18 @@ import { setYear } from 'date-fns';
 export class DatepickerComponent {
   @Input() set defaultDate(value: number) {
     this.date = value;
+    this.innerDate = value;
   }
   @Output() finish = new EventEmitter<number>();
   date: number;
   isShowDatepicker = false;
   isShowYear = false;
 
+  innerDate: number;
+
   onOpenDatepicker() {
     this.date = this.date || now();
+    this.innerDate = this.date;
     this.isShowDatepicker = true;
   }
   onOpenYear() {
@@ -25,18 +29,17 @@ export class DatepickerComponent {
   }
   onSelectYear(y: number) {
     this.isShowYear = false;
-    this.date = setYear(this.date, y).getTime();
+    this.innerDate = setYear(this.innerDate, y).getTime();
   }
   onSelectDate(date: number) {
-    this.date = date;
+    this.innerDate = date;
   }
   onFinish() {
+    this.date = this.innerDate;
     this.finish.emit(this.date);
     this.isShowDatepicker = false;
   }
   onCancel() {
     this.isShowDatepicker = false;
-    this.date = undefined;
-    this.finish.emit(undefined);
   }
 }

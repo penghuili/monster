@@ -10,7 +10,7 @@
   <mst-icon name="folder_open" left></mst-icon>
 </mst-project-list>
 
-<mst-duration-picker (change)="onDurationChange($event)"></mst-duration-picker>
+<mst-duration-picker [duration]="expectedTime" (change)="onDurationChange($event)"></mst-duration-picker>
 
 <mst-datepicker (finish)="onFinishPickDate($event)"></mst-datepicker>
 
