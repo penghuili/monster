@@ -52,10 +52,10 @@ export class SliderComponent implements OnChanges, OnInit {
 
   getLeft() {
     const sum = this.left + this.deltaX;
-    if (sum < (- FONT_SIZE / 2)) {
-      return - FONT_SIZE / 2;
-    } else if (sum > (this.barWidth - FONT_SIZE / 2)) {
-      return this.barWidth - FONT_SIZE / 2;
+    if (sum < (- FONT_SIZE)) {
+      return - FONT_SIZE;
+    } else if (sum > (this.barWidth - FONT_SIZE)) {
+      return this.barWidth - FONT_SIZE;
     } else {
       return sum;
     }

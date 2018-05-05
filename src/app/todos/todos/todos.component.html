@@ -5,15 +5,13 @@
 </div>
 
 <mst-drop-zone [dragIndex]="dragIndex" (drop)="onDrop($event)">
-  <mst-drag-item *ngFor="let todo of inProgress; let i = index;"
+  <mst-drag-item *ngFor="let todo of activeTodos; let i = index;"
     [item]="todo"
     [index]="i"
     (start)="onDragStart($event)">
     <mst-todo-item
       [todo]="todo"
-      [isLast]="i === inProgressLength - 1"
-      (click)="onShowDetail(todo)"
-      (finish)="onFinish($event)">
+      (click)="onShowDetail(todo)">
     </mst-todo-item>
   </mst-drag-item>
 </mst-drop-zone>

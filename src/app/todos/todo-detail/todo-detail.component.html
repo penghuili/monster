@@ -10,9 +10,9 @@
     <mst-icon name="folder_open" left></mst-icon>
   </mst-project-list>
 
-  <mst-days-hours-picker [days]="todo.days" [hours]="todo.hours" (dayChange)="onDayChange($event)" (hourChange)="onHourChange($event)"></mst-days-hours-picker>
-  <mst-datepicker [defaultDate]="happenOn" (finish)="onFinishPickDate($event)"></mst-datepicker>
-  
+  <mst-duration-picker [duration]="todo.expectedTime" (change)="onDurationChange($event)"></mst-duration-picker>
+  <mst-datepicker [defaultDate]="happenDate" (finish)="onFinishPickDate($event)"></mst-datepicker>
+
   <mst-wrapper
     display="block"
     padding="1rem"

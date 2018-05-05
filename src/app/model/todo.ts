@@ -4,33 +4,37 @@ import { Project } from './project';
 import { now } from './time';
 
 export interface Todo extends Item {
-  projectId?: string;
+  projectId: string;
   note?: string;
-  happenOn?: number;
-  days?: number;
-  hours?: number;
-  status?: TodoStatus;
+  happenDate: number;
+  // In minutes
+  expectedTime?: number;
+  status: TodoStatus;
+  position: number;
   finishAt?: number;
-  startAt?: number;
-  endAt?: number;
+  activities: TodoActivity[];
 }
-
+export interface TodoActivity {
+  startAt: number;
+  endAt: number;
+}
 export enum TodoStatus {
   InProgress,
-  Done,
-  InTrash
+  Done
 }
 
-export function createTodo(data: Todo): Todo {
+export function createTodo(data: any): Todo {
   const timestamp = now();
   return {
     id: `t${timestamp}`,
     title: data.title,
     projectId: data.projectId || INBOX.id,
     note: data.note,
-    happenOn: data.happenOn,
-    hours: data.hours,
+    happenDate: data.happenDate || timestamp,
+    expectedTime: data.expectedTime,
     status: TodoStatus.InProgress,
+    position: timestamp,
+    activities: [],
     createdAt: timestamp,
     updatedAt: timestamp
   };

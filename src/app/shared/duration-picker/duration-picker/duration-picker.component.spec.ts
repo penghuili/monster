@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MergeStorageComponent } from './merge-storage.component';
+import { DurationPickerComponent } from './days-hours-picker.component';
 
-describe('MergeStorageComponent', () => {
-  let component: MergeStorageComponent;
-  let fixture: ComponentFixture<MergeStorageComponent>;
+describe('DurationPickerComponent', () => {
+  let component: DurationPickerComponent;
+  let fixture: ComponentFixture<DurationPickerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MergeStorageComponent ]
+      declarations: [ DurationPickerComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MergeStorageComponent);
+    fixture = TestBed.createComponent(DurationPickerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

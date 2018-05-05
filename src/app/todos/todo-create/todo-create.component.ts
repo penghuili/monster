@@ -14,9 +14,8 @@ import { INBOX, Unsub } from '@app/static';
 export class TodoCreateComponent extends Unsub implements OnInit {
   titleControl = new InputControl('');
   noteControl = new InputControl('');
-  happenOn: number;
-  days: number;
-  hours: number;
+  happenDate: number;
+  expectedTime: number;
   hasError = false;
 
   currentProject: Project = INBOX;
@@ -41,24 +40,20 @@ export class TodoCreateComponent extends Unsub implements OnInit {
     this.currentProject = project;
   }
   onFinishPickDate(date: number) {
-    this.happenOn = date;
+    this.happenDate = date;
   }
-  onDayChange(days: number) {
-    this.days = days;
-  }
-  onHourChange(hours: number) {
-    this.hours = hours;
+  onDurationChange(duration: number) {
+    this.expectedTime = duration;
   }
   onCreate() {
     const title = this.titleControl.getValue();
     const note = this.noteControl.getValue();
-    const days = this.days;
-    const hours = this.hours;
+    const expectedTime = this.expectedTime;
     const project = this.currentProject;
-    const happenOn = this.happenOn;
+    const happenDate = this.happenDate;
     if (title) {
       this.hasError = false;
-      const todo = { title, note, projectId: project.id, days, hours, happenOn };
+      const todo = { title, note, projectId: project.id, expectedTime, happenDate };
       this.todoService.create(todo);
       this.router.navigate([ '../' ], { relativeTo: this.route });
     } else {

@@ -22,8 +22,8 @@ export class TodoTimerComponent extends Unsub implements OnInit {
   }
 
   start() {
-    if (this.todo && this.todo.hours) {
-      const time = this.todo.hours * 60 * 60;
+    if (this.todo && this.todo.expectedTime) {
+      const time = this.todo.expectedTime * 60 * 60;
       this.sub = interval(1000).pipe(
         map(a => time - a)
       ).subscribe(a => {

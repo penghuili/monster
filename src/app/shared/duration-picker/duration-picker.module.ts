@@ -5,9 +5,10 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MonsterCommonModule } from '../common/common.module';
 import { IconModule } from '../icon/icon.module';
 import { OverlayModule } from '../overlay/overlay.module';
+import { PipesModule } from '../pipes/pipes.module';
 import { SliderModule } from '../slider/slider.module';
 import { StylingModule } from '../styling/styling.module';
-import { DaysHoursPickerComponent } from './days-hours-picker/days-hours-picker.component';
+import { DurationPickerComponent } from './duration-picker/duration-picker.component';
 
 @NgModule({
   imports: [
@@ -17,11 +18,12 @@ import { DaysHoursPickerComponent } from './days-hours-picker/days-hours-picker.
     StylingModule,
     IconModule,
     MonsterCommonModule,
-    OverlayModule
+    OverlayModule,
+    PipesModule
   ],
-  declarations: [DaysHoursPickerComponent],
+  declarations: [DurationPickerComponent],
   exports: [
-    DaysHoursPickerComponent
+    DurationPickerComponent
   ]
 })
-export class DaysHoursPickerModule { }
+export class DurationPickerModule { }

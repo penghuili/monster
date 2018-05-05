@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProjectService, TodoService } from '@app/core';
-import { filterTodos, moveItem, Project, Todo } from '@app/model';
+import { TodoService } from '@app/core';
+import { moveItem, now, Todo } from '@app/model';
 import { ROUTES, Unsub } from '@app/static';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { addDays, endOfDay } from 'date-fns';
 
 @Component({
   selector: 'mst-todos',
@@ -11,9 +11,7 @@ import { combineLatest } from 'rxjs/observable/combineLatest';
   styleUrls: ['./todos.component.scss']
 })
 export class TodosComponent extends Unsub implements OnInit {
-  inProgress: Todo[];
-  inProgressLength: number;
-  currentProject: Project;
+  activeTodos: Todo[];
 
   dragIndex: number;
 
@@ -22,32 +20,27 @@ export class TodosComponent extends Unsub implements OnInit {
   IN7DAYS = '7days';
   activeTab = this.TODAY;
 
+  private todos: Todo[];
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private projectService: ProjectService,
     private todoService: TodoService) {
     super();
   }
 
   ngOnInit() {
     this.addSubscription(
-      combineLatest(
-        this.todoService.getInProgress(),
-        this.projectService.getCurrent()
-      ).subscribe(([ todos, currentProject ]) => {
-        this.currentProject = currentProject;
-        this.inProgress = filterTodos(todos, currentProject);
-        this.inProgressLength = this.inProgress.length;
+      this.todoService.getTodos().subscribe(todos => {
+        this.todos = todos;
+        this.activeTodos = this.getActiveTodos(todos, this.activeTab);
       })
     );
   }
 
   onChangeTab(tab: string) {
     this.activeTab = tab;
-  }
-  onFinish(id: string) {
-    this.todoService.finish(id);
+    this.activeTodos = this.getActiveTodos(this.todos, this.activeTab);
   }
   onGotoCreate() {
     this.router.navigate([ ROUTES.CREATE ], { relativeTo: this.route });
@@ -59,6 +52,21 @@ export class TodosComponent extends Unsub implements OnInit {
     this.dragIndex = dragIndex;
   }
   onDrop(dropIndex: number) {
-    this.todoService.updateInProgress(moveItem(this.dragIndex, dropIndex, this.inProgress));
+    // this.todoService.updateInProgress(moveItem(this.dragIndex, dropIndex, this.todos));
+  }
+
+  private getActiveTodos(todos: Todo[], activeTab: string): Todo[] {
+    const endOfToday = endOfDay(now()).getTime();
+    const endof3Days = endOfDay(addDays(now(), 3)).getTime();
+    const endOf7Days = endOfDay(addDays(now(), 7)).getTime();
+    if (activeTab === this.TODAY) {
+      return todos.filter(a => a.happenDate - endOfToday <= 0);
+    } else if (activeTab === this.IN3DAYS) {
+      return todos.filter(a => a.happenDate > endOfToday && a.happenDate <= endof3Days);
+    } else if (activeTab === this.IN7DAYS) {
+      return todos.filter(a => a.happenDate > endof3Days && a.happenDate <= endOf7Days);
+    } else {
+      return [];
+    }
   }
 }

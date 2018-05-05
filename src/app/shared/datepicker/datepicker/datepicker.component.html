@@ -1,7 +1,7 @@
 <mst-wrapper [height]="'2rem'" [crossAxis]="'center'">
   <mst-icon name="date_range"
     (click)="onOpenDatepicker()"></mst-icon>
-  <span>{{ date | date:'shortDate' }}</span>
+  <span mstNoSelect>{{ date | date:'shortDate' }}</span>
 </mst-wrapper>
 
 <mst-overlay *ngIf="isShowDatepicker">

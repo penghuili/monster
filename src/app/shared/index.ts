@@ -28,11 +28,12 @@ export * from './datepicker/datepicker/datepicker.component';
 export * from './slider/slider.module';
 export * from './slider/slider/slider.component';
 
-export * from './days-hours-picker/days-hours-picker.module';
-export * from './days-hours-picker/days-hours-picker/days-hours-picker.component';
+export * from './duration-picker/duration-picker.module';
 
 export * from './drag-drop/drag-drop.module';
 
 export * from './overlay/overlay.module';
 
 export * from './button/button.module';
+
+export * from './pipes/pipes.module';

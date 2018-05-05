@@ -3,8 +3,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import {
   ButtonModule,
   DatepickerModule,
-  DaysHoursPickerModule,
   DragDropModule,
+  DurationPickerModule,
   IconModule,
   InputModule,
   ListModule,
@@ -31,7 +31,7 @@ import { TodosComponent } from './todos/todos.component';
     DndModule,
     MonsterCommonModule,
     DatepickerModule,
-    DaysHoursPickerModule,
+    DurationPickerModule,
     FlexLayoutModule,
     DragDropModule,
 

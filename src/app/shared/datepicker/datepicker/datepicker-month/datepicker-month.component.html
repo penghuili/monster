@@ -1,6 +1,6 @@
 <div class="mst-datepicker-month-nav">
   <mst-icon name="keyboard_arrow_left" (click)="prevMonth()"></mst-icon>
-  <div class="mst-no-select">{{ selectedDate | date:'MMMM yyyy' }}</div>
+  <div mstNoSelect>{{ selectedDate | date:'MMMM yyyy' }}</div>
   <mst-icon name="keyboard_arrow_right" (click)="nextMonth()"></mst-icon>
 </div>
 <mst-datepicker-month-row [days]="weeks"></mst-datepicker-month-row>

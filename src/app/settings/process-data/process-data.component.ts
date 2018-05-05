@@ -39,11 +39,11 @@ export class ProcessDataComponent implements OnInit {
   }
 
   onDeleteInProgress() {
-    this.todoService.updateInProgress([]);
+    MonsterStorage.remove('in-progress');
     this.notificationService.sendMessage('DeleteInProgress success :>');
   }
   onDeleteDoneRecently() {
-    this.todoService.updateDoneRecently([]);
+    MonsterStorage.remove('done-recently');
     this.notificationService.sendMessage('DeleteDoneRecently success :>');
   }
   onDeleteProjects() {

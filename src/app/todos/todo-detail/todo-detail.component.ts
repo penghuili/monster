@@ -16,9 +16,8 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   todo: Todo;
   titleControl = new InputControl('');
   noteControl = new InputControl('');
-  days: number;
-  hours: number;
-  happenOn: number;
+  expectedTime: number;
+  happenDate: number;
   hasError = false;
 
   currentProject: Project;
@@ -38,24 +37,20 @@ export class TodoDetailComponent extends Unsub implements OnInit {
         this.currentProject = this.projectService.getById(this.todo.projectId);
         this.titleControl.setValue(this.todo.title);
         this.noteControl.setValue(this.todo.note);
-        this.days = todo.days;
-        this.hours = todo.hours;
-        this.happenOn = todo.happenOn;
+        this.expectedTime = todo.expectedTime;
+        this.happenDate = todo.happenDate;
       })
     );
   }
 
-  onDayChange(days: number) {
-    this.days = days;
-  }
-  onHourChange(hours: number) {
-    this.hours = hours;
+  onDurationChange(duration: number) {
+    this.expectedTime = duration;
   }
   onSelectProject(project: Project) {
     this.currentProject = project;
   }
   onFinishPickDate(date: number) {
-    this.happenOn = date;
+    this.happenDate = date;
   }
   onCancel() {
     this.router.navigate([ '../' ], { relativeTo: this.route });
@@ -63,14 +58,13 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   onUpdate() {
     const title = this.titleControl.getValue();
     const note = this.noteControl.getValue();
-    const days = this.days;
-    const hours = this.hours;
+    const expectedTime = this.expectedTime;
     const project = this.currentProject;
-    const happenOn = this.happenOn;
+    const happenDate = this.happenDate;
     if (title) {
       this.hasError = false;
       const todo = merge(this.todo, {
-        title, note, days, hours, happenOn,
+        title, note, expectedTime, happenDate,
         projectId: project.id,
         updatedAt: now()
       });

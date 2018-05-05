@@ -1,17 +1,16 @@
-<div fxLayout="row" fxLayoutAlign="start center">
+<div fxLayout="row" fxLayoutAlign="start center" mstNoSelect>
   <mst-icon name="hourglass_empty" (click)="onShowSlider()"></mst-icon>
-  <span mstSize="2rem" *ngIf="days > minDay">D{{ days }}</span>
-  <span mstSize="2.5rem" *ngIf="hours > minHour">H{{ hours }}</span>
+  <span>{{ hours | mstAdd0 }}:{{ minutes | mstAdd0 }}</span>
 </div>
 
 <mst-overlay *ngIf="showSlider">
   <div mstPadding="0 1.5rem">
     <div fxLayout="row" mstPadding="0 0 2rem 0">
-      <div mstSize="6rem" [mstColor]="!isDaysActive ? 'accent' : null" (click)="onClickHours()">
+      <div mstSize="6rem" [mstColor]="isHoursActive ? 'accent' : null" (click)="onClickHours()">
         hours: {{ hours }}
       </div>
-      <div mstSize="6rem" [mstColor]="isDaysActive ? 'accent' : null" (click)="onClickDays()">
-        days: {{ days }}
+      <div mstSize="6rem" [mstColor]="!isHoursActive ? 'accent' : null" (click)="onClickMinutes()">
+        minutes: {{ minutes }}
       </div>
     </div>
     <mst-slider [min]="min" [max]="max" [defaultValue]="defaultValue" (valueChange)="onValueChange($event)"></mst-slider>

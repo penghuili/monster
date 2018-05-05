@@ -9,7 +9,6 @@ import { Todo, TodoStatus } from '@app/model';
 })
 export class TodoItemComponent {
   @Input() todo: Todo;
-  @Input() isLast: boolean;
   @Output() finish = new EventEmitter<string>();
   @Output() delete = new EventEmitter<string>();
 
