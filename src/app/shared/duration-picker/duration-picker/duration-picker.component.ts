@@ -62,7 +62,8 @@ export class DurationPickerComponent {
   }
   onConfirm() {
     this.showSlider = false;
-    this.change.emit(this.getDuration(this.hours, this.minutes));
+    this._duration = this.getDuration(this.hours, this.minutes);
+    this.change.emit(this._duration);
   }
   onCancel() {
     this.showSlider = false;

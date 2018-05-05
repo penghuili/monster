@@ -6,6 +6,11 @@
   height: 0.25rem;
   background-color: $primary;
 }
+.mst-slider-active {
+  position: absolute;
+  height: 0.25rem;
+  background-color: $accent;
+}
 .mst-slider-thumb {
   width: 2rem;
   height: 2rem;
