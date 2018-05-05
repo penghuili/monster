@@ -1,9 +1,9 @@
 import { Todo } from '@app/model';
 
-import { Item } from './item';
+import { Item, SortableItem } from './item';
 import { now } from './time';
 
-interface ProjectBase extends Item {
+interface ProjectBase extends SortableItem {
   startDate: number;
   endDate: number;
   result: string;
@@ -35,7 +35,8 @@ export function createProject(data: any): Project {
     note: data.note,
     status: ProjectStatus.InProgress,
     createdAt: timestamp,
-    updatedAt: timestamp
+    updatedAt: timestamp,
+    position: `${timestamp}3`
   };
 }
 export function createSubproject(data: any): Subproject {
@@ -50,6 +51,7 @@ export function createSubproject(data: any): Subproject {
     note: data.note,
     status: ProjectStatus.InProgress,
     createdAt: timestamp,
-    updatedAt: timestamp
+    updatedAt: timestamp,
+    position: `${timestamp}3`
   };
 }

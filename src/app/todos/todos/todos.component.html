@@ -17,9 +17,9 @@
   </mst-drag-item>
 </mst-drop-zone>
 
-<ng-container *ngIf="activeDoneTodos && activeDoneTodos.length > 0">
+<ng-container *ngIf="doneTodos && doneTodos.length > 0">
   <div [mstTextAlign]="'center'" [mstPadding]="'2rem 0 0'">Done</div>
-  <mst-todo-item *ngFor="let todo of activeDoneTodos"
+  <mst-todo-item *ngFor="let todo of doneTodos"
     [todo]="todo"
     (click)="onShowDetail(todo)">
   </mst-todo-item>

@@ -1,3 +1,22 @@
-<p>
-  projects works!
-</p>
+<mst-drop-zone [dragIndex]="dragIndex" (drop)="onDrop($event)">
+  <mst-drag-item *ngFor="let project of activeProjects; let i = index;"
+    [item]="project"
+    [index]="i"
+    (start)="onDragStart($event)">
+    <mst-project-item
+      [project]="project"
+      (click)="onShowDetail(project)">
+    </mst-project-item>
+  </mst-drag-item>
+</mst-drop-zone>
+
+
+<ng-container *ngIf="doneProjects && doneProjects.length > 0">
+  <div [mstTextAlign]="'center'" [mstPadding]="'2rem 0 0'">Done</div>
+  <mst-project-item *ngFor="let project of doneProjects"
+    [project]="project"
+    (click)="onShowDetail(project)">
+  </mst-project-item>
+</ng-container>
+
+<mst-action-button [showPlus]="true" (clicked)="onGotoCreate()"></mst-action-button>

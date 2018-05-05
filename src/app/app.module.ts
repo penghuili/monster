@@ -2,11 +2,12 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { CoreModule } from '@app/core';
-import { MonsterCommonModule, NotificationModule, SliderModule } from '@app/shared';
+import { MonsterCommonModule, NotificationModule } from '@app/shared';
 
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ProjectsModule } from './projects/projects.module';
 import { SettingsModule } from './settings/settings.module';
 import { TagsModule } from './tags/tags.module';
 import { TodosModule } from './todos/todos.module';
@@ -23,9 +24,9 @@ import { TodosModule } from './todos/todos.module';
     CoreModule,
     MonsterCommonModule,
     NotificationModule,
-    SliderModule,
 
     TodosModule,
+    ProjectsModule,
     TagsModule,
     SettingsModule,
     AppRoutingModule

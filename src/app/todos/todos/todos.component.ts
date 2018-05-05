@@ -12,7 +12,7 @@ import { addDays, endOfDay } from 'date-fns';
 })
 export class TodosComponent extends Unsub implements OnInit {
   activeTodos: Todo[];
-  activeDoneTodos: Todo[];
+  doneTodos: Todo[];
 
   dragIndex: number;
 
@@ -78,6 +78,6 @@ export class TodosComponent extends Unsub implements OnInit {
       filtered = todos.filter(a => a.projectId === INBOX.id);
     }
     this.activeTodos = filtered.filter(a => a.status === TodoStatus.InProgress);
-    this.activeDoneTodos = filtered.filter(a => a.status === TodoStatus.Done);
+    this.doneTodos = filtered.filter(a => a.status === TodoStatus.Done).sort((a, b) => b.finishAt - a.finishAt);
   }
 }

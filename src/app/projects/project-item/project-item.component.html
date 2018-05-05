@@ -1,0 +1,6 @@
+<div
+  [mstTextAlign]="'left'"
+  [mstColor]="project.status === ProjectStatus.Done ? 'grey' : null"
+  [ngStyle]="{
+    'text-decoration': project.status === ProjectStatus.Done ? 'line-through' : 'none'
+  }">{{ project.title }}</div>

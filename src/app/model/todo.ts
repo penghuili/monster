@@ -1,16 +1,14 @@
 import { INBOX } from '../static/config';
-import { Item } from './item';
-import { Project } from './project';
+import { SortableItem } from './item';
 import { now } from './time';
 
-export interface Todo extends Item {
+export interface Todo extends SortableItem {
   projectId: string;
   note?: string;
   happenDate: number;
   // In minutes
   expectedTime?: number;
   status: TodoStatus;
-  position: string;
   finishAt?: number;
   activities: TodoActivity[];
   nextId?: string;
