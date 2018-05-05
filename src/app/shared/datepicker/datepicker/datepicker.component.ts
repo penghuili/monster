@@ -13,14 +13,13 @@ export class DatepickerComponent {
     this.innerDate = value;
   }
   @Output() finish = new EventEmitter<number>();
-  date: number;
+  date = now();
   isShowDatepicker = false;
   isShowYear = false;
 
   innerDate: number;
 
   onOpenDatepicker() {
-    this.date = this.date || now();
     this.innerDate = this.date;
     this.isShowDatepicker = true;
   }

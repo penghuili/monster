@@ -3,16 +3,15 @@
   [hasError]="hasError"
   [autoFocus]="true"></mst-input>
 
-<mst-project-list
-  [activeProject]="currentProject"
-  [showAll]="false"
-  (selected)="onSelectProject($event)">
-  <mst-icon name="folder_open" left></mst-icon>
-</mst-project-list>
-
-<mst-duration-picker [duration]="expectedTime" (change)="onDurationChange($event)"></mst-duration-picker>
-
-<mst-datepicker (finish)="onFinishPickDate($event)"></mst-datepicker>
+  <div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'1rem 0'">
+    <mst-project-list
+      [activeProject]="currentProject"
+      [showAll]="false"
+      (selected)="onSelectProject($event)">
+    </mst-project-list>
+    <mst-datepicker (finish)="onFinishPickDate($event)"></mst-datepicker>
+    <mst-duration-picker [duration]="expectedTime" (change)="onDurationChange($event)"></mst-duration-picker>
+</div>
 
 <mst-wrapper
   display="block"
