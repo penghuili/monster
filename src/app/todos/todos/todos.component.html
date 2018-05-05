@@ -16,4 +16,11 @@
   </mst-drag-item>
 </mst-drop-zone>
 
+
+<div [mstTextAlign]="'center'" [mstPadding]="'2rem 0 0'">Done</div>
+<mst-todo-item *ngFor="let todo of activeDoneTodos"
+  [todo]="todo"
+  (click)="onShowDetail(todo)">
+</mst-todo-item>
+
 <mst-action-button [showPlus]="true" (clicked)="onGotoCreate()"></mst-action-button>

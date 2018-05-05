@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TodoService } from '@app/core';
-import { MonsterStorage, now, Todo } from '@app/model';
+import { MonsterStorage, now, Todo, TodoStatus } from '@app/model';
 import { ROUTES, Unsub } from '@app/static';
 import { addDays, endOfDay } from 'date-fns';
 
@@ -12,6 +12,7 @@ import { addDays, endOfDay } from 'date-fns';
 })
 export class TodosComponent extends Unsub implements OnInit {
   activeTodos: Todo[];
+  activeDoneTodos: Todo[];
 
   dragIndex: number;
 
@@ -34,7 +35,7 @@ export class TodosComponent extends Unsub implements OnInit {
     this.addSubscription(
       this.todoService.getTodos().subscribe(todos => {
         this.todos = todos;
-        this.activeTodos = this.getActiveTodos(todos, this.activeTab);
+        this.updateActiveTodos(todos, this.activeTab);
       })
     );
   }
@@ -42,7 +43,7 @@ export class TodosComponent extends Unsub implements OnInit {
   onChangeTab(tab: string) {
     MonsterStorage.set('activeTab', tab);
     this.activeTab = tab;
-    this.activeTodos = this.getActiveTodos(this.todos, this.activeTab);
+    this.updateActiveTodos(this.todos, this.activeTab);
   }
   onGotoCreate() {
     this.router.navigate([ ROUTES.CREATE ], { relativeTo: this.route });
@@ -57,18 +58,25 @@ export class TodosComponent extends Unsub implements OnInit {
     // this.todoService.updateInProgress(moveItem(this.dragIndex, dropIndex, this.todos));
   }
 
-  private getActiveTodos(todos: Todo[], activeTab: string): Todo[] {
+  private updateActiveTodos(todos: Todo[], activeTab: string) {
     const endOfToday = endOfDay(now()).getTime();
     const endof3Days = endOfDay(addDays(now(), 3)).getTime();
     const endOf7Days = endOfDay(addDays(now(), 7)).getTime();
     if (activeTab === this.TODAY) {
-      return todos.filter(a => a.happenDate - endOfToday <= 0);
+      const ts = todos.filter(a => a.happenDate - endOfToday <= 0);
+      this.activeTodos = ts.filter(a => a.status === TodoStatus.InProgress);
+      this.activeDoneTodos = ts.filter(a => a.status === TodoStatus.Done);
     } else if (activeTab === this.IN3DAYS) {
-      return todos.filter(a => a.happenDate > endOfToday && a.happenDate <= endof3Days);
+      const ts = todos.filter(a => a.happenDate > endOfToday && a.happenDate <= endof3Days);
+      this.activeTodos = ts.filter(a => a.status === TodoStatus.InProgress);
+      this.activeDoneTodos = ts.filter(a => a.status === TodoStatus.Done);
     } else if (activeTab === this.IN7DAYS) {
-      return todos.filter(a => a.happenDate > endof3Days && a.happenDate <= endOf7Days);
+      const ts = todos.filter(a => a.happenDate > endof3Days && a.happenDate <= endOf7Days);
+      this.activeTodos = ts.filter(a => a.status === TodoStatus.InProgress);
+      this.activeDoneTodos = ts.filter(a => a.status === TodoStatus.Done);
     } else {
-      return [];
+      this.activeTodos = [];
+      this.activeDoneTodos = [];
     }
   }
 }
