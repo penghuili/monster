@@ -8,8 +8,7 @@ import { INBOX, Unsub } from '@app/static';
 @Component({
   selector: 'mst-todo-create',
   templateUrl: './todo-create.component.html',
-  styleUrls: ['./todo-create.component.scss'],
-  encapsulation: ViewEncapsulation.Emulated
+  styleUrls: ['./todo-create.component.scss']
 })
 export class TodoCreateComponent extends Unsub implements OnInit {
   titleControl = new InputControl('');

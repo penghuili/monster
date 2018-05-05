@@ -22,7 +22,8 @@
       minHeight="3rem"></mst-input>
   </mst-wrapper>
   
-  <mst-cancel-confirm
-    (confirm)="onUpdate()"
-    (cancel)="onCancel()"></mst-cancel-confirm>
+  <div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'2rem 0 0'">
+    <mst-icon name="chevron_left" (click)="onBack()"></mst-icon>
+    <mst-icon name="done" (click)="onFinish()"></mst-icon>
+  </div>
 </ng-container>

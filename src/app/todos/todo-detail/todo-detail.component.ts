@@ -65,10 +65,11 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   onFinishPickDate(date: number) {
     this.update({ happenDate: date });
   }
-  onCancel() {
+  onBack() {
     this.router.navigate([ '../' ], { relativeTo: this.route });
   }
-  onUpdate() {
+  onFinish() {
+    this.todoService.finish(this.todo.id);
     this.router.navigate([ '../' ], { relativeTo: this.route });
   }
 
