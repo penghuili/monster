@@ -10,9 +10,11 @@ export interface Todo extends Item {
   // In minutes
   expectedTime?: number;
   status: TodoStatus;
-  position: number;
+  position: string;
   finishAt?: number;
   activities: TodoActivity[];
+  nextId?: string;
+  prevId?: string;
 }
 export interface TodoActivity {
   startAt: number;
@@ -33,7 +35,7 @@ export function createTodo(data: any): Todo {
     happenDate: data.happenDate || timestamp,
     expectedTime: data.expectedTime,
     status: TodoStatus.InProgress,
-    position: timestamp,
+    position: timestamp.toString() + '3',
     activities: [],
     createdAt: timestamp,
     updatedAt: timestamp

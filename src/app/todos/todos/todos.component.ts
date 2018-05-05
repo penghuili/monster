@@ -34,8 +34,8 @@ export class TodosComponent extends Unsub implements OnInit {
     this.activeTab = MonsterStorage.get('activeTab') || this.TODAY;
     this.addSubscription(
       this.todoService.getTodos().subscribe(todos => {
-        this.todos = todos;
-        this.updateActiveTodos(todos, this.activeTab);
+        this.todos = todos.sort((a, b) => b.position > a.position ? 1 : -1);
+        this.updateActiveTodos(this.todos, this.activeTab);
       })
     );
   }
@@ -55,7 +55,11 @@ export class TodosComponent extends Unsub implements OnInit {
     this.dragIndex = dragIndex;
   }
   onDrop(dropIndex: number) {
-    // this.todoService.updateInProgress(moveItem(this.dragIndex, dropIndex, this.todos));
+    if (dropIndex !== this.dragIndex) {
+      const dragged = this.activeTodos[this.dragIndex];
+      const dropped = this.activeTodos[dropIndex];
+      this.todoService.swap(dragged, dropped);
+    }
   }
 
   private updateActiveTodos(todos: Todo[], activeTab: string) {

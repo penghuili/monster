@@ -1,20 +1,10 @@
-In Progress
+Todos
 <div>
   <mst-wrapper [display]="'inline'" padding="1rem">
-    <mst-copy-text [text]="inProgressText" (success)="onCopyInProgress($event)"></mst-copy-text>
+    <mst-copy-text [text]="todosText" (success)="onCopyTodos($event)"></mst-copy-text>
   </mst-wrapper>
   <mst-wrapper [display]="'inline'" padding="1rem">
-    <mst-icon name="delete" (click)="onDeleteInProgress()"></mst-icon>
-  </mst-wrapper>
-</div>
-
-Done Recently
-<div>
-  <mst-wrapper [display]="'inline'" padding="1rem">
-    <mst-copy-text [text]="doneRecentlyText" (success)="onCopyDoneRecently($event)"></mst-copy-text>
-  </mst-wrapper>
-  <mst-wrapper [display]="'inline'" padding="1rem">
-    <mst-icon name="delete" (click)="onDeleteDoneRecently()"></mst-icon>
+    <mst-icon name="delete" (click)="onDeleteTodos()"></mst-icon>
   </mst-wrapper>
 </div>
 
@@ -25,13 +15,5 @@ Projects
   </mst-wrapper>
   <mst-wrapper [display]="'inline'" padding="1rem">
     <mst-icon name="delete" (click)="onDeleteProjects()"></mst-icon>
-  </mst-wrapper>
-</div>
-
-
-Todos
-<div>
-  <mst-wrapper [display]="'inline'" padding="1rem">
-    <mst-icon name="gavel" (click)="onProcessTodo()"></mst-icon>
   </mst-wrapper>
 </div>

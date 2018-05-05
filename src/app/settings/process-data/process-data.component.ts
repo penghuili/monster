@@ -9,8 +9,7 @@ import { NotificationService } from '@app/shared';
   styleUrls: ['./process-data.component.scss']
 })
 export class ProcessDataComponent implements OnInit {
-  inProgressText: string;
-  doneRecentlyText: string;
+  todosText: string;
   projectsText: string;
 
   constructor(
@@ -20,38 +19,27 @@ export class ProcessDataComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.inProgressText = JSON.stringify(MonsterStorage.get('in-progress'));
-    this.doneRecentlyText = JSON.stringify(MonsterStorage.get('done-recently'));
+    this.todosText = JSON.stringify(MonsterStorage.get('todos'));
     this.projectsText = JSON.stringify(MonsterStorage.get('projects'));
   }
 
-  onCopyInProgress(isSuccess: boolean) {
+  onCopyTodos(isSuccess: boolean) {
     const message = isSuccess ? 'success :>' : 'failded ;)';
-    this.notificationService.sendMessage('CopyInProgress ' + message);
-  }
-  onCopyDoneRecently(isSuccess: boolean) {
-    const message = isSuccess ? 'success :>' : 'failded ;)';
-    this.notificationService.sendMessage('CopyDoneRecently ' + message);
+    this.notificationService.sendMessage('Copy todos ' + message);
   }
   onCopyProjects(isSuccess: boolean) {
     const message = isSuccess ? 'success :>' : 'failded ;)';
     this.notificationService.sendMessage('CopyProjects ' + message);
   }
 
-  onDeleteInProgress() {
+  onDeleteTodos() {
+    MonsterStorage.remove('todos');
     MonsterStorage.remove('in-progress');
-    this.notificationService.sendMessage('DeleteInProgress success :>');
-  }
-  onDeleteDoneRecently() {
     MonsterStorage.remove('done-recently');
-    this.notificationService.sendMessage('DeleteDoneRecently success :>');
+    this.notificationService.sendMessage('Delete todos success :>');
   }
   onDeleteProjects() {
     this.projectService.updateProjects([]);
     this.notificationService.sendMessage('DeleteProjects success :>');
-  }
-
-  onProcessTodo() {
-    this.todoService.process();
   }
 }
