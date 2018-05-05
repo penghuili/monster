@@ -1,17 +1,6 @@
-<div fxLayout="row" fxLayoutAlign="start center">
-  <span>
-    <mst-icon-done *ngIf="todo.status === TodoStatus.InProgress"
-      cursor="pointer"
-      (click)="onFinish(todo.id, $event)"></mst-icon-done>
-    <mst-icon-close *ngIf="todo.status === TodoStatus.Done"
-      cursor="pointer"
-      (click)="onDelete(todo.id, $event)"></mst-icon-close>
-  </span>
-  <span [class.mst-first-letter]="todo.note"
-    [mstPadding]="'0 1rem'"
-    [mstTextAlign]="'left'"
-    [mstColor]="todo.status === TodoStatus.Done ? 'grey' : null"
-    [ngStyle]="{
-      'text-decoration': todo.status === TodoStatus.Done ? 'line-through' : 'none'
-    }">{{ todo.title }}</span>
-</div>
+<div [class.mst-first-letter]="todo.note"
+  [mstTextAlign]="'left'"
+  [mstColor]="todo.status === TodoStatus.Done ? 'grey' : null"
+  [ngStyle]="{
+    'text-decoration': todo.status === TodoStatus.Done ? 'line-through' : 'none'
+  }">{{ todo.title }}</div>
