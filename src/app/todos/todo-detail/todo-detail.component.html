@@ -1,7 +1,14 @@
 <ng-container *ngIf="todo && currentProject">
-  <mst-input
-    [control]="titleControl"
-    [hasError]="hasError"></mst-input>
+  <div fxLayout="row" fxLayoutAlign="space-between">
+    <div fxFlex="80%">
+      <mst-input
+        [control]="titleControl"
+        [hasError]="hasError"></mst-input>
+    </div>
+
+    <mst-icon name="play_circle_filled" (click)="onStart()" *ngIf="!isDoing"></mst-icon>
+    <mst-icon name="pause_circle_filled" (click)="onStop()" *ngIf="isDoing"></mst-icon>
+  </div>
 
   <div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'1rem 0'">
     <mst-project-list
@@ -13,9 +20,10 @@
     <mst-duration-picker [duration]="todo.expectedTime" (change)="onDurationChange($event)"></mst-duration-picker>
   </div>
 
+  <mst-todo-timer [todo]="todo"></mst-todo-timer>
   <mst-wrapper
     display="block"
-    padding="1rem"
+    padding="0.5rem"
     [borderAll]="true">
     <mst-input
       [control]="noteControl"

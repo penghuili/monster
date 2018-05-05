@@ -1,8 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { add0, Todo } from '@app/model';
-import { Unsub } from '@app/static';
 import { interval } from 'rxjs/observable/interval';
-import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -10,44 +8,45 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: './todo-timer.component.html',
   styleUrls: ['./todo-timer.component.scss']
 })
-export class TodoTimerComponent extends Unsub implements OnInit {
-  @Input() todo: Todo;
-
-  time: string;
-  isNegative = false;
-
-  private sub: Subscription;
-
-  ngOnInit() {
+export class TodoTimerComponent {
+  @Input() set todo(value: Todo) {
+    this._todo = value;
+    this.totalTime = this.parseTime(this.todo.expectedTime);
+    this.prevProgress = value.activities.reduce((sum, item) => sum + (item.endAt - item.startAt) / (1000 * 60), 0) / value.expectedTime;
+    this.progress = this.prevProgress;
   }
+  get todo() {
+    return this._todo;
+  }
+
+  progress = 0;
+  totalTime: string;
+  isDoing: boolean;
+
+  private _todo: Todo;
+  private prevProgress: number;
+  private sub: Subscription;
 
   start() {
     if (this.todo && this.todo.expectedTime) {
-      const time = this.todo.expectedTime * 60 * 60;
-      this.sub = interval(1000).pipe(
-        map(a => time - a)
-      ).subscribe(a => {
-        this.isNegative = a < 0;
-        this.time = this.parseSeconds(Math.abs(a));
+      this.isDoing = true;
+      if (this.sub) {
+        this.sub.unsubscribe();
+      }
+      const seconds = this.todo.expectedTime * 60;
+      this.sub = interval(1000).subscribe(a => {
+        this.progress = this.prevProgress + a / seconds;
       });
     }
   }
   stop() {
+    this.isDoing = false;
     this.sub.unsubscribe();
   }
 
-  private parseSeconds(sec: number) {
-    const hours = Math.floor(sec / 3600);
-    const mins = Math.floor((sec - hours * 3600) / 60);
-    const secs = Math.floor(sec - hours * 3600 - mins * 60);
-    let formated = '';
-    if (hours > 0) {
-      formated += `${hours}:`;
-    }
-    if (hours > 0 || mins > 0) {
-      formated += `${add0(mins)}:`;
-    }
-    formated += `${add0(secs)}`;
-    return formated;
+  private parseTime(minutes: number) {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes - hours * 60;
+    return `${add0(hours)}:${add0(mins)}`;
   }
 }

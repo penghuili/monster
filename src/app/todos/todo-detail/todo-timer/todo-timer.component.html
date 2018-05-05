@@ -1,5 +1,3 @@
-<mst-wrapper
-  [color]="isNegative ? 'accent' : 'default'">
-  <ng-container *ngIf="isNegative">-</ng-container>
-  {{ time }}
-</mst-wrapper>
+<div [mstPadding]="'3rem 0 2rem'">
+  <mst-progress [progress]="progress" [starting]="isDoing" [endLabel]="totalTime"></mst-progress>
+</div>

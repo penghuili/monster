@@ -33,7 +33,7 @@ export function createTodo(data: any): Todo {
     projectId: data.projectId || INBOX.id,
     note: data.note,
     happenDate: data.happenDate || timestamp,
-    expectedTime: data.expectedTime,
+    expectedTime: data.expectedTime || 0,
     status: TodoStatus.InProgress,
     position: timestamp.toString() + '3',
     activities: [],

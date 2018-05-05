@@ -37,3 +37,5 @@ export * from './overlay/overlay.module';
 export * from './button/button.module';
 
 export * from './pipes/pipes.module';
+
+export * from './progress/progress.module';

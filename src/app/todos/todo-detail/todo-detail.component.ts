@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService, TodoService } from '@app/core';
 import { now, Project, Todo } from '@app/model';
@@ -6,6 +6,7 @@ import { InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
 import { merge } from 'ramda';
 import { debounceTime, first } from 'rxjs/operators';
+import { TodoTimerComponent } from './todo-timer/todo-timer.component';
 
 @Component({
   selector: 'mst-todo-detail',
@@ -13,11 +14,15 @@ import { debounceTime, first } from 'rxjs/operators';
   styleUrls: ['./todo-detail.component.scss']
 })
 export class TodoDetailComponent extends Unsub implements OnInit {
+  @ViewChild(TodoTimerComponent) timer: TodoTimerComponent;
   todo: Todo;
   titleControl = new InputControl('');
   noteControl = new InputControl('');
   hasError = false;
   currentProject: Project;
+
+  isDoing = false;
+  private startAt: number;
 
   constructor(
     private projectService: ProjectService,
@@ -64,6 +69,23 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   }
   onFinishPickDate(date: number) {
     this.update({ happenDate: date });
+  }
+  onStart() {
+    if (!this.isDoing) {
+      this.isDoing = true;
+      this.startAt = now();
+      this.timer.start();
+    }
+  }
+  onStop() {
+    this.timer.stop();
+    this.isDoing = false;
+    const endAt = now();
+    const activities = this.todo.activities;
+    activities.push({ startAt: this.startAt, endAt });
+    const newTodo = merge(this.todo, { activities });
+    this.todoService.update(newTodo);
+    this.startAt = undefined;
   }
   onBack() {
     this.router.navigate([ '../' ], { relativeTo: this.route });

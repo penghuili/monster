@@ -9,6 +9,7 @@ import {
   InputModule,
   ListModule,
   MonsterCommonModule,
+  ProgressModule,
   StylingModule,
 } from '@app/shared';
 import { DndModule } from 'ngx-drag-drop';
@@ -34,6 +35,7 @@ import { TodosComponent } from './todos/todos.component';
     DurationPickerModule,
     FlexLayoutModule,
     DragDropModule,
+    ProgressModule,
 
     TodosRoutingModule
   ],
