@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService, TodoService } from '@app/core';
-import { Project } from '@app/model';
+import { now, Project } from '@app/model';
 import { InputControl } from '@app/shared';
 import { INBOX, Unsub } from '@app/static';
 
@@ -13,11 +13,12 @@ import { INBOX, Unsub } from '@app/static';
 export class TodoCreateComponent extends Unsub implements OnInit {
   titleControl = new InputControl('');
   noteControl = new InputControl('');
-  happenDate: number;
-  expectedTime: number;
+  happenDate = now();
+  expectedTime = 0;
   hasError = false;
 
   currentProject: Project = INBOX;
+  INBOX = INBOX;
 
   constructor(
     private projectService: ProjectService,

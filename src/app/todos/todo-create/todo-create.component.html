@@ -9,7 +9,7 @@
       [showAll]="false"
       (selected)="onSelectProject($event)">
     </mst-project-list>
-    <mst-datepicker (finish)="onFinishPickDate($event)"></mst-datepicker>
+    <mst-datepicker *ngIf="currentProject && currentProject.id !== INBOX.id" (finish)="onFinishPickDate($event)"></mst-datepicker>
     <mst-duration-picker [duration]="expectedTime" (change)="onDurationChange($event)"></mst-duration-picker>
 </div>
 
