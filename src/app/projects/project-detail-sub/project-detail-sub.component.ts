@@ -5,7 +5,7 @@ import { now, Subproject, Todo } from '@app/model';
 import { InputControl } from '@app/shared';
 import { ROUTES, Unsub } from '@app/static';
 import { merge } from 'ramda';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, first } from 'rxjs/operators';
 
 @Component({
   selector: 'mst-project-detail-sub',
@@ -32,7 +32,9 @@ export class ProjectDetailSubComponent extends Unsub implements OnInit {
     const subid = this.route.snapshot.paramMap.get('subid');
     const id = this.route.snapshot.paramMap.get('id');
     this.addSubscription(
-      this.projectService.getSubprojectById(subid, id).subscribe(subproject => {
+      this.projectService.getSubprojectById(subid, id).pipe(
+        first()
+      ).subscribe(subproject => {
         this.subproject = subproject;
         this.titleControl.setValue(this.subproject.title);
         this.resultControl.setValue(this.subproject.result);
