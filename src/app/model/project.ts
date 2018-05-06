@@ -28,7 +28,7 @@ export interface ChartDataItem {
   series: ChartSeriesDataItem[];
 }
 export interface ChartSeriesDataItem {
-  name:  string | Date;
+  name:  any;
   value: number;
 }
 
