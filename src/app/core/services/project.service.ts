@@ -13,19 +13,12 @@ import { INBOX } from '../../static/config';
 export class ProjectService {
   private projects$ = new BehaviorSubject<Project[]>([]);
   private subprojects$ = new BehaviorSubject<Subproject[]>([]);
-  private currentProjects$ = new BehaviorSubject<Project>(null);
 
   constructor() {
     const projects = MonsterStorage.get('projects');
     this.projects$.next(projects);
     const subprojects = MonsterStorage.get('sub-projects');
     this.subprojects$.next(subprojects);
-
-    /**
-     * @todo maybe not need this
-     */
-    const current = MonsterStorage.get('current-project') || INBOX;
-    this.currentProjects$.next(current);
   }
 
   getProjects(): Observable<Project[]> {
@@ -54,13 +47,6 @@ export class ProjectService {
     return this.getSubprojects(id).pipe(
       map(subprojects => find(a => a.id === subid, subprojects))
     );
-  }
-  getCurrent(): Observable<Project> {
-    return this.currentProjects$.asObservable();
-  }
-  updateCurrent(project: Project) {
-    MonsterStorage.set('current-project', project);
-    this.currentProjects$.next(project);
   }
   updateProjects(projects: Project[]) {
     MonsterStorage.set('projects', projects);

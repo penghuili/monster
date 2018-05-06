@@ -13,9 +13,8 @@
 
   <div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'1rem 0'">
     <mst-project-list
-      [activeProject]="currentSubproject"
-      [showAll]="false"
-      (selected)="onSelectProject($event)">
+      [activeSubproject]="currentSubproject"
+      (selected)="onSelectSubproject($event)">
     </mst-project-list>
     <mst-datepicker [defaultDate]="todo.happenDate" (finish)="onFinishPickDate($event)"></mst-datepicker>
     <mst-duration-picker [duration]="todo.expectedTime" (change)="onDurationChange($event)"></mst-duration-picker>

@@ -10,9 +10,8 @@
     <div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'1rem 0'">
       <div *ngIf="subproject">{{ subproject.title }}</div>
       <mst-project-list *ngIf="!subproject"
-        [activeProject]="currentSubproject"
-        [showAll]="false"
-        (selected)="onSelectProject($event)">
+        [activeSubproject]="currentSubproject"
+        (selected)="onSelectSubproject($event)">
       </mst-project-list>
 
       <mst-datepicker *ngIf="subproject || (currentSubproject && currentSubproject.id !== INBOX.id)" (finish)="onFinishPickDate($event)"></mst-datepicker>

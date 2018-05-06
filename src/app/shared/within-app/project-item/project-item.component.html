@@ -5,3 +5,7 @@
     'text-decoration': project.status === ProjectStatus.Done ? 'line-through' : 'none',
     'line-height': '2rem'
   }">{{ project.title }}</div>
+
+<div [mstPadding]="'0 0 0 1rem'">
+  <ng-content></ng-content>
+</div>

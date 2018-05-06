@@ -68,7 +68,8 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   onDurationChange(duration: number) {
     this.update({ expectedTime: duration });
   }
-  onSelectProject(subproject: Subproject) {
+  onSelectSubproject(subproject: Subproject) {
+    this.currentSubproject = subproject;
     this.update({ subprojectId: subproject.id });
   }
   onFinishPickDate(date: number) {

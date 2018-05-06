@@ -1,8 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProjectService } from '@app/core';
-import { Project, Subproject } from '@app/model';
-import { ALL, ROUTES, Unsub } from '@app/static';
+import { Project, ProjectStatus, Subproject } from '@app/model';
+import { INBOX, ROUTES, Unsub } from '@app/static';
+import { switchMap } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'mst-project-list',
@@ -11,11 +13,16 @@ import { ALL, ROUTES, Unsub } from '@app/static';
   encapsulation: ViewEncapsulation.Emulated
 })
 export class ProjectListComponent extends Unsub implements OnInit {
-  @Input() activeProject: Subproject;
-  @Input() showAll = true;
-  @Output() selected = new EventEmitter<Project>();
+  @Input() activeSubproject: Subproject = <any>INBOX;
+  @Output() selected = new EventEmitter<Subproject>();
 
   projects: Project[];
+  subprojects: Subproject[];
+  activeProject: Project;
+
+  isShow = false;
+
+  private clickProject = new Subject<Project>();
 
   constructor(
     private projectService: ProjectService,
@@ -26,29 +33,34 @@ export class ProjectListComponent extends Unsub implements OnInit {
   ngOnInit() {
     this.addSubscription(
       this.projectService.getProjects().subscribe(data => {
-        this.projects = this.showAll ? data : data.filter(a => a.id !== ALL.id);
+        this.projects = data.filter(a => a.status === ProjectStatus.InProgress);
+      })
+    );
+
+    this.addSubscription(
+      this.clickProject.asObservable().pipe(
+        switchMap(project => this.projectService.getSubprojects(project.id))
+      ).subscribe(subprojects => {
+        this.subprojects = subprojects;
       })
     );
   }
 
-  onSelect(project: Project) {
-    this.projectService.updateCurrent(project);
-    this.selected.emit(project);
+  onOpen() {
+    this.isShow = true;
   }
-  // onCreate() {
-  //   const data: Project = { title: this.control.getValue().trim() };
-  //   this.projectService.create(data);
-  //   this.isAdding = false;
-  // }
+  onSelectProject(project: Project) {
+    this.activeProject = project;
+    this.clickProject.next(this.activeProject);
+  }
+  onSelectSubproject(subproject: Subproject) {
+    this.selected.emit(subproject);
+    this.isShow = false;
+  }
 
-  onReorder(projects: Project[]) {
-    if (projects) {
-      this.projectService.updateProjects(projects);
-    }
-  }
   onGotoSubproject() {
-    if (this.activeProject) {
-      this.router.navigateByUrl(`${ROUTES.PROJECTS}/${this.activeProject.projectId}/${this.activeProject.id}`);
+    if (this.activeSubproject) {
+      this.router.navigateByUrl(`${ROUTES.PROJECTS}/${this.activeSubproject.projectId}/${this.activeSubproject.id}`);
     }
   }
 }

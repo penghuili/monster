@@ -31,7 +31,7 @@ export class TodoCreateComponent {
   onOpen() {
     this.isShow = true;
   }
-  onSelectProject(project: Subproject) {
+  onSelectSubproject(project: Subproject) {
     this.currentSubproject = project;
   }
   onFinishPickDate(date: number) {

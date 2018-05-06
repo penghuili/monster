@@ -4,4 +4,20 @@
   <span right><ng-content select="[right]"></ng-content></span>
 </mst-drag-drop-list> -->
 
-<div *ngIf="activeProject" (dblclick)="onGotoSubproject()">{{ activeProject.title }}</div>
+<span (dblclick)="onGotoSubproject()" (click)="onOpen()">
+  {{ activeSubproject ? activeSubproject.title : 'inbox' }}
+</span>
+
+<mst-overlay *ngIf="isShow">
+  <mst-project-item
+    *ngFor="let project of projects"
+    [project]="project"
+    (click)="onSelectProject(project)">
+    <div *ngIf="activeProject && activeProject.id === project.id">
+      <mst-project-item
+       *ngFor="let subproject of subprojects"
+       [project]="subproject"
+       (click)="onSelectSubproject(subproject)"></mst-project-item>
+    </div>
+  </mst-project-item>
+</mst-overlay>
