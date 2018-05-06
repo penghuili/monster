@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { CoreModule } from '@app/core';
 import { MonsterCommonModule, NotificationModule } from '@app/shared';
@@ -21,6 +22,7 @@ import { TodosModule } from './todos/todos.module';
 
     environment.production ? ServiceWorkerModule.register('ngsw-worker.js') : [],
 
+    NoopAnimationsModule,
     CoreModule,
     MonsterCommonModule,
     NotificationModule,
