@@ -17,3 +17,13 @@ Projects
     <mst-icon name="delete" (click)="onDeleteProjects()"></mst-icon>
   </mst-wrapper>
 </div>
+
+Subprojects
+<div>
+  <mst-wrapper [display]="'inline'" padding="1rem">
+    <mst-copy-text [text]="subprojectsText" (success)="onCopySubprojects($event)"></mst-copy-text>
+  </mst-wrapper>
+  <mst-wrapper [display]="'inline'" padding="1rem">
+    <mst-icon name="delete" (click)="onDeleteSubprojects()"></mst-icon>
+  </mst-wrapper>
+</div>

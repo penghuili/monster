@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService } from '@app/core';
 import { now, Project, Subproject } from '@app/model';
 import { InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
 import { addDays } from 'date-fns';
 import { append, merge } from 'ramda';
-import { debounceTime, first } from 'rxjs/operators';
+import { debounceTime, first, switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'mst-project-detail',
@@ -15,6 +15,7 @@ import { debounceTime, first } from 'rxjs/operators';
 })
 export class ProjectDetailComponent extends Unsub implements OnInit {
   project: Project;
+  subprojects: Subproject[];
   titleControl = new InputControl('');
   resultControl = new InputControl('');
 
@@ -27,21 +28,26 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private projectService: ProjectService) {
     super();
   }
 
   ngOnInit() {
     this.addSubscription(
-      this.projectService.getById(this.route.snapshot.paramMap.get('id')).pipe(
-        first()
-      ).subscribe(project => {
-        this.project = project;
-        this.titleControl.setValue(project.title);
-        this.resultControl.setValue(project.result);
-        this.startDate = project.startDate;
-        this.endDateStartDate = addDays(this.startDate, 1).getTime();
-        this.endDate = project.endDate;
+      this.projectService.getProjectById(this.route.snapshot.paramMap.get('id')).pipe(
+        first(),
+        tap(project => {
+          this.project = project;
+          this.titleControl.setValue(project.title);
+          this.resultControl.setValue(project.result);
+          this.startDate = project.startDate;
+          this.endDateStartDate = addDays(this.startDate, 1).getTime();
+          this.endDate = project.endDate;
+        }),
+        switchMap(project => this.projectService.getSubprojects(project.id))
+      ).subscribe(subprojects => {
+        this.subprojects = subprojects;
       })
     );
 
@@ -74,9 +80,8 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
     this.endDate = date;
     this.update({ endDate: date });
   }
-  onCreateSub(subproject: Subproject) {
-    const subprojects = append(subproject, this.project.subprojects);
-    this.update({ subprojects });
+  onGotoSub(subid: string) {
+    this.router.navigate([ subid ], { relativeTo: this.route });
   }
 
   private update(data: any) {
@@ -90,7 +95,7 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
         ...data,
         updatedAt: now()
       });
-      this.projectService.update(this.project);
+      this.projectService.updateProject(this.project);
     } else {
       this.hasTitleError = !title;
       this.hasResultError = !result;

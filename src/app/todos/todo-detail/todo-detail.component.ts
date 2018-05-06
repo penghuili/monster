@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService, TodoService } from '@app/core';
-import { now, Project, Todo } from '@app/model';
+import { now, Subproject, Todo } from '@app/model';
 import { InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
 import { merge } from 'ramda';
-import { debounceTime, first, tap, switchMap } from 'rxjs/operators';
+import { debounceTime, first, switchMap, tap } from 'rxjs/operators';
+
 import { TodoTimerComponent } from './todo-timer/todo-timer.component';
 
 @Component({
@@ -19,7 +20,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   titleControl = new InputControl('');
   noteControl = new InputControl('');
   hasError = false;
-  currentProject: Project;
+  currentSubproject: Subproject;
 
   isDoing = false;
   private startAt: number;
@@ -41,9 +42,9 @@ export class TodoDetailComponent extends Unsub implements OnInit {
           this.titleControl.setValue(this.todo.title);
           this.noteControl.setValue(this.todo.note);
         }),
-        switchMap(todo => this.projectService.getById(this.todo.projectId))
-      ).subscribe(project => {
-        this.currentProject = project;
+        switchMap(todo => this.projectService.getSubprojectById(this.todo.subprojectId))
+      ).subscribe(subproject => {
+        this.currentSubproject = subproject;
       })
     );
 
@@ -67,8 +68,8 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   onDurationChange(duration: number) {
     this.update({ expectedTime: duration });
   }
-  onSelectProject(project: Project) {
-    this.update({ projectId: project.id });
+  onSelectProject(subproject: Subproject) {
+    this.update({ subprojectId: subproject.id });
   }
   onFinishPickDate(date: number) {
     this.update({ happenDate: date });

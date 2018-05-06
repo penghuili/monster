@@ -20,9 +20,8 @@
   <mst-project-progress-chart></mst-project-progress-chart>
 </div>
 
-<mst-project-create-sub (create)="onCreateSub($event)"></mst-project-create-sub>
+<mst-project-create-sub [project]="project"></mst-project-create-sub>
 
-<div *ngIf="project">
-  <mst-project-item *ngFor="let subproject of project.subprojects"
-    [project]="subproject"></mst-project-item>
-</div>
+<mst-project-item *ngFor="let subproject of subprojects"
+  (click)="onGotoSub(subproject.id)"
+  [project]="subproject"></mst-project-item>

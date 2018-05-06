@@ -69,13 +69,13 @@ export class TodosComponent extends Unsub implements OnInit {
     const endOf7Days = endOfDay(addDays(now(), 7)).getTime();
     let filtered: Todo[];
     if (activeTab === this.TODAY) {
-      filtered = todos.filter(a => a.projectId !== INBOX.id && a.happenDate - endOfToday <= 0);
+      filtered = todos.filter(a => a.subprojectId !== INBOX.id && a.happenDate - endOfToday <= 0);
     } else if (activeTab === this.IN3DAYS) {
-      filtered = todos.filter(a => a.projectId !== INBOX.id && a.happenDate > endOfToday && a.happenDate <= endof3Days);
+      filtered = todos.filter(a => a.subprojectId !== INBOX.id && a.happenDate > endOfToday && a.happenDate <= endof3Days);
     } else if (activeTab === this.IN7DAYS) {
-      filtered = todos.filter(a => a.projectId !== INBOX.id && a.happenDate > endof3Days && a.happenDate <= endOf7Days);
+      filtered = todos.filter(a => a.subprojectId !== INBOX.id && a.happenDate > endof3Days && a.happenDate <= endOf7Days);
     } else {
-      filtered = todos.filter(a => a.projectId === INBOX.id);
+      filtered = todos.filter(a => a.subprojectId === INBOX.id);
     }
     this.activeTodos = filtered.filter(a => a.status === TodoStatus.InProgress);
     this.doneTodos = filtered.filter(a => a.status === TodoStatus.Done).sort((a, b) => b.finishAt - a.finishAt);

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ROUTES } from '@app/static';
 
-import { ProjectCreateComponent } from './project-create/project-create.component';
+import { ProjectDetailSubComponent } from './project-detail-sub/project-detail-sub.component';
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { ProjectsComponent } from './projects/projects.component';
 
@@ -12,7 +12,17 @@ const projectsRoutes: Routes = [
     children: [
       {
         path: ':id',
-        component: ProjectDetailComponent
+        children: [
+          {
+            path: ':subid',
+            component: ProjectDetailSubComponent
+          },
+          {
+            path: '',
+            component: ProjectDetailComponent,
+            pathMatch: 'full'
+          }
+        ]
       },
       {
         path: '', component: ProjectsComponent, pathMatch: 'full'

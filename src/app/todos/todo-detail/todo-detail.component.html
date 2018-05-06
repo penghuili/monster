@@ -1,4 +1,4 @@
-<ng-container *ngIf="todo && currentProject">
+<ng-container *ngIf="todo && currentSubproject">
   <div fxLayout="row" fxLayoutAlign="space-between">
     <div fxFlex="80%">
       <mst-input
@@ -12,7 +12,7 @@
 
   <div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'1rem 0'">
     <mst-project-list
-      [activeProject]="currentProject"
+      [activeProject]="currentSubproject"
       [showAll]="false"
       (selected)="onSelectProject($event)">
     </mst-project-list>

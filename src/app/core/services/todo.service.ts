@@ -27,6 +27,11 @@ export class TodoService {
       map(todos => todos.filter(a => differenceInDays(a.happenDate, now()) <= 7))
     );
   }
+  getTodosBySubprojectId(id: string): Observable<Todo[]> {
+    return this.todos$.asObservable().pipe(
+      map(todos => todos.filter(a => a.subprojectId === id))
+    );
+  }
   getById(id: string): Observable<Todo> {
     return this.get7Days().pipe(
       map(todos => todos.find(a => a.id === id))
@@ -70,7 +75,7 @@ export class TodoService {
     }
   }
 
-  private updateTodos(todos: Todo[]) {
+  updateTodos(todos: Todo[]) {
     MonsterStorage.set('todos', todos);
     this.todos$.next(todos);
   }

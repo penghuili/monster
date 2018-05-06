@@ -1,0 +1,23 @@
+<div>
+  <mst-icon name="chevron_left" (click)="onBack()"></mst-icon>
+</div>
+
+<mst-input
+  [control]="titleControl"
+  [hasError]="hasTitleError"></mst-input>
+
+<div [mstPadding]="'1rem 0 0'">
+  <mst-input
+    [control]="resultControl"
+    [hasError]="hasResultError"
+    minHeight="3rem"></mst-input>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="center" [mstPadding]="'2rem 0'">
+  <mst-todo-create [subproject]="subproject" [useActionButton]="false"></mst-todo-create>
+</div>
+
+<mst-todo-item *ngFor="let todo of todos"
+  (click)="onGotoTodo(todo.id)"
+  [todo]="todo"></mst-todo-item>
+  

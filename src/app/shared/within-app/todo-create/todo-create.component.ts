@@ -22,7 +22,7 @@ export class TodoCreateComponent {
   expectedTime = 0;
   hasError = false;
 
-  currentProject: Subproject = <any>INBOX;
+  currentSubproject: Subproject = <any>INBOX;
   INBOX = INBOX;
 
   constructor(private todoService: TodoService) {
@@ -32,7 +32,7 @@ export class TodoCreateComponent {
     this.isShow = true;
   }
   onSelectProject(project: Subproject) {
-    this.currentProject = project;
+    this.currentSubproject = project;
   }
   onFinishPickDate(date: number) {
     this.happenDate = date;
@@ -44,11 +44,11 @@ export class TodoCreateComponent {
     const title = this.titleControl.getValue();
     const note = this.noteControl.getValue();
     const expectedTime = this.expectedTime;
-    const project = this.subproject || this.currentProject;
+    const subproject = this.subproject || this.currentSubproject;
     const happenDate = this.happenDate;
     if (title) {
       this.hasError = false;
-      const todo = { title, note, projectId: project.id, expectedTime, happenDate };
+      const todo = { title, note, subprojectId: subproject.id, expectedTime, happenDate };
       const newTodo = this.todoService.create(todo);
       this.newTodo.emit(newTodo);
       this.isShow = false;

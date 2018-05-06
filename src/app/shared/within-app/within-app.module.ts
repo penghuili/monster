@@ -12,6 +12,7 @@ import { OverlayModule } from '../overlay/overlay.module';
 import { StylingModule } from '../styling/styling.module';
 import { ProjectListComponent } from './project-list/project-list.component';
 import { TodoCreateComponent } from './todo-create/todo-create.component';
+import { TodoItemComponent } from './todo-item/todo-item.component';
 
 @NgModule({
   imports: [
@@ -28,11 +29,13 @@ import { TodoCreateComponent } from './todo-create/todo-create.component';
   ],
   declarations: [
     TodoCreateComponent,
-    ProjectListComponent
+    ProjectListComponent,
+    TodoItemComponent
   ],
   exports: [
     TodoCreateComponent,
-    ProjectListComponent
+    ProjectListComponent,
+    TodoItemComponent
   ]
 })
 export class WithinAppModule { }

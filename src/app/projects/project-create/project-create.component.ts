@@ -46,7 +46,7 @@ export class ProjectCreateComponent {
     if (title && result) {
       this.hasResultError = false;
       this.hasTitleError = false;
-      const project = this.projectService.create({ title, result, startDate: this.startDate, endDate: this.endDate });
+      const project = this.projectService.createProject({ title, result, startDate: this.startDate, endDate: this.endDate });
       this.create.emit(project);
       this.isShow = false;
     } else {

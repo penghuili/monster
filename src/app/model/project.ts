@@ -12,10 +12,11 @@ export interface ProjectBase extends SortableItem {
 export interface Project extends ProjectBase {
   startDate: number;
   endDate: number;
-  subprojects: Subproject[];
 }
 export interface Subproject extends ProjectBase {
-  todos: Todo[];
+  projectId: string;
+  startDate?: number;
+  endDate?: number;
 }
 
 export enum ProjectStatus {
@@ -31,7 +32,6 @@ export function createProject(data: any): Project {
     startDate: data.startDate,
     endDate: data.endDate,
     result: data.result,
-    subprojects: data.subprojects,
     note: data.note,
     status: ProjectStatus.InProgress,
     createdAt: timestamp,
@@ -43,9 +43,9 @@ export function createSubproject(data: any): Subproject {
   const timestamp = now();
   return {
     id: `sp${timestamp}`,
+    projectId: data.projectId,
     title: data.title,
     result: data.result,
-    todos: data.todos,
     note: data.note,
     status: ProjectStatus.InProgress,
     createdAt: timestamp,

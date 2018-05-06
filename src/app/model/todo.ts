@@ -3,7 +3,7 @@ import { SortableItem } from './item';
 import { now } from './time';
 
 export interface Todo extends SortableItem {
-  projectId: string;
+  subprojectId: string;
   note?: string;
   happenDate: number;
   // In minutes
@@ -28,7 +28,7 @@ export function createTodo(data: any): Todo {
   return {
     id: `t${timestamp}`,
     title: data.title,
-    projectId: data.projectId || INBOX.id,
+    subprojectId: data.subprojectId || INBOX.id,
     note: data.note,
     happenDate: data.happenDate || timestamp,
     expectedTime: data.expectedTime || 0,

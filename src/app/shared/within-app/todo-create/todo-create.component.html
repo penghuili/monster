@@ -1,5 +1,5 @@
 <mst-action-button *ngIf="useActionButton" [showPlus]="true" (clicked)="onOpen()"></mst-action-button>
-<mst-icon *ngIf="!useActionButton" name="add"></mst-icon>
+<mst-icon *ngIf="!useActionButton" name="add" (click)="onOpen()"></mst-icon>
 
 <mst-overlay *ngIf="isShow">
   <mst-input
@@ -10,12 +10,12 @@
     <div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'1rem 0'">
       <div *ngIf="subproject">{{ subproject.title }}</div>
       <mst-project-list *ngIf="!subproject"
-        [activeProject]="currentProject"
+        [activeProject]="currentSubproject"
         [showAll]="false"
         (selected)="onSelectProject($event)">
       </mst-project-list>
 
-      <mst-datepicker *ngIf="currentProject && currentProject.id !== INBOX.id" (finish)="onFinishPickDate($event)"></mst-datepicker>
+      <mst-datepicker *ngIf="subproject || (currentSubproject && currentSubproject.id !== INBOX.id)" (finish)="onFinishPickDate($event)"></mst-datepicker>
       <mst-duration-picker [duration]="expectedTime" (change)="onDurationChange($event)"></mst-duration-picker>
   </div>
   

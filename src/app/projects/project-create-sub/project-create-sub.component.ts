@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { createSubproject, Subproject, Todo } from '@app/model';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ProjectService } from '@app/core';
+import { Project, Subproject, Todo } from '@app/model';
 import { InputControl } from '@app/shared';
 
 @Component({
@@ -8,7 +9,7 @@ import { InputControl } from '@app/shared';
   styleUrls: ['./project-create-sub.component.scss']
 })
 export class ProjectCreateSubComponent {
-  @Output() create = new EventEmitter<Subproject>();
+  @Input() project: Project;
   isShow = false;
 
   titleControl = new InputControl('');
@@ -18,17 +19,22 @@ export class ProjectCreateSubComponent {
 
   todos: Todo[] = [];
 
+  constructor(private projectService: ProjectService) {}
+
   onOpen() {
     this.isShow = true;
   }
   onFinish() {
     const title = this.titleControl.getValue();
     const result = this.resultControl.getValue();
-    if (title && result) {
+    if (title && result && this.project) {
       this.hasResultError = false;
       this.hasTitleError = false;
-      const subproject = createSubproject({ title, result, todos: this.todos });
-      this.create.emit(subproject);
+      const subproject = this.projectService.createSubproject({
+        projectId: this.project.id,
+        title, result,
+        todos: this.todos
+      });
       this.isShow = false;
     } else {
       this.hasTitleError = !title;

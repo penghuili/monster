@@ -18,7 +18,6 @@ import { DndModule } from 'ngx-drag-drop';
 
 import { TodoDetailComponent } from './todo-detail/todo-detail.component';
 import { TodoTimerComponent } from './todo-detail/todo-timer/todo-timer.component';
-import { TodoItemComponent } from './todo-item/todo-item.component';
 import { TodosRoutingModule } from './todos-routing.module';
 import { TodosComponent } from './todos/todos.component';
 
@@ -43,7 +42,6 @@ import { TodosComponent } from './todos/todos.component';
   ],
   declarations: [
     TodosComponent,
-    TodoItemComponent,
     TodoDetailComponent,
     TodoTimerComponent,
   ]

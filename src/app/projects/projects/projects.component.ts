@@ -24,7 +24,7 @@ export class ProjectsComponent extends Unsub implements OnInit {
 
   ngOnInit() {
     this.addSubscription(
-      this.projectService.getAll().subscribe(projects => {
+      this.projectService.getProjects().subscribe(projects => {
         this.updateProjects(<Project[]>sortByPosition(projects));
       })
     );
@@ -40,7 +40,7 @@ export class ProjectsComponent extends Unsub implements OnInit {
     if (dropIndex !== this.dragIndex) {
       const dragged = this.activeProjects[this.dragIndex];
       const dropped = this.activeProjects[dropIndex];
-      this.projectService.swap(dragged, dropped);
+      this.projectService.swapProjects(dragged, dropped);
     }
   }
 

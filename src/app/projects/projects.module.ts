@@ -10,11 +10,13 @@ import {
   MonsterCommonModule,
   OverlayModule,
   StylingModule,
+  WithinAppModule,
 } from '@app/shared';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { ProjectCreateSubComponent } from './project-create-sub/project-create-sub.component';
 import { ProjectCreateComponent } from './project-create/project-create.component';
+import { ProjectDetailSubComponent } from './project-detail-sub/project-detail-sub.component';
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { ProjectItemComponent } from './project-item/project-item.component';
 import { ProjectProgressChartComponent } from './project-progress-chart/project-progress-chart.component';
@@ -34,6 +36,7 @@ import { ProjectsComponent } from './projects/projects.component';
     NgxChartsModule,
     MonsterCommonModule,
     OverlayModule,
+    WithinAppModule,
 
     ProjectsRoutingModule
   ],
@@ -43,7 +46,8 @@ import { ProjectsComponent } from './projects/projects.component';
     ProjectDetailComponent,
     ProjectItemComponent,
     ProjectProgressChartComponent,
-    ProjectCreateSubComponent
+    ProjectCreateSubComponent,
+    ProjectDetailSubComponent
   ]
 })
 export class ProjectsModule { }
