@@ -1,6 +1,6 @@
 /* tslint:disable:no-input-rename */
 import { Directive, ElementRef, Input, OnChanges } from '@angular/core';
-import { COLORS } from '@app/static';
+import { COLORS, isColorWrong } from '@app/model';
 
 @Directive({
   selector: '[mstColor]'
@@ -11,12 +11,10 @@ export class ColorDirective implements OnChanges {
   // 'primary', 'accent', 'grey'
   @Input('mstColor.bg') mstColorBg: string;
 
-  private colors = ['primary', 'accent', 'grey', 'white'];
-
   constructor(private elementRef: ElementRef) {}
 
   ngOnChanges() {
-    if (this.colorsIsWrong()) {
+    if (isColorWrong(this.mstColor) || isColorWrong(this.mstColorBg)) {
       throw new Error('color has typo');
     } else {
       this.setColor();
@@ -24,10 +22,6 @@ export class ColorDirective implements OnChanges {
     }
   }
 
-  private colorsIsWrong() {
-    return (this.mstColor && !this.colors.find(a => a === this.mstColor)) ||
-      (this.mstColorBg && !this.colors.find(a => a === this.mstColorBg));
-  }
   private setColor() {
     if (this.mstColor === undefined) {
       return;

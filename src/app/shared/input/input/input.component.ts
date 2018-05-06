@@ -1,4 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Color } from '@app/model';
 import { Unsub } from '@app/static';
 
 import { InputControl } from '../input-control';
@@ -17,6 +18,8 @@ export class InputComponent extends Unsub implements OnInit {
   @Output() enter = new EventEmitter<boolean>();
 
   @ViewChild('input') private inputEl: ElementRef;
+
+  Color = Color;
 
   ngOnInit() {
     if (this.autoFocus) {

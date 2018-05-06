@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { ButtonModule, DatepickerModule, DragDropModule, InputModule, StylingModule } from '@app/shared';
+import { ButtonModule, DatepickerModule, DragDropModule, IconModule, InputModule, StylingModule } from '@app/shared';
 
 import { ProjectCreateComponent } from './project-create/project-create.component';
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
@@ -18,6 +18,7 @@ import { ProjectsComponent } from './projects/projects.component';
     InputModule,
     DatepickerModule,
     FlexLayoutModule,
+    IconModule,
 
     ProjectsRoutingModule
   ],

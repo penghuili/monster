@@ -3,13 +3,14 @@
   [hasError]="hasError"
   [autoFocus]="true"></mst-input>
 
-<div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'1rem 3rem'">
+<div fxLayout="row" fxLayoutAlign="center center" [mstPadding]="'1rem 3rem'">
   <mst-datepicker [defaultDate]="startDate" (finish)="onPickStartDate($event)"></mst-datepicker>
+  <div [mstSize]="'50%'" [mstTextAlign]="'center'">
+    <mst-icon name="arrow_forward"></mst-icon>
+  </div>
   <mst-datepicker [defaultDate]="endDate" [startDate]="endDateStartDate" (finish)="onPickEndDate($event)"></mst-datepicker>
 </div>
 
-<div [mstPadding]="'0.5rem'" class="class-project-create-textarea">
-  <mst-input
-    [control]="resultControl"
-    minHeight="3rem"></mst-input>
-</div>
+<mst-input
+  [control]="resultControl"
+  minHeight="3rem"></mst-input>
