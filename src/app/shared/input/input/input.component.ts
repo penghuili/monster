@@ -13,7 +13,7 @@ export class InputComponent extends Unsub implements OnInit {
   @Input() control: InputControl;
   @Input() autoFocus = false;
   @Input() minHeight = '1.5rem';
-  @Input() padding: string;
+  @Input() padding = '0.25rem';
   @Input() hasError = false;
   @Output() enter = new EventEmitter<boolean>();
 

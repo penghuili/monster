@@ -4,4 +4,4 @@
   <span right><ng-content select="[right]"></ng-content></span>
 </mst-drag-drop-list> -->
 
-<div (dblclick)="onGotoSubproject()">{{ activeProject.title }}</div>
+<div *ngIf="activeProject" (dblclick)="onGotoSubproject()">{{ activeProject.title }}</div>

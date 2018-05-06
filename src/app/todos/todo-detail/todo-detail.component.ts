@@ -103,11 +103,11 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     const title = this.titleControl.getValue();
     if (title) {
       this.hasError = false;
-      const todo = merge(this.todo, {
+      this.todo = merge(this.todo, {
         ...data,
         updatedAt: now()
       });
-      this.todoService.update(todo);
+      this.todoService.update(this.todo);
     } else {
       this.hasError = true;
     }
