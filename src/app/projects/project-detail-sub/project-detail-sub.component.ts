@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService, TodoService } from '@app/core';
-import { Subproject, Todo } from '@app/model';
+import { now, Subproject, Todo } from '@app/model';
 import { InputControl } from '@app/shared';
 import { ROUTES, Unsub } from '@app/static';
+import { merge } from 'ramda';
 import { debounceTime } from 'rxjs/operators';
 
 @Component({
@@ -48,7 +49,7 @@ export class ProjectDetailSubComponent extends Unsub implements OnInit {
       this.titleControl.value$.pipe(
         debounceTime(300)
       ).subscribe(title => {
-        // this.update({ title });
+        this.update({ title });
       })
     );
 
@@ -56,7 +57,7 @@ export class ProjectDetailSubComponent extends Unsub implements OnInit {
       this.resultControl.value$.pipe(
         debounceTime(300)
       ).subscribe(result => {
-        // this.update({ result });
+        this.update({ result });
       })
     );
   }
@@ -66,6 +67,23 @@ export class ProjectDetailSubComponent extends Unsub implements OnInit {
   }
   onBack() {
     this.router.navigate(['../'], { relativeTo: this.route });
+  }
+
+  private update(data: any) {
+    const title = this.titleControl.getValue();
+    const result = this.resultControl.getValue();
+
+    if (title && result) {
+      this.hasResultError = false;
+      this.hasTitleError = false;
+      this.subproject = merge(this.subproject, {
+        ...data, updatedAt: now()
+      });
+      this.projectService.updateSubproject(this.subproject);
+    } else {
+      this.hasTitleError = !title;
+      this.hasResultError = !result;
+    }
   }
 
 }
