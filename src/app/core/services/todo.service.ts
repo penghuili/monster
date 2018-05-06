@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import { createTodo, MonsterStorage, now, swapItems, Todo, TodoStatus } from '@app/model';
+import { createTodo, MonsterStorage, now, Subproject, swapItems, Todo, TodoStatus } from '@app/model';
 import { differenceInDays } from 'date-fns';
-import { findIndex, merge, prepend } from 'ramda';
+import { find, findIndex, merge, prepend } from 'ramda';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
+
+import { ProjectService } from './project.service';
 
 @Injectable()
 export class TodoService {
@@ -12,7 +14,7 @@ export class TodoService {
   private inProgress$ = new BehaviorSubject<Todo[]>([]);
   private doneRecently$ = new BehaviorSubject<Todo[]>([]);
 
-  constructor() {
+  constructor(private projectService: ProjectService) {
     const todos = MonsterStorage.get('todos') || [];
     this.todos$.next(todos);
 
@@ -30,6 +32,16 @@ export class TodoService {
   getTodosBySubprojectId(id: string): Observable<Todo[]> {
     return this.todos$.asObservable().pipe(
       map(todos => todos.filter(a => a.subprojectId === id))
+    );
+  }
+  getTodosByProjectId(id: string): Observable<Todo[]> {
+    let subprojects: Subproject[];
+    return this.projectService.getSubprojects(id).pipe(
+      tap(a => {
+        subprojects = a;
+      }),
+      switchMap(() => this.todos$.asObservable()),
+      map(todos => todos.filter(a => !!find(b => b.id === a.subprojectId, subprojects)))
     );
   }
   getById(id: string): Observable<Todo> {

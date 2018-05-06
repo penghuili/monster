@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProjectService } from '@app/core';
-import { now, Project, Subproject } from '@app/model';
+import { ProjectService, TodoService } from '@app/core';
+import { ChartDataItem, getChartData, now, Project, Subproject, TodoStatus } from '@app/model';
 import { InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
-import { addDays } from 'date-fns';
-import { append, merge } from 'ramda';
+import { addDays, format } from 'date-fns';
+import { merge } from 'ramda';
 import { debounceTime, first, switchMap, tap } from 'rxjs/operators';
 
 @Component({
@@ -26,16 +26,20 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
   endDate: number;
   endDateStartDate: number;
 
+  chartData: ChartDataItem[];
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private projectService: ProjectService) {
+    private projectService: ProjectService,
+    private todoService: TodoService) {
     super();
   }
 
   ngOnInit() {
+    const id = this.route.snapshot.paramMap.get('id');
     this.addSubscription(
-      this.projectService.getProjectById(this.route.snapshot.paramMap.get('id')).pipe(
+      this.projectService.getProjectById(id).pipe(
         first(),
         tap(project => {
           this.project = project;
@@ -48,6 +52,25 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
         switchMap(project => this.projectService.getSubprojects(project.id))
       ).subscribe(subprojects => {
         this.subprojects = subprojects;
+      })
+    );
+
+    this.addSubscription(
+      this.todoService.getTodosByProjectId(id).subscribe(todos => {
+        const items = todos
+          .sort((a, b) => a.happenDate - b.happenDate)
+          .map(a => ({name: format(a.happenDate, 'YYYY-MM-DD'), value: 1}));
+        const doneItems = todos
+          .filter(a => a.status === TodoStatus.Done)
+          .sort((a, b) => a.finishAt - b.finishAt)
+          .map(a => ({name: format(a.finishAt, 'YYYY-MM-DD'), value: 1}));
+
+        const plan = getChartData(items);
+        const done = getChartData(doneItems);
+        this.chartData = [
+          { name: 'plan', series: plan },
+          { name: 'done', series: done }
+        ];
       })
     );
 

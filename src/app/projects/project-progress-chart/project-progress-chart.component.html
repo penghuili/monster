@@ -1,11 +1,13 @@
-<div [mstSize]="size" mstBorder>
-  <ngx-charts-line-chart
-    [results]="data"
-    [scheme]="colorScheme"
-    [xAxis]="true"
-    [yAxis]="true"
-    [showGridLines]="true"
-    [roundDomains]="true"
-    [autoScale]="true">
-    </ngx-charts-line-chart>
+<div mstBorder [mstPadding]="'0.5rem'" *ngIf="hasData()">
+  <div [mstSize]="size">
+    <ngx-charts-line-chart
+      [results]="data"
+      [scheme]="colorScheme"
+      [xAxis]="true"
+      [yAxis]="true"
+      [showGridLines]="true"
+      [roundDomains]="true"
+      [autoScale]="false">
+      </ngx-charts-line-chart>
+  </div>
 </div>
