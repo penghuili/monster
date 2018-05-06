@@ -4,14 +4,14 @@ import { Item, SortableItem } from './item';
 import { now } from './time';
 
 export interface ProjectBase extends SortableItem {
-  startDate: number;
-  endDate: number;
   result: string;
   status: ProjectStatus;
   note?: string;
   finishAt?: number;
 }
 export interface Project extends ProjectBase {
+  startDate: number;
+  endDate: number;
   subprojects: Subproject[];
 }
 export interface Subproject extends ProjectBase {
@@ -44,8 +44,6 @@ export function createSubproject(data: any): Subproject {
   return {
     id: `sp${timestamp}`,
     title: data.title,
-    startDate: data.startDate,
-    endDate: data.endDate,
     result: data.result,
     todos: data.todos,
     note: data.note,

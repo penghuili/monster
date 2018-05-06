@@ -1,16 +1,19 @@
 <div fxLayout="row" fxLayoutAlign="center" [mstPadding]="'1rem 0'">
-  <mst-icon name="add"></mst-icon>
+  <mst-icon name="add" (click)="onOpen()"></mst-icon>
 </div>
 
 <mst-overlay *ngIf="isShow">
     <mst-input
       [control]="titleControl"
-      [hasError]="hasError"
+      [hasError]="hasTitleError"
       [autoFocus]="true"></mst-input>
 
-    <mst-input
-      [control]="resultControl"
-      minHeight="3rem"></mst-input>
+    <div [mstPadding]="'1rem 0 0'">
+      <mst-input
+        [control]="resultControl"
+        [hasError]="hasResultError"
+        minHeight="3rem"></mst-input>
+    </div>
 
     <mst-cancel-confirm
       (confirm)="onFinish()"

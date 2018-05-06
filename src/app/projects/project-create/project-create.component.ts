@@ -44,12 +44,11 @@ export class ProjectCreateComponent {
     const title = this.titleControl.getValue();
     const result = this.resultControl.getValue();
     if (title && result) {
+      this.hasResultError = false;
       this.hasTitleError = false;
       const project = this.projectService.create({ title, result, startDate: this.startDate, endDate: this.endDate });
       this.create.emit(project);
       this.isShow = false;
-      this.hasResultError = false;
-      this.hasTitleError = false;
     } else {
       this.hasTitleError = !title;
       this.hasResultError = !result;

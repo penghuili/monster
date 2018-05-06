@@ -8,7 +8,7 @@ import { FONT_SIZE } from '@app/static';
   styleUrls: ['./project-progress-chart.component.scss']
 })
 export class ProjectProgressChartComponent {
-  @Input() size = '24rem 13.5rem';
+  @Input() size = '20rem 20rem';
   @Input() data = [
     {
       name: 'planed',

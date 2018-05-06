@@ -5,7 +5,7 @@ import { now, Project, Todo } from '@app/model';
 import { InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
 import { merge } from 'ramda';
-import { debounceTime, first } from 'rxjs/operators';
+import { debounceTime, first, tap, switchMap } from 'rxjs/operators';
 import { TodoTimerComponent } from './todo-timer/todo-timer.component';
 
 @Component({
@@ -35,12 +35,15 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   ngOnInit() {
     this.addSubscription(
       this.todoService.getById(this.route.snapshot.paramMap.get('id')).pipe(
-        first()
-      ).subscribe(todo => {
-        this.todo = todo;
-        this.currentProject = this.projectService.getById(this.todo.projectId);
-        this.titleControl.setValue(this.todo.title);
-        this.noteControl.setValue(this.todo.note);
+        first(),
+        tap(todo => {
+          this.todo = todo;
+          this.titleControl.setValue(this.todo.title);
+          this.noteControl.setValue(this.todo.note);
+        }),
+        switchMap(todo => this.projectService.getById(this.todo.projectId))
+      ).subscribe(project => {
+        this.currentProject = project;
       })
     );
 

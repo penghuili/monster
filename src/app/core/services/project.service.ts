@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { swapItems } from '@app/model';
-import { prepend } from 'ramda';
+import { find, findIndex, prepend } from 'ramda';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { filter, map } from 'rxjs/operators';
@@ -31,8 +31,10 @@ export class ProjectService {
       map(data => data.filter(a => a.id !== INBOX.id))
     );
   }
-  getById(id: string): Project {
-    return this.projects$.getValue().find(a => a.id === id);
+  getById(id: string): Observable<Project> {
+    return this.getAll().pipe(
+      map(projects => find(a => a.id === id, projects))
+    );
   }
   getCurrent(): Observable<Project> {
     return this.currentProjects$.asObservable();
@@ -50,6 +52,14 @@ export class ProjectService {
     const projects = prepend(p, MonsterStorage.get('projects'));
     this.updateProjects(projects);
     return p;
+  }
+  update(project: Project) {
+    const projects: Project[] = MonsterStorage.get('projects');
+    const index = findIndex(a => a.id === project.id, projects);
+    if (index >= 0) {
+      projects[index] = project;
+      this.updateProjects(projects);
+    }
   }
   swap(dragged: Project, dropped: Project) {
     const projects: Project[] = MonsterStorage.get('projects');

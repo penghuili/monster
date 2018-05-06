@@ -1,3 +1,28 @@
-<div [mstPadding]="'2rem 0 0'">
+<mst-input
+  [control]="titleControl"
+  [hasError]="hasTitleError"></mst-input>
+
+<div fxLayout="row" fxLayoutAlign="center center" [mstPadding]="'1rem 3rem'">
+  <mst-datepicker [defaultDate]="startDate" (finish)="onPickStartDate($event)"></mst-datepicker>
+  <div [mstSize]="'50%'" [mstTextAlign]="'center'">
+    <mst-icon name="arrow_forward"></mst-icon>
+  </div>
+  <mst-datepicker [defaultDate]="endDate" [startDate]="endDateStartDate" (finish)="onPickEndDate($event)"></mst-datepicker>
+</div>
+
+<mst-input
+  [control]="resultControl"
+  [hasError]="hasResultError"
+  minHeight="3rem"></mst-input>
+
+
+<div fxLayout="row" fxLayoutAlign="center" [mstPadding]="'2rem 0'">
   <mst-project-progress-chart></mst-project-progress-chart>
+</div>
+
+<mst-project-create-sub (create)="onCreateSub($event)"></mst-project-create-sub>
+
+<div *ngIf="project">
+  <mst-project-item *ngFor="let subproject of project.subprojects"
+    [project]="subproject"></mst-project-item>
 </div>
