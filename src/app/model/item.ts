@@ -52,7 +52,7 @@ export function mergeItems(income: Item[], source: Item[]): Item[] {
     return [];
   }
 }
-export function swapItems<T>(dragged: SortableItem, dropped: SortableItem, items: SortableItem[]): SortableItem[] {
+export function swapItems(dragged: SortableItem, dropped: SortableItem, items: SortableItem[]): SortableItem[] {
   const indexDragged = findIndex(a => a.id === dragged.id, items);
   const indexDropped = findIndex(a => a.id === dropped.id, items);
   if (indexDragged > -1 && indexDropped > -1) {
@@ -196,6 +196,9 @@ function newerItem(a: Item, b: Item): Item {
   } else {
     return a.createdAt - b.createdAt > 0 ? a : b;
   }
+}
+export function sortByPosition(items: SortableItem[]): SortableItem[] {
+  return items.sort((a, b) => b.position > a.position ? 1 : -1);
 }
 function appendOrUpdate(item: Item, items: Item[]): Item[] {
   if (!item || !items) {

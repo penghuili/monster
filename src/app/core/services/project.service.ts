@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { swapItems } from '@app/model';
-import { append, find, prepend } from 'ramda';
+import { prepend } from 'ramda';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { filter, map } from 'rxjs/operators';
 
-import { createProject, Project, ProjectStatus } from '../../model/project';
+import { createProject, Project } from '../../model/project';
 import { MonsterStorage } from '../../model/utils';
 import { INBOX } from '../../static/config';
 
@@ -15,10 +15,6 @@ export class ProjectService {
   private currentProjects$ = new BehaviorSubject<Project>(null);
 
   constructor() {
-    /**
-     * @todo delete this
-     */
-    this.addDefaults();
     const projects = MonsterStorage.get('projects');
     this.projects$.next(projects);
 
@@ -49,34 +45,17 @@ export class ProjectService {
     MonsterStorage.set('projects', projects);
     this.projects$.next(projects);
   }
-  create(data: any) {
+  create(data: any): Project {
     const p = createProject(data);
-    const projects = append(p, MonsterStorage.get('projects'));
+    const projects = prepend(p, MonsterStorage.get('projects'));
     this.updateProjects(projects);
+    return p;
   }
   swap(dragged: Project, dropped: Project) {
     const projects: Project[] = MonsterStorage.get('projects');
     const swapped = <Project[]>swapItems(dragged, dropped, projects);
     if (swapped) {
       this.updateProjects(swapped);
-    }
-  }
-
-  private addDefaults() {
-    const projects: Project[] = MonsterStorage.get('projects') || [];
-    const inbox: Project = {
-      id: INBOX.id,
-      title: 'inbox',
-      startDate: 0,
-      endDate: 0,
-      subprojects: [],
-      result: '',
-      status: ProjectStatus.InProgress
-    };
-    const p = find(a => a.id === inbox.id, projects);
-    if (!p) {
-      const ps = append(inbox, projects);
-      this.updateProjects(ps);
     }
   }
 }

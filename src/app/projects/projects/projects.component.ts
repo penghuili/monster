@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService } from '@app/core';
-import { Project, ProjectStatus } from '@app/model';
+import { Project, ProjectStatus, sortByPosition } from '@app/model';
 import { ROUTES, Unsub } from '@app/static';
 
 @Component({
@@ -25,16 +25,13 @@ export class ProjectsComponent extends Unsub implements OnInit {
   ngOnInit() {
     this.addSubscription(
       this.projectService.getAll().subscribe(projects => {
-        this.updateProjects(projects);
+        this.updateProjects(<Project[]>sortByPosition(projects));
       })
     );
   }
 
   onShowDetail(project: Project) {
     this.router.navigate([ project.id ], { relativeTo: this.route });
-  }
-  onGotoCreate() {
-    this.router.navigate([ ROUTES.CREATE ], { relativeTo: this.route });
   }
   onDragStart(dragIndex: number) {
     this.dragIndex = dragIndex;

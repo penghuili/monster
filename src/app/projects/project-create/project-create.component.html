@@ -1,23 +1,25 @@
-<mst-input
-  [control]="titleControl"
-  [hasError]="hasError"
-  [autoFocus]="true"></mst-input>
+<mst-action-button [showPlus]="true" (clicked)="onOpen()"></mst-action-button>
 
-<div fxLayout="row" fxLayoutAlign="center center" [mstPadding]="'1rem 3rem'">
-  <mst-datepicker [defaultDate]="startDate" (finish)="onPickStartDate($event)"></mst-datepicker>
-  <div [mstSize]="'50%'" [mstTextAlign]="'center'">
-    <mst-icon name="arrow_forward"></mst-icon>
+<mst-overlay *ngIf="isShow">
+  <mst-input
+    [control]="titleControl"
+    [hasError]="hasTitleError"
+    [autoFocus]="true"></mst-input>
+  
+  <div fxLayout="row" fxLayoutAlign="center center" [mstPadding]="'1rem 3rem'">
+    <mst-datepicker [defaultDate]="startDate" (finish)="onPickStartDate($event)"></mst-datepicker>
+    <div [mstSize]="'50%'" [mstTextAlign]="'center'">
+      <mst-icon name="arrow_forward"></mst-icon>
+    </div>
+    <mst-datepicker [defaultDate]="endDate" [startDate]="endDateStartDate" (finish)="onPickEndDate($event)"></mst-datepicker>
   </div>
-  <mst-datepicker [defaultDate]="endDate" [startDate]="endDateStartDate" (finish)="onPickEndDate($event)"></mst-datepicker>
-</div>
+  
+  <mst-input
+    [control]="resultControl"
+    [hasError]="hasResultError"
+    minHeight="3rem"></mst-input>
 
-<mst-input
-  [control]="resultControl"
-  minHeight="3rem"></mst-input>
-
-<div fxLayout="row" fxLayoutAlign="center" [mstPadding]="'1rem 0'">
-  <mst-icon name="add"></mst-icon>
-</div>
-
-<mst-project-item *ngFor="let subproject of subprojects"
-  [project]="subproject"></mst-project-item>
+  <mst-cancel-confirm
+    (confirm)="onFinish()"
+    (cancel)="onCancel()"></mst-cancel-confirm>
+</mst-overlay>

@@ -11,10 +11,6 @@ const projectsRoutes: Routes = [
     path: ROUTES.PROJECTS,
     children: [
       {
-        path: ROUTES.CREATE,
-        component: ProjectCreateComponent
-      },
-      {
         path: ':id',
         component: ProjectDetailComponent
       },
