@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { now } from '@app/model';
+import { now, Subproject } from '@app/model';
 import { InputControl } from '@app/shared';
 import { addDays } from 'date-fns';
 
@@ -17,6 +17,8 @@ export class ProjectCreateComponent implements OnInit {
   startDate = now();
   endDate = addDays(this.startDate, 1).getTime();
   endDateStartDate = addDays(this.startDate, 1).getTime();
+
+  subprojects: Subproject[] = [];
 
   constructor() { }
 

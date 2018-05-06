@@ -15,6 +15,9 @@
   [control]="resultControl"
   minHeight="3rem"></mst-input>
 
-<div [mstPadding]="'2rem 0 0'">
-  <mst-project-progress-chart></mst-project-progress-chart>
+<div fxLayout="row" fxLayoutAlign="center" [mstPadding]="'1rem 0'">
+  <mst-icon name="add"></mst-icon>
 </div>
+
+<mst-project-item *ngFor="let subproject of subprojects"
+  [project]="subproject"></mst-project-item>

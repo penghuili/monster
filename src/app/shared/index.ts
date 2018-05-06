@@ -39,3 +39,5 @@ export * from './button/button.module';
 export * from './pipes/pipes.module';
 
 export * from './progress/progress.module';
+
+export * from './within-app/within-app.module';

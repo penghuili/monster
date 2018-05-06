@@ -1,9 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { ButtonModule, DatepickerModule, DragDropModule, IconModule, InputModule, StylingModule } from '@app/shared';
+import {
+  ButtonModule,
+  DatepickerModule,
+  DragDropModule,
+  IconModule,
+  InputModule,
+  MonsterCommonModule,
+  OverlayModule,
+  StylingModule,
+} from '@app/shared';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
+import { ProjectCreateSubComponent } from './project-create-sub/project-create-sub.component';
 import { ProjectCreateComponent } from './project-create/project-create.component';
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { ProjectItemComponent } from './project-item/project-item.component';
@@ -22,6 +32,8 @@ import { ProjectsComponent } from './projects/projects.component';
     FlexLayoutModule,
     IconModule,
     NgxChartsModule,
+    MonsterCommonModule,
+    OverlayModule,
 
     ProjectsRoutingModule
   ],
@@ -30,7 +42,8 @@ import { ProjectsComponent } from './projects/projects.component';
     ProjectCreateComponent,
     ProjectDetailComponent,
     ProjectItemComponent,
-    ProjectProgressChartComponent
+    ProjectProgressChartComponent,
+    ProjectCreateSubComponent
   ]
 })
 export class ProjectsModule { }

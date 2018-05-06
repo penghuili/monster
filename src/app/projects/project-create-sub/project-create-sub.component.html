@@ -1,0 +1,18 @@
+<div fxLayout="row" fxLayoutAlign="center" [mstPadding]="'1rem 0'">
+  <mst-icon name="add"></mst-icon>
+</div>
+
+<mst-overlay *ngIf="isShow">
+    <mst-input
+      [control]="titleControl"
+      [hasError]="hasError"
+      [autoFocus]="true"></mst-input>
+
+    <mst-input
+      [control]="resultControl"
+      minHeight="3rem"></mst-input>
+
+    <mst-cancel-confirm
+      (confirm)="onFinish()"
+      (cancel)="onCancel()"></mst-cancel-confirm>
+</mst-overlay>

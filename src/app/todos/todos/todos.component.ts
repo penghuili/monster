@@ -46,7 +46,7 @@ export class TodosComponent extends Unsub implements OnInit {
     this.activeTab = tab;
     this.updateActiveTodos(this.todos, this.activeTab);
   }
-  onGotoCreate() {
+  onCreate() {
     this.router.navigate([ ROUTES.CREATE ], { relativeTo: this.route });
   }
   onShowDetail(todo: Todo) {

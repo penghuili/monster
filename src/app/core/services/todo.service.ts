@@ -32,11 +32,12 @@ export class TodoService {
       map(todos => todos.find(a => a.id === id))
     );
   }
-  create(data: any) {
+  create(data: any): Todo {
     const todo = createTodo(data);
     const todos = MonsterStorage.get('todos');
     const added = prepend(todo, todos);
     this.updateTodos(added);
+    return todo;
   }
   update(todo: Todo) {
     const todos: Todo[] = MonsterStorage.get('todos');

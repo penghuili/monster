@@ -9,13 +9,13 @@ import {
   InputModule,
   ListModule,
   MonsterCommonModule,
+  OverlayModule,
   ProgressModule,
   StylingModule,
+  WithinAppModule,
 } from '@app/shared';
 import { DndModule } from 'ngx-drag-drop';
 
-import { ProjectListComponent } from './project-list/project-list.component';
-import { TodoCreateComponent } from './todo-create/todo-create.component';
 import { TodoDetailComponent } from './todo-detail/todo-detail.component';
 import { TodoTimerComponent } from './todo-detail/todo-timer/todo-timer.component';
 import { TodoItemComponent } from './todo-item/todo-item.component';
@@ -36,16 +36,16 @@ import { TodosComponent } from './todos/todos.component';
     FlexLayoutModule,
     DragDropModule,
     ProgressModule,
+    OverlayModule,
+    WithinAppModule,
 
     TodosRoutingModule
   ],
   declarations: [
     TodosComponent,
     TodoItemComponent,
-    TodoCreateComponent,
     TodoDetailComponent,
     TodoTimerComponent,
-    ProjectListComponent
   ]
 })
 export class TodosModule { }

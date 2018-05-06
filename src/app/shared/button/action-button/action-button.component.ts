@@ -8,11 +8,14 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 })
 export class ActionButtonComponent {
   @Input() showPlus = false;
+  @Input() hasContent = false;
   @Output() clicked = new EventEmitter<boolean>();
   showContent = false;
 
   onClick() {
-    this.showContent = true;
+    if (this.hasContent) {
+      this.showContent = true;
+    }
     this.clicked.emit(true);
   }
   onHideContent() {

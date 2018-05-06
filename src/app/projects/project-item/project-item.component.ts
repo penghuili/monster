@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Project, ProjectStatus } from '@app/model';
+import { ProjectBase, ProjectStatus } from '@app/model';
 
 @Component({
   selector: 'mst-project-item',
@@ -8,7 +8,7 @@ import { Project, ProjectStatus } from '@app/model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProjectItemComponent {
-  @Input() project: Project;
+  @Input() project: ProjectBase;
 
   ProjectStatus = ProjectStatus;
 }

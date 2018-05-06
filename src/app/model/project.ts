@@ -3,7 +3,7 @@ import { Todo } from '@app/model';
 import { Item, SortableItem } from './item';
 import { now } from './time';
 
-interface ProjectBase extends SortableItem {
+export interface ProjectBase extends SortableItem {
   startDate: number;
   endDate: number;
   result: string;
