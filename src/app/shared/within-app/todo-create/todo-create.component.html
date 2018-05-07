@@ -14,6 +14,8 @@
         (selected)="onSelectSubproject($event)">
       </mst-project-list>
 
+      <mst-todo-status-picker (select)="onSelectStatus($event)"></mst-todo-status-picker>
+    
       <mst-datepicker *ngIf="subproject || (currentSubproject && currentSubproject.id !== INBOX.id)" (finish)="onFinishPickDate($event)"></mst-datepicker>
       <mst-duration-picker [duration]="expectedTime" (change)="onDurationChange($event)"></mst-duration-picker>
   </div>

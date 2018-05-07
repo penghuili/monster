@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TodoService } from '@app/core';
-import { now, Subproject, Todo } from '@app/model';
+import { now, Subproject, Todo, TodoStatus } from '@app/model';
 import { INBOX } from '@app/static';
 
 import { InputControl } from '../../input/input-control';
@@ -18,6 +18,10 @@ export class TodoCreateComponent {
 
   titleControl = new InputControl('');
   noteControl = new InputControl('');
+  /**
+   * @todo this is not good, create a select component
+   */
+  status: TodoStatus = TodoStatus.InProgress;
   happenDate = now();
   expectedTime = 0;
   hasError = false;
@@ -34,6 +38,9 @@ export class TodoCreateComponent {
   onSelectSubproject(project: Subproject) {
     this.currentSubproject = project;
   }
+  onSelectStatus(status: TodoStatus) {
+    this.status = status;
+  }
   onFinishPickDate(date: number) {
     this.happenDate = date;
   }
@@ -43,12 +50,16 @@ export class TodoCreateComponent {
   onCreate() {
     const title = this.titleControl.getValue();
     const note = this.noteControl.getValue();
-    const expectedTime = this.expectedTime;
     const subproject = this.subproject || this.currentSubproject;
-    const happenDate = this.happenDate;
     if (title) {
       this.hasError = false;
-      const todo = { title, note, subprojectId: subproject.id, expectedTime, happenDate };
+      const todo = {
+        title, note,
+        subprojectId: subproject.id,
+        status: this.status,
+        expectedTime: this.expectedTime,
+        happenDate: this.happenDate
+      };
       const newTodo = this.todoService.create(todo);
       this.newTodo.emit(newTodo);
       this.isShow = false;

@@ -126,6 +126,10 @@
       "mst",
       "camelCase"
     ],
+    "pipe-naming": [
+      "camelCase",
+      "mst"
+    ],
     "component-selector": [
       true,
       "element",

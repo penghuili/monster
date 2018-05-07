@@ -21,6 +21,7 @@ export interface Subproject extends ProjectBase {
 }
 export enum ProjectStatus {
   InProgress,
+  Someday,
   Done
 }
 export interface ChartDataItem {
