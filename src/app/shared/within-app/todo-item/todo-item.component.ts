@@ -11,4 +11,9 @@ export class TodoItemComponent {
   @Input() todo: Todo;
 
   TodoStatus = TodoStatus;
+
+  getColor(): string {
+    return this.todo.status === TodoStatus.Done || this.todo.status === TodoStatus.WontDo ? 'grey' :
+      this.todo.status === TodoStatus.Waiting ? 'green' : null;
+  }
 }

@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { filterDefaults, getDragImageOffsetFunction, Item, moveItem, PipeMeta, PipeType } from '@app/model';
 import { DndDropEvent } from 'ngx-drag-drop';
 
 @Component({

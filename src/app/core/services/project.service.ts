@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
-import { swapItems } from '@app/model';
-import { append, find, findIndex, prepend } from 'ramda';
+import { swapItems, Todo } from '@app/model';
+import { append, find, findIndex, merge, prepend } from 'ramda';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { of } from 'rxjs/observable/of';
 import { filter, map } from 'rxjs/operators';
 
 import { createProject, createSubproject, Project, Subproject } from '../../model/project';
 import { MonsterStorage } from '../../model/utils';
-import { INBOX } from '../../static/config';
 
 @Injectable()
 export class ProjectService {
@@ -29,6 +30,19 @@ export class ProjectService {
   getProjectById(id: string): Observable<Project> {
     return this.getProjects().pipe(
       map(projects => find(a => a.id === id, projects))
+    );
+  }
+  addProjectTitleToTodos(todos: Todo[]): Observable<Todo[]> {
+    if (!todos || todos.length === 0) {
+      return of([]);
+    }
+    return combineLatest(this.getProjects(), this.getSubprojects()).pipe(
+      map(([projects, subprojects]) => {
+        return todos
+          .map(a => find(b => b.id === a.subprojectId, subprojects))
+          .map(a => find(b => b.id === a.projectId, projects))
+          .map((a, i) => merge(todos[i], { projectTitle: a.title }));
+      })
     );
   }
   getSubprojects(projectId?: string): Observable<Subproject[]> {

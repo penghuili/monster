@@ -1,4 +1,3 @@
-import { ALL, INBOX } from '@app/static';
 import { append, concat, drop, find, findIndex, insert, merge, update } from 'ramda';
 
 import { now } from './time';
@@ -165,9 +164,6 @@ export function moveItem(from: number, to: number, items: Item[]) {
   const withoutMe = items.filter(a => a.id !== source.id);
   const inserted = insert(to, source, withoutMe);
   return inserted;
-}
-export function filterDefaults(items: Item[]) {
-  return items.filter(a => a.id !== INBOX.id && a.id !== ALL.id);
 }
 export function dropRepeats(items: Item[]): Item[] {
   if (!items || items.length === 0) {

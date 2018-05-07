@@ -41,6 +41,7 @@ export class ProcessDataComponent implements OnInit {
   onDeleteTodos() {
     MonsterStorage.remove('in-progress');
     MonsterStorage.remove('done-recently');
+    MonsterStorage.remove('tags');
     this.todoService.updateTodos([]);
     this.notificationService.sendMessage('Delete todos success :>');
   }

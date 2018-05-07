@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TodoService } from '@app/core';
 import { now, Subproject, Todo, TodoStatus } from '@app/model';
-import { INBOX } from '@app/static';
 
 import { InputControl } from '../../input/input-control';
 
@@ -21,10 +20,10 @@ export class TodoCreateComponent {
   status: TodoStatus;
   happenDate = now();
   expectedTime = 0;
-  hasError = false;
+  hasTitleError = false;
+  hasSubprojectError = false;
 
-  currentSubproject: Subproject = <any>INBOX;
-  INBOX = INBOX;
+  currentSubproject: Subproject;
 
   constructor(private todoService: TodoService) {
   }
@@ -48,8 +47,9 @@ export class TodoCreateComponent {
     const title = this.titleControl.getValue();
     const note = this.noteControl.getValue();
     const subproject = this.subproject || this.currentSubproject;
-    if (title) {
-      this.hasError = false;
+    if (title && subproject) {
+      this.hasTitleError = false;
+      this.hasSubprojectError = false;
       const todo = {
         title, note,
         subprojectId: subproject.id,
@@ -61,7 +61,8 @@ export class TodoCreateComponent {
       this.newTodo.emit(newTodo);
       this.isShow = false;
     } else {
-      this.hasError = true;
+      this.hasTitleError = !title;
+      this.hasSubprojectError = !subproject;
     }
   }
   onCancel() {

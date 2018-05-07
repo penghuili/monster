@@ -1,4 +1,3 @@
-import { INBOX } from '../static/config';
 import { SortableItem } from './item';
 import { now } from './time';
 
@@ -13,6 +12,7 @@ export interface Todo extends SortableItem {
   activities: TodoActivity[];
   nextId?: string;
   prevId?: string;
+  projectTitle?: string;
 }
 export interface TodoActivity {
   startAt: number;
@@ -25,13 +25,16 @@ export enum TodoStatus {
   Done,
   WontDo
 }
+export interface TodoGroup {
+  [key: string]: Todo[];
+}
 
 export function createTodo(data: any): Todo {
   const timestamp = now();
   return {
     id: `t${timestamp}`,
     title: data.title,
-    subprojectId: data.subprojectId || INBOX.id,
+    subprojectId: data.subprojectId,
     note: data.note,
     happenDate: data.happenDate || timestamp,
     expectedTime: data.expectedTime || 0,

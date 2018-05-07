@@ -6,7 +6,6 @@ import { DndHandleDirective, DndModule } from 'ngx-drag-drop';
 import { IconModule } from '../icon/icon.module';
 import { OverlayModule } from '../overlay/overlay.module';
 import { StylingModule } from '../styling/styling.module';
-import { DragDropListComponent } from './drag-drop-list/drag-drop-list.component';
 import { DragItemComponent } from './drag-item/drag-item.component';
 import { DropZoneComponent } from './drop-zone/drop-zone.component';
 
@@ -20,12 +19,10 @@ import { DropZoneComponent } from './drop-zone/drop-zone.component';
     OverlayModule
   ],
   declarations: [
-    DragDropListComponent,
     DragItemComponent,
     DropZoneComponent,
   ],
   exports: [
-    DragDropListComponent,
     DragItemComponent,
     DropZoneComponent,
   ]

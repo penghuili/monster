@@ -2,27 +2,42 @@
   <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === TODAY" (click)="onChangeTab(TODAY)">today</div>
   <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === IN3DAYS" (click)="onChangeTab(IN3DAYS)">3 days</div>
   <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === IN7DAYS" (click)="onChangeTab(IN7DAYS)">7 days</div>
-  <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === INBOX" (click)="onChangeTab(INBOX)">inbox</div>
 </div>
 
-<mst-drop-zone [dragIndex]="dragIndex" (drop)="onDrop($event)">
-  <mst-drag-item *ngFor="let todo of activeTodos; let i = index;"
-    [item]="todo"
-    [index]="i"
-    (start)="onDragStart($event)">
-    <mst-todo-item
-      [todo]="todo"
-      (click)="onShowDetail(todo)">
-    </mst-todo-item>
-  </mst-drag-item>
-</mst-drop-zone>
+<ng-container *ngIf="activeGroups && activeGroups.length > 0">
+  <div *ngFor="let group of activeGroups">
+    <div [mstPadding]="'0.5rem 0 0'">
+      {{group}}
+    </div>
+    <div [mstPadding]="'0.5rem 0 0.5rem 1rem'">
+      <mst-drop-zone [dragIndex]="dragIndex" (drop)="onDrop($event, group)">
+        <mst-drag-item *ngFor="let todo of activeTodoGroup[group]; let i = index;"
+          [item]="todo"
+          [index]="i"
+          (start)="onDragStart($event, group)">
+          <mst-todo-item
+            [todo]="todo"
+            (click)="onShowDetail(todo)">
+          </mst-todo-item>
+        </mst-drag-item>
+      </mst-drop-zone>
+    </div>
+  </div>
+</ng-container>
 
-<ng-container *ngIf="doneTodos && doneTodos.length > 0">
+<ng-container *ngIf="doneGroups && doneGroups.length > 0">
   <div [mstTextAlign]="'center'" [mstPadding]="'2rem 0 0'">Done</div>
-  <mst-todo-item *ngFor="let todo of doneTodos"
-    [todo]="todo"
-    (click)="onShowDetail(todo)">
-  </mst-todo-item>
+  <div *ngFor="let group of doneGroups">
+    <div [mstPadding]="'0.5rem 0 0'">
+      {{group}}
+    </div>
+    <div [mstPadding]="'0.5rem 0 0.5rem 1rem'">
+      <mst-todo-item *ngFor="let todo of doneTodoGroup[group]"
+        [todo]="todo"
+        (click)="onShowDetail(todo)">
+      </mst-todo-item>
+    </div>
+  </div>
 </ng-container>
 
 <mst-todo-create [useActionButton]="true"></mst-todo-create>
