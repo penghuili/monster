@@ -45,7 +45,7 @@ export class ProjectsComponent extends Unsub implements OnInit {
   }
 
   private updateProjects(projects: Project[]) {
-    this.activeProjects = projects.filter(a => a.status === ProjectStatus.InProgress);
+    this.activeProjects = projects.filter(a => a.status !== ProjectStatus.Done);
     this.doneProjects = projects.filter(a => a.status === ProjectStatus.Done).sort((a, b) => b.finishAt - a.finishAt);
   }
 

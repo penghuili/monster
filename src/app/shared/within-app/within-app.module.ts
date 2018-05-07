@@ -10,10 +10,14 @@ import { IconModule } from '../icon/icon.module';
 import { InputModule } from '../input/input.module';
 import { OverlayModule } from '../overlay/overlay.module';
 import { StylingModule } from '../styling/styling.module';
+import { ProjectStatusPipe } from './pipes/project-status.pipe';
+import { TodoStatusPipe } from './pipes/todo-status.pipe';
 import { ProjectItemComponent } from './project-item/project-item.component';
 import { ProjectListComponent } from './project-list/project-list.component';
+import { ProjectStatusPickerComponent } from './project-status-picker/project-status-picker.component';
 import { TodoCreateComponent } from './todo-create/todo-create.component';
 import { TodoItemComponent } from './todo-item/todo-item.component';
+import { TodoStatusPickerComponent } from './todo-status-picker/todo-status-picker.component';
 
 @NgModule({
   imports: [
@@ -32,13 +36,22 @@ import { TodoItemComponent } from './todo-item/todo-item.component';
     TodoCreateComponent,
     ProjectListComponent,
     TodoItemComponent,
-    ProjectItemComponent
+    ProjectItemComponent,
+    TodoStatusPipe,
+    TodoStatusPickerComponent,
+    ProjectStatusPickerComponent,
+    ProjectStatusPipe
   ],
   exports: [
+    TodoStatusPipe,
+    ProjectStatusPipe,
+
     TodoCreateComponent,
     ProjectListComponent,
     TodoItemComponent,
-    ProjectItemComponent
+    ProjectItemComponent,
+    TodoStatusPickerComponent,
+    ProjectStatusPickerComponent
   ]
 })
 export class WithinAppModule { }

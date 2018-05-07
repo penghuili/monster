@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService, TodoService } from '@app/core';
-import { ChartDataItem, getChartData, now, Project, Subproject, TodoStatus } from '@app/model';
+import { ChartDataItem, getChartData, now, Project, ProjectStatus, Subproject, TodoStatus } from '@app/model';
 import { InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
 import { addDays, format } from 'date-fns';
@@ -22,6 +22,7 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
   hasTitleError = false;
   hasResultError = false;
 
+  status: ProjectStatus;
   startDate: number;
   endDate: number;
   endDateStartDate: number;
@@ -45,6 +46,7 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
           this.project = project;
           this.titleControl.setValue(project.title);
           this.resultControl.setValue(project.result);
+          this.status = this.project.status;
           this.startDate = project.startDate;
           this.endDateStartDate = addDays(this.startDate, 1).getTime();
           this.endDate = project.endDate;
@@ -91,6 +93,10 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
     );
   }
 
+  onSelectStatus(status: ProjectStatus) {
+    this.status = status;
+    this.update({ status });
+  }
   onPickStartDate(date: number) {
     this.startDate = date;
     this.update({ startDate: date });

@@ -20,6 +20,8 @@ export interface TodoActivity {
 }
 export enum TodoStatus {
   InProgress,
+  Waiting,
+  Someday,
   Done
 }
 
@@ -32,7 +34,7 @@ export function createTodo(data: any): Todo {
     note: data.note,
     happenDate: data.happenDate || timestamp,
     expectedTime: data.expectedTime || 0,
-    status: TodoStatus.InProgress,
+    status: data.status,
     position: timestamp.toString() + '3',
     activities: [],
     createdAt: timestamp,

@@ -77,7 +77,7 @@ export class TodosComponent extends Unsub implements OnInit {
     } else {
       filtered = todos.filter(a => a.subprojectId === INBOX.id);
     }
-    this.activeTodos = filtered.filter(a => a.status === TodoStatus.InProgress);
+    this.activeTodos = filtered.filter(a => a.status !== TodoStatus.Done);
     this.doneTodos = filtered.filter(a => a.status === TodoStatus.Done).sort((a, b) => b.finishAt - a.finishAt);
   }
 }
