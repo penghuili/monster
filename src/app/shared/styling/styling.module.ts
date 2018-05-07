@@ -5,6 +5,7 @@ import { BorderDirective } from './border.directive';
 import { ColorDirective } from './color.directive';
 import { CursorDirective } from './cursor.directive';
 import { FontDirective } from './font.directive';
+import { LineHeightDirective } from './line-height.directive';
 import { NoSelectDirective } from './no-select.directive';
 import { PaddingDirective } from './padding.directive';
 import { SizeDirective } from './size.directive';
@@ -24,7 +25,8 @@ import { WrapperComponent } from './wrapper/wrapper.component';
     CursorDirective,
     FontDirective,
     NoSelectDirective,
-    BorderDirective
+    BorderDirective,
+    LineHeightDirective
   ],
   exports: [
     WrapperComponent,
@@ -36,7 +38,8 @@ import { WrapperComponent } from './wrapper/wrapper.component';
     CursorDirective,
     FontDirective,
     NoSelectDirective,
-    BorderDirective
+    BorderDirective,
+    LineHeightDirective
   ]
 })
 export class StylingModule { }
