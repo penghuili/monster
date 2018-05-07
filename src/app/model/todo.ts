@@ -13,6 +13,7 @@ export interface Todo extends SortableItem {
   activities: TodoActivity[];
   nextId?: string;
   prevId?: string;
+  projectTitle?: string;
 }
 export interface TodoActivity {
   startAt: number;
@@ -24,6 +25,9 @@ export enum TodoStatus {
   Someday,
   Done,
   WontDo
+}
+export interface TodoGroup {
+  [key: string]: Todo[];
 }
 
 export function createTodo(data: any): Todo {

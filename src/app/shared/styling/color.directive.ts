@@ -6,9 +6,7 @@ import { COLORS, isColorWrong } from '@app/model';
   selector: '[mstColor]'
 })
 export class ColorDirective implements OnChanges {
-  // 'primary', 'accent', 'grey', 'white'
   @Input() mstColor: string;
-  // 'primary', 'accent', 'grey'
   @Input('mstColor.bg') mstColorBg: string;
 
   constructor(private elementRef: ElementRef) {}
@@ -37,6 +35,9 @@ export class ColorDirective implements OnChanges {
       case 'white':
        color = COLORS.WHITE;
        break;
+      case 'green':
+       color = COLORS.GREEN;
+       break;
 
       default:
         color = COLORS.PRIMARY;
@@ -54,6 +55,9 @@ export class ColorDirective implements OnChanges {
         break;
       case 'accent':
         color = COLORS.ACCENT;
+        break;
+      case 'green':
+        color = COLORS.GREEN;
         break;
       case 'grey':
         color = COLORS.GREY;
