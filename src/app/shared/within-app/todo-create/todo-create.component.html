@@ -4,19 +4,20 @@
 <mst-overlay *ngIf="isShow">
   <mst-input
     [control]="titleControl"
-    [hasError]="hasError"
+    [hasError]="hasTitleError"
     [autoFocus]="true"></mst-input>
   
     <div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'1rem 0'">
       <div *ngIf="subproject">{{ subproject.title }}</div>
       <mst-project-list *ngIf="!subproject"
         [activeSubproject]="currentSubproject"
+        [hasError]="hasSubprojectError"
         (selected)="onSelectSubproject($event)">
       </mst-project-list>
 
       <mst-todo-status-picker (select)="onSelectStatus($event)"></mst-todo-status-picker>
     
-      <mst-datepicker *ngIf="subproject || (currentSubproject && currentSubproject.id !== INBOX.id)" (finish)="onFinishPickDate($event)"></mst-datepicker>
+      <mst-datepicker (finish)="onFinishPickDate($event)"></mst-datepicker>
       <mst-duration-picker [duration]="expectedTime" (change)="onDurationChange($event)"></mst-duration-picker>
   </div>
   

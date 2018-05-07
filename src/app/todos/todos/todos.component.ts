@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService, TodoService } from '@app/core';
 import { MonsterStorage, now, Project, Todo, TodoGroup, TodoStatus } from '@app/model';
-import { INBOX, ROUTES, Unsub } from '@app/static';
+import { ROUTES, Unsub } from '@app/static';
 import { addDays, endOfDay } from 'date-fns';
 import { groupBy, keys } from 'ramda';
 import { switchMap } from 'rxjs/operators';
@@ -23,7 +23,6 @@ export class TodosComponent extends Unsub implements OnInit {
   TODAY = 'today';
   IN3DAYS = '3days';
   IN7DAYS = '7days';
-  INBOX = 'inbox';
   activeTab: string;
 
   private todos: Todo[];
@@ -84,13 +83,11 @@ export class TodosComponent extends Unsub implements OnInit {
     const endOf7Days = endOfDay(addDays(now(), 7)).getTime();
     let filtered: Todo[];
     if (activeTab === this.TODAY) {
-      filtered = todos.filter(a => a.subprojectId !== INBOX.id && a.happenDate - endOfToday <= 0);
+      filtered = todos.filter(a => a.happenDate - endOfToday <= 0);
     } else if (activeTab === this.IN3DAYS) {
-      filtered = todos.filter(a => a.subprojectId !== INBOX.id && a.happenDate > endOfToday && a.happenDate <= endof3Days);
-    } else if (activeTab === this.IN7DAYS) {
-      filtered = todos.filter(a => a.subprojectId !== INBOX.id && a.happenDate > endof3Days && a.happenDate <= endOf7Days);
+      filtered = todos.filter(a => a.happenDate > endOfToday && a.happenDate <= endof3Days);
     } else {
-      filtered = todos.filter(a => a.subprojectId === INBOX.id);
+      filtered = todos.filter(a => a.happenDate > endof3Days && a.happenDate <= endOf7Days);
     }
     this.activeTodoGroup = this.groupTodos(
       filtered

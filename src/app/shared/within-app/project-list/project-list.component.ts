@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } fro
 import { Router } from '@angular/router';
 import { ProjectService } from '@app/core';
 import { Project, ProjectStatus, Subproject } from '@app/model';
-import { INBOX, ROUTES, Unsub } from '@app/static';
+import { ROUTES, Unsub } from '@app/static';
 import { switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 
@@ -13,7 +13,8 @@ import { Subject } from 'rxjs/Subject';
   encapsulation: ViewEncapsulation.Emulated
 })
 export class ProjectListComponent extends Unsub implements OnInit {
-  @Input() activeSubproject: Subproject = <any>INBOX;
+  @Input() activeSubproject: Subproject;
+  @Input() hasError: boolean;
   @Output() selected = new EventEmitter<Subproject>();
 
   projects: Project[];

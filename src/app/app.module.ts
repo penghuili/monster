@@ -10,7 +10,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ProjectsModule } from './projects/projects.module';
 import { SettingsModule } from './settings/settings.module';
-import { TagsModule } from './tags/tags.module';
 import { TodosModule } from './todos/todos.module';
 
 @NgModule({
@@ -29,7 +28,6 @@ import { TodosModule } from './todos/todos.module';
 
     TodosModule,
     ProjectsModule,
-    TagsModule,
     SettingsModule,
     AppRoutingModule
   ],

@@ -1,4 +1,3 @@
-import { INBOX } from '../static/config';
 import { SortableItem } from './item';
 import { now } from './time';
 
@@ -35,7 +34,7 @@ export function createTodo(data: any): Todo {
   return {
     id: `t${timestamp}`,
     title: data.title,
-    subprojectId: data.subprojectId || INBOX.id,
+    subprojectId: data.subprojectId,
     note: data.note,
     happenDate: data.happenDate || timestamp,
     expectedTime: data.expectedTime || 0,

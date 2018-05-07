@@ -2,20 +2,7 @@
   <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === TODAY" (click)="onChangeTab(TODAY)">today</div>
   <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === IN3DAYS" (click)="onChangeTab(IN3DAYS)">3 days</div>
   <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === IN7DAYS" (click)="onChangeTab(IN7DAYS)">7 days</div>
-  <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === INBOX" (click)="onChangeTab(INBOX)">inbox</div>
 </div>
-
-<!-- <mst-drop-zone [dragIndex]="dragIndex" (drop)="onDrop($event)">
-  <mst-drag-item *ngFor="let todo of activeTodos; let i = index;"
-    [item]="todo"
-    [index]="i"
-    (start)="onDragStart($event)">
-    <mst-todo-item
-      [todo]="todo"
-      (click)="onShowDetail(todo)">
-    </mst-todo-item>
-  </mst-drag-item>
-</mst-drop-zone> -->
 
 <ng-container *ngIf="activeGroups && activeGroups.length > 0">
   <div *ngFor="let group of activeGroups">
@@ -23,11 +10,6 @@
       {{group}}
     </div>
     <div [mstPadding]="'0.5rem 0 0.5rem 1rem'">
-      <!-- <mst-todo-item *ngFor="let todo of activeTodoGroup[group]"
-        [todo]="todo"
-        (click)="onShowDetail(todo)">
-      </mst-todo-item> -->
-
       <mst-drop-zone [dragIndex]="dragIndex" (drop)="onDrop($event, group)">
         <mst-drag-item *ngFor="let todo of activeTodoGroup[group]; let i = index;"
           [item]="todo"

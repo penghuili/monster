@@ -3,6 +3,5 @@ export const ROUTES = {
   PROJECTS: 'projects',
   CREATE: 'create',
   SETTINGS: 'settings',
-  PROCESS: 'process',
-  TAGS: 'tags'
+  PROCESS: 'process'
 };
