@@ -1,3 +1,10 @@
+v1.2.0
+
+feature:
+
+- add won't do to todos
+- group todos
+
 v1.1.1
 
 bug:
