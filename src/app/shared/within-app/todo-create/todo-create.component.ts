@@ -18,10 +18,7 @@ export class TodoCreateComponent {
 
   titleControl = new InputControl('');
   noteControl = new InputControl('');
-  /**
-   * @todo this is not good, create a select component
-   */
-  status: TodoStatus = TodoStatus.InProgress;
+  status: TodoStatus;
   happenDate = now();
   expectedTime = 0;
   hasError = false;
@@ -56,7 +53,7 @@ export class TodoCreateComponent {
       const todo = {
         title, note,
         subprojectId: subproject.id,
-        status: this.status,
+        status: this.status === undefined ? TodoStatus.InProgress : this.status,
         expectedTime: this.expectedTime,
         happenDate: this.happenDate
       };

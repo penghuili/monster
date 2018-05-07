@@ -6,12 +6,15 @@
     [hasError]="hasTitleError"
     [autoFocus]="true"></mst-input>
   
-  <div fxLayout="row" fxLayoutAlign="center center" [mstPadding]="'1rem 3rem'">
-    <mst-datepicker [defaultDate]="startDate" (finish)="onPickStartDate($event)"></mst-datepicker>
-    <div [mstSize]="'50%'" [mstTextAlign]="'center'">
-      <mst-icon name="arrow_forward"></mst-icon>
+  <div fxLayout="row" fxLayoutAlign="center center" [mstPadding]="'1rem'">
+    <div fxFlex="30%">
+      <mst-project-status-picker (select)="onSelectStatus($event)"></mst-project-status-picker>
     </div>
-    <mst-datepicker [defaultDate]="endDate" [startDate]="endDateStartDate" (finish)="onPickEndDate($event)"></mst-datepicker>
+    <div [mstPadding]="'0 0 0 2rem'" fxFlex="70%" fxLayout="row" fxLayoutAlign="space-between center">
+      <mst-datepicker [defaultDate]="startDate" (finish)="onPickStartDate($event)"></mst-datepicker>
+      <mst-icon name="arrow_forward"></mst-icon>
+      <mst-datepicker [defaultDate]="endDate" [startDate]="endDateStartDate" (finish)="onPickEndDate($event)"></mst-datepicker>
+    </div>
   </div>
   
   <mst-input

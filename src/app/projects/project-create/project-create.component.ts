@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { ProjectService } from '@app/core';
-import { now, Project, Subproject } from '@app/model';
+import { now, Project, ProjectStatus, Subproject } from '@app/model';
 import { InputControl } from '@app/shared';
 import { addDays } from 'date-fns';
 
@@ -19,6 +19,7 @@ export class ProjectCreateComponent {
   hasTitleError = false;
   hasResultError = false;
 
+  status: ProjectStatus;
   startDate = now();
   endDate = addDays(this.startDate, 1).getTime();
   endDateStartDate = addDays(this.startDate, 1).getTime();
@@ -29,6 +30,9 @@ export class ProjectCreateComponent {
 
   onOpen() {
     this.isShow = true;
+  }
+  onSelectStatus(status: ProjectStatus) {
+    this.status = status;
   }
   onPickStartDate(date: number) {
     this.startDate = date;
@@ -46,7 +50,12 @@ export class ProjectCreateComponent {
     if (title && result) {
       this.hasResultError = false;
       this.hasTitleError = false;
-      const project = this.projectService.createProject({ title, result, startDate: this.startDate, endDate: this.endDate });
+      const project = this.projectService.createProject({
+        title, result,
+        startDate: this.startDate,
+        endDate: this.endDate,
+        status: this.status === undefined ? ProjectStatus.InProgress : this.status
+      });
       this.create.emit(project);
       this.isShow = false;
     } else {

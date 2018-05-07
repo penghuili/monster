@@ -42,7 +42,7 @@ export function createProject(data: any): Project {
     endDate: data.endDate,
     result: data.result,
     note: data.note,
-    status: ProjectStatus.InProgress,
+    status: data.status,
     createdAt: timestamp,
     updatedAt: timestamp,
     position: `${timestamp}3`
@@ -56,7 +56,7 @@ export function createSubproject(data: any): Subproject {
     title: data.title,
     result: data.result,
     note: data.note,
-    status: ProjectStatus.InProgress,
+    status: data.status,
     createdAt: timestamp,
     updatedAt: timestamp,
     position: `${timestamp}3`
