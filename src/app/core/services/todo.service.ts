@@ -64,21 +64,6 @@ export class TodoService {
       this.updateTodos(todos);
     }
   }
-  finish(id: string) {
-    const todos: Todo[] = MonsterStorage.get('todos');
-    const index = findIndex(t => t.id === id, todos);
-    if (index >= 0) {
-      const timestamp = now();
-      const t = {
-        finishAt: timestamp,
-        status: TodoStatus.Done,
-        updatedAt: timestamp
-      };
-      const todo = merge(todos[index], t);
-      todos[index] = todo;
-      this.updateTodos(todos);
-    }
-  }
   swap(dragged: Todo, dropped: Todo) {
     const todos: Todo[] = MonsterStorage.get('todos');
     const swapped = <Todo[]>swapItems(dragged, dropped, todos);
