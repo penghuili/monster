@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService, TodoService } from '@app/core';
-import { now, Subproject, Todo } from '@app/model';
+import { now, Subproject, Todo, TodoStatus } from '@app/model';
 import { InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
 import { merge } from 'ramda';
@@ -21,6 +21,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   noteControl = new InputControl('');
   hasError = false;
   currentSubproject: Subproject;
+  status: TodoStatus;
 
   isDoing = false;
   private startAt: number;
@@ -41,6 +42,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
           this.todo = todo;
           this.titleControl.setValue(this.todo.title);
           this.noteControl.setValue(this.todo.note);
+          this.status = this.todo.status;
         }),
         switchMap(todo => this.projectService.getSubprojectById(this.todo.subprojectId))
       ).subscribe(subproject => {
@@ -71,6 +73,10 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   onSelectSubproject(subproject: Subproject) {
     this.currentSubproject = subproject;
     this.update({ subprojectId: subproject.id });
+  }
+  onSelectStatus(status: TodoStatus) {
+    this.status = status;
+    this.update({ status });
   }
   onFinishPickDate(date: number) {
     this.update({ happenDate: date });

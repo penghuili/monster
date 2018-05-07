@@ -16,6 +16,7 @@
       [activeSubproject]="currentSubproject"
       (selected)="onSelectSubproject($event)">
     </mst-project-list>
+    <mst-todo-status-picker [status]="status" (select)="onSelectStatus($event)"></mst-todo-status-picker>
     <mst-datepicker [defaultDate]="todo.happenDate" (finish)="onFinishPickDate($event)"></mst-datepicker>
     <mst-duration-picker [duration]="todo.expectedTime" (change)="onDurationChange($event)"></mst-duration-picker>
   </div>
