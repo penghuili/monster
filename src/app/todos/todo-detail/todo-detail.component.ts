@@ -76,7 +76,16 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   }
   onSelectStatus(status: TodoStatus) {
     this.status = status;
-    this.update({ status });
+    const timestamp = now();
+    if (status === TodoStatus.Done) {
+      this.update({
+        finishAt: timestamp,
+        status: TodoStatus.Done,
+        updatedAt: timestamp
+      });
+    } else {
+      this.update({ status, finishAt: undefined });
+    }
   }
   onFinishPickDate(date: number) {
     this.update({ happenDate: date });
@@ -99,10 +108,6 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     this.startAt = undefined;
   }
   onBack() {
-    this.router.navigate([ '../' ], { relativeTo: this.route });
-  }
-  onFinish() {
-    this.todoService.finish(this.todo.id);
     this.router.navigate([ '../' ], { relativeTo: this.route });
   }
 

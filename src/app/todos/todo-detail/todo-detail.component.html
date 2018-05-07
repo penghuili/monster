@@ -1,4 +1,8 @@
 <ng-container *ngIf="todo">
+  <div [mstPadding]="'0 0 1rem'">
+    <mst-icon name="chevron_left" (click)="onBack()"></mst-icon>
+  </div>
+
   <div class="mst-todo-detail-title-wrapper">
     <mst-input
       [control]="titleControl"
@@ -26,9 +30,4 @@
   <mst-input
     [control]="noteControl"
     minHeight="3rem"></mst-input>
-  
-  <div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'2rem 0 0'">
-    <mst-icon name="chevron_left" (click)="onBack()"></mst-icon>
-    <mst-icon-done [isFilled]="true" (click)="onFinish()"></mst-icon-done>
-  </div>
 </ng-container>
