@@ -1,6 +1,6 @@
 <div [class.mst-first-letter]="todo.note"
   [mstTextAlign]="'left'"
-  [mstColor]="todo.status === TodoStatus.Done ? 'grey' : null"
+  [mstColor]="todo.status === TodoStatus.Done || todo.status === TodoStatus.WontDo ? 'grey' : null"
   [ngStyle]="{
-    'text-decoration': todo.status === TodoStatus.Done ? 'line-through' : 'none'
+    'text-decoration': todo.status === TodoStatus.Done || todo.status === TodoStatus.WontDo ? 'line-through' : 'none'
   }">{{ todo.title }}</div>
