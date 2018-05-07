@@ -17,6 +17,6 @@ export const COLORS = {
 };
 
 export function isColorWrong(color: string): boolean {
-  const colors = ['primary', 'accent', 'green', 'grey', 'white'];
+  const colors = ['primary', 'accent', 'green', 'grey', 'white', 'error'];
   return color && !colors.find(a => a === color);
 }
