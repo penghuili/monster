@@ -21,8 +21,8 @@ export class TodosComponent extends Unsub implements OnInit {
   dragIndex: number;
 
   TODAY = 'today';
-  IN3DAYS = '3days';
-  IN7DAYS = '7days';
+  TOMORROW = 'tomorrow';
+  THISWEEK = 'this week';
   activeTab: string;
 
   private todos: Todo[];
@@ -79,15 +79,15 @@ export class TodosComponent extends Unsub implements OnInit {
 
   private processTodos(activeTab: string, todos: Todo[]) {
     const endOfToday = endOfDay(now()).getTime();
-    const endof3Days = endOfDay(addDays(now(), 3)).getTime();
-    const endOf7Days = endOfDay(addDays(now(), 7)).getTime();
+    const endofTomorrow = endOfDay(addDays(now(), 1)).getTime();
+    const endOfThisWeek = endOfDay(addDays(now(), 7)).getTime();
     let filtered: Todo[];
     if (activeTab === this.TODAY) {
       filtered = todos.filter(a => a.happenDate - endOfToday <= 0);
-    } else if (activeTab === this.IN3DAYS) {
-      filtered = todos.filter(a => a.happenDate > endOfToday && a.happenDate <= endof3Days);
+    } else if (activeTab === this.TOMORROW) {
+      filtered = todos.filter(a => a.happenDate > endOfToday && a.happenDate <= endofTomorrow);
     } else {
-      filtered = todos.filter(a => a.happenDate > endof3Days && a.happenDate <= endOf7Days);
+      filtered = todos.filter(a => a.happenDate > endofTomorrow && a.happenDate <= endOfThisWeek);
     }
     this.activeTodoGroup = this.groupTodos(
       filtered

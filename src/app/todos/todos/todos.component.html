@@ -1,7 +1,7 @@
 <div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'1rem 0'">
   <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === TODAY" (click)="onChangeTab(TODAY)">today</div>
-  <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === IN3DAYS" (click)="onChangeTab(IN3DAYS)">3 days</div>
-  <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === IN7DAYS" (click)="onChangeTab(IN7DAYS)">7 days</div>
+  <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === TOMORROW" (click)="onChangeTab(TOMORROW)">tomorrow</div>
+  <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === THISWEEK" (click)="onChangeTab(THISWEEK)">this week</div>
 </div>
 
 <ng-container *ngIf="activeGroups && activeGroups.length > 0">
