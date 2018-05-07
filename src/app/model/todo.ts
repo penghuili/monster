@@ -22,7 +22,8 @@ export enum TodoStatus {
   InProgress,
   Waiting,
   Someday,
-  Done
+  Done,
+  WontDo
 }
 
 export function createTodo(data: any): Todo {

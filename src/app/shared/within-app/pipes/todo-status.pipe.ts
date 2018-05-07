@@ -13,6 +13,8 @@ export class TodoStatusPipe implements PipeTransform {
         return 'someday';
       case TodoStatus.Waiting:
         return 'waiting';
+      case TodoStatus.WontDo:
+        return 'won\'t do';
       default:
         return 'in progress';
     }
