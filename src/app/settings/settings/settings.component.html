@@ -1,4 +1,10 @@
-<div [style.padding-bottom]="'1rem'">
-  <mst-link [route]="routes.PROCESS">process</mst-link>
+<div [style.min-height]="'80vh'">
+  <div [style.padding-bottom]="'1rem'">
+    <mst-link [route]="routes.PROCESS">process</mst-link>
+  </div>
+  <router-outlet></router-outlet>
 </div>
-<router-outlet></router-outlet>
+
+<div [mstPadding]="'3rem 0 0'">
+  {{ appVersion }}
+</div>

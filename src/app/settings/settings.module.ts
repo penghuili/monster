@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { IconModule, InputModule, MonsterCommonModule, StylingModule } from '@app/shared';
 
 import { ProcessDataComponent } from './process-data/process-data.component';
@@ -13,7 +14,8 @@ import { SettingsComponent } from './settings/settings.component';
     InputModule,
     IconModule,
     MonsterCommonModule,
-    StylingModule
+    StylingModule,
+    FlexLayoutModule
   ],
   declarations: [
     SettingsComponent,

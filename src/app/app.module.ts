@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { BrowserModule } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { CoreModule } from '@app/core';
-import { MonsterCommonModule, NotificationModule } from '@app/shared';
+import { IconModule, MonsterCommonModule, NotificationModule } from '@app/shared';
 
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
@@ -23,7 +24,6 @@ import { TodosModule } from './todos/todos.module';
 
     NoopAnimationsModule,
     CoreModule,
-    MonsterCommonModule,
     NotificationModule,
 
     TodosModule,
