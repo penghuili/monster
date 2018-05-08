@@ -67,9 +67,6 @@ export class ProjectDetailSubComponent extends Unsub implements OnInit {
   onGotoTodo(id: string) {
     this.router.navigateByUrl(`${ROUTES.TODOS}/${id}`);
   }
-  onBack() {
-    this.router.navigate(['../'], { relativeTo: this.route });
-  }
 
   private update(data: any) {
     const title = this.titleControl.getValue();

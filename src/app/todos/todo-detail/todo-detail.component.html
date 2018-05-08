@@ -1,7 +1,5 @@
 <ng-container *ngIf="todo">
-  <div [mstPadding]="'0 0 1rem'">
-    <mst-icon name="chevron_left" (click)="onBack()"></mst-icon>
-  </div>
+  <mst-go-back></mst-go-back>
 
   <div class="mst-todo-detail-title-wrapper">
     <mst-input
