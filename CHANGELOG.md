@@ -1,3 +1,10 @@
+## v1.4.0
+
+feature:
+
+- show expected time of today and tomorrow
+- turn setting to a icon
+
 ## v1.3.0
 
 feature:
