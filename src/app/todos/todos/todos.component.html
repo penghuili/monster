@@ -1,4 +1,4 @@
-<div fxLayout="row" fxLayoutAlign="center" [mstPadding]="'0.5rem 0'">
+<div fxLayout="row" fxLayoutAlign="center" [mstPadding]="'0.5rem 0'" *ngIf="activeTab !== THISWEEK">
   <div [mstPadding]="'0 3rem'">{{ activeTodosExpectedTime | minuteFormatter }}</div>
   <div [mstPadding]="'0 3rem'">{{ noTimeActiveTodosCount }}</div>
 </div>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService, TodoService } from '@app/core';
-import { MonsterStorage, now, Project, Todo, TodoGroup, TodoStatus } from '@app/model';
+import { isOverdue, MonsterStorage, now, Project, Todo, TodoGroup, TodoStatus } from '@app/model';
 import { ROUTES, Unsub } from '@app/static';
 import { addDays, endOfDay } from 'date-fns';
 import { groupBy, keys } from 'ramda';
@@ -71,8 +71,9 @@ export class TodosComponent extends Unsub implements OnInit {
     if (this.drapGroup === group && dropIndex !== this.dragIndex) {
       const dragged = this.activeTodoGroup[group][this.dragIndex];
       const dropped = this.activeTodoGroup[group][dropIndex];
-      if (dragged && dropped && dragged.status !== TodoStatus.Waiting && dropped.status !== TodoStatus.Waiting) {
-        this.todoService.swap(dragged, dropped);
+      if (dragged && dropped && dragged.status === dropped.status &&
+        dragged.status !== TodoStatus.Waiting && dropped.status !== TodoStatus.Waiting) {
+          this.todoService.swap(dragged, dropped);
       }
     }
     this.dragIndex = undefined;
@@ -92,8 +93,8 @@ export class TodosComponent extends Unsub implements OnInit {
       filtered = todos.filter(a => a.happenDate > endofTomorrow && a.happenDate <= endOfThisWeek);
     }
     const activeTodos = filtered
-    .filter(a => a.status !== TodoStatus.Done && a.status !== TodoStatus.WontDo)
-    .sort((a, b) => b.status === TodoStatus.Waiting ? -1 : 1);
+      .filter(a => a.status !== TodoStatus.Done && a.status !== TodoStatus.WontDo)
+      .sort((a, b) => this.sortActiveTodo(a, b));
     const len = activeTodos.length;
     const withTimeTodos = activeTodos.filter(a => a.expectedTime !== 0);
     this.noTimeActiveTodosCount = len - withTimeTodos.length;
@@ -109,5 +110,21 @@ export class TodosComponent extends Unsub implements OnInit {
   }
   private groupTodos(todos: Todo[]): TodoGroup {
     return groupBy(a => a.projectTitle, todos);
+  }
+  private sortActiveTodo(a: Todo, b: Todo): number {
+    return this.scoreTodoForOrder(b) - this.scoreTodoForOrder(a);
+  }
+  /**
+   * @todo think more about this
+   */
+  private scoreTodoForOrder(todo: Todo): number {
+    let score = 0;
+    if (isOverdue(todo)) {
+      score += 1;
+    }
+    if (todo.status === TodoStatus.InProgress) {
+      score += 1;
+    }
+    return score;
   }
 }

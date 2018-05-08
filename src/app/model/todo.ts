@@ -1,3 +1,5 @@
+import { format } from 'date-fns';
+
 import { SortableItem } from './item';
 import { now } from './time';
 
@@ -44,4 +46,7 @@ export function createTodo(data: any): Todo {
     createdAt: timestamp,
     updatedAt: timestamp
   };
+}
+export function isOverdue(todo: Todo): boolean {
+  return todo && format(todo.happenDate, 'YYYYMMDD') < format(now(), 'YYYYMMDD');
 }
