@@ -45,9 +45,7 @@ export class SliderComponent implements OnChanges, OnInit {
     });
   }
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.defaultValue || changes.min || changes.max) {
-      this.setDefaultLeft();
-    }
+    this.setDefaultLeft();
   }
 
   getLeft() {
@@ -59,6 +57,10 @@ export class SliderComponent implements OnChanges, OnInit {
     } else {
       return sum;
     }
+  }
+  getWidth() {
+    const left = this.getLeft();
+    return left < 0 ? 0 : left;
   }
   private getValue() {
     return +(((this.getLeft() + FONT_SIZE / 2) / this.barWidth) * (this.max - this.min)).toFixed(1);
