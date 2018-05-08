@@ -71,8 +71,9 @@ export class TodosComponent extends Unsub implements OnInit {
     if (this.drapGroup === group && dropIndex !== this.dragIndex) {
       const dragged = this.activeTodoGroup[group][this.dragIndex];
       const dropped = this.activeTodoGroup[group][dropIndex];
-      if (dragged && dropped && dragged.status !== TodoStatus.Waiting && dropped.status !== TodoStatus.Waiting) {
-        this.todoService.swap(dragged, dropped);
+      if (dragged && dropped && dragged.status === dropped.status &&
+        dragged.status !== TodoStatus.Waiting && dropped.status !== TodoStatus.Waiting) {
+          this.todoService.swap(dragged, dropped);
       }
     }
     this.dragIndex = undefined;
