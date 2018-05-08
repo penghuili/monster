@@ -2,5 +2,6 @@
   [mstTextAlign]="'left'"
   [mstColor]="getColor()"
   [ngStyle]="{
-    'text-decoration': todo.status === TodoStatus.Done || todo.status === TodoStatus.WontDo ? 'line-through' : 'none'
+    'text-decoration': todo.status === TodoStatus.Done || todo.status === TodoStatus.WontDo ? 'line-through' : 'none',
+    'line-height': '2rem'
   }">{{ todo.title }}</div>
