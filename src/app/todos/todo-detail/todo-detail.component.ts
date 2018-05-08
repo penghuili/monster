@@ -78,11 +78,19 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     this.status = status;
     const timestamp = now();
     if (status === TodoStatus.Done) {
-      this.update({
+      let data: any = {};
+      if (this.isDoing) {
+        data = {
+          activities: this.getStopData()
+        };
+      }
+      data = {
+        ...data,
         finishAt: timestamp,
         status: TodoStatus.Done,
         updatedAt: timestamp
-      });
+      };
+      this.update(data);
     } else {
       this.update({ status, finishAt: undefined });
     }
@@ -98,14 +106,8 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     }
   }
   onStop() {
-    this.timer.stop();
-    this.isDoing = false;
-    const endAt = now();
-    const activities = this.todo.activities;
-    activities.push({ startAt: this.startAt, endAt });
-    const newTodo = merge(this.todo, { activities });
+    const newTodo = merge(this.todo, { activities: this.getStopData() });
     this.todoService.update(newTodo);
-    this.startAt = undefined;
   }
   onBack() {
     this.router.navigate([ '../' ], { relativeTo: this.route });
@@ -123,5 +125,14 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     } else {
       this.hasError = true;
     }
+  }
+  private getStopData() {
+    this.timer.stop();
+    this.isDoing = false;
+    const endAt = now();
+    const activities = this.todo.activities;
+    activities.push({ startAt: this.startAt, endAt });
+    this.startAt = undefined;
+    return activities;
   }
 }
