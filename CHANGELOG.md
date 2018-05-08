@@ -1,3 +1,16 @@
+## v1.5.0
+
+feature:
+
+- set todo to purple if there is no expected time
+- order active todos: overdue, in progress, waiting
+- set default duration to minute
+- Not show time for this week tab
+- Overdue cant change happen date
+- move all back button to top
+- Show only today's done
+- Stop timer when done
+
 ## v1.4.0
 
 feature:
