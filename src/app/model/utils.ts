@@ -21,10 +21,6 @@ export const MonsterStorage = {
     localStorage.removeItem(key);
   }
 };
-
-export function add0(a: number): string {
-  return a >= 0 && a <= 9 ? `0${a}` : a.toString();
-}
 export function getDragImageOffsetFunction(): DndDragImageOffsetFunction {
   return () => ({ x: -150, y: 0 });
 }

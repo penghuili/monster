@@ -15,6 +15,8 @@ import { switchMap } from 'rxjs/operators';
 export class TodosComponent extends Unsub implements OnInit {
   activeTodoGroup: TodoGroup;
   activeGroups: string[];
+  activeTodosExpectedTime = 0;
+  noTimeActiveTodosCount = 0;
   doneTodoGroup: TodoGroup;
   doneGroups: string[];
 
@@ -89,11 +91,14 @@ export class TodosComponent extends Unsub implements OnInit {
     } else {
       filtered = todos.filter(a => a.happenDate > endofTomorrow && a.happenDate <= endOfThisWeek);
     }
-    this.activeTodoGroup = this.groupTodos(
-      filtered
-      .filter(a => a.status !== TodoStatus.Done && a.status !== TodoStatus.WontDo)
-      .sort((a, b) => b.status === TodoStatus.Waiting ? -1 : 1)
-    );
+    const activeTodos = filtered
+    .filter(a => a.status !== TodoStatus.Done && a.status !== TodoStatus.WontDo)
+    .sort((a, b) => b.status === TodoStatus.Waiting ? -1 : 1);
+    const len = activeTodos.length;
+    const withTimeTodos = activeTodos.filter(a => a.expectedTime !== 0);
+    this.noTimeActiveTodosCount = len - withTimeTodos.length;
+    this.activeTodosExpectedTime = withTimeTodos.reduce((sum, a) => sum + a.expectedTime, 0);
+    this.activeTodoGroup = this.groupTodos(activeTodos);
     this.activeGroups = keys(this.activeTodoGroup);
     this.doneTodoGroup = this.groupTodos(
       filtered

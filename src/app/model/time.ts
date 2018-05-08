@@ -8,3 +8,6 @@ export function createDate(year: number, month: number, day: number): number {
   n.setDate(day);
   return n.getTime();
 }
+export function add0(a: number): string {
+  return a >= 0 && a <= 9 ? `0${a}` : a.toString();
+}

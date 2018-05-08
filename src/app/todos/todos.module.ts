@@ -10,6 +10,7 @@ import {
   ListModule,
   MonsterCommonModule,
   OverlayModule,
+  PipesModule,
   ProgressModule,
   StylingModule,
   WithinAppModule,
@@ -37,6 +38,7 @@ import { TodosComponent } from './todos/todos.component';
     ProgressModule,
     OverlayModule,
     WithinAppModule,
+    PipesModule,
 
     TodosRoutingModule
   ],
