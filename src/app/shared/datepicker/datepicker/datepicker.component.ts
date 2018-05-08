@@ -13,6 +13,7 @@ export class DatepickerComponent {
     this.innerDate = value;
   }
   @Input() startDate = now();
+  @Input() disabled = false;
   @Output() finish = new EventEmitter<number>();
   date = now();
   isShowDatepicker = false;
@@ -21,8 +22,10 @@ export class DatepickerComponent {
   innerDate: number;
 
   onOpenDatepicker() {
-    this.innerDate = this.date;
-    this.isShowDatepicker = true;
+    if (!this.disabled) {
+      this.innerDate = this.date;
+      this.isShowDatepicker = true;
+    }
   }
   onOpenYear() {
     this.isShowYear = true;
