@@ -111,8 +111,5 @@ export class ProjectService {
   processProjects() {
   }
   processSubprojects() {
-    let subprojects: Subproject[] = MonsterStorage.get('sub-projects');
-    subprojects = subprojects.sort((a, b) => b.createdAt - a.createdAt);
-    this.updateSubprojects(subprojects);
   }
 }
