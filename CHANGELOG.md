@@ -1,3 +1,9 @@
+## v1.5.1
+
+bug fix:
+
+- set default min max for duration picker to minute
+
 ## v1.5.0
 
 feature:
