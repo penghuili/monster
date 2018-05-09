@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService, TodoService } from '@app/core';
-import { now, Subproject, Todo } from '@app/model';
+import { now, ProjectStatus, Subproject, Todo } from '@app/model';
 import { InputControl } from '@app/shared';
 import { ROUTES, Unsub } from '@app/static';
 import { merge } from 'ramda';
@@ -19,6 +19,8 @@ export class ProjectDetailSubComponent extends Unsub implements OnInit {
   resultControl = new InputControl('');
   hasTitleError = false;
   hasResultError = false;
+  startDate: number;
+  endDate: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -44,6 +46,10 @@ export class ProjectDetailSubComponent extends Unsub implements OnInit {
     this.addSubscription(
       this.todoService.getTodosBySubprojectId(subid).subscribe(todos => {
         this.todos = todos;
+        const sorted = this.todos ? this.todos.sort((a, b) => a.happenDate - b.happenDate) : [];
+        const len = sorted.length;
+        this.startDate = sorted[0] ? sorted[0].happenDate : undefined;
+        this.endDate = sorted[len - 1] ? sorted[len - 1].happenDate : undefined;
       })
     );
 
@@ -64,6 +70,9 @@ export class ProjectDetailSubComponent extends Unsub implements OnInit {
     );
   }
 
+  onSelectStatus(status: ProjectStatus) {
+    this.update({ status });
+  }
   onGotoTodo(id: string) {
     this.router.navigateByUrl(`${ROUTES.TODOS}/${id}`);
   }

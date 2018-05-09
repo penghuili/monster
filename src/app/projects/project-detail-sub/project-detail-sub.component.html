@@ -1,21 +1,32 @@
 <mst-go-back></mst-go-back>
 
-<mst-input
-  [control]="titleControl"
-  [hasError]="hasTitleError"></mst-input>
+<ng-container *ngIf="subproject">
+  <mst-input
+    [control]="titleControl"
+    [hasError]="hasTitleError"></mst-input>
+  
+  <div fxLayout="row" fxLayoutAlign="space-between center" [mstPadding]="'1rem 0'">
+    <mst-project-status-picker [status]="subproject.status" (select)="onSelectStatus($event)"></mst-project-status-picker>
+    <div>
+      {{ startDate | date:'shortDate' }}
+    </div>
+    <mst-icon name="arrow_forward"></mst-icon>
+    <div>
+      {{ endDate | date:'shortDate' }}
+    </div>
+  </div>
 
-<div [mstPadding]="'1rem 0 0'">
   <mst-input
     [control]="resultControl"
     [hasError]="hasResultError"
     minHeight="3rem"></mst-input>
-</div>
-
-<div fxLayout="row" fxLayoutAlign="center" [mstPadding]="'2rem 0'">
-  <mst-todo-create [subproject]="subproject" [useActionButton]="false"></mst-todo-create>
-</div>
-
-<mst-todo-item *ngFor="let todo of todos"
-  (click)="onGotoTodo(todo.id)"
-  [todo]="todo"></mst-todo-item>
+  
+  <div fxLayout="row" fxLayoutAlign="center" [mstPadding]="'2rem 0'">
+    <mst-todo-create [subproject]="subproject" [useActionButton]="false"></mst-todo-create>
+  </div>
+  
+  <mst-todo-item *ngFor="let todo of todos"
+    (click)="onGotoTodo(todo.id)"
+    [todo]="todo"></mst-todo-item>
+</ng-container>
   
