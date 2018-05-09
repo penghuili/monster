@@ -23,7 +23,9 @@
     <mst-duration-picker [duration]="todo.expectedTime" (change)="onDurationChange($event)"></mst-duration-picker>
   </div>
 
-  <mst-todo-timer *ngIf="todo.expectedTime" [todo]="todo"></mst-todo-timer>
+  <div [mstPadding]="'0 1.5rem'">
+    <mst-todo-timer *ngIf="todo.expectedTime" [todo]="todo"></mst-todo-timer>
+  </div>
 
   <mst-input
     [control]="noteControl"
