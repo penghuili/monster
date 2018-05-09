@@ -1,3 +1,9 @@
+## v1.6.0
+
+feature:
+
+- only show still needed expected time, and show it for every project
+
 ## v1.5.1
 
 bug fix:
