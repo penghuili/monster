@@ -15,7 +15,6 @@ import {
   StylingModule,
   WithinAppModule,
 } from '@app/shared';
-import { DndModule } from 'ngx-drag-drop';
 
 import { TodoDetailComponent } from './todo-detail/todo-detail.component';
 import { TodoTimerComponent } from './todo-detail/todo-timer/todo-timer.component';
@@ -29,7 +28,6 @@ import { TodosComponent } from './todos/todos.component';
     StylingModule,
     InputModule,
     ListModule,
-    DndModule,
     MonsterCommonModule,
     DatepickerModule,
     DurationPickerModule,

@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { createTodo, MonsterStorage, now, Subproject, swapItems, Todo } from '@app/model';
 import { differenceInDays } from 'date-fns';
 import { find, findIndex } from 'ramda';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject ,  Observable } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
 import { ProjectService } from './project.service';

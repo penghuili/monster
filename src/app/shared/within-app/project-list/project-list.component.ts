@@ -4,7 +4,7 @@ import { ProjectService } from '@app/core';
 import { Project, ProjectStatus, Subproject } from '@app/model';
 import { ROUTES, Unsub } from '@app/static';
 import { switchMap } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'mst-project-list',

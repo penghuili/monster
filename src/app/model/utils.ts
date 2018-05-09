@@ -1,5 +1,3 @@
-import { DndDragImageOffsetFunction } from 'ngx-drag-drop';
-
 import { environment } from '../../environments/environment';
 
 export function getIconUrl(icon: string): string {
@@ -21,6 +19,6 @@ export const MonsterStorage = {
     localStorage.removeItem(key);
   }
 };
-export function getDragImageOffsetFunction(): DndDragImageOffsetFunction {
+export function getDragImageOffsetFunction(): any {
   return () => ({ x: -150, y: 0 });
 }

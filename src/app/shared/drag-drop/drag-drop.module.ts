@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { DndHandleDirective, DndModule } from 'ngx-drag-drop';
 
 import { IconModule } from '../icon/icon.module';
 import { OverlayModule } from '../overlay/overlay.module';
@@ -14,7 +13,7 @@ import { DropZoneComponent } from './drop-zone/drop-zone.component';
     CommonModule,
     StylingModule,
     FlexLayoutModule,
-    DndModule,
+    // DndModule,
     IconModule,
     OverlayModule
   ],

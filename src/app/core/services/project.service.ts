@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 import { swapItems, Todo } from '@app/model';
 import { find, findIndex, merge } from 'ramda';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { of } from 'rxjs/observable/of';
+import { BehaviorSubject ,  Observable ,  combineLatest ,  of } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 import { createProject, createSubproject, Project, Subproject } from '../../model/project';

@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { add0, Todo } from '@app/model';
-import { interval } from 'rxjs/observable/interval';
-import { Subscription } from 'rxjs/Subscription';
+import { interval ,  Subscription } from 'rxjs';
 
 @Component({
   selector: 'mst-todo-timer',
