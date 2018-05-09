@@ -79,6 +79,13 @@ export class TodosComponent extends Unsub implements OnInit {
     this.dragIndex = undefined;
     this.drapGroup = undefined;
   }
+  /**
+   * @todo cache value, not do calc in template, use pipe maybe?
+   */
+  calcExpectedTime(todos: Todo[]): number {
+    return todos.filter(a => a.expectedTime !== 0 && a.status === TodoStatus.InProgress)
+      .reduce((sum, a) => sum + a.expectedTime, 0);
+  }
 
   private processTodos(activeTab: string, todos: Todo[]) {
     const endOfToday = endOfDay(now()).getTime();
@@ -95,10 +102,8 @@ export class TodosComponent extends Unsub implements OnInit {
     const activeTodos = filtered
       .filter(a => a.status !== TodoStatus.Done && a.status !== TodoStatus.WontDo)
       .sort((a, b) => this.sortActiveTodo(a, b));
-    const len = activeTodos.length;
-    const withTimeTodos = activeTodos.filter(a => a.expectedTime !== 0);
-    this.noTimeActiveTodosCount = len - withTimeTodos.length;
-    this.activeTodosExpectedTime = withTimeTodos.reduce((sum, a) => sum + a.expectedTime, 0);
+    this.noTimeActiveTodosCount = activeTodos.filter(a => a.expectedTime === 0).length;
+    this.activeTodosExpectedTime = this.calcExpectedTime(activeTodos);
     this.activeTodoGroup = this.groupTodos(activeTodos);
     this.activeGroups = keys(this.activeTodoGroup);
 
