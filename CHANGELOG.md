@@ -1,3 +1,17 @@
+## v1.7.1
+
+feature:
+
+- show start end date and status for sub project
+- style first letter of todo
+
+bug fix:
+
+- delete ng-content from project list
+- change action place on laptop
+- only change timer if expectedTime is changed
+
+
 ## v1.7.0
 
 feature:
