@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { createTodo, MonsterStorage, now, Subproject, swapItems, Todo, TodoStatus } from '@app/model';
+import { createTodo, MonsterStorage, now, Subproject, swapItems, Todo } from '@app/model';
 import { differenceInDays } from 'date-fns';
-import { find, findIndex, merge, prepend } from 'ramda';
+import { find, findIndex } from 'ramda';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { map, switchMap, tap } from 'rxjs/operators';
@@ -52,8 +52,8 @@ export class TodoService {
   create(data: any): Todo {
     const todo = createTodo(data);
     const todos = MonsterStorage.get('todos');
-    const added = prepend(todo, todos);
-    this.updateTodos(added);
+    todos.unshift(todo);
+    this.updateTodos(todos);
     return todo;
   }
   update(todo: Todo) {
