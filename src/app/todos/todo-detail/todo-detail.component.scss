@@ -1,6 +1,12 @@
 .mst-todo-detail-title-wrapper {
   position: relative;
 }
+.mst-todo-detail-index {
+  position: absolute;
+  left: 0.5rem;
+  top: 0.75rem;
+  width: 2rem;
+}
 .mst-start-todo {
   position: absolute;
   right: 0.5rem;

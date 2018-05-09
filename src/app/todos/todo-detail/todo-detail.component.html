@@ -2,9 +2,10 @@
   <mst-go-back></mst-go-back>
 
   <div class="mst-todo-detail-title-wrapper">
+    <span class="mst-todo-detail-index" *ngIf="todo.index">{{ todo.index }}: </span>
     <mst-input
       [control]="titleControl"
-      [padding]="'0.5rem 2rem 0.5rem 0.5rem'"
+      [padding]="todo.index ? '0.5rem 2rem 0.5rem 2rem' : '0.5rem 2rem 0.5rem 0.5rem'"
       [hasError]="hasError"></mst-input>
     <div class="mst-start-todo" *ngIf="todo.expectedTime">
       <mst-icon name="play_circle_filled" (click)="onStart()" *ngIf="!isDoing"></mst-icon>
