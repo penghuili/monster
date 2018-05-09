@@ -106,4 +106,15 @@ export class ProjectService {
       this.updateProjects(swapped);
     }
   }
+
+  processProjects() {
+    let projects: Project[] = MonsterStorage.get('projects');
+    projects = projects.sort((a, b) => a.createdAt - b.createdAt);
+    this.updateProjects(projects);
+  }
+  processSubprojects() {
+    let subprojects: Subproject[] = MonsterStorage.get('sub-projects');
+    subprojects = subprojects.sort((a, b) => a.createdAt - b.createdAt);
+    this.updateSubprojects(subprojects);
+  }
 }

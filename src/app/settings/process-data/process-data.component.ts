@@ -53,4 +53,17 @@ export class ProcessDataComponent implements OnInit {
     this.projectService.updateSubprojects([]);
     this.notificationService.sendMessage('Delete Subprojects success :>');
   }
+
+  onProcessTodos() {
+    this.todoService.process();
+    this.notificationService.sendMessage('process todos success :>');
+  }
+  onProcessProjects() {
+    this.projectService.processProjects();
+    this.notificationService.sendMessage('process projects success :>');
+  }
+  onProcessSubprojects() {
+    this.projectService.processSubprojects();
+    this.notificationService.sendMessage('process subprojects success :>');
+  }
 }
