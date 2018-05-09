@@ -3,6 +3,9 @@
 </span>
 
 <mst-overlay *ngIf="isShow">
+  <div fxLayout="row" fxLayoutAlign="end">
+    <mst-icon name="close" (click)="onClose()"></mst-icon>
+  </div>
   <div *ngFor="let project of projects">
     <mst-project-item
       [project]="project"

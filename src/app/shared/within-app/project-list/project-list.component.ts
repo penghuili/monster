@@ -50,6 +50,9 @@ export class ProjectListComponent extends Unsub implements OnInit {
   onOpen() {
     this.isShow = true;
   }
+  onClose() {
+    this.isShow = false;
+  }
   onSelectProject(project: Project) {
     this.activeProject = project;
     this.clickProject.next(this.activeProject);

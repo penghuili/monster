@@ -60,3 +60,9 @@ $order-button-width: 19rem;
 .gm-action-buttons-wrapper--show {
   transform: skewX(0);
 }
+
+@media screen and (min-width: $max-width + 1) {
+  .gm-action-button-plus {
+    right: calc(50% - 230px);
+  }
+}
