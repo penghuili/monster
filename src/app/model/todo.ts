@@ -4,6 +4,7 @@ import { SortableItem } from './item';
 import { now } from './time';
 
 export interface Todo extends SortableItem {
+  index: number;
   subprojectId: string;
   note?: string;
   happenDate: number;
@@ -31,10 +32,11 @@ export interface TodoGroup {
   [key: string]: Todo[];
 }
 
-export function createTodo(data: any): Todo {
+export function createTodo(data: any, index: number): Todo {
   const timestamp = now();
   return {
     id: `t${timestamp}`,
+    index,
     title: data.title,
     subprojectId: data.subprojectId,
     note: data.note,

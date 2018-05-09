@@ -50,8 +50,9 @@ export class TodoService {
     );
   }
   create(data: any): Todo {
-    const todo = createTodo(data);
     const todos = MonsterStorage.get('todos');
+    const index = todos && todos[0].index ? todos[0].index + 1 : 1;
+    const todo = createTodo(data, index);
     todos.unshift(todo);
     this.updateTodos(todos);
     return todo;
