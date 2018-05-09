@@ -1,3 +1,14 @@
+## v1.7.0
+
+feature:
+
+- show index of todo
+
+bug fix:
+
+- make timer shorter
+- delete prepend
+
 ## v1.6.0
 
 feature:
