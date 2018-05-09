@@ -1,7 +1,5 @@
-<div [class.mst-first-letter]="todo.note"
+<div class="mst-todo-item"
+  [class.mst-todo-item-has-note]="todo.note"
+  [class.mst-todo-item-done]="todo.status === TodoStatus.Done || todo.status === TodoStatus.WontDo"
   [mstTextAlign]="'left'"
-  [mstColor]="getColor()"
-  [ngStyle]="{
-    'text-decoration': todo.status === TodoStatus.Done || todo.status === TodoStatus.WontDo ? 'line-through' : 'none',
-    'line-height': '2rem'
-  }">{{ todo.title }}</div>
+  [mstColor]="getColor()">{{ todo.title }}</div>

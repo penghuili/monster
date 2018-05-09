@@ -1,6 +1,16 @@
 @import '../../../static/variables';
 
-.mst-first-letter::first-letter {
+.mst-todo-item::first-letter {
+  font-weight: 800;
+  font-size: 1.25rem;
+}
+.mst-todo-item {
+  line-height: 2rem;
+}
+.mst-todo-item-has-note::first-letter {
   color: $accent;
   font-weight: 800;
+}
+.mst-todo-item-done {
+  text-decoration: line-through;
 }
