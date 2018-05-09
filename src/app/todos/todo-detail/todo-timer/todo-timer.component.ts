@@ -10,10 +10,12 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class TodoTimerComponent {
   @Input() set todo(value: Todo) {
-    this._todo = value;
-    this.totalTime = this.parseTime(this.todo.expectedTime);
-    this.prevProgress = value.activities.reduce((sum, item) => sum + (item.endAt - item.startAt) / (1000 * 60), 0) / value.expectedTime;
-    this.progress = this.prevProgress;
+    if (value && (!this._todo || this._todo.expectedTime !== value.expectedTime)) {
+      this._todo = value;
+      this.totalTime = this.parseTime(this.todo.expectedTime);
+      this.prevProgress = value.activities.reduce((sum, item) => sum + (item.endAt - item.startAt) / (1000 * 60), 0) / value.expectedTime;
+      this.progress = this.prevProgress;
+    }
   }
   get todo() {
     return this._todo;
