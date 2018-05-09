@@ -27,8 +27,8 @@ export class DurationPickerComponent {
   maxMinute = 60;
   // default show hours
   isHoursActive = false;
-  min = this.minHour;
-  max = this.maxHour;
+  min = this.minMinute;
+  max = this.maxMinute;
   defaultValue = 0;
 
   minutes = 0;
