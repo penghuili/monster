@@ -1,4 +1,4 @@
-import { append, concat, drop, find, findIndex, insert, merge, update } from 'ramda';
+import { find, findIndex, insert, merge } from 'ramda';
 
 import { now } from './time';
 
@@ -12,44 +12,6 @@ export interface SortableItem extends Item {
   position?: string;
   nextId?: string;
   prevId?: string;
-}
-
-export function mergeItems(income: Item[], source: Item[]): Item[] {
-  if (income && source) {
-    let merged = [];
-    let newer: Item;
-    Array(income.length + source.length).fill(1).some(() => {
-      const incomeHead = income[0];
-      const sourceHead = source[0];
-      if (incomeHead && sourceHead) {
-        newer = newerItem(incomeHead, sourceHead);
-        merged = appendOrUpdate(newer, merged);
-        if (incomeHead.id === sourceHead.id) {
-          income = drop(1, income);
-          source = drop(1, source);
-        } else if (newer.id === incomeHead.id) {
-          income = drop(1, income);
-        } else {
-          source = drop(1, source);
-        }
-        return false;
-      } else if (!incomeHead && sourceHead) {
-        merged = concat(merged, source);
-        return true;
-      } else if (incomeHead && !sourceHead) {
-        merged = concat(merged, income);
-        return true;
-      } else {
-        return true;
-      }
-    });
-
-    return merged;
-  } else if (income || source) {
-    return income || source;
-  } else {
-    return [];
-  }
 }
 export function swapItems(dragged: SortableItem, dropped: SortableItem, items: SortableItem[]): SortableItem[] {
   const indexDragged = findIndex(a => a.id === dragged.id, items);
@@ -195,17 +157,6 @@ function newerItem(a: Item, b: Item): Item {
 }
 export function sortByPosition(items: SortableItem[]): SortableItem[] {
   return items.sort((a, b) => b.position > a.position ? 1 : -1);
-}
-function appendOrUpdate(item: Item, items: Item[]): Item[] {
-  if (!item || !items) {
-    return items;
-  }
-  const index = findIndex(a => a.id === item.id, items);
-  if (index > -1) {
-    return update(index, newerItem(items[index], item), items);
-  } else {
-    return append(item, items);
-  }
 }
 function isItemDragged(item: SortableItem): boolean {
   return !!item.prevId || !!item.nextId || item.position !== item.createdAt + '3';

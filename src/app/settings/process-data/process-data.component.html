@@ -1,29 +1,38 @@
 Todos
-<div>
-  <mst-wrapper [display]="'inline'" padding="1rem">
+<div fxLayout="row">
+  <div [mstPadding]="'1rem'">
     <mst-copy-text [text]="todosText" (success)="onCopyTodos($event)"></mst-copy-text>
-  </mst-wrapper>
-  <mst-wrapper [display]="'inline'" padding="1rem">
+  </div>
+  <div [mstPadding]="'1rem'">
     <mst-icon name="delete" (click)="onDeleteTodos()"></mst-icon>
-  </mst-wrapper>
+  </div>
+  <div [mstPadding]="'1rem'">
+    <mst-icon name="build" (click)="onProcessTodos()"></mst-icon>
+  </div>
 </div>
 
 Projects
-<div>
-  <mst-wrapper [display]="'inline'" padding="1rem">
+<div fxLayout="row">
+  <div [mstPadding]="'1rem'">
     <mst-copy-text [text]="projectsText" (success)="onCopyProjects($event)"></mst-copy-text>
-  </mst-wrapper>
-  <mst-wrapper [display]="'inline'" padding="1rem">
+  </div>
+  <div [mstPadding]="'1rem'">
     <mst-icon name="delete" (click)="onDeleteProjects()"></mst-icon>
-  </mst-wrapper>
+  </div>
+  <div [mstPadding]="'1rem'">
+    <mst-icon name="build" (click)="onProcessProjects()"></mst-icon>
+  </div>
 </div>
 
 Subprojects
-<div>
-  <mst-wrapper [display]="'inline'" padding="1rem">
+<div fxLayout="row">
+  <div [mstPadding]="'1rem'">
     <mst-copy-text [text]="subprojectsText" (success)="onCopySubprojects($event)"></mst-copy-text>
-  </mst-wrapper>
-  <mst-wrapper [display]="'inline'" padding="1rem">
+  </div>
+  <div [mstPadding]="'1rem'">
     <mst-icon name="delete" (click)="onDeleteSubprojects()"></mst-icon>
-  </mst-wrapper>
+  </div>
+  <div [mstPadding]="'1rem'">
+    <mst-icon name="build" (click)="onProcessSubprojects()"></mst-icon>
+  </div>
 </div>

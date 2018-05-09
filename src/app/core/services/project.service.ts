@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { swapItems, Todo } from '@app/model';
-import { append, find, findIndex, merge, prepend } from 'ramda';
+import { find, findIndex, merge } from 'ramda';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { combineLatest } from 'rxjs/observable/combineLatest';
@@ -72,15 +72,16 @@ export class ProjectService {
   }
   createProject(data: any): Project {
     const p = createProject(data);
-    const projects = prepend(p, MonsterStorage.get('projects'));
+    const projects = MonsterStorage.get('projects');
+    projects.unshift(p);
     this.updateProjects(projects);
     return p;
   }
   createSubproject(data: any): Subproject {
     const sp = createSubproject(data);
-    // not draggable, use append
-    const subprojects = append(sp, MonsterStorage.get('sub-projects'));
-    this.updateSubprojects(subprojects);
+    const sps: Subproject[] = MonsterStorage.get('sub-projects');
+    sps.unshift(sp);
+    this.updateSubprojects(sps);
     return sp;
   }
   updateProject(project: Project) {
@@ -105,5 +106,13 @@ export class ProjectService {
     if (swapped) {
       this.updateProjects(swapped);
     }
+  }
+
+  processProjects() {
+  }
+  processSubprojects() {
+    let subprojects: Subproject[] = MonsterStorage.get('sub-projects');
+    subprojects = subprojects.sort((a, b) => b.createdAt - a.createdAt);
+    this.updateSubprojects(subprojects);
   }
 }
