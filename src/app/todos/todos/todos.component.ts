@@ -100,7 +100,7 @@ export class TodosComponent extends Unsub implements OnInit {
       filtered = todos.filter(a => a.happenDate > endofTomorrow && a.happenDate <= endOfThisWeek);
     }
     const activeTodos = filtered
-      .filter(a => a.status !== TodoStatus.Done && a.status !== TodoStatus.WontDo)
+      .filter(a => a.status === TodoStatus.InProgress || a.status === TodoStatus.Waiting)
       .sort((a, b) => this.sortActiveTodo(a, b));
     this.noTimeActiveTodosCount = activeTodos.filter(a => a.expectedTime === 0).length;
     this.activeTodosExpectedTime = this.calcExpectedTime(activeTodos);
@@ -122,19 +122,12 @@ export class TodosComponent extends Unsub implements OnInit {
       format(todo.finishAt, 'YYYYMMDD') === format(now(), 'YYYYMMDD');
   }
   private sortActiveTodo(a: Todo, b: Todo): number {
-    return this.scoreTodoForOrder(b) - this.scoreTodoForOrder(a);
-  }
-  /**
-   * @todo think more about this
-   */
-  private scoreTodoForOrder(todo: Todo): number {
-    let score = 0;
-    if (isOverdue(todo)) {
-      score += 1;
+    if (isOverdue(b)) {
+      return 1;
+    } else if (b.status === TodoStatus.InProgress && !isOverdue(a)) {
+      return 1;
+    } else {
+      return -1;
     }
-    if (todo.status === TodoStatus.InProgress) {
-      score += 1;
-    }
-    return score;
   }
 }
