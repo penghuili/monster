@@ -78,8 +78,5 @@ export class TodoService {
   }
 
   process() {
-    let todos: Todo[] = MonsterStorage.get('todos');
-    todos = todos.sort((a, b) => a.createdAt - b.createdAt);
-    this.updateTodos(todos);
   }
 }
