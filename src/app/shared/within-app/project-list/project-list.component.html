@@ -3,15 +3,17 @@
 </span>
 
 <mst-overlay *ngIf="isShow">
-  <mst-project-item
-    *ngFor="let project of projects"
-    [project]="project"
-    (click)="onSelectProject(project)">
-    <div *ngIf="activeProject && activeProject.id === project.id">
+  <div *ngFor="let project of projects">
+    <mst-project-item
+      [project]="project"
+      (click)="onSelectProject(project)">
+    </mst-project-item>
+    <div *ngIf="activeProject && activeProject.id === project.id"
+      [mstPadding]="'0 0 0 1rem'">
       <mst-project-item
-       *ngFor="let subproject of subprojects"
-       [project]="subproject"
-       (click)="onSelectSubproject(subproject)"></mst-project-item>
+        *ngFor="let subproject of subprojects"
+        [project]="subproject"
+        (click)="onSelectSubproject(subproject)"></mst-project-item>
     </div>
-  </mst-project-item>
+  </div>
 </mst-overlay>
