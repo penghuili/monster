@@ -1,3 +1,9 @@
+## v1.8.2
+
+bug fix:
+
+- data for project chart should be increasing
+
 ## v1.8.1
 
 bug fix:
