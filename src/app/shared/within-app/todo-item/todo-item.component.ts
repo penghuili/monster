@@ -15,8 +15,8 @@ export class TodoItemComponent {
 
   getColor(): string {
     return this.todo.status === TodoStatus.Done || this.todo.status === TodoStatus.WontDo ? 'grey' :
-      this.todo.happenDate < startOfDay(now()).getTime() ? 'error' :
       this.todo.status === TodoStatus.Waiting ? 'green' :
+      this.todo.happenDate < startOfDay(now()).getTime() ? 'error' :
       this.todo.expectedTime === 0 ? 'purple' : null;
   }
 }

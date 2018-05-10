@@ -122,12 +122,16 @@ export class TodosComponent extends Unsub implements OnInit {
       format(todo.finishAt, 'YYYYMMDD') === format(now(), 'YYYYMMDD');
   }
   private sortActiveTodo(a: Todo, b: Todo): number {
-    if (isOverdue(b)) {
-      return 1;
-    } else if (b.status === TodoStatus.InProgress && !isOverdue(a)) {
-      return 1;
-    } else {
+    if (a.status === TodoStatus.InProgress && isOverdue(a)) {
       return -1;
+    } else if (a.status === TodoStatus.Waiting && isOverdue(a) && b.status === TodoStatus.Waiting) {
+      return -1;
+    } else if (a.status === TodoStatus.InProgress && !isOverdue(a) && !(isOverdue(b) && b.status === TodoStatus.InProgress)) {
+      return -1;
+    } else if (a.status === TodoStatus.Waiting && !isOverdue(a) && b.status === TodoStatus.Waiting) {
+      return -1;
+    } else {
+      return 1;
     }
   }
 }
