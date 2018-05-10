@@ -1,0 +1,21 @@
+@import '../../../static/variables';
+
+.mst-loading {
+  position: fixed;
+  top: 0;
+  right: 50%;
+  width: 0;
+  height: 0.5rem;
+  background-color: $accent;
+  border-radius: 50%;
+
+  animation: rotating 1s linear infinite;
+}
+@keyframes rotating {
+  50% {
+    width: 2rem;
+  }
+  100% {
+    width: 0;
+  }
+}
