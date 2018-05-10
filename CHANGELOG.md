@@ -1,3 +1,9 @@
+## v1.8.0
+
+feature:
+
+- use dexie for storage
+
 ## v1.7.2
 
 bug fix:
