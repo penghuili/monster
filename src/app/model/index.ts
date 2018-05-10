@@ -5,3 +5,4 @@ export * from './utils';
 export * from './time';
 export * from './pipe-meta';
 export * from './color';
+export * from './event';
