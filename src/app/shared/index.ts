@@ -20,7 +20,6 @@ export * from './list/list.module';
 
 export * from './notification/notification.module';
 export * from './notification/notification/notification.component';
-export * from './notification/notification.service';
 
 export * from './datepicker/datepicker.module';
 export * from './datepicker/datepicker/datepicker.component';

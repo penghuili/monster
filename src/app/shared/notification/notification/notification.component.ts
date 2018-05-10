@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NotificationService } from '@app/core';
 import { Unsub } from '@app/static';
-
-import { NotificationService } from '../notification.service';
 
 @Component({
   selector: 'mst-notification',

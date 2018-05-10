@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { ProjectService } from '@app/core';
-import { now, Project, ProjectStatus, Subproject } from '@app/model';
+import { now, ProjectStatus, Subproject } from '@app/model';
 import { InputControl } from '@app/shared';
+import { Unsub } from '@app/static';
 import { addDays } from 'date-fns';
 
 @Component({
@@ -9,8 +10,7 @@ import { addDays } from 'date-fns';
   templateUrl: './project-create.component.html',
   styleUrls: ['./project-create.component.scss']
 })
-export class ProjectCreateComponent {
-  @Output() create = new EventEmitter<Project>();
+export class ProjectCreateComponent extends Unsub {
   isShow = false;
 
   titleControl = new InputControl('');
@@ -26,7 +26,9 @@ export class ProjectCreateComponent {
 
   subprojects: Subproject[] = [];
 
-  constructor(private projectService: ProjectService) { }
+  constructor(private projectService: ProjectService) {
+    super();
+  }
 
   onOpen() {
     this.isShow = true;
@@ -50,14 +52,16 @@ export class ProjectCreateComponent {
     if (title && result) {
       this.hasResultError = false;
       this.hasTitleError = false;
-      const project = this.projectService.createProject({
-        title, result,
-        startDate: this.startDate,
-        endDate: this.endDate,
-        status: this.status === undefined ? ProjectStatus.InProgress : this.status
-      });
-      this.create.emit(project);
-      this.isShow = false;
+      this.addSubscription(
+        this.projectService.addProject({
+          title, result,
+          startDate: this.startDate,
+          endDate: this.endDate,
+          status: this.status === undefined ? ProjectStatus.InProgress : this.status
+        }).subscribe(success => {
+          this.isShow = false;
+        })
+      );
     } else {
       this.hasTitleError = !title;
       this.hasResultError = !result;

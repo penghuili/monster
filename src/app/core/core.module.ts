@@ -8,7 +8,10 @@ import { IconModule } from '../shared/icon/icon.module';
 import { StylingModule } from '../shared/styling/styling.module';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { DbService } from './services/db.service';
+import { EventService } from './services/event.service';
 import { IconsService } from './services/icons.service';
+import { LoadingService } from './services/loading.service';
+import { NotificationService } from './services/notification.service';
 import { ProjectService } from './services/project.service';
 import { TodoService } from './services/todo.service';
 
@@ -25,7 +28,10 @@ import { TodoService } from './services/todo.service';
     IconsService,
     ProjectService,
     TodoService,
-    DbService
+    DbService,
+    NotificationService,
+    LoadingService,
+    EventService
   ],
   declarations: [NavigationComponent],
   exports: [

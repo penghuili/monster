@@ -4,15 +4,13 @@ import { SortableItem } from './item';
 import { now } from './time';
 
 export interface Todo extends SortableItem {
-  index?: number;
-  subprojectId: string;
+  subprojectId: number;
   note?: string;
   happenDate: number;
   // In minutes
   expectedTime?: number;
   status: TodoStatus;
   finishAt?: number;
-  activities?: TodoActivity[];
   projectTitle?: string;
 }
 export interface TodoActivity {
@@ -30,11 +28,9 @@ export interface TodoGroup {
   [key: string]: Todo[];
 }
 
-export function createTodo(data: any, index: number): Todo {
+export function createTodo(data: any): Todo {
   const timestamp = now();
   return {
-    id: `t${timestamp}`,
-    index,
     title: data.title,
     subprojectId: data.subprojectId,
     note: data.note,
@@ -42,7 +38,6 @@ export function createTodo(data: any, index: number): Todo {
     expectedTime: data.expectedTime || 0,
     status: data.status,
     position: timestamp.toString() + '3',
-    activities: [],
     createdAt: timestamp,
     updatedAt: timestamp
   };

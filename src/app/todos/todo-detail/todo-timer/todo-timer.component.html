@@ -1,3 +1,3 @@
-<div [mstPadding]="'3rem 0 2rem'">
+<div [mstPadding]="'3rem 0 2rem'" *ngIf="expectedTime">
   <mst-progress [progress]="progress" [starting]="isDoing" [endLabel]="totalTime"></mst-progress>
 </div>

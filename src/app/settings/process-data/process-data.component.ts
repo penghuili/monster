@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DbService, ProjectService, TodoService } from '@app/core';
-import { Event, EventType, MonsterEvents, MonsterStorage, Project, Subproject, Todo } from '@app/model';
-import { NotificationService } from '@app/shared';
+import { DbService, NotificationService, ProjectService, TodoService } from '@app/core';
+import { Event, EventType, MonsterEvents, MonsterStorage, Project, Subproject, Todo, TodoStatus } from '@app/model';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 
 @Component({
@@ -44,15 +43,15 @@ export class ProcessDataComponent implements OnInit {
     MonsterStorage.remove('in-progress');
     MonsterStorage.remove('done-recently');
     MonsterStorage.remove('tags');
-    this.todoService.updateTodos([]);
+    MonsterStorage.remove('todos');
     this.notificationService.sendMessage('Delete todos success :>');
   }
   onDeleteProjects() {
-    this.projectService.updateProjects([]);
+    MonsterStorage.remove('projects');
     this.notificationService.sendMessage('DeleteProjects success :>');
   }
   onDeleteSubprojects() {
-    this.projectService.updateSubprojects([]);
+    MonsterStorage.remove('sub-projects');
     this.notificationService.sendMessage('Delete Subprojects success :>');
   }
 
@@ -88,6 +87,9 @@ export class ProcessDataComponent implements OnInit {
       .sort((a, b) => a.createdAt - b.createdAt)
       .map((a, i) => {
         a.index = i + 1;
+        if (a.status === TodoStatus.WontDo) {
+          a.finishAt = a.updatedAt;
+        }
         return a;
       });
 
@@ -100,13 +102,19 @@ export class ProcessDataComponent implements OnInit {
     todos = todos.map(a => {
       const subp: any = subprojects.find(bb => bb.id === a.subprojectId);
       a.subprojectId = subp.index;
+      if (a.nextId) {
+        a.nextId = todos[a.nextId].id;
+      }
+      if (a.prevId) {
+        a.prevId = todos[a.prevId].id;
+      }
       return a;
     });
 
     // generate events
     let events: Event[] = [];
-    todos.filter(a => a.activities && a.activities.length > 0)
-      .forEach(todo => {
+    todos.filter((a: any) => a.activities && a.activities.length > 0)
+      .forEach((todo: any) => {
         todo.activities.forEach(activity => {
           events.push({
             createdAt: activity.startAt,
@@ -122,7 +130,7 @@ export class ProcessDataComponent implements OnInit {
           });
         });
       });
-    todos.forEach(a => {
+    todos.forEach((a: any) => {
       events.push({
         createdAt: a.createdAt,
         refId: a.index,

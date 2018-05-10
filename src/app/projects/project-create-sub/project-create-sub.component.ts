@@ -1,14 +1,15 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ProjectService } from '@app/core';
-import { Project, Subproject, Todo } from '@app/model';
+import { Project, Todo } from '@app/model';
 import { InputControl } from '@app/shared';
+import { Unsub } from '@app/static';
 
 @Component({
   selector: 'mst-project-create-sub',
   templateUrl: './project-create-sub.component.html',
   styleUrls: ['./project-create-sub.component.scss']
 })
-export class ProjectCreateSubComponent {
+export class ProjectCreateSubComponent extends Unsub {
   @Input() project: Project;
   isShow = false;
 
@@ -19,7 +20,9 @@ export class ProjectCreateSubComponent {
 
   todos: Todo[] = [];
 
-  constructor(private projectService: ProjectService) {}
+  constructor(private projectService: ProjectService) {
+    super();
+  }
 
   onOpen() {
     this.isShow = true;
@@ -30,12 +33,17 @@ export class ProjectCreateSubComponent {
     if (title && result && this.project) {
       this.hasResultError = false;
       this.hasTitleError = false;
-      const subproject = this.projectService.createSubproject({
-        projectId: this.project.id,
-        title, result,
-        todos: this.todos
-      });
-      this.isShow = false;
+      this.addSubscription(
+        this.projectService.addSubproject({
+          projectId: this.project.id,
+          title, result,
+          todos: this.todos
+        }).subscribe(success => {
+          if (success) {
+            this.isShow = false;
+          }
+        })
+      );
     } else {
       this.hasTitleError = !title;
       this.hasResultError = !result;

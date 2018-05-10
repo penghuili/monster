@@ -31,14 +31,8 @@ export class DbService {
     });
   }
 
-  addTodo(todo: Todo): Observable<number> {
-    return fromPromise(this.db.todos.add(todo));
-  }
-  deleteTodo(id: number): Observable<boolean> {
-    return fromPromise(this.db.todos.delete(id)).pipe(
-      map(() => true),
-      catchError(error => of(false))
-    );
+  getDB(): MonsterDB {
+    return this.db;
   }
   addTodos(todos: Todo[]): Observable<boolean> {
     return fromPromise(this.db.todos.bulkAdd(todos)).pipe(

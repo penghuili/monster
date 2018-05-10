@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProjectService, TodoService } from '@app/core';
-import { now, Subproject, Todo, TodoStatus } from '@app/model';
+import { EventService, ProjectService, TodoService } from '@app/core';
+import { EventType, mapTodoStatusEvent, MonsterEvents, now, Subproject, Todo, TodoStatus } from '@app/model';
 import { InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
 import { merge } from 'ramda';
-import { debounceTime, first, switchMap, tap } from 'rxjs/operators';
+import { debounceTime, switchMap, tap } from 'rxjs/operators';
 
 import { TodoTimerComponent } from './todo-timer/todo-timer.component';
 
@@ -22,11 +22,12 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   hasError = false;
   currentSubproject: Subproject;
   status: TodoStatus;
+  timeUsed: number;
 
   isDoing = false;
-  private startAt: number;
 
   constructor(
+    private eventService: EventService,
     private projectService: ProjectService,
     private route: ActivatedRoute,
     private router: Router,
@@ -36,13 +37,16 @@ export class TodoDetailComponent extends Unsub implements OnInit {
 
   ngOnInit() {
     this.addSubscription(
-      this.todoService.getById(this.route.snapshot.paramMap.get('id')).pipe(
-        first(),
+      this.todoService.getById(+this.route.snapshot.paramMap.get('id')).pipe(
         tap(todo => {
           this.todo = todo;
           this.titleControl.setValue(this.todo.title);
           this.noteControl.setValue(this.todo.note);
           this.status = this.todo.status;
+        }),
+        switchMap(todo => this.eventService.getTodoUsedTime(todo.id)),
+        tap(timeUsed => {
+          this.timeUsed = timeUsed;
         }),
         switchMap(todo => this.projectService.getSubprojectById(this.todo.subprojectId))
       ).subscribe(subproject => {
@@ -68,6 +72,11 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   }
 
   onDurationChange(duration: number) {
+    this.emitEvent({
+      action: MonsterEvents.ChangeTodoExpectedTime,
+      oldValue: this.todo.expectedTime,
+      newValue: duration
+    });
     this.update({ expectedTime: duration });
   }
   onSelectSubproject(subproject: Subproject) {
@@ -75,19 +84,22 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     this.update({ subprojectId: subproject.id });
   }
   onSelectStatus(status: TodoStatus) {
+    const action = mapTodoStatusEvent(status);
+    this.emitEvent({
+      action,
+      oldValue: this.todo.status,
+      newValue: status
+    });
+
     this.status = status;
     const timestamp = now();
-    if (status === TodoStatus.Done) {
-      let data: any = {};
+    if (status === TodoStatus.Done || status === TodoStatus.WontDo) {
       if (this.isDoing) {
-        data = {
-          activities: this.getStopData()
-        };
+        this.onStop();
       }
-      data = {
-        ...data,
+      const data = {
         finishAt: timestamp,
-        status: TodoStatus.Done,
+        status,
         updatedAt: timestamp
       };
       this.update(data);
@@ -96,23 +108,39 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     }
   }
   onFinishPickDate(date: number) {
+    this.emitEvent({
+      action: MonsterEvents.ChangeTodoHappenDate,
+      oldValue: this.todo.happenDate,
+      newValue: date
+    });
+
     this.update({ happenDate: date });
   }
   onStart() {
     if (!this.isDoing) {
       this.isDoing = true;
-      this.startAt = now();
       this.timer.start();
+      this.emitEvent({ action: MonsterEvents.StartTodo });
     }
   }
   onStop() {
-    const newTodo = merge(this.todo, { activities: this.getStopData() });
-    this.todoService.update(newTodo);
+    this.timer.stop();
+    this.isDoing = false;
+    this.emitEvent({ action: MonsterEvents.StopTodo });
   }
   onBack() {
     this.router.navigate([ '../' ], { relativeTo: this.route });
   }
 
+  private emitEvent(data: any) {
+    const event = {
+      ...data,
+      createdAt: now(),
+      refId: this.todo.id,
+      type: EventType.Todo
+    };
+    this.eventService.add(event);
+  }
   private update(data: any) {
     const title = this.titleControl.getValue();
     if (title) {
@@ -121,18 +149,12 @@ export class TodoDetailComponent extends Unsub implements OnInit {
         ...data,
         updatedAt: now()
       });
-      this.todoService.update(this.todo);
+      this.addSubscription(
+        this.todoService.update(this.todo).subscribe(success => {
+        })
+      );
     } else {
       this.hasError = true;
     }
-  }
-  private getStopData() {
-    this.timer.stop();
-    this.isDoing = false;
-    const endAt = now();
-    const activities = this.todo.activities;
-    activities.push({ startAt: this.startAt, endAt });
-    this.startAt = undefined;
-    return activities;
   }
 }

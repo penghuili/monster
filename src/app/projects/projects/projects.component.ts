@@ -37,11 +37,11 @@ export class ProjectsComponent extends Unsub implements OnInit {
     this.dragIndex = dragIndex;
   }
   onDrop(dropIndex: number) {
-    if (dropIndex !== this.dragIndex) {
-      const dragged = this.activeProjects[this.dragIndex];
-      const dropped = this.activeProjects[dropIndex];
-      this.projectService.swapProjects(dragged, dropped);
-    }
+    // if (dropIndex !== this.dragIndex) {
+    //   const dragged = this.activeProjects[this.dragIndex];
+    //   const dropped = this.activeProjects[dropIndex];
+    //   this.projectService.swapProjects(dragged, dropped);
+    // }
   }
 
   private updateProjects(projects: Project[]) {
