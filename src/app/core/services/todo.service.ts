@@ -1,83 +1,138 @@
 import { Injectable } from '@angular/core';
-import { createTodo, MonsterStorage, now, Subproject, swapItems, Todo } from '@app/model';
-import { differenceInDays } from 'date-fns';
-import { find, findIndex } from 'ramda';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { createTodo, EventType, MonsterEvents, now, Todo } from '@app/model';
+import { addDays, endOfDay } from 'date-fns';
 import { Observable } from 'rxjs/Observable';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { fromPromise } from 'rxjs/observable/fromPromise';
+import { of } from 'rxjs/observable/of';
+import { catchError, map, tap } from 'rxjs/operators';
 
-import { ProjectService } from './project.service';
+import { DbService } from './db.service';
+import { EventService } from './event.service';
+import { LoadingService } from './loading.service';
+import { NotificationService } from './notification.service';
 
 @Injectable()
 export class TodoService {
-  private todos$ = new BehaviorSubject<Todo[]>([]);
-  private inProgress$ = new BehaviorSubject<Todo[]>([]);
-  private doneRecently$ = new BehaviorSubject<Todo[]>([]);
 
-  constructor(private projectService: ProjectService) {
-    const todos = MonsterStorage.get('todos') || [];
-    this.todos$.next(todos);
-
-    const inProgress = MonsterStorage.get('in-progress');
-    const doneReacently = MonsterStorage.get('done-recently');
-    this.inProgress$.next(inProgress);
-    this.doneRecently$.next(doneReacently);
+  constructor(
+    private eventService: EventService,
+    private dbService: DbService,
+    private loadingService: LoadingService,
+    private notificationService: NotificationService) {
   }
 
   get7Days(): Observable<Todo[]> {
-    return this.todos$.asObservable().pipe(
-      map(todos => todos.filter(a => differenceInDays(a.happenDate, now()) <= 7))
+    this.loadingService.isLoading();
+    const endOfThisWeek = endOfDay(addDays(now(), 7)).getTime();
+
+    return fromPromise(this.dbService.getDB()
+      .todos
+      .where('happenDate')
+      .below(endOfThisWeek)
+      .toArray()
+    ).pipe(
+      catchError(error => this.handleError('get7Days fails')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
     );
   }
-  getTodosBySubprojectId(id: string): Observable<Todo[]> {
-    return this.todos$.asObservable().pipe(
-      map(todos => todos.filter(a => a.subprojectId === id))
+  getTodosBySubprojectId(id: number): Observable<Todo[]> {
+    this.loadingService.isLoading();
+    return fromPromise(this.dbService.getDB()
+      .todos
+      .where('subprojectId')
+      .equals(id)
+      .toArray()
+    ).pipe(
+      catchError(error =>  this.handleError('getTodosBySubprojectId fails.')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
     );
   }
-  getTodosByProjectId(id: string): Observable<Todo[]> {
-    let subprojects: Subproject[];
-    return this.projectService.getSubprojects(id).pipe(
-      tap(a => {
-        subprojects = a;
+  getTodosByProjectId(id: number): Observable<Todo[]> {
+    this.loadingService.isLoading();
+    const db = this.dbService.getDB();
+    const transaction = db.transaction('r', db.subprojects, db.todos, () => {
+      return db.subprojects
+        .where('projectId')
+        .equals(id)
+        .toArray()
+        .then(subps => {
+          return db.todos.where('subprojectId')
+            .anyOf(subps.map(a => a.id))
+            .toArray();
+        });
+    });
+    return fromPromise(transaction).pipe(
+      catchError(error => this.handleError('getTodosByProjectId fails.')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
+    );
+  }
+  getById(id: number): Observable<Todo> {
+    this.loadingService.isLoading();
+    return fromPromise(this.dbService.getDB()
+      .todos
+      .where('id')
+      .equals(id)
+      .first()
+    ).pipe(
+      catchError(error => this.handleError('getById fails.')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
+    );
+  }
+  add(data: any): Observable<any> {
+    this.loadingService.isLoading();
+    const todo = createTodo(data);
+    return fromPromise(this.dbService.getDB()
+      .todos
+      .add(todo)
+    ).pipe(
+      tap(id => {
+        this.eventService.add({
+          createdAt: now(),
+          type: EventType.Todo,
+          refId: id,
+          action: MonsterEvents.CreateTodo
+        });
       }),
-      switchMap(() => this.todos$.asObservable()),
-      map(todos => todos.filter(a => !!find(b => b.id === a.subprojectId, subprojects)))
+      catchError(error => this.handleError('create fails')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
     );
   }
-  getById(id: string): Observable<Todo> {
-    return this.todos$.asObservable().pipe(
-      map(todos => todos.find(a => a.id === id))
+  update(todo: Todo): Observable<any> {
+    this.loadingService.isLoading();
+    return fromPromise(this.dbService.getDB().todos.put(todo)).pipe(
+      map(() => true),
+      catchError(error => this.handleError('update todo fails')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
     );
-  }
-  create(data: any): Todo {
-    const todos = MonsterStorage.get('todos');
-    const index = todos && todos[0].index ? todos[0].index + 1 : 1;
-    const todo = createTodo(data, index);
-    todos.unshift(todo);
-    this.updateTodos(todos);
-    return todo;
-  }
-  update(todo: Todo) {
-    const todos: Todo[] = MonsterStorage.get('todos');
-    const index = findIndex(a => a.id === todo.id, todos);
-    if (index >= 0) {
-      todos[index] = todo;
-      this.updateTodos(todos);
-    }
   }
   swap(dragged: Todo, dropped: Todo) {
-    const todos: Todo[] = MonsterStorage.get('todos');
-    const swapped = <Todo[]>swapItems(dragged, dropped, todos);
-    if (swapped) {
-      this.updateTodos(swapped);
-    }
-  }
-
-  updateTodos(todos: Todo[]) {
-    MonsterStorage.set('todos', todos);
-    this.todos$.next(todos);
+    // const todayEnd = endOfToday();
+    // const swapped = <Todo[]>swapItems(dragged, dropped, todos);
+    // if (swapped) {
+    //   return this.dbService.getDB().todos
+    //     .where('happenDate')
+    //     .below(todayEnd)
+    //     .and(x => x.status === TodoStatus.InProgress || x.status === TodoStatus.Waiting)
+    // }
   }
 
   process() {
+  }
+
+  private handleError(message: string): Observable<any> {
+    this.notificationService.sendMessage(message);
+    return of(null);
   }
 }

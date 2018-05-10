@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TodoService } from '@app/core';
-import { now, Subproject, Todo, TodoStatus } from '@app/model';
+import { now, Subproject, TodoStatus } from '@app/model';
+import { Unsub } from '@app/static';
 
 import { InputControl } from '../../input/input-control';
 
@@ -9,10 +10,9 @@ import { InputControl } from '../../input/input-control';
   templateUrl: './todo-create.component.html',
   styleUrls: ['./todo-create.component.scss']
 })
-export class TodoCreateComponent {
+export class TodoCreateComponent extends Unsub {
   @Input() subproject: Subproject;
   @Input() useActionButton = false;
-  @Output() newTodo = new EventEmitter<Todo>();
   isShow = false;
 
   titleControl = new InputControl('');
@@ -26,6 +26,7 @@ export class TodoCreateComponent {
   currentSubproject: Subproject;
 
   constructor(private todoService: TodoService) {
+    super();
   }
 
   onOpen() {
@@ -57,9 +58,13 @@ export class TodoCreateComponent {
         expectedTime: this.expectedTime,
         happenDate: this.happenDate
       };
-      const newTodo = this.todoService.create(todo);
-      this.newTodo.emit(newTodo);
-      this.isShow = false;
+      this.addSubscription(
+        this.todoService.add(todo).subscribe(success => {
+          if (success) {
+            this.isShow = false;
+          }
+        })
+      );
     } else {
       this.hasTitleError = !title;
       this.hasSubprojectError = !subproject;

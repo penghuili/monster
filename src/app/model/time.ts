@@ -1,3 +1,5 @@
+import { addDays, endOfDay } from 'date-fns';
+
 export function now(): number {
   return new Date().getTime();
 }
@@ -10,4 +12,13 @@ export function createDate(year: number, month: number, day: number): number {
 }
 export function add0(a: number): string {
   return a >= 0 && a <= 9 ? `0${a}` : a.toString();
+}
+export function endOfToday(): number {
+  return endOfDay(now()).getTime();
+}
+export function endofTomorrow(): number {
+  return endOfDay(addDays(now(), 1)).getTime();
+}
+export function endOfThisWeek(): number {
+  return endOfDay(addDays(now(), 7)).getTime();
 }

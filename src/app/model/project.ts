@@ -15,7 +15,7 @@ export interface Project extends ProjectBase {
   endDate: number;
 }
 export interface Subproject extends ProjectBase {
-  projectId: string;
+  projectId: number;
   startDate?: number;
   endDate?: number;
 }
@@ -36,7 +36,6 @@ export interface ChartSeriesDataItem {
 export function createProject(data: any): Project {
   const timestamp = now();
   return {
-    id: `p${timestamp}`,
     title: data.title,
     startDate: data.startDate,
     endDate: data.endDate,
@@ -51,7 +50,6 @@ export function createProject(data: any): Project {
 export function createSubproject(data: any): Subproject {
   const timestamp = now();
   return {
-    id: `sp${timestamp}`,
     projectId: data.projectId,
     title: data.title,
     result: data.result,

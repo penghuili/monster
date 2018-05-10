@@ -6,8 +6,13 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MonsterCommonModule } from '../shared/common/common.module';
 import { IconModule } from '../shared/icon/icon.module';
 import { StylingModule } from '../shared/styling/styling.module';
+import { LoadingComponent } from './components/loading/loading.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
+import { DbService } from './services/db.service';
+import { EventService } from './services/event.service';
 import { IconsService } from './services/icons.service';
+import { LoadingService } from './services/loading.service';
+import { NotificationService } from './services/notification.service';
 import { ProjectService } from './services/project.service';
 import { TodoService } from './services/todo.service';
 
@@ -23,11 +28,16 @@ import { TodoService } from './services/todo.service';
   providers: [
     IconsService,
     ProjectService,
-    TodoService
+    TodoService,
+    DbService,
+    NotificationService,
+    LoadingService,
+    EventService
   ],
-  declarations: [NavigationComponent],
+  declarations: [NavigationComponent, LoadingComponent],
   exports: [
-    NavigationComponent
+    NavigationComponent,
+    LoadingComponent
   ]
 })
 export class CoreModule { }

@@ -1,7 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProjectService, TodoService } from '@app/core';
-import { ChartDataItem, getChartData, now, Project, ProjectStatus, Subproject, TodoStatus } from '@app/model';
+import { EventService, ProjectService, TodoService } from '@app/core';
+import {
+  ChartDataItem,
+  EventType,
+  getChartData,
+  mapProjectStatusEvent,
+  MonsterEvents,
+  now,
+  Project,
+  ProjectStatus,
+  Subproject,
+  TodoStatus,
+} from '@app/model';
 import { InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
 import { addDays, format } from 'date-fns';
@@ -30,6 +41,7 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
   chartData: ChartDataItem[];
 
   constructor(
+    private eventService: EventService,
     private route: ActivatedRoute,
     private router: Router,
     private projectService: ProjectService,
@@ -38,7 +50,7 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
   }
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = +this.route.snapshot.paramMap.get('id');
     this.addSubscription(
       this.projectService.getProjectById(id).pipe(
         first(),
@@ -63,10 +75,9 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
           .sort((a, b) => a.happenDate - b.happenDate)
           .map(a => ({name: format(a.happenDate, 'YYYY-MM-DD'), value: 1}));
         const doneItems = todos
-          .filter(a => a.status === TodoStatus.Done)
-          .sort((a, b) => a.finishAt - b.finishAt)
+          .filter(a => a.status === TodoStatus.Done || a.status === TodoStatus.WontDo)
+          .sort((a, b) => b.finishAt - a.finishAt)
           .map(a => ({name: format(a.finishAt, 'YYYY-MM-DD'), value: 1}));
-
         const plan = getChartData(items);
         const done = getChartData(doneItems);
         this.chartData = [
@@ -94,18 +105,39 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
   }
 
   onSelectStatus(status: ProjectStatus) {
+    const action = mapProjectStatusEvent(status);
+    this.emitEvent({
+      action,
+      oldValue: this.project.status,
+      newValue: status
+    });
+
     this.status = status;
     this.update({ status });
   }
   onPickStartDate(date: number) {
+    this.emitEvent({
+      action: MonsterEvents.ChangeProjectStartDate,
+      oldValue: this.project.startDate,
+      newValue: date
+    });
+
     this.startDate = date;
-    this.update({ startDate: date });
     this.endDateStartDate = addDays(this.startDate, 1).getTime();
     if (this.startDate > this.endDate) {
       this.endDate = addDays(this.startDate, 1).getTime();
+      this.update({ startDate: date, endDate: this.endDate });
+    } else {
+      this.update({ startDate: date });
     }
   }
   onPickEndDate(date: number) {
+    this.emitEvent({
+      action: MonsterEvents.ChangeProjectEndDate,
+      oldValue: this.project.endDate,
+      newValue: date
+    });
+
     this.endDate = date;
     this.update({ endDate: date });
   }
@@ -113,6 +145,15 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
     this.router.navigate([ subid ], { relativeTo: this.route });
   }
 
+  private emitEvent(data: any) {
+    const event = {
+      ...data,
+      createdAt: now(),
+      refId: this.project.id,
+      type: EventType.Project
+    };
+    this.eventService.add(event);
+  }
   private update(data: any) {
     const title = this.titleControl.getValue();
     const result = this.resultControl.getValue();

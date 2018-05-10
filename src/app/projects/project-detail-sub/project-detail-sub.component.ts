@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProjectService, TodoService } from '@app/core';
-import { now, ProjectStatus, Subproject, Todo } from '@app/model';
+import { EventService, ProjectService, TodoService } from '@app/core';
+import { EventType, mapProjectStatusEvent, now, ProjectStatus, Subproject, Todo } from '@app/model';
 import { InputControl } from '@app/shared';
 import { ROUTES, Unsub } from '@app/static';
 import { merge } from 'ramda';
@@ -23,6 +23,7 @@ export class ProjectDetailSubComponent extends Unsub implements OnInit {
   endDate: number;
 
   constructor(
+    private eventService: EventService,
     private route: ActivatedRoute,
     private router: Router,
     private projectService: ProjectService,
@@ -31,10 +32,10 @@ export class ProjectDetailSubComponent extends Unsub implements OnInit {
   }
 
   ngOnInit() {
-    const subid = this.route.snapshot.paramMap.get('subid');
-    const id = this.route.snapshot.paramMap.get('id');
+    const subid = +this.route.snapshot.paramMap.get('subid');
+    const id = +this.route.snapshot.paramMap.get('id');
     this.addSubscription(
-      this.projectService.getSubprojectById(subid, id).pipe(
+      this.projectService.getSubprojectById(subid).pipe(
         first()
       ).subscribe(subproject => {
         this.subproject = subproject;
@@ -71,6 +72,16 @@ export class ProjectDetailSubComponent extends Unsub implements OnInit {
   }
 
   onSelectStatus(status: ProjectStatus) {
+    const action = mapProjectStatusEvent(status);
+    const event = {
+      createdAt: now(),
+      refId: this.subproject.id,
+      type: EventType.Subproject,
+      action,
+      oldValue: this.subproject.status,
+      newValue: status
+    };
+    this.eventService.add(event);
     this.update({ status });
   }
   onGotoTodo(id: string) {

@@ -3,19 +3,20 @@ import { find, findIndex, insert, merge } from 'ramda';
 import { now } from './time';
 
 export interface Item {
-  id?: string;
+  id?: number;
   title?: string;
   createdAt?: number;
   updatedAt?: number;
 }
 export interface SortableItem extends Item {
   position?: string;
-  nextId?: string;
-  prevId?: string;
+  nextId?: number;
+  prevId?: number;
 }
 export function swapItems(dragged: SortableItem, dropped: SortableItem, items: SortableItem[]): SortableItem[] {
   const indexDragged = findIndex(a => a.id === dragged.id, items);
   const indexDropped = findIndex(a => a.id === dropped.id, items);
+  const updatedItems: SortableItem[] = [];
   if (indexDragged > -1 && indexDropped > -1) {
     let start: SortableItem;
     let end: SortableItem;
@@ -24,12 +25,14 @@ export function swapItems(dragged: SortableItem, dropped: SortableItem, items: S
       const draggedPrevIndex = findIndex(a => a.id === dragged.prevId, items);
       if (draggedPrevIndex > -1) {
         items[draggedPrevIndex].nextId = undefined;
+        updatedItems.push(items[draggedPrevIndex]);
       }
     }
     if (dragged.nextId && !dragged.prevId) {
       const draggedNextIndex = findIndex(a => a.id === dragged.nextId, items);
       if (draggedNextIndex > -1) {
         items[draggedNextIndex].prevId = undefined;
+        updatedItems.push(items[draggedNextIndex]);
       }
     }
     if (dragged.position > dropped.position) {
@@ -66,6 +69,8 @@ export function swapItems(dragged: SortableItem, dropped: SortableItem, items: S
 
       items[indexDragged] = dragged;
       items[indexDropped] = end;
+      updatedItems.push(dragged);
+      updatedItems.push(end);
     } else if (!end) {
       if (start.prevId === dragged.id) {
         start.prevId = prevId;
@@ -80,6 +85,8 @@ export function swapItems(dragged: SortableItem, dropped: SortableItem, items: S
 
       items[indexDragged] = dragged;
       items[indexDropped] = start;
+      updatedItems.push(dragged);
+      updatedItems.push(start);
     } else {
       if (start.prevId === dragged.id) {
         start.prevId = prevId;
@@ -109,8 +116,11 @@ export function swapItems(dragged: SortableItem, dropped: SortableItem, items: S
         items[indexDropped] = end;
         items[index3] = start;
       }
+      updatedItems.push(start);
+      updatedItems.push(dragged);
+      updatedItems.push(end);
     }
-    return items;
+    return updatedItems;
   }
   return null;
 }
