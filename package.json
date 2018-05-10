@@ -1,6 +1,6 @@
 {
   "name": "monster",
-  "version": "v1.8.0",
+  "version": "v1.8.1",
   "license": "MIT",
   "scripts": {
     "ng": "ng",

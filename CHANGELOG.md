@@ -1,3 +1,9 @@
+## v1.8.1
+
+bug fix:
+
+- fix parsing array error
+
 ## v1.8.0
 
 feature:

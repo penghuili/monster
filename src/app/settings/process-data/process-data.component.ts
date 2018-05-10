@@ -103,10 +103,10 @@ export class ProcessDataComponent implements OnInit {
       const subp: any = subprojects.find(bb => bb.id === a.subprojectId);
       a.subprojectId = subp.index;
       if (a.nextId) {
-        a.nextId = todos[a.nextId].id;
+        a.nextId = todos.find(aa => aa.id === a.nextId).id;
       }
       if (a.prevId) {
-        a.prevId = todos[a.prevId].id;
+        a.prevId = todos.find(aa => aa.id === a.prevId).id;
       }
       return a;
     });
