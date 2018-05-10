@@ -7,6 +7,7 @@ import { MonsterCommonModule } from '../shared/common/common.module';
 import { IconModule } from '../shared/icon/icon.module';
 import { StylingModule } from '../shared/styling/styling.module';
 import { NavigationComponent } from './components/navigation/navigation.component';
+import { DbService } from './services/db.service';
 import { IconsService } from './services/icons.service';
 import { ProjectService } from './services/project.service';
 import { TodoService } from './services/todo.service';
@@ -23,7 +24,8 @@ import { TodoService } from './services/todo.service';
   providers: [
     IconsService,
     ProjectService,
-    TodoService
+    TodoService,
+    DbService
   ],
   declarations: [NavigationComponent],
   exports: [

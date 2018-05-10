@@ -1,4 +1,18 @@
-export const MonsterEvent = {
+export interface Event {
+  id?: number;
+  refId: number;
+  createdAt: number;
+  type: EventType;
+  action: string;
+  oldValue?: any;
+  newValue?: any;
+}
+export enum EventType {
+  Todo,
+  Project,
+  Subproject
+}
+export const MonsterEvents = {
   CreateProject: 'CreateProject',
   ChangeProjectStartDate: 'ChangeProjectStartDate',
   ChangeProjectEndDate: 'ChangeProjectEndDate',
@@ -7,8 +21,6 @@ export const MonsterEvent = {
   DoneProject: 'DoneProject',
 
   CreateSubproject: 'CreateSubproject',
-  ChangeSubprojectStartDate: 'ChangeSubprojectStartDate',
-  ChangeSubprojectEndDate: 'ChangeSubprojectEndDate',
   InProgressSubproject: 'InProgressSubproject',
   SomedaySubproject: 'SomedaySubproject',
   DoneSubproject: 'DoneSubproject',
@@ -24,3 +36,14 @@ export const MonsterEvent = {
   StartTodo: 'StartTodo',
   StopTodo: 'StopTodo'
 };
+
+export function createEvent(data: any): Event {
+  return {
+    refId: data.refId,
+    createdAt: data.createdAt,
+    type: data.type,
+    action: data.action,
+    oldValue: data.oldValue,
+    newValue: data.newValue
+  };
+}

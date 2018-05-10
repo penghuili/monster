@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { createTodo, MonsterStorage, now, Subproject, swapItems, Todo } from '@app/model';
+import { createTodo, MonsterStorage, now, Project, Subproject, swapItems, Todo } from '@app/model';
 import { differenceInDays } from 'date-fns';
 import { find, findIndex } from 'ramda';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';

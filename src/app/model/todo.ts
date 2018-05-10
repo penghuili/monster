@@ -4,7 +4,7 @@ import { SortableItem } from './item';
 import { now } from './time';
 
 export interface Todo extends SortableItem {
-  index: number;
+  index?: number;
   subprojectId: string;
   note?: string;
   happenDate: number;
@@ -12,9 +12,7 @@ export interface Todo extends SortableItem {
   expectedTime?: number;
   status: TodoStatus;
   finishAt?: number;
-  activities: TodoActivity[];
-  nextId?: string;
-  prevId?: string;
+  activities?: TodoActivity[];
   projectTitle?: string;
 }
 export interface TodoActivity {
