@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
-import { filter, map, tap } from 'rxjs/operators';
+import { catchError, filter, map, tap } from 'rxjs/operators';
 
 import { createProject, createSubproject, Project, Subproject } from '../../model/project';
 import { DbService } from './db.service';
@@ -24,24 +24,36 @@ export class ProjectService {
   }
 
   getProjects(): Observable<Project[]> {
+    this.loadingService.isLoading();
     return fromPromise(
       this.dbService.getDB().projects.toArray()
     ).pipe(
-      filter(data => !!data)
+      filter(data => !!data),
+      catchError(error => this.handleError('getProjects fails')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
     );
   }
   getProjectById(id: number): Observable<Project> {
+    this.loadingService.isLoading();
     return fromPromise(
       this.dbService.getDB().projects
         .where('id')
         .equals(id)
         .first()
+    ).pipe(
+      catchError(error => this.handleError('getProjectById fails')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
     );
   }
   addProjectTitleToTodos(todos: Todo[]): Observable<Todo[]> {
     if (!todos || todos.length === 0) {
       return of([]);
     }
+    this.loadingService.isLoading();
     return combineLatest(this.getProjects(), this.getSubprojects()).pipe(
       map(([projects, subprojects]) => {
         return todos
@@ -49,24 +61,42 @@ export class ProjectService {
           .map(a => find(b => b.id === a.projectId, projects))
           .map((a, i) => merge(todos[i], { projectTitle: a.title }));
       })
+    ).pipe(
+      catchError(error => this.handleError('addProjectTitleToTodos fails')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
     );
   }
   getSubprojects(projectId?: number): Observable<Subproject[]> {
+    this.loadingService.isLoading();
     return fromPromise(
       this.dbService.getDB().subprojects
         .filter(x => projectId ? x.projectId === projectId : true)
         .toArray()
+    ).pipe(
+      catchError(error => this.handleError('getSubprojects fails')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
     );
   }
   getSubprojectById(subid: number): Observable<Subproject> {
+    this.loadingService.isLoading();
     return fromPromise(
       this.dbService.getDB().subprojects
          .where('id')
          .equals(subid)
         .first()
+    ).pipe(
+      catchError(error => this.handleError('getSubprojectById fails')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
     );
   }
   addProject(data: any): Observable<any> {
+    this.loadingService.isLoading();
     const p = createProject(data);
     return fromPromise(
       this.dbService.getDB().projects.add(p)
@@ -79,9 +109,15 @@ export class ProjectService {
           action: MonsterEvents.CreateProject
         });
       })
+    ).pipe(
+      catchError(error => this.handleError('addProject fails')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
     );
   }
   addSubproject(data: any): Observable<any> {
+    this.loadingService.isLoading();
     const sp = createSubproject(data);
     return fromPromise(
       this.dbService.getDB().subprojects.add(sp)
@@ -94,12 +130,19 @@ export class ProjectService {
           action: MonsterEvents.CreateSubproject
         });
       })
+    ).pipe(
+      catchError(error => this.handleError('addSubproject fails')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
     );
   }
   updateProject(project: Project) {
     this.loadingService.isLoading();
     fromPromise(
       this.dbService.getDB().projects.put(project)
+    ).pipe(
+      catchError(error => this.handleError('updateProject fails'))
     ).subscribe(() => {
       this.loadingService.stopLoading();
     });
@@ -108,6 +151,8 @@ export class ProjectService {
     this.loadingService.isLoading();
     fromPromise(
       this.dbService.getDB().subprojects.put(subproject)
+    ).pipe(
+      catchError(error => this.handleError('updateSubproject fails'))
     ).subscribe(() => {
       this.loadingService.stopLoading();
     });
@@ -123,5 +168,10 @@ export class ProjectService {
   processProjects() {
   }
   processSubprojects() {
+  }
+
+  private handleError(message: string): Observable<any> {
+    this.notificationService.sendMessage(message);
+    return of(null);
   }
 }
