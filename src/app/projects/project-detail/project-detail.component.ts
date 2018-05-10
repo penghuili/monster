@@ -76,7 +76,7 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
           .map(a => ({name: format(a.happenDate, 'YYYY-MM-DD'), value: 1}));
         const doneItems = todos
           .filter(a => a.status === TodoStatus.Done || a.status === TodoStatus.WontDo)
-          .sort((a, b) => b.finishAt - a.finishAt)
+          .sort((a, b) => a.finishAt - b.finishAt)
           .map(a => ({name: format(a.finishAt, 'YYYY-MM-DD'), value: 1}));
         const plan = getChartData(items);
         const done = getChartData(doneItems);
