@@ -1,3 +1,10 @@
+## v1.7.2
+
+bug fix:
+
+- not show start end date for sub if there is non
+- fix cannot show todo details for todos that in the future
+
 ## v1.7.1
 
 feature:
