@@ -1,3 +1,14 @@
+## v1.8.3
+
+bug fix:
+
+- sorting on todo page
+- green first, red second
+
+feature:
+
+- start today and end today(not finished)
+
 ## v1.8.2
 
 bug fix:
