@@ -45,7 +45,7 @@ export class TodoService {
     );
   }
   getById(id: string): Observable<Todo> {
-    return this.get7Days().pipe(
+    return this.todos$.asObservable().pipe(
       map(todos => todos.find(a => a.id === id))
     );
   }
