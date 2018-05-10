@@ -117,6 +117,16 @@ export class TodoService {
       })
     );
   }
+  updateTodos(todos: Todo[]) {
+    this.loadingService.isLoading();
+    fromPromise(
+      this.dbService.getDB().todos.bulkPut(todos)
+    ).pipe(
+      catchError(error => this.handleError('update todos fails'))
+    ).subscribe(() => {
+      this.loadingService.stopLoading();
+    });
+  }
   swap(dragged: Todo, dropped: Todo) {
     // const todayEnd = endOfToday();
     // const swapped = <Todo[]>swapItems(dragged, dropped, todos);

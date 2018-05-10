@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService, TodoService } from '@app/core';
 import { isOverdue, MonsterStorage, now, Project, Todo, TodoGroup, TodoStatus } from '@app/model';
 import { ROUTES, Unsub } from '@app/static';
-import { addDays, endOfDay, format } from 'date-fns';
+import { addDays, endOfDay, format, startOfToday } from 'date-fns';
 import { groupBy, keys } from 'ramda';
 import { switchMap } from 'rxjs/operators';
 
@@ -27,6 +27,9 @@ export class TodosComponent extends Unsub implements OnInit {
   THISWEEK = 'this week';
   activeTab: string;
 
+  todayStarted = false;
+  todayEnded = false;
+
   private todos: Todo[];
   private projects: Project[];
 
@@ -41,6 +44,9 @@ export class TodosComponent extends Unsub implements OnInit {
   }
 
   ngOnInit() {
+    this.todayStarted = this.isTodayStarted();
+    this.todayEnded = this.isTodayEnded();
+
     this.activeTab = MonsterStorage.get('activeTab') || this.TODAY;
     this.addSubscription(
       this.todoService.get7Days().pipe(
@@ -52,6 +58,28 @@ export class TodosComponent extends Unsub implements OnInit {
     );
   }
 
+  onStartToday() {
+    if (!this.todayStarted) {
+      this.todayStarted = true;
+      MonsterStorage.set('start-today', now());
+      const unFixedTodos = this.todos ? this.todos.filter(a => !a.isHappenDateFixed).map(a => {
+        a.isHappenDateFixed = true;
+        return a;
+      }) : [];
+      if (unFixedTodos.length > 0) {
+        this.todoService.updateTodos(unFixedTodos);
+      }
+    }
+  }
+  onCallItADay() {
+    /**
+     * @todo not finished
+     */
+    if (!this.todayEnded) {
+      this.todayEnded = true;
+      MonsterStorage.set('end-today', now());
+    }
+  }
   onChangeTab(tab: string) {
     MonsterStorage.set('activeTab', tab);
     this.activeTab = tab;
@@ -87,6 +115,17 @@ export class TodosComponent extends Unsub implements OnInit {
       .reduce((sum, a) => sum + a.expectedTime, 0);
   }
 
+  private isTodayStarted(): boolean {
+    const start = MonsterStorage.get('start-today');
+    return start && start < now() && start > startOfToday().getTime();
+  }
+  private isTodayEnded(): boolean {
+    /**
+     * @todo trigger notification at 11 pm if today is not ended, or end it automatically
+     */
+    const end = MonsterStorage.get('end-today');
+    return end && end < now() && end > startOfToday().getTime();
+  }
   private processTodos(activeTab: string, todos: Todo[]) {
     const endOfToday = endOfDay(now()).getTime();
     const endofTomorrow = endOfDay(addDays(now(), 1)).getTime();

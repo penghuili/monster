@@ -11,6 +11,7 @@ export interface Todo extends SortableItem {
   expectedTime?: number;
   status: TodoStatus;
   finishAt?: number;
+  isHappenDateFixed?: boolean;
   projectTitle?: string;
 }
 export interface TodoActivity {
