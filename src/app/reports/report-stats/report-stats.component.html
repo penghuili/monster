@@ -1,0 +1,51 @@
+<div *ngIf="report"
+  [mstPadding]="'1rem 0 0'">
+  <div [mstPadding]="'0 0 1rem'">
+    finished / planed: <br>
+    {{ report.done + report.wontDo }} / {{ report.planned }} = {{ finishedPlanned() | percent }}
+  </div>
+  <div [mstPadding]="'0 0 1rem'">
+    used time / planned time: <br>
+    {{ report.usedTime | minuteFormatter }} / {{ report.plannedTime | minuteFormatter }} = {{ usedTimePlannedTime() | percent }}
+  </div>
+  <div [mstPadding]="'0 0 1rem'">
+    finished todos used time / planned time of these todos: <br>
+    {{ report.finishedUsedTime | minuteFormatter }} / {{ report.finishedPlannedTime | minuteFormatter }} = {{ finishedUsedTimeFinishedPlannedTime() | percent }}
+  </div>
+
+
+  <div [mstPadding]="'1rem 0 0'">
+    not finished: {{ notFinished.length }} {{ getTodosRatio(notFinished) | percent }}
+    <div [mstPadding]="'0 0 1rem 1rem'">
+      <mst-todo-item *ngFor="let todo of notFinished" [todo]="todo" (click)="onGotoTodo(todo.id)"></mst-todo-item>
+    </div>
+  </div>
+  <div>
+    finish too late: {{ finishTooLate.length }} {{ getTodosRatio(finishTooLate) | percent }}
+    <div [mstPadding]="'0 0 1rem 1rem'">
+      <mst-todo-item *ngFor="let todo of finishTooLate" [todo]="todo" (click)="onGotoTodo(todo.id)"></mst-todo-item>
+    </div>
+  </div>
+  <div>
+    finish too early: {{ finishTooEarly.length }} {{ getTodosRatio(finishTooEarly) | percent }}
+    <div [mstPadding]="'0 0 1rem 1rem'">
+      <mst-todo-item *ngFor="let todo of finishTooEarly" [todo]="todo" (click)="onGotoTodo(todo.id)"></mst-todo-item>
+    </div>
+  </div>
+  <div>
+    won't do: {{ wontDo.length }} {{ getTodosRatio(wontDo) | percent }}
+    <div [mstPadding]="'0 0 1rem 1rem'">
+      <mst-todo-item *ngFor="let todo of wontDo" [todo]="todo" (click)="onGotoTodo(todo.id)"></mst-todo-item>
+    </div>
+  </div>
+  <div>
+    done: {{ done.length }} {{ getTodosRatio(done) | percent }}
+    <div [mstPadding]="'0 0 1rem 1rem'">
+      <mst-todo-item *ngFor="let todo of done" [todo]="todo" (click)="onGotoTodo(todo.id)"></mst-todo-item>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!report && !isLoading">
+  no report for {{ date | mstDate:'shortDate' }}
+</div>
