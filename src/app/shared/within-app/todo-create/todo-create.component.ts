@@ -1,7 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { TodoService } from '@app/core';
-import { now, Subproject, TodoStatus } from '@app/model';
+import { isTodayStarted, now, Subproject, TodoStatus } from '@app/model';
 import { Unsub } from '@app/static';
+import { addDays } from 'date-fns';
 
 import { InputControl } from '../../input/input-control';
 
@@ -22,11 +23,13 @@ export class TodoCreateComponent extends Unsub {
   expectedTime = 0;
   hasTitleError = false;
   hasSubprojectError = false;
+  datePickerStartDate: number;
 
   currentSubproject: Subproject;
 
   constructor(private todoService: TodoService) {
     super();
+    this.datePickerStartDate = isTodayStarted() ? addDays(now(), 1).getTime() : now();
   }
 
   onOpen() {
