@@ -1,7 +1,8 @@
 import { format } from 'date-fns';
 
 import { SortableItem } from './item';
-import { now } from './time';
+import { endOfToday, now, startOfToday } from './time';
+import { MonsterStorage } from './utils';
 
 export interface Todo extends SortableItem {
   subprojectId: number;
@@ -11,7 +12,6 @@ export interface Todo extends SortableItem {
   expectedTime?: number;
   status: TodoStatus;
   finishAt?: number;
-  isHappenDateFixed?: boolean;
   projectTitle?: string;
 }
 export interface TodoActivity {
@@ -43,6 +43,32 @@ export function createTodo(data: any): Todo {
     updatedAt: timestamp
   };
 }
-export function isOverdue(todo: Todo): boolean {
+export function isHappenBeforeToday(todo: Todo): boolean {
   return todo && format(todo.happenDate, 'YYYYMMDD') < format(now(), 'YYYYMMDD');
+}
+export function isHappenTodayOrBefore(todo: Todo): boolean {
+  return todo && todo.happenDate < endOfToday();
+}
+export function isOverDue(todo: Todo): boolean {
+  return isHappenBeforeToday(todo) && !isFinished(todo);
+}
+export function isFinished(todo: Todo): boolean {
+  return todo && (todo.status === TodoStatus.Done || todo.status === TodoStatus.WontDo);
+}
+/**
+ * @todo not pure
+ */
+export function isTodayStarted(): boolean {
+  const start = MonsterStorage.get('start-today');
+  return start && start < now() && start > startOfToday();
+}
+export function isTodayEnded(): boolean {
+  /**
+   * @todo trigger notification at 11 pm if today is not ended, or end it automatically
+   */
+  const end = MonsterStorage.get('end-today');
+  return end && end < now() && end > startOfToday();
+}
+export function isHappenToday(todo: Todo): boolean {
+  return todo && todo.happenDate > startOfToday() && todo.happenDate < endOfToday();
 }

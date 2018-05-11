@@ -1,9 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService, TodoService } from '@app/core';
-import { isOverdue, MonsterStorage, now, Project, Todo, TodoGroup, TodoStatus } from '@app/model';
+import {
+  isHappenBeforeToday,
+  isTodayEnded,
+  isTodayStarted,
+  MonsterStorage,
+  now,
+  Project,
+  Todo,
+  TodoGroup,
+  TodoStatus,
+  isOverDue,
+} from '@app/model';
 import { ROUTES, Unsub } from '@app/static';
-import { addDays, endOfDay, format, startOfToday } from 'date-fns';
+import { addDays, endOfDay, format } from 'date-fns';
 import { groupBy, keys } from 'ramda';
 import { switchMap } from 'rxjs/operators';
 
@@ -44,8 +55,8 @@ export class TodosComponent extends Unsub implements OnInit {
   }
 
   ngOnInit() {
-    this.todayStarted = this.isTodayStarted();
-    this.todayEnded = this.isTodayEnded();
+    this.todayStarted = isTodayStarted();
+    this.todayEnded = isTodayEnded();
 
     this.activeTab = MonsterStorage.get('activeTab') || this.TODAY;
     this.addSubscription(
@@ -62,13 +73,6 @@ export class TodosComponent extends Unsub implements OnInit {
     if (!this.todayStarted) {
       this.todayStarted = true;
       MonsterStorage.set('start-today', now());
-      const unFixedTodos = this.todos ? this.todos.filter(a => !a.isHappenDateFixed).map(a => {
-        a.isHappenDateFixed = true;
-        return a;
-      }) : [];
-      if (unFixedTodos.length > 0) {
-        this.todoService.updateTodos(unFixedTodos);
-      }
     }
   }
   onCallItADay() {
@@ -115,17 +119,6 @@ export class TodosComponent extends Unsub implements OnInit {
       .reduce((sum, a) => sum + a.expectedTime, 0);
   }
 
-  private isTodayStarted(): boolean {
-    const start = MonsterStorage.get('start-today');
-    return start && start < now() && start > startOfToday().getTime();
-  }
-  private isTodayEnded(): boolean {
-    /**
-     * @todo trigger notification at 11 pm if today is not ended, or end it automatically
-     */
-    const end = MonsterStorage.get('end-today');
-    return end && end < now() && end > startOfToday().getTime();
-  }
   private processTodos(activeTab: string, todos: Todo[]) {
     const endOfToday = endOfDay(now()).getTime();
     const endofTomorrow = endOfDay(addDays(now(), 1)).getTime();
@@ -161,13 +154,14 @@ export class TodosComponent extends Unsub implements OnInit {
       format(todo.finishAt, 'YYYYMMDD') === format(now(), 'YYYYMMDD');
   }
   private sortActiveTodo(a: Todo, b: Todo): number {
-    if (a.status === TodoStatus.InProgress && isOverdue(a)) {
+    if (a.status === TodoStatus.InProgress && isOverDue(a)) {
       return -1;
-    } else if (a.status === TodoStatus.Waiting && isOverdue(a) && b.status === TodoStatus.Waiting) {
+    } else if (a.status === TodoStatus.Waiting && isOverDue(a) && b.status === TodoStatus.Waiting) {
       return -1;
-    } else if (a.status === TodoStatus.InProgress && !isOverdue(a) && !(isOverdue(b) && b.status === TodoStatus.InProgress)) {
+    } else if (a.status === TodoStatus.InProgress && !isOverDue(a) &&
+      !(isOverDue(b) && b.status === TodoStatus.InProgress)) {
       return -1;
-    } else if (a.status === TodoStatus.Waiting && !isOverdue(a) && b.status === TodoStatus.Waiting) {
+    } else if (a.status === TodoStatus.Waiting && !isOverDue(a) && b.status === TodoStatus.Waiting) {
       return -1;
     } else {
       return 1;

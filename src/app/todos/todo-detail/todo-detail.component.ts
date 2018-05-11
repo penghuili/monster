@@ -1,13 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService, ProjectService, TodoService } from '@app/core';
-import { EventType, mapTodoStatusEvent, MonsterEvents, now, Subproject, Todo, TodoStatus } from '@app/model';
+import { EventType, mapTodoStatusEvent, MonsterEvents, now, Subproject, Todo, TodoStatus, isHappenBeforeToday, isHappenToday, isTodayStarted } from '@app/model';
 import { InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
 import { merge } from 'ramda';
 import { debounceTime, switchMap, tap } from 'rxjs/operators';
 
 import { TodoTimerComponent } from './todo-timer/todo-timer.component';
+import { addDays } from 'date-fns';
 
 @Component({
   selector: 'mst-todo-detail',
@@ -23,6 +24,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   currentSubproject: Subproject;
   status: TodoStatus;
   timeUsed: number;
+  datePickerStartDate: number;
 
   isDoing = false;
 
@@ -36,6 +38,8 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     }
 
   ngOnInit() {
+    this.datePickerStartDate = isTodayStarted() ? addDays(now(), 1).getTime() : now();
+
     this.addSubscription(
       this.todoService.getById(+this.route.snapshot.paramMap.get('id')).pipe(
         tap(todo => {
@@ -106,6 +110,9 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     } else {
       this.update({ status, finishAt: undefined });
     }
+  }
+  disableDatePicker() {
+    return isHappenBeforeToday(this.todo) || (isHappenToday(this.todo) && isTodayStarted());
   }
   onFinishPickDate(date: number) {
     this.emitEvent({

@@ -1,4 +1,4 @@
-import { addDays, endOfDay } from 'date-fns';
+import { addDays, endOfDay, startOfToday as startOfTodayFromLib } from 'date-fns';
 
 export function now(): number {
   return new Date().getTime();
@@ -15,6 +15,9 @@ export function add0(a: number): string {
 }
 export function endOfToday(): number {
   return endOfDay(now()).getTime();
+}
+export function startOfToday(): number {
+  return startOfTodayFromLib().getTime();
 }
 export function endofTomorrow(): number {
   return endOfDay(addDays(now(), 1)).getTime();
