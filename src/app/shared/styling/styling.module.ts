@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { BorderDirective } from './border.directive';
 import { ColorDirective } from './color.directive';
 import { CursorDirective } from './cursor.directive';
+import { FontWeightDirective } from './font-weight.directive';
 import { FontDirective } from './font.directive';
 import { LineHeightDirective } from './line-height.directive';
 import { NoSelectDirective } from './no-select.directive';
@@ -26,7 +27,8 @@ import { WrapperComponent } from './wrapper/wrapper.component';
     FontDirective,
     NoSelectDirective,
     BorderDirective,
-    LineHeightDirective
+    LineHeightDirective,
+    FontWeightDirective
   ],
   exports: [
     WrapperComponent,
@@ -39,7 +41,8 @@ import { WrapperComponent } from './wrapper/wrapper.component';
     FontDirective,
     NoSelectDirective,
     BorderDirective,
-    LineHeightDirective
+    LineHeightDirective,
+    FontWeightDirective
   ]
 })
 export class StylingModule { }

@@ -1,7 +1,19 @@
 import { Injectable } from '@angular/core';
-import { createReport, isAfterToday, isBeforeToday, isWithinDay, now, Report, Todo, TodoStatus } from '@app/model';
-import { endOfDay, isToday, startOfDay } from 'date-fns';
+import {
+  createReport,
+  EventType,
+  isAfterToday,
+  isBeforeToday,
+  isWithinDay,
+  now,
+  Report,
+  Todo,
+  TodoStatus,
+} from '@app/model';
+import { endOfDay, format, isToday, startOfDay } from 'date-fns';
+import { merge, uniq } from 'ramda';
 import { Observable } from 'rxjs/Observable';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
@@ -9,6 +21,8 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { DbService } from './db.service';
 import { LoadingService } from './loading.service';
 import { NotificationService } from './notification.service';
+import { ProjectService } from './project.service';
+import { TodoService } from './todo.service';
 
 @Injectable()
 export class ReportService {
@@ -16,15 +30,15 @@ export class ReportService {
   constructor(
     private dbService: DbService,
     private loadingService: LoadingService,
-    private notificationService: NotificationService
-  ) { }
+    private notificationService: NotificationService,
+    private projectService: ProjectService,
+    private todoService: TodoService) { }
 
   getReport(date: number): Observable<Report> {
     this.loadingService.isLoading();
     return fromPromise(
       this.dbService.getDB().reports
-        .where('createdAt')
-        .between(startOfDay(date).getTime(), endOfDay(date).getTime())
+        .filter(x => format(x.createdAt, 'YYYYMMDD') === format(date, 'YYYYMMDD'))
         .first()
     ).pipe(
       catchError(error => this.handleError('getReport fails.')),
@@ -48,6 +62,58 @@ export class ReportService {
       })
     );
   }
+  getActivities(date: number): Observable<any> {
+    this.loadingService.isLoading();
+    return fromPromise(
+      this.dbService.getDB().events
+        .where('createdAt')
+        .between(startOfDay(date).getTime(), endOfDay(date).getTime())
+        .toArray()
+    ).pipe(
+      switchMap(activities => {
+        if (activities && activities.length > 0) {
+          const projectIds = uniq(activities.filter(a => a.type === EventType.Project).map(a => a.refId));
+          const subprojectIds = uniq(activities.filter(a => a.type === EventType.Subproject).map(a => a.refId));
+          const todoIds = uniq(activities.filter(a => a.type === EventType.Todo).map(a => a.refId));
+          return combineLatest(
+            this.projectService.getProjectsByIds(projectIds),
+            this.projectService.getSubprojectsByIds(subprojectIds),
+            this.todoService.getTodosByIds(todoIds)
+          ).pipe(
+            map(([projects, subprojects, todos]) => {
+              return { activities, projects, subprojects, todos };
+            })
+          );
+        } else {
+          return of(null);
+        }
+      }),
+      catchError(error => this.handleError('getActivities fails.')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
+    );
+  }
+  create(report: Report): Observable<any> {
+    this.loadingService.isLoading();
+    return fromPromise(this.dbService.getDB().reports.add(report)).pipe(
+      map(() => report),
+      catchError(error => this.handleError('create report fails.')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
+    );
+  }
+  update(report: Report): Observable<any> {
+    this.loadingService.isLoading();
+    return fromPromise(this.dbService.getDB().reports.put(report)).pipe(
+      map(() => report),
+      catchError(error => this.handleError('update report fails.')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
+    );
+  }
   createOrUpdateReport(date: number): Observable<Report> {
     this.loadingService.isLoading();
     let newReport: Report;
@@ -63,7 +129,7 @@ export class ReportService {
         } else if (!oldReport) {
           return this.create(newReport);
         } else {
-          return this.update(newReport);
+          return this.update(merge(oldReport, newReport));
         }
       })
     );
@@ -89,25 +155,5 @@ export class ReportService {
   private handleError(message: string): Observable<any> {
     this.notificationService.sendMessage(message);
     return of(null);
-  }
-  private create(report: Report): Observable<any> {
-    this.loadingService.isLoading();
-    return fromPromise(this.dbService.getDB().reports.add(report)).pipe(
-      map(() => report),
-      catchError(error => this.handleError('create report fails.')),
-      tap(() => {
-        this.loadingService.stopLoading();
-      })
-    );
-  }
-  private update(report: Report): Observable<any> {
-    this.loadingService.isLoading();
-    return fromPromise(this.dbService.getDB().reports.put(report)).pipe(
-      map(() => report),
-      catchError(error => this.handleError('update report fails.')),
-      tap(() => {
-        this.loadingService.stopLoading();
-      })
-    );
   }
 }

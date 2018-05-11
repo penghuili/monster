@@ -1,0 +1,14 @@
+@import '../../static/variables';
+
+.mst-activity-item {
+  position: relative;
+  padding-left: 1rem;
+  border-left: 2px $accent solid;
+  a {
+    text-decoration: underline;
+  }
+}
+.mst-activity-icon {
+  position: absolute;
+  left: -13px;
+}

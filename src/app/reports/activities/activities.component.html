@@ -1,0 +1,7 @@
+<div *ngFor="let activity of activities; let i = index">
+  <mst-activity-item [activity]="activity" [nextActivity]="activities[i+1]" [data]="data[i]"></mst-activity-item>
+</div>
+
+<div *ngIf="(!activities || activities.length === 0) && !isLoading" [mstPadding]="'2rem 0 0'">
+  no activity on {{ date | mstDate:'shortDate' }}
+</div>

@@ -10,6 +10,7 @@ export interface Event {
   action: string;
   oldValue?: any;
   newValue?: any;
+  description?: string;
 }
 export enum EventType {
   Todo,

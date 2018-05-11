@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ReportService } from '@app/core';
 import { createReport, isFinishTooEarly, isFinishTooLate, now, Report, Todo, TodoStatus } from '@app/model';
 import { ROUTES, Unsub } from '@app/static';
+import { merge } from 'ramda';
 import { switchMap } from 'rxjs/operators';
 
 @Component({
@@ -76,10 +77,12 @@ export class ReportStatsComponent extends Unsub implements OnInit {
         })
       ).subscribe(report => {
         this.isLoading = false;
+        this.report = createReport(this.todos);
         if (report) {
-          this.report = report;
+          const merged = merge(report, this.report);
+          this.reportService.update(merged).subscribe();
         } else {
-          this.report = createReport(this.todos);
+          this.reportService.create(this.report).subscribe();
         }
       })
     );

@@ -14,7 +14,7 @@ import {
   TodoStatus,
 } from '@app/model';
 import { InputControl } from '@app/shared';
-import { Unsub } from '@app/static';
+import { ROUTES, Unsub } from '@app/static';
 import { addDays, format } from 'date-fns';
 import { merge } from 'ramda';
 import { debounceTime, first, startWith, switchMap } from 'rxjs/operators';
@@ -149,7 +149,7 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
     this.update({ endDate: date });
   }
   onGotoSub(subid: string) {
-    this.router.navigate([ subid ], { relativeTo: this.route });
+    this.router.navigate([ ROUTES.SUB_PROJECTS, subid ]);
   }
   onCreateSub() {
     this.createdSub.next(true);

@@ -33,7 +33,6 @@ export class ProjectDetailSubComponent extends Unsub implements OnInit {
 
   ngOnInit() {
     const subid = +this.route.snapshot.paramMap.get('subid');
-    const id = +this.route.snapshot.paramMap.get('id');
     this.addSubscription(
       this.projectService.getSubprojectById(subid).pipe(
         first()

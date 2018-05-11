@@ -35,6 +35,20 @@ export class ProjectService {
       })
     );
   }
+  getProjectsByIds(ids: number[]): Observable<Project[]> {
+    this.loadingService.isLoading();
+    return fromPromise(
+      this.dbService.getDB().projects
+        .where('id')
+        .anyOf(ids)
+        .toArray()
+    ).pipe(
+      catchError(error => this.handleError('getProjectsByIds fails')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
+    );
+  }
   getProjectById(id: number): Observable<Project> {
     this.loadingService.isLoading();
     return fromPromise(
@@ -76,6 +90,20 @@ export class ProjectService {
         .toArray()
     ).pipe(
       catchError(error => this.handleError('getSubprojects fails')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
+    );
+  }
+  getSubprojectsByIds(ids: number[]): Observable<Subproject[]> {
+    this.loadingService.isLoading();
+    return fromPromise(
+      this.dbService.getDB().subprojects
+        .where('id')
+        .anyOf(ids)
+        .toArray()
+    ).pipe(
+      catchError(error => this.handleError('getSubprojectsByIds fails')),
       tap(() => {
         this.loadingService.stopLoading();
       })

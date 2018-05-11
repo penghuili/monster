@@ -72,6 +72,20 @@ export class TodoService {
       })
     );
   }
+  getTodosByIds(ids: number[]): Observable<Todo[]> {
+    this.loadingService.isLoading();
+    return fromPromise(
+      this.dbService.getDB().todos
+        .where('id')
+        .anyOf(ids)
+        .toArray()
+    ).pipe(
+      catchError(error => this.handleError('getTodosByIds fails')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
+    );
+  }
   getById(id: number): Observable<Todo> {
     this.loadingService.isLoading();
     return fromPromise(this.dbService.getDB()

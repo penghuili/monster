@@ -12,20 +12,22 @@ const projectsRoutes: Routes = [
     children: [
       {
         path: ':id',
-        children: [
-          {
-            path: ':subid',
-            component: ProjectDetailSubComponent
-          },
-          {
-            path: '',
-            component: ProjectDetailComponent,
-            pathMatch: 'full'
-          }
-        ]
+        component: ProjectDetailComponent
       },
       {
         path: '', component: ProjectsComponent, pathMatch: 'full'
+      }
+    ]
+  },
+  {
+    path: ROUTES.SUB_PROJECTS,
+    children: [
+      {
+        path: ':subid',
+        component: ProjectDetailSubComponent
+      },
+      {
+        path: '', redirectTo: ROUTES.PROJECTS, pathMatch: 'full'
       }
     ]
   }
