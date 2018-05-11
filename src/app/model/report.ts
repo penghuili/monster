@@ -1,0 +1,45 @@
+import { isBeforeToday, now } from './time';
+import { isFinished, Todo, TodoStatus } from './todo';
+
+export interface Report {
+  id?: number;
+  createdAt: number;
+  // todo counts
+  planned: number;
+  inProgress: number;
+  waiting: number;
+  wontDo: number;
+  done: number;
+  finishTooLate: number;
+  finishTooEarly: number;
+  beforeToday: number;
+  beforeTodayNotFinished: number;
+  withoutTime: number;
+  // time in minute
+  plannedTime: number;
+  usedTime: number;
+  finishedUsedTime: number;
+  finishedPlannedTime: number;
+}
+export function createReport(todos: Todo[]): Report {
+  if (!todos || todos.length === 0) {
+    return null;
+  }
+  return {
+    createdAt: now(),
+    planned: todos.length,
+    inProgress: todos.filter(a => a.status === TodoStatus.InProgress).length,
+    waiting: todos.filter(a => a.status === TodoStatus.Waiting).length,
+    wontDo: todos.filter(a => a.status === TodoStatus.WontDo).length,
+    done: todos.filter(a => a.status === TodoStatus.Done).length,
+    finishTooLate: todos.filter(a => a.usedTime > a.expectedTime * 1.05).length,
+    finishTooEarly: todos.filter(a => a.usedTime < a.expectedTime * 0.95).length,
+    beforeToday: todos.filter(a => isBeforeToday(a.happenDate)).length,
+    beforeTodayNotFinished: todos.filter(a => isBeforeToday(a.happenDate) && !isFinished(a)).length,
+    withoutTime: todos.filter(a => !a.expectedTime).length,
+    plannedTime: todos.reduce((total, curr) => total + curr.expectedTime, 0),
+    usedTime: todos.reduce((total, curr) => total + curr.usedTime, 0),
+    finishedUsedTime: todos.filter(a => isFinished(a)).reduce((total, curr) => total + curr.usedTime, 0),
+    finishedPlannedTime: todos.filter(a => isFinished(a)).reduce((total, curr) => total + curr.expectedTime, 0)
+  };
+}

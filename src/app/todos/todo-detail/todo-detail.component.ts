@@ -3,8 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { EventService, ProjectService, TodoService } from '@app/core';
 import {
   EventType,
-  isHappenBeforeToday,
-  isHappenToday,
+  isBeforeToday,
   isTodayStarted,
   mapTodoStatusEvent,
   MonsterEvents,
@@ -15,7 +14,7 @@ import {
 } from '@app/model';
 import { InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
-import { addDays } from 'date-fns';
+import { addDays, isToday } from 'date-fns';
 import { merge } from 'ramda';
 import { debounceTime, switchMap, tap } from 'rxjs/operators';
 
@@ -123,7 +122,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     }
   }
   disableDatePicker() {
-    return isHappenBeforeToday(this.todo) || (isHappenToday(this.todo) && isTodayStarted());
+    return isBeforeToday(this.todo.happenDate) || (isToday(this.todo.happenDate) && isTodayStarted());
   }
   onFinishPickDate(date: number) {
     this.emitEvent({

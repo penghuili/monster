@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { createTodo, EventType, MonsterEvents, now, Todo } from '@app/model';
-import { addDays, endOfDay } from 'date-fns';
+import { createTodo, EventType, isAfterToday, isBeforeToday, isWithinDay, MonsterEvents, now, Todo } from '@app/model';
+import { addDays, endOfDay, isToday } from 'date-fns';
 import { Observable } from 'rxjs/Observable';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
@@ -81,6 +81,23 @@ export class TodoService {
       .first()
     ).pipe(
       catchError(error => this.handleError('getById fails.')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
+    );
+  }
+  getForReports(date: number): Observable<Todo[]> {
+    this.loadingService.isLoading();
+    return fromPromise(
+      this.dbService.getDB().todos
+        .filter(x => {
+          return isWithinDay(x.happenDate, date) ||
+            (isBeforeToday(x.happenDate) && (!x.finishAt || isAfterToday(x.finishAt))) ||
+            isToday(x.finishAt);
+        })
+        .toArray()
+    ).pipe(
+      catchError(error => this.handleError('getForReports fails.')),
       tap(() => {
         this.loadingService.stopLoading();
       })
