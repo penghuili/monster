@@ -19,6 +19,11 @@ class MonsterDB extends Dexie {
       subprojects: '++id,projectId,createdAt,updatedAt,status,finishAt,position,startDate,endDate',
       events: '++id,refId,createdAt,type,action'
     });
+    this.version(2).stores({
+      reports: `++id,createdAt,planned,inProgress,waiting,wontDo,done,finishTooLate,
+      finishTooEarly,beforeToday,beforeTodayNotFinished,withoutTime,plannedTime,
+      usedTime,finishedUsedTime,finishedPlannedTime`
+    });
   }
 }
 @Injectable()
