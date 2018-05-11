@@ -1,14 +1,25 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService, ProjectService, TodoService } from '@app/core';
-import { EventType, mapTodoStatusEvent, MonsterEvents, now, Subproject, Todo, TodoStatus, isHappenBeforeToday, isHappenToday, isTodayStarted } from '@app/model';
+import {
+  EventType,
+  isHappenBeforeToday,
+  isHappenToday,
+  isTodayStarted,
+  mapTodoStatusEvent,
+  MonsterEvents,
+  now,
+  Subproject,
+  Todo,
+  TodoStatus,
+} from '@app/model';
 import { InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
+import { addDays } from 'date-fns';
 import { merge } from 'ramda';
 import { debounceTime, switchMap, tap } from 'rxjs/operators';
 
 import { TodoTimerComponent } from './todo-timer/todo-timer.component';
-import { addDays } from 'date-fns';
 
 @Component({
   selector: 'mst-todo-detail',

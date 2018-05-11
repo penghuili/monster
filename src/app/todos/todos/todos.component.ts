@@ -70,20 +70,24 @@ export class TodosComponent extends Unsub implements OnInit {
   }
 
   onStartToday() {
-    const want = confirm('are you sure to start today now?');
-    if (want) {
-      if (!this.todayStarted) {
-        this.todayStarted = true;
-        MonsterStorage.set('start-today', now());
+    if (this.activeTab === this.TODAY) {
+      const want = confirm('are you sure to start today now?');
+      if (want) {
+        if (!this.todayStarted) {
+          this.todayStarted = true;
+          MonsterStorage.set('start-today', now());
+        }
       }
     }
   }
   onCallItADay() {
-    const want = confirm('are you sure to end today?');
-    if (want) {
-      if (!this.todayEnded) {
-        this.todayEnded = true;
-        MonsterStorage.set('end-today', now());
+    if (this.activeTab === this.TODAY) {
+      const want = confirm('are you sure to end today?');
+      if (want) {
+        if (!this.todayEnded) {
+          this.todayEnded = true;
+          MonsterStorage.set('end-today', now());
+        }
       }
     }
   }
