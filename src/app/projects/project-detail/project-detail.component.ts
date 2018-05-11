@@ -72,6 +72,7 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
     this.addSubscription(
       this.todoService.getTodosByProjectId(id).subscribe(todos => {
         const items = todos
+          .filter(a => a.status !== TodoStatus.Someday)
           .sort((a, b) => a.happenDate - b.happenDate)
           .map(a => ({name: format(a.happenDate, 'YYYY-MM-DD'), value: 1}));
         const doneItems = todos
