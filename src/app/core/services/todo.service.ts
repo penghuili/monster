@@ -86,23 +86,6 @@ export class TodoService {
       })
     );
   }
-  getForReports(date: number): Observable<Todo[]> {
-    this.loadingService.isLoading();
-    return fromPromise(
-      this.dbService.getDB().todos
-        .filter(x => {
-          return isWithinDay(x.happenDate, date) ||
-            (isBeforeToday(x.happenDate) && (!x.finishAt || isAfterToday(x.finishAt))) ||
-            isToday(x.finishAt);
-        })
-        .toArray()
-    ).pipe(
-      catchError(error => this.handleError('getForReports fails.')),
-      tap(() => {
-        this.loadingService.stopLoading();
-      })
-    );
-  }
   add(data: any): Observable<any> {
     this.loadingService.isLoading();
     const todo = createTodo(data);

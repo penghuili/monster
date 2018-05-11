@@ -1,5 +1,5 @@
 import { isBeforeToday, now } from './time';
-import { isFinished, Todo, TodoStatus } from './todo';
+import { isFinished, isFinishTooEarly, isFinishTooLate, Todo, TodoStatus } from './todo';
 
 export interface Report {
   id?: number;
@@ -32,8 +32,8 @@ export function createReport(todos: Todo[]): Report {
     waiting: todos.filter(a => a.status === TodoStatus.Waiting).length,
     wontDo: todos.filter(a => a.status === TodoStatus.WontDo).length,
     done: todos.filter(a => a.status === TodoStatus.Done).length,
-    finishTooLate: todos.filter(a => a.usedTime > a.expectedTime * 1.05).length,
-    finishTooEarly: todos.filter(a => a.usedTime < a.expectedTime * 0.95).length,
+    finishTooLate: todos.filter(a => isFinishTooLate(a)).length,
+    finishTooEarly: todos.filter(a => isFinishTooEarly(a)).length,
     beforeToday: todos.filter(a => isBeforeToday(a.happenDate)).length,
     beforeTodayNotFinished: todos.filter(a => isBeforeToday(a.happenDate) && !isFinished(a)).length,
     withoutTime: todos.filter(a => !a.expectedTime).length,

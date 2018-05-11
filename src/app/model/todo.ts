@@ -49,6 +49,12 @@ export function isOverDue(todo: Todo): boolean {
 export function isFinished(todo: Todo): boolean {
   return todo && (todo.status === TodoStatus.Done || todo.status === TodoStatus.WontDo);
 }
+export function isFinishTooLate(todo: Todo): boolean {
+  return todo && isFinished(todo) && todo.expectedTime > 0 && todo.usedTime > 1.05 * todo.expectedTime;
+}
+export function isFinishTooEarly(todo: Todo): boolean {
+  return todo && isFinished(todo) && todo.expectedTime > 0 && todo.usedTime < 0.95 * todo.expectedTime;
+}
 /**
  * @todo not pure
  */
