@@ -47,4 +47,4 @@
   </div>
 </ng-container>
 
-<mst-todo-create [useActionButton]="true"></mst-todo-create>
+<mst-todo-create (created)="onCreated()" [useActionButton]="true"></mst-todo-create>

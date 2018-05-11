@@ -17,7 +17,8 @@ import { InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
 import { addDays, format } from 'date-fns';
 import { merge } from 'ramda';
-import { debounceTime, first, switchMap, tap } from 'rxjs/operators';
+import { debounceTime, first, startWith, switchMap } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'mst-project-detail',
@@ -40,6 +41,8 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
 
   chartData: ChartDataItem[];
 
+  private createdSub = new Subject<boolean>();
+
   constructor(
     private eventService: EventService,
     private route: ActivatedRoute,
@@ -52,18 +55,21 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
   ngOnInit() {
     const id = +this.route.snapshot.paramMap.get('id');
     this.addSubscription(
-      this.projectService.getProjectById(id).pipe(
-        first(),
-        tap(project => {
-          this.project = project;
-          this.titleControl.setValue(project.title);
-          this.resultControl.setValue(project.result);
-          this.status = this.project.status;
-          this.startDate = project.startDate;
-          this.endDateStartDate = addDays(this.startDate, 1).getTime();
-          this.endDate = project.endDate;
-        }),
-        switchMap(project => this.projectService.getSubprojects(project.id))
+      this.projectService.getProjectById(id).pipe(first()).subscribe(project => {
+        this.project = project;
+        this.titleControl.setValue(project.title);
+        this.resultControl.setValue(project.result);
+        this.status = this.project.status;
+        this.startDate = project.startDate;
+        this.endDateStartDate = addDays(this.startDate, 1).getTime();
+        this.endDate = project.endDate;
+      })
+    );
+
+    this.addSubscription(
+      this.createdSub.asObservable().pipe(
+        startWith(true),
+        switchMap(() => this.projectService.getSubprojects(id))
       ).subscribe(subprojects => {
         this.subprojects = subprojects;
       })
@@ -144,6 +150,9 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
   }
   onGotoSub(subid: string) {
     this.router.navigate([ subid ], { relativeTo: this.route });
+  }
+  onCreateSub() {
+    this.createdSub.next(true);
   }
 
   private emitEvent(data: any) {

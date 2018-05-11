@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TodoService } from '@app/core';
 import { isTodayStarted, now, Subproject, TodoStatus } from '@app/model';
 import { Unsub } from '@app/static';
@@ -14,6 +14,7 @@ import { InputControl } from '../../input/input-control';
 export class TodoCreateComponent extends Unsub {
   @Input() subproject: Subproject;
   @Input() useActionButton = false;
+  @Output() created = new EventEmitter<boolean>();
   isShow = false;
 
   titleControl = new InputControl('');
@@ -65,6 +66,7 @@ export class TodoCreateComponent extends Unsub {
         this.todoService.add(todo).subscribe(success => {
           if (success) {
             this.isShow = false;
+            this.created.emit(true);
           }
         })
       );

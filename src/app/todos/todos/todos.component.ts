@@ -15,7 +15,8 @@ import {
 import { ROUTES, Unsub } from '@app/static';
 import { addDays, endOfDay, format } from 'date-fns';
 import { groupBy, keys } from 'ramda';
-import { switchMap } from 'rxjs/operators';
+import { startWith, switchMap } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'mst-todos',
@@ -44,6 +45,7 @@ export class TodosComponent extends Unsub implements OnInit {
   private projects: Project[];
 
   private drapGroup: string;
+  private createdTodo = new Subject<boolean>();
 
   constructor(
     private route: ActivatedRoute,
@@ -59,7 +61,9 @@ export class TodosComponent extends Unsub implements OnInit {
 
     this.activeTab = MonsterStorage.get('activeTab') || this.TODAY;
     this.addSubscription(
-      this.todoService.get7Days().pipe(
+      this.createdTodo.asObservable().pipe(
+        startWith(true),
+        switchMap(() => this.todoService.get7Days()),
         switchMap(todos => this.projectService.addProjectTitleToTodos(todos))
       ).subscribe(todos => {
         this.todos = todos.sort((a, b) => b.position > a.position ? 1 : -1);
@@ -97,6 +101,9 @@ export class TodosComponent extends Unsub implements OnInit {
   }
   onCreate() {
     this.router.navigate([ ROUTES.CREATE ], { relativeTo: this.route });
+  }
+  onCreated() {
+    this.createdTodo.next(true);
   }
   onShowDetail(todo: Todo) {
     this.router.navigate([ todo.id ], { relativeTo: this.route });

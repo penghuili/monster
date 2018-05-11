@@ -25,7 +25,7 @@
   <mst-project-progress-chart [data]="chartData"></mst-project-progress-chart>
 </div>
 
-<mst-project-create-sub [project]="project"></mst-project-create-sub>
+<mst-project-create-sub (created)="onCreateSub()" [project]="project"></mst-project-create-sub>
 
 <mst-project-item *ngFor="let subproject of subprojects"
   (click)="onGotoSub(subproject.id)"

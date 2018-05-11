@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ProjectService } from '@app/core';
 import { Project, Todo } from '@app/model';
 import { InputControl } from '@app/shared';
@@ -11,6 +11,7 @@ import { Unsub } from '@app/static';
 })
 export class ProjectCreateSubComponent extends Unsub {
   @Input() project: Project;
+  @Output() created = new EventEmitter<boolean>();
   isShow = false;
 
   titleControl = new InputControl('');
@@ -41,6 +42,7 @@ export class ProjectCreateSubComponent extends Unsub {
         }).subscribe(success => {
           if (success) {
             this.isShow = false;
+            this.created.emit(true);
           }
         })
       );

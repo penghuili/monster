@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { ProjectService } from '@app/core';
 import { now, ProjectStatus, Subproject } from '@app/model';
 import { InputControl } from '@app/shared';
@@ -11,6 +11,7 @@ import { addDays } from 'date-fns';
   styleUrls: ['./project-create.component.scss']
 })
 export class ProjectCreateComponent extends Unsub {
+  @Output() created = new EventEmitter<boolean>();
   isShow = false;
 
   titleControl = new InputControl('');
@@ -59,7 +60,10 @@ export class ProjectCreateComponent extends Unsub {
           endDate: this.endDate,
           status: this.status === undefined ? ProjectStatus.InProgress : this.status
         }).subscribe(success => {
-          this.isShow = false;
+          if (success) {
+            this.isShow = false;
+            this.created.emit(true);
+          }
         })
       );
     } else {

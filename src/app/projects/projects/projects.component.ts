@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService } from '@app/core';
 import { Project, ProjectStatus, sortByPosition } from '@app/model';
-import { ROUTES, Unsub } from '@app/static';
+import { Unsub } from '@app/static';
+import { startWith, switchMap } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'mst-projects',
@@ -15,6 +17,8 @@ export class ProjectsComponent extends Unsub implements OnInit {
 
   dragIndex: number;
 
+  private createdProject = new Subject<boolean>();
+
   constructor(
     private projectService: ProjectService,
     private route: ActivatedRoute,
@@ -24,7 +28,10 @@ export class ProjectsComponent extends Unsub implements OnInit {
 
   ngOnInit() {
     this.addSubscription(
-      this.projectService.getProjects().subscribe(projects => {
+      this.createdProject.asObservable().pipe(
+        startWith(true),
+        switchMap(() => this.projectService.getProjects())
+      ).subscribe(projects => {
         this.updateProjects(<Project[]>sortByPosition(projects));
       })
     );
@@ -42,6 +49,9 @@ export class ProjectsComponent extends Unsub implements OnInit {
     //   const dropped = this.activeProjects[dropIndex];
     //   this.projectService.swapProjects(dragged, dropped);
     // }
+  }
+  onCreated() {
+    this.createdProject.next(true);
   }
 
   private updateProjects(projects: Project[]) {
