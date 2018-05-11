@@ -1,3 +1,12 @@
+## v1.8.4
+
+feature:
+
+- only enable start end today button for today
+- show expected time also for week
+- add popup for start or end today
+- lock date picker if today started
+
 ## v1.8.3
 
 bug fix:

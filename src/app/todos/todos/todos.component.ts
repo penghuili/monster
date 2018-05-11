@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService, TodoService } from '@app/core';
 import {
-  isHappenBeforeToday,
+  isOverDue,
   isTodayEnded,
   isTodayStarted,
   MonsterStorage,
@@ -11,7 +11,6 @@ import {
   Todo,
   TodoGroup,
   TodoStatus,
-  isOverDue,
 } from '@app/model';
 import { ROUTES, Unsub } from '@app/static';
 import { addDays, endOfDay, format } from 'date-fns';
