@@ -2,4 +2,6 @@
   <mst-datepicker [startDate]="datePickerStartDate" (finish)="onPickDate($event)"></mst-datepicker>
 </div>
 
-<mst-report-stats [date]="date"></mst-report-stats>
+<mst-tab [tabs]="tabs" [defaultTabKey]="STATS" (change)="onChangeTab($event)"></mst-tab>
+
+<mst-report-stats *ngIf="activeTab === STATS" [date]="date"></mst-report-stats>

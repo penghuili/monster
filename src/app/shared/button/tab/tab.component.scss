@@ -1,0 +1,9 @@
+@import '../../../static/variables';
+
+.mst-tab {
+  user-select: none;
+}
+.mst-tab--active {
+  color: $accent;
+  font-weight: 800;
+}

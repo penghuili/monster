@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { DatepickerModule, PipesModule, StylingModule, WithinAppModule } from '@app/shared';
+import { ButtonModule, DatepickerModule, PipesModule, StylingModule, WithinAppModule } from '@app/shared';
 
 import { ReportStatsComponent } from './report-stats/report-stats.component';
 import { ReportsRoutingModule } from './reports-routing.module';
@@ -13,7 +13,8 @@ import { ReportsComponent } from './reports/reports.component';
     DatepickerModule,
     PipesModule,
     StylingModule,
-    WithinAppModule
+    WithinAppModule,
+    ButtonModule
   ],
   declarations: [ReportsComponent, ReportStatsComponent]
 })

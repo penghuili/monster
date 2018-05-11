@@ -7,3 +7,4 @@ export * from './pipe-meta';
 export * from './color';
 export * from './event';
 export * from './report';
+export * from './tab';

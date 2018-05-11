@@ -13,6 +13,16 @@ export class ReportsComponent extends Unsub implements OnInit {
   date = now();
   datePickerStartDate = now();
 
+  STATS = 'stats';
+  ACTIVITIES = 'activities';
+  SUMMARY = 'summary';
+  tabs = [
+    { key: this.STATS, value: this.STATS },
+    { key: this.ACTIVITIES, value: this.ACTIVITIES },
+    { key: this.SUMMARY, value: this.SUMMARY },
+  ];
+  activeTab = this.STATS;
+
   constructor(private reportService: ReportService) {
     super();
   }
@@ -25,6 +35,9 @@ export class ReportsComponent extends Unsub implements OnInit {
     );
   }
 
+  onChangeTab(tabKey: string) {
+    this.activeTab = tabKey;
+  }
   onPickDate(date: number) {
     this.date = date;
   }
