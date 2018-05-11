@@ -1,3 +1,11 @@
+## v1.8.5
+
+bug fix:
+
+- auto reload after creating something
+- someday todos are not part of project chart
+- disable today if today started for date picker
+
 ## v1.8.4
 
 feature:
