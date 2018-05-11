@@ -3,17 +3,19 @@ import { NgModule } from '@angular/core';
 
 import { Add0Pipe } from './add0.pipe';
 import { MinuteFormatterPipe } from './minute-formatter.pipe';
+import { MstDatePipe } from './mst-date.pipe';
 import { OverduePipe } from './overdue.pipe';
 
 @NgModule({
   imports: [
     CommonModule
   ],
-  declarations: [Add0Pipe, MinuteFormatterPipe, OverduePipe],
+  declarations: [Add0Pipe, MinuteFormatterPipe, OverduePipe, MstDatePipe],
   exports: [
     Add0Pipe,
     MinuteFormatterPipe,
-    OverduePipe
+    OverduePipe,
+    MstDatePipe
   ]
 })
 export class PipesModule { }
