@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { BrowserModule } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { CoreModule } from '@app/core';
-import { IconModule, MonsterCommonModule, NotificationModule } from '@app/shared';
+import { NotificationModule } from '@app/shared';
 
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ProjectsModule } from './projects/projects.module';
+import { ReportsModule } from './reports/reports.module';
 import { SettingsModule } from './settings/settings.module';
 import { TodosModule } from './todos/todos.module';
 
@@ -28,7 +28,9 @@ import { TodosModule } from './todos/todos.module';
 
     TodosModule,
     ProjectsModule,
+    ReportsModule,
     SettingsModule,
+
     AppRoutingModule
   ],
   bootstrap: [AppComponent]
