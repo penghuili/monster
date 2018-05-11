@@ -2,7 +2,7 @@
   <div [mstColor]="todayStarted ? 'grey' : null" (click)="onStartToday()">start today</div>
   <div [mstPadding]="'0 1rem'">{{ activeTodosExpectedTime | minuteFormatter }}</div>
   <div [mstPadding]="'0 1rem'">{{ noTimeActiveTodosCount }}</div>
-  <div [mstColor]="todayEnded ? 'grey' : null">call it a day</div>
+  <div [mstColor]="todayEnded ? 'grey' : null" (click)="onCallItADay()">call it a day</div>
 </div>
 
 <div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'1rem 0'">
