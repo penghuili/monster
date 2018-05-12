@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { ProjectService } from '@app/core';
 import { now, ProjectStatus } from '@app/model';
-import { DatepickerMode, InputControl } from '@app/shared';
+import { DatepickerMode, DatepickerResult, InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
 import { addDays } from 'date-fns';
 
@@ -37,15 +37,15 @@ export class ProjectCreateComponent extends Unsub {
   onSelectStatus(status: ProjectStatus) {
     this.status = status;
   }
-  onPickStartDate(date: number) {
-    this.startDate = date;
+  onPickStartDate(result: DatepickerResult) {
+    this.startDate = result.date;
     this.endDateStartDate = addDays(this.startDate, 1).getTime();
     if (this.startDate > this.endDate) {
       this.endDate = addDays(this.startDate, 1).getTime();
     }
   }
-  onPickEndDate(date: number) {
-    this.endDate = date;
+  onPickEndDate(result: DatepickerResult) {
+    this.endDate = result.date;
   }
   onFinish() {
     const title = this.titleControl.getValue();

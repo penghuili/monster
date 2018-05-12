@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TodoService } from '@app/core';
 import { isTodayStarted, now, Subproject, TodoStatus } from '@app/model';
-import { DatepickerMode } from '@app/shared';
 import { Unsub } from '@app/static';
 import { addDays } from 'date-fns';
 
+import { DatepickerMode, DatepickerResult } from '../../datepicker/model';
 import { InputControl } from '../../input/input-control';
 
 @Component({
@@ -45,8 +45,8 @@ export class TodoCreateComponent extends Unsub {
   onSelectStatus(status: TodoStatus) {
     this.status = status;
   }
-  onFinishPickDate(date: number) {
-    this.happenDate = date;
+  onFinishPickDate(result: DatepickerResult) {
+    this.happenDate = result.date;
   }
   onDurationChange(duration: number) {
     this.expectedTime = duration;

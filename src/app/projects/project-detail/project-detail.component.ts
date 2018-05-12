@@ -13,7 +13,7 @@ import {
   Subproject,
   TodoStatus,
 } from '@app/model';
-import { DatepickerMode, InputControl } from '@app/shared';
+import { DatepickerMode, DatepickerResult, InputControl } from '@app/shared';
 import { ROUTES, Unsub } from '@app/static';
 import { addDays, format } from 'date-fns';
 import { merge } from 'ramda';
@@ -123,31 +123,31 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
     this.status = status;
     this.update({ status });
   }
-  onPickStartDate(date: number) {
+  onPickStartDate(result: DatepickerResult) {
     this.emitEvent({
       action: MonsterEvents.ChangeProjectStartDate,
       oldValue: this.project.startDate,
-      newValue: date
+      newValue: result.date
     });
 
-    this.startDate = date;
+    this.startDate = result.date;
     this.endDateStartDate = addDays(this.startDate, 1).getTime();
     if (this.startDate > this.endDate) {
       this.endDate = addDays(this.startDate, 1).getTime();
-      this.update({ startDate: date, endDate: this.endDate });
+      this.update({ startDate: result.date, endDate: this.endDate });
     } else {
-      this.update({ startDate: date });
+      this.update({ startDate: result.date });
     }
   }
-  onPickEndDate(date: number) {
+  onPickEndDate(result: DatepickerResult) {
     this.emitEvent({
       action: MonsterEvents.ChangeProjectEndDate,
       oldValue: this.project.endDate,
-      newValue: date
+      newValue: result.date
     });
 
-    this.endDate = date;
-    this.update({ endDate: date });
+    this.endDate = result.date;
+    this.update({ endDate: result.date });
   }
   onGotoSub(subid: string) {
     this.router.navigate([ ROUTES.SUB_PROJECTS, subid ]);

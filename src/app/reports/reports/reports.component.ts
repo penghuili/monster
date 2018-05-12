@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ReportService } from '@app/core';
-import { createReport, isFinishTooEarly, isFinishTooLate, now, Report, Todo, TodoStatus } from '@app/model';
+import { now } from '@app/model';
+import { DatepickerResult } from '@app/shared';
 import { Unsub } from '@app/static';
-import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'mst-reports',
@@ -38,8 +38,8 @@ export class ReportsComponent extends Unsub implements OnInit {
   onChangeTab(tabKey: string) {
     this.activeTab = tabKey;
   }
-  onPickDate(date: number) {
-    this.date = date;
+  onPickDate(result: DatepickerResult) {
+    this.date = result.date;
   }
 
 }

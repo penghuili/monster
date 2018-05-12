@@ -13,7 +13,7 @@ import {
   Todo,
   TodoStatus,
 } from '@app/model';
-import { DatepickerMode, InputControl } from '@app/shared';
+import { DatepickerMode, DatepickerResult, InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
 import { addDays, isToday } from 'date-fns';
 import { merge } from 'ramda';
@@ -129,20 +129,20 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   disableDatePicker() {
     return isBeforeToday(this.todo.happenDate) || (isToday(this.todo.happenDate) && isTodayStarted());
   }
-  onFinishPickDate(date: number) {
+  onFinishPickDate(result: DatepickerResult) {
     this.emitEvent({
       action: MonsterEvents.ChangeTodoHappenDate,
       oldValue: this.todo.happenDate,
-      newValue: date
+      newValue: result.date
     });
 
     const newTodo = merge(this.todo, {
-      happenDate: date,
+      happenDate: result.date,
       updatedAt: now()
     });
     this.projectService.updateSubprojectStartEndDateWithTodo(newTodo);
 
-    this.update({ happenDate: date });
+    this.update({ happenDate: result.date });
   }
   onStart() {
     if (!this.isDoing) {
