@@ -114,12 +114,15 @@ export class ReportService {
       })
     );
   }
-  createOrUpdateReport(date: number): Observable<Report> {
+  createOrUpdateReport(date: number, data?: any): Observable<Report> {
     this.loadingService.isLoading();
     let newReport: Report;
     return this.getTodosForDailyReport(date).pipe(
       map(todos => {
         newReport = createReport(todos);
+        if (data) {
+          newReport = merge(newReport, data);
+        }
         return newReport;
       }),
       switchMap(nr => nr ? this.getReport(date) : of(null)),

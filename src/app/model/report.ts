@@ -20,6 +20,7 @@ export interface Report {
   usedTime: number;
   finishedUsedTime: number;
   finishedPlannedTime: number;
+  summary?: string;
 }
 export function createReport(todos: Todo[]): Report {
   if (!todos || todos.length === 0) {
