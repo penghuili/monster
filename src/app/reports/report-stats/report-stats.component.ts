@@ -9,8 +9,7 @@ import { switchMap } from 'rxjs/operators';
 @Component({
   selector: 'mst-report-stats',
   templateUrl: './report-stats.component.html',
-  styleUrls: ['./report-stats.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./report-stats.component.scss']
 })
 export class ReportStatsComponent extends Unsub {
   @Input() set date(value: number) {

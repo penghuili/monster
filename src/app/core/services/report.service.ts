@@ -1,15 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  createReport,
-  EventType,
-  isAfterToday,
-  isBeforeToday,
-  isWithinDay,
-  now,
-  Report,
-  Todo,
-  TodoStatus,
-} from '@app/model';
+import { createReport, EventType, isAfterDay, isBeforeDay, isWithinDay, now, Report, Todo, TodoStatus } from '@app/model';
 import { endOfDay, format, startOfDay } from 'date-fns';
 import { merge, uniq } from 'ramda';
 import { Observable } from 'rxjs/Observable';
@@ -147,7 +137,7 @@ export class ReportService {
       this.dbService.getDB().todos
         .filter(x => {
           return (isWithinDay(x.happenDate, date) ||
-            (isBeforeToday(x.happenDate) && (!x.finishAt || isAfterToday(x.finishAt))) ||
+            (isBeforeDay(x.happenDate, date) && (!x.finishAt || isAfterDay(x.finishAt, date))) ||
             isWithinDay(x.finishAt, date)) && x.status !== TodoStatus.Someday;
         })
         .toArray()

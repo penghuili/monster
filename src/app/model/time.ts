@@ -37,3 +37,9 @@ export function isTodayOrBefore(date: number): boolean {
 export function isWithinDay(date: number, targetDay: number): boolean {
   return date > startOfDay(targetDay).getTime() && date < endOfDay(targetDay).getTime();
 }
+export function isBeforeDay(date: number, targetDay: number): boolean {
+  return date < new Date(targetDay).getTime();
+}
+export function isAfterDay(date: number, targetDay: number): boolean {
+  return date > new Date(targetDay).getTime();
+}
