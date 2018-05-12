@@ -185,6 +185,28 @@ export class ProjectService {
       this.loadingService.stopLoading();
     });
   }
+  updateSubprojectStartEndDateWithTodo(todo: Todo) {
+    if (todo) {
+      this.loadingService .isLoading();
+      fromPromise(
+        this.dbService.getDB().subprojects
+          .get(todo.subprojectId)
+      ).subscribe(subproject => {
+        let changed = false;
+        if (!subproject.startDate || subproject.startDate > todo.happenDate) {
+          subproject.startDate = todo.happenDate;
+          changed = true;
+        }
+        if (!subproject.endDate || subproject.endDate < todo.happenDate) {
+          subproject.endDate = todo.happenDate;
+          changed = true;
+        }
+        if (changed) {
+          this.updateSubproject(subproject);
+        }
+      });
+    }
+  }
   swapProjects(dragged: Project, dropped: Project) {
     // const projects: Project[] = MonsterStorage.get('projects');
     // const swapped = <Project[]>swapItems(dragged, dropped, projects);
