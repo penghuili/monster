@@ -1,6 +1,6 @@
-{{ date | date:'mediumTime' }}
-
 <mst-input
-[autoFocus]="true"
+[autoFocus]="autoFocus"
 [control]="summaryControl"
 minHeight="3rem"></mst-input>
+
+<mst-icon-done [isFilled]="false" (click)="onCreate()"></mst-icon-done>
