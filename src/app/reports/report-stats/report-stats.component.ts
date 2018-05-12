@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReportService } from '@app/core';
 import { createReport, isFinishTooEarly, isFinishTooLate, now, Report, Todo, TodoStatus } from '@app/model';
@@ -9,10 +9,17 @@ import { switchMap } from 'rxjs/operators';
 @Component({
   selector: 'mst-report-stats',
   templateUrl: './report-stats.component.html',
-  styleUrls: ['./report-stats.component.scss']
+  styleUrls: ['./report-stats.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ReportStatsComponent extends Unsub implements OnInit {
-  @Input() date = now();
+export class ReportStatsComponent extends Unsub {
+  @Input() set date(value: number) {
+    this._date = value || now();
+    this.getTodosAndReport(this._date);
+  }
+  get date() {
+    return this._date;
+  }
   report: Report;
   todos: Todo[] = [];
   notFinished: Todo[] = [];
@@ -23,14 +30,12 @@ export class ReportStatsComponent extends Unsub implements OnInit {
 
   isLoading = true;
 
+  private _date: number;
+
   constructor(
     private reportService: ReportService,
     private router: Router) {
     super();
-  }
-
-  ngOnInit() {
-    this.getTodosAndReport(this.date);
   }
 
   onPickDate(date: number) {

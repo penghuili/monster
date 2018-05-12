@@ -1,3 +1,15 @@
+## 1.8.8
+
+bug fix:
+
+- get todos when set date inout for report stats
+
+## v1.8.7
+
+bug fix:
+
+- fix get todos for report error
+
 ## v1.8.6
 
 feature:
