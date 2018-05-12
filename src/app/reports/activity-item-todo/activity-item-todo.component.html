@@ -1,0 +1,69 @@
+<div *ngIf="activity.action === MonsterEvents.StartTodo">
+  start todo
+  <a [mstFontWeight]="800" [mstColor]="'accent'"
+    routerLink="/{{ROUTES.TODOS}}/{{data.id}}">{{ data.title }}</a>
+</div>
+<div *ngIf="activity.action === MonsterEvents.StopTodo">
+  stop todo
+  <a [mstFontWeight]="800" [mstColor]="'accent'"
+    routerLink="/{{ROUTES.TODOS}}/{{data.id}}">{{ data.title }}</a>
+</div> 
+<div *ngIf="activity.action === MonsterEvents.CreateTodo">
+  create todo <a [mstFontWeight]="800" [mstColor]="'accent'" routerLink="/{{ROUTES.TODOS}}/{{data.id}}">{{ data.title }}</a>
+</div>
+<div *ngIf="activity.action === MonsterEvents.ChangeTodoHappenDate">
+  change todo
+  <a [mstFontWeight]="800" [mstColor]="'accent'"
+    routerLink="/{{ROUTES.TODOS}}/{{data.id}}">{{ data.title }}</a>
+  <span [mstFontWeight]="800">happen date</span> from
+  <span [mstFontWeight]="800">{{ activity.oldValue | date:'shortDate' }}</span> to
+  <span [mstFontWeight]="800">{{ activity.newValue | date:'shortDate' }}</span>
+</div>
+<div *ngIf="activity.action === MonsterEvents.ChangeTodoExpectedTime">
+  change todo
+  <a [mstFontWeight]="800" [mstColor]="'accent'"
+    routerLink="/{{ROUTES.TODOS}}/{{data.id}}">{{ data.title }}</a>
+  <span [mstFontWeight]="800">expected time</span> from
+  <span [mstFontWeight]="800">{{ activity.oldValue | minuteFormatter }}</span> to
+  <span [mstFontWeight]="800">{{ activity.newValue | minuteFormatter }}</span>
+</div>
+<div *ngIf="activity.action === MonsterEvents.InProgressTodo">
+  change todo
+  <a [mstFontWeight]="800" [mstColor]="'accent'"
+    routerLink="/{{ROUTES.TODOS}}/{{data.id}}">{{ data.title }}</a>
+  <span [mstFontWeight]="800">status</span> from
+  <span [mstFontWeight]="800">{{ activity.oldValue | todoStatus }}</span> to
+  <span [mstFontWeight]="800">{{ activity.newValue | todoStatus }}</span>
+</div>
+<div *ngIf="activity.action === MonsterEvents.WaitingTodo">
+  change todo
+  <a [mstFontWeight]="800" [mstColor]="'accent'"
+    routerLink="/{{ROUTES.TODOS}}/{{data.id}}">{{ data.title }}</a>
+  <span [mstFontWeight]="800">status</span> from
+  <span [mstFontWeight]="800">{{ activity.oldValue | todoStatus }}</span> to
+  <span [mstFontWeight]="800">{{ activity.newValue | todoStatus }}</span>
+</div>
+<div *ngIf="activity.action === MonsterEvents.SomedayTodo">
+  change todo
+  <a [mstFontWeight]="800" [mstColor]="'accent'"
+    routerLink="/{{ROUTES.TODOS}}/{{data.id}}">{{ data.title }}</a>
+  <span [mstFontWeight]="800">status</span> from
+  <span [mstFontWeight]="800">{{ activity.oldValue | todoStatus }}</span> to
+  <span [mstFontWeight]="800">{{ activity.newValue | todoStatus }}</span>
+</div> 
+<div *ngIf="activity.action === MonsterEvents.DoneTodo">
+  change todo
+  <a [mstFontWeight]="800" [mstColor]="'accent'"
+    routerLink="/{{ROUTES.TODOS}}/{{data.id}}">{{ data.title }}</a>
+  <span [mstFontWeight]="800">status</span> from
+  <span [mstFontWeight]="800">{{ activity.oldValue | todoStatus }}</span> to
+  <span [mstFontWeight]="800">{{ activity.newValue | todoStatus }}</span>
+</div>
+<div *ngIf="activity.action === MonsterEvents.WontDoTodo">
+  change todo
+  <a [mstFontWeight]="800" [mstColor]="'accent'"
+    routerLink="/{{ROUTES.TODOS}}/{{data.id}}">{{ data.title }}</a>
+  <span [mstFontWeight]="800">status</span> from
+  <span [mstFontWeight]="800">{{ activity.oldValue | todoStatus }}</span> to
+  <span [mstFontWeight]="800">{{ activity.newValue | todoStatus }}</span>
+</div>

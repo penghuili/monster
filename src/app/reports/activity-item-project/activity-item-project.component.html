@@ -1,0 +1,43 @@
+<div *ngIf="activity.action === MonsterEvents.CreateProject">
+  create project <a [mstFontWeight]="800" [mstColor]="'accent'" routerLink="/{{ROUTES.PROJECTS}}/{{data.id}}">{{ data.title }}</a>
+</div>
+<div *ngIf="activity.action === MonsterEvents.ChangeProjectStartDate">
+  change project
+  <a [mstFontWeight]="800" [mstColor]="'accent'"
+    routerLink="/{{ROUTES.PROJECTS}}/{{data.id}}">{{ data.title }}</a>
+  <span [mstFontWeight]="800">start date</span> from
+  <span [mstFontWeight]="800">{{ activity.oldValue | date:'shortDate'}}</span> to
+  <span [mstFontWeight]="800">{{ activity.newValue | date:'shortDate'}}</span>
+</div>
+<div *ngIf="activity.action === MonsterEvents.ChangeProjectEndDate">
+  change project
+  <a [mstFontWeight]="800" [mstColor]="'accent'"
+    routerLink="/{{ROUTES.PROJECTS}}/{{data.id}}">{{ data.title }}</a>
+  <span [mstFontWeight]="800">end date</span> from
+  <span [mstFontWeight]="800">{{ activity.oldValue | date:'shortDate'}}</span> to
+  <span [mstFontWeight]="800">{{ activity.newValue | date:'shortDate'}}</span>
+</div>
+<div *ngIf="activity.action === MonsterEvents.InProgressProject">
+  change project
+  <a [mstFontWeight]="800" [mstColor]="'accent'"
+    routerLink="/{{ROUTES.PROJECTS}}/{{data.id}}">{{ data.title }}</a>
+  <span [mstFontWeight]="800">status</span> from
+  <span [mstFontWeight]="800">{{ activity.oldValue | projectStatus}}</span> to
+  <span [mstFontWeight]="800">{{ activity.newValue | projectStatus}}</span>
+</div>
+<div *ngIf="activity.action === MonsterEvents.SomedayProject">
+  change project
+  <a [mstFontWeight]="800" [mstColor]="'accent'"
+    routerLink="/{{ROUTES.PROJECTS}}/{{data.id}}">{{ data.title }}</a>
+  <span [mstFontWeight]="800">status</span> from
+  <span [mstFontWeight]="800">{{ activity.oldValue | projectStatus}}</span> to
+  <span [mstFontWeight]="800">{{ activity.newValue | projectStatus}}</span>
+</div>
+<div *ngIf="activity.action === MonsterEvents.DoneProject">
+  change project
+  <a [mstFontWeight]="800" [mstColor]="'accent'"
+    routerLink="/{{ROUTES.PROJECTS}}/{{data.id}}">{{ data.title }}</a>
+  <span [mstFontWeight]="800">status</span> from
+  <span [mstFontWeight]="800">{{ activity.oldValue | projectStatus}}</span> to
+  <span [mstFontWeight]="800">{{ activity.newValue | projectStatus}}</span>
+</div>
