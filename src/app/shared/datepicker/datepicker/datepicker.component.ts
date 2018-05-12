@@ -9,21 +9,22 @@ import { setYear } from 'date-fns';
 })
 export class DatepickerComponent {
   @Input() set defaultDate(value: number) {
-    this.date = value;
+    this.outerDate = value;
     this.innerDate = value;
   }
   @Input() startDate = now();
   @Input() disabled = false;
   @Output() finish = new EventEmitter<number>();
-  date = now();
+
   isShowDatepicker = false;
   isShowYear = false;
 
-  innerDate: number;
+  outerDate = now();
+  innerDate = this.outerDate;
 
   onOpenDatepicker() {
     if (!this.disabled) {
-      this.innerDate = this.date;
+      this.innerDate = this.outerDate;
       this.isShowDatepicker = true;
     }
   }
@@ -41,8 +42,7 @@ export class DatepickerComponent {
     this.innerDate = date;
   }
   onFinish() {
-    this.date = this.innerDate;
-    this.finish.emit(this.date);
+    this.finish.emit(this.innerDate);
     this.isShowDatepicker = false;
   }
   onCancel() {
