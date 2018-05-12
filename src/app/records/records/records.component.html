@@ -1,0 +1,13 @@
+<div [mstPadding]="'0 0 1rem'">
+  <mst-datepicker [defaultDate]="defaultDate" [startDate]="datepickerStartDate" (finish)="onPickDate($event)"></mst-datepicker>
+</div>
+
+<mst-record-item *ngFor="let record of records; let i = index"
+  [record]="record" [recordNext]="records[i+1]"></mst-record-item>
+
+
+<div *ngIf="(!records || records.length === 0) && !isLoading" [mstPadding]="'2rem 0 0'">
+  no records on {{ date | mstDate:'shortDate' }}
+</div>
+
+<mst-record-create (created)="onCreated()"></mst-record-create>

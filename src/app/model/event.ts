@@ -15,7 +15,8 @@ export interface Event {
 export enum EventType {
   Todo,
   Project,
-  Subproject
+  Subproject,
+  Record
 }
 export const MonsterEvents = {
   CreateProject: 'CreateProject',
@@ -39,7 +40,9 @@ export const MonsterEvents = {
   DoneTodo: 'DoneTodo',
   WontDoTodo: 'WontDoTodo',
   StartTodo: 'StartTodo',
-  StopTodo: 'StopTodo'
+  StopTodo: 'StopTodo',
+
+  CreateRecord: 'CreateRecord'
 };
 
 export function createEvent(data: any): Event {

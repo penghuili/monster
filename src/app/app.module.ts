@@ -9,6 +9,7 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ProjectsModule } from './projects/projects.module';
+import { RecordsModule } from './records/records.module';
 import { ReportsModule } from './reports/reports.module';
 import { SettingsModule } from './settings/settings.module';
 import { TodosModule } from './todos/todos.module';
@@ -28,6 +29,7 @@ import { TodosModule } from './todos/todos.module';
 
     TodosModule,
     ProjectsModule,
+    RecordsModule,
     ReportsModule,
     SettingsModule,
 
