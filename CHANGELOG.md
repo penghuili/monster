@@ -1,3 +1,9 @@
+## v1.8.6
+
+feature:
+
+- add daily report
+
 ## v1.8.5
 
 bug fix:
