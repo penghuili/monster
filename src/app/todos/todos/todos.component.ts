@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService, TodoService } from '@app/core';
 import {
-  isOverDue,
   isTodayEnded,
   isTodayStarted,
   MonsterStorage,
   now,
   Project,
+  sortTodo,
   Todo,
   TodoGroup,
   TodoStatus,
@@ -146,7 +146,7 @@ export class TodosComponent extends Unsub implements OnInit {
     }
     const activeTodos = filtered
       .filter(a => a.status === TodoStatus.InProgress || a.status === TodoStatus.Waiting)
-      .sort((a, b) => this.sortActiveTodo(a, b));
+      .sort((a, b) => sortTodo(a, b));
     this.noTimeActiveTodosCount = activeTodos.filter(a => a.expectedTime === 0).length;
     this.activeTodosExpectedTime = this.calcExpectedTime(activeTodos);
     this.activeTodoGroup = this.groupTodos(activeTodos);
@@ -165,19 +165,5 @@ export class TodosComponent extends Unsub implements OnInit {
   private isDoneOnToday(todo: Todo): boolean {
     return (todo.status === TodoStatus.Done || todo.status === TodoStatus.WontDo) &&
       format(todo.finishAt, 'YYYYMMDD') === format(now(), 'YYYYMMDD');
-  }
-  private sortActiveTodo(a: Todo, b: Todo): number {
-    if (a.status === TodoStatus.InProgress && isOverDue(a)) {
-      return -1;
-    } else if (a.status === TodoStatus.Waiting && isOverDue(a) && b.status === TodoStatus.Waiting) {
-      return -1;
-    } else if (a.status === TodoStatus.InProgress && !isOverDue(a) &&
-      !(isOverDue(b) && b.status === TodoStatus.InProgress)) {
-      return -1;
-    } else if (a.status === TodoStatus.Waiting && !isOverDue(a) && b.status === TodoStatus.Waiting) {
-      return -1;
-    } else {
-      return 1;
-    }
   }
 }

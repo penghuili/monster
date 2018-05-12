@@ -83,3 +83,19 @@ export function calcUsedTimeFor(todoId: number, startEvents: Event[], stopEvents
     return 0;
   }
 }
+export function sortTodo(a: Todo, b: Todo): number {
+  if (isFinished(b)) {
+    return -1;
+  } else if (a.status === TodoStatus.InProgress && isOverDue(a)) {
+    return -1;
+  } else if (a.status === TodoStatus.Waiting && isOverDue(a) && b.status === TodoStatus.Waiting) {
+    return -1;
+  } else if (a.status === TodoStatus.InProgress && !isOverDue(a) &&
+    !(isOverDue(b) && b.status === TodoStatus.InProgress)) {
+    return -1;
+  } else if (a.status === TodoStatus.Waiting && !isOverDue(a) && b.status === TodoStatus.Waiting) {
+    return -1;
+  } else {
+    return 1;
+  }
+}
