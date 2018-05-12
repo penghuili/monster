@@ -41,6 +41,7 @@ export class RecordCreateComponent extends Unsub implements OnInit {
         this.recordService.add(record).subscribe(success => {
           this.isShow = false;
           this.created.emit(true);
+          this.reset();
         })
       );
     } else {
@@ -49,6 +50,12 @@ export class RecordCreateComponent extends Unsub implements OnInit {
   }
   onCancel() {
     this.isShow = false;
+    this.reset();
+  }
+
+  private reset() {
+    this.recordControl.setValue('');
+    this.hasError = false;
   }
 
 }

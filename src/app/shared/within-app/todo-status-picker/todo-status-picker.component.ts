@@ -26,7 +26,6 @@ export class TodoStatusPickerComponent {
   }
 
   onConfirm() {
-    this.outerStatus = this.innerStatus;
     this.select.emit(this.innerStatus);
     this.isShow = false;
   }

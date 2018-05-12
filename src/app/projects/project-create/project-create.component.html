@@ -1,28 +1,30 @@
 <mst-action-button [showPlus]="true" (clicked)="onOpen()"></mst-action-button>
 
 <mst-overlay *ngIf="isShow">
-  <mst-input
-    [control]="titleControl"
-    [hasError]="hasTitleError"
-    [autoFocus]="true"></mst-input>
-  
-  <div fxLayout="row" fxLayoutAlign="center center" [mstPadding]="'1rem'">
-    <div fxFlex="30%">
-      <mst-project-status-picker (select)="onSelectStatus($event)"></mst-project-status-picker>
+  <ng-container *ngIf="isShow">
+    <mst-input
+      [control]="titleControl"
+      [hasError]="hasTitleError"
+      [autoFocus]="true"></mst-input>
+    
+    <div fxLayout="row" fxLayoutAlign="center center" [mstPadding]="'1rem'">
+      <div fxFlex="30%">
+        <mst-project-status-picker (select)="onSelectStatus($event)"></mst-project-status-picker>
+      </div>
+      <div [mstPadding]="'0 0 0 2rem'" fxFlex="70%" fxLayout="row" fxLayoutAlign="space-between center">
+        <mst-datepicker [defaultDate]="startDate" (finish)="onPickStartDate($event)"></mst-datepicker>
+        <mst-icon name="arrow_forward"></mst-icon>
+        <mst-datepicker [defaultDate]="endDate" [startDate]="endDateStartDate" (finish)="onPickEndDate($event)"></mst-datepicker>
+      </div>
     </div>
-    <div [mstPadding]="'0 0 0 2rem'" fxFlex="70%" fxLayout="row" fxLayoutAlign="space-between center">
-      <mst-datepicker [defaultDate]="startDate" (finish)="onPickStartDate($event)"></mst-datepicker>
-      <mst-icon name="arrow_forward"></mst-icon>
-      <mst-datepicker [defaultDate]="endDate" [startDate]="endDateStartDate" (finish)="onPickEndDate($event)"></mst-datepicker>
-    </div>
-  </div>
+    
+    <mst-input
+      [control]="resultControl"
+      [hasError]="hasResultError"
+      minHeight="3rem"></mst-input>
   
-  <mst-input
-    [control]="resultControl"
-    [hasError]="hasResultError"
-    minHeight="3rem"></mst-input>
-
-  <mst-cancel-confirm
-    (confirm)="onFinish()"
-    (cancel)="onCancel()"></mst-cancel-confirm>
+    <mst-cancel-confirm
+      (confirm)="onFinish()"
+      (cancel)="onCancel()"></mst-cancel-confirm>
+  </ng-container>
 </mst-overlay>

@@ -10,15 +10,17 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrls: ['./duration-picker.component.scss']
 })
 export class DurationPickerComponent {
-  @Input() set duration(value: number) {
-    this._duration = value ? value : 0;
-    if (this._duration) {
-      this.hours = this.getHours(this._duration);
-      this.minutes = this.getMinutes(this._duration);
-      this.defaultValue = this.isHoursActive ? this.hours : this.minutes;
+  @Input() set defaultValue(value: number) {
+    this.outerValue = value ? value : 0;
+    if (this.outerValue) {
+      this.hours = this.getHours(this.outerValue);
+      this.minutes = this.getMinutes(this.outerValue);
+      this.activeValue = this.isHoursActive ? this.hours : this.minutes;
     }
   }
   @Output() change = new EventEmitter<number>();
+  // never change outerValue
+  outerValue = 0;
 
   // hours: [0, 6], min: [0, 60]
   minHour = 0;
@@ -29,14 +31,12 @@ export class DurationPickerComponent {
   isHoursActive = false;
   min = this.minMinute;
   max = this.maxMinute;
-  defaultValue = 0;
-
+  activeValue = 0;
   minutes = 0;
   hours = 0;
 
   showSlider = false;
 
-  private _duration: number;
 
   onShowSlider() {
     this.showSlider = true;
@@ -44,13 +44,13 @@ export class DurationPickerComponent {
   onClickMinutes() {
     this.min = this.minMinute;
     this.max = this.maxMinute;
-    this.defaultValue = this.minutes;
+    this.activeValue = this.minutes;
     this.isHoursActive = false;
   }
   onClickHours() {
     this.min = this.minHour;
     this.max = this.maxHour;
-    this.defaultValue = this.hours;
+    this.activeValue = this.hours;
     this.isHoursActive = true;
   }
   onValueChange(value: number) {
@@ -62,15 +62,12 @@ export class DurationPickerComponent {
   }
   onConfirm() {
     this.showSlider = false;
-    this._duration = this.getDuration(this.hours, this.minutes);
-    this.change.emit(this._duration);
+    const duration = this.getDuration(this.hours, this.minutes);
+    this.change.emit(duration);
   }
   onCancel() {
     this.showSlider = false;
-    this.hours = this.getHours(this._duration);
-    this.minutes = this.getMinutes(this._duration);
-    this.isHoursActive = true;
-    this.defaultValue = this.hours;
+    this.reset();
   }
 
   private getHours(duration: number): number {
@@ -81,6 +78,14 @@ export class DurationPickerComponent {
   }
   private getDuration(hours: number, minutes: number): number {
     return hours * 60 + minutes;
+  }
+  private reset() {
+    this.hours = this.getHours(this.outerValue);
+    this.minutes = this.getMinutes(this.outerValue);
+    this.isHoursActive = false;
+    this.min = this.minMinute;
+    this.max = this.maxMinute;
+    this.activeValue = this.minutes;
   }
 
 }

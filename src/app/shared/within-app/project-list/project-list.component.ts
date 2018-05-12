@@ -13,16 +13,21 @@ import { Subject } from 'rxjs/Subject';
   encapsulation: ViewEncapsulation.Emulated
 })
 export class ProjectListComponent extends Unsub implements OnInit {
-  @Input() activeSubproject: Subproject;
+  @Input() set activeSubproject(value: Subproject) {
+    this.outerSubproject = value;
+    this.innerSubproject = value;
+  }
   @Input() hasError: boolean;
   @Output() selected = new EventEmitter<Subproject>();
 
   projects: Project[];
   subprojects: Subproject[];
-  activeProject: Project;
 
   isShow = false;
 
+  activeProject: Project;
+  outerSubproject: Subproject;
+  innerSubproject: Subproject;
   private clickProject = new Subject<Project>();
 
   constructor(
@@ -52,12 +57,15 @@ export class ProjectListComponent extends Unsub implements OnInit {
   }
   onClose() {
     this.isShow = false;
+    this.activeProject = null;
+    this.innerSubproject = this.outerSubproject;
   }
   onSelectProject(project: Project) {
     this.activeProject = project;
     this.clickProject.next(this.activeProject);
   }
   onSelectSubproject(subproject: Subproject) {
+    this.innerSubproject = subproject;
     this.selected.emit(subproject);
     this.isShow = false;
   }
