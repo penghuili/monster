@@ -239,7 +239,7 @@ export class ProjectService {
     ).subscribe(todos => {
       const sorted = todos ? todos.sort((a, b) => a.happenDate - b.happenDate) : [];
       subprojects = subprojects.map(sp => {
-        const todosOfThisSubproject = sorted.filter(a => a.subprojectId === a.id);
+        const todosOfThisSubproject = sorted.filter(a => a.subprojectId === sp.id);
         const len = todosOfThisSubproject.length;
         const startDate = todosOfThisSubproject[0] ? todosOfThisSubproject[0].happenDate : now();
         const endDate = todosOfThisSubproject[len - 1] ? todosOfThisSubproject[len - 1].happenDate : now();
