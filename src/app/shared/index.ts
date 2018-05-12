@@ -23,6 +23,7 @@ export * from './notification/notification/notification.component';
 
 export * from './datepicker/datepicker.module';
 export * from './datepicker/datepicker/datepicker.component';
+export * from './datepicker/model';
 
 export * from './slider/slider.module';
 export * from './slider/slider/slider.component';

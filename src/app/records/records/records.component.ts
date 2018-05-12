@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RecordService } from '@app/core';
 import { now, Record } from '@app/model';
+import { DatepickerResult } from '@app/shared';
 import { Unsub } from '@app/static';
 import { startWith, switchMap, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
@@ -42,8 +43,8 @@ export class RecordsComponent extends Unsub implements OnInit {
     );
   }
 
-  onPickDate(date: number) {
-    this.date = date;
+  onPickDate(result: DatepickerResult) {
+    this.date = result.date;
     this.shouldLoad.next(true);
   }
   onCreated() {

@@ -1,4 +1,4 @@
-<div class="mst-datepicker-row">
+<div class="mst-datepicker-row" [mstPadding]="'0 0 0.5rem 0'">
   <div class="mst-datepicker-day" *ngFor="let d of days"
     [class.active]="d.selected"
     [class.invalid]="!d.valid"

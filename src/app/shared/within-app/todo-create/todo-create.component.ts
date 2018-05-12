@@ -4,6 +4,7 @@ import { isTodayStarted, now, Subproject, TodoStatus } from '@app/model';
 import { Unsub } from '@app/static';
 import { addDays } from 'date-fns';
 
+import { DatepickerMode, DatepickerResult } from '../../datepicker/model';
 import { InputControl } from '../../input/input-control';
 
 @Component({
@@ -25,6 +26,7 @@ export class TodoCreateComponent extends Unsub {
   hasTitleError = false;
   hasSubprojectError = false;
   datePickerStartDate: number;
+  DatepickerMode = DatepickerMode;
 
   currentSubproject: Subproject;
 
@@ -43,8 +45,8 @@ export class TodoCreateComponent extends Unsub {
   onSelectStatus(status: TodoStatus) {
     this.status = status;
   }
-  onFinishPickDate(date: number) {
-    this.happenDate = date;
+  onFinishPickDate(result: DatepickerResult) {
+    this.happenDate = result.date;
   }
   onDurationChange(duration: number) {
     this.expectedTime = duration;
