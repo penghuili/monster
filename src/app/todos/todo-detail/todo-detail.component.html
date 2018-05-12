@@ -19,7 +19,7 @@
       [activeSubproject]="currentSubproject"
       (selected)="onSelectSubproject($event)">
     </mst-project-list>
-    <mst-todo-status-picker [status]="status" (select)="onSelectStatus($event)"></mst-todo-status-picker>
+    <mst-todo-status-picker [status]="status" [showSomeday]="showSomedayStatus" (select)="onSelectStatus($event)"></mst-todo-status-picker>
     <mst-datepicker [mode]="DatepickerMode.Day" [startDate]="datePickerStartDate" [disabled]="disableDatePicker()" [defaultDate]="todo.happenDate" (finish)="onFinishPickDate($event)"></mst-datepicker>
     <mst-duration-picker [defaultValue]="todo.expectedTime" (change)="onDurationChange($event)"></mst-duration-picker>
   </div>

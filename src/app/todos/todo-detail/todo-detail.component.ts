@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { EventService, ProjectService, TodoService } from '@app/core';
 import {
   EventType,
+  isAfterToday,
   isBeforeToday,
   isTodayStarted,
   mapTodoStatusEvent,
@@ -33,6 +34,8 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   hasError = false;
   currentSubproject: Subproject;
   status: TodoStatus;
+  showSomedayStatus = true;
+
   timeUsed: number;
   datePickerStartDate: number;
   DatepickerMode = DatepickerMode;
@@ -58,6 +61,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
           this.titleControl.setValue(this.todo.title);
           this.noteControl.setValue(this.todo.note);
           this.status = this.todo.status;
+          this.showSomedayStatus = !isTodayStarted() || isAfterToday(this.todo.happenDate);
         }),
         switchMap(todo => this.eventService.getTodoUsedTime(todo.id)),
         tap(timeUsed => {

@@ -4,7 +4,7 @@ import { addDays, endOfDay } from 'date-fns';
 import { Observable } from 'rxjs/Observable';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, filter, map, tap } from 'rxjs/operators';
 
 import { DbService } from './db.service';
 import { EventService } from './event.service';
@@ -99,7 +99,8 @@ export class TodoService {
       catchError(error => this.handleError('getById fails.')),
       tap(() => {
         this.loadingService.stopLoading();
-      })
+      }),
+      filter(a => !!a)
     );
   }
   add(data: any): Observable<any> {
