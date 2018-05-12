@@ -1,32 +1,49 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { now } from '@app/model';
 import { setYear } from 'date-fns';
+
+import { DatepickerMode, DatepickerResult } from '../model';
 
 @Component({
   selector: 'mst-datepicker',
   templateUrl: './datepicker.component.html',
   styleUrls: ['./datepicker.component.scss']
 })
-export class DatepickerComponent {
+export class DatepickerComponent implements OnInit {
   @Input() set defaultDate(value: number) {
     this.outerDate = value;
     this.innerDate = value;
   }
   @Input() startDate = now();
   @Input() disabled = false;
-  @Output() finish = new EventEmitter<number>();
+  @Input() mode: DatepickerMode;
+  @Output() finish = new EventEmitter<DatepickerResult>();
+  outerDate = now();
+  innerDate = this.outerDate;
 
   isShowDatepicker = false;
   isShowYear = false;
 
-  outerDate = now();
-  innerDate = this.outerDate;
+  DatepickerMode = DatepickerMode;
+  showModePicker: boolean;
+
+  ngOnInit() {
+    if (this.mode === undefined) {
+      this.mode = DatepickerMode.Day;
+      this.showModePicker = true;
+    } else {
+      this.showModePicker = false;
+    }
+  }
 
   onOpenDatepicker() {
     if (!this.disabled) {
       this.innerDate = this.outerDate;
       this.isShowDatepicker = true;
     }
+  }
+  onSelectMode(mode: DatepickerMode) {
+    this.mode = mode;
   }
   onOpenYear() {
     this.isShowYear = true;
@@ -42,7 +59,7 @@ export class DatepickerComponent {
     this.innerDate = date;
   }
   onFinish() {
-    this.finish.emit(this.innerDate);
+    this.finish.emit({ date: this.innerDate, mode: this.mode });
     this.isShowDatepicker = false;
   }
   onCancel() {

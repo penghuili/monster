@@ -6,9 +6,16 @@
   <div class="mst-datepicker-wrapper" *ngIf="isShowDatepicker">
     <mst-datepicker-title [date]="innerDate" (openYear)="onOpenYear()" (today)="onGotoToday()"></mst-datepicker-title>
 
+    <div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'1rem 2rem 0'" *ngIf="showModePicker">
+      <div [mstColor]="mode === DatepickerMode.Day ? 'accent' : null" (click)="onSelectMode(DatepickerMode.Day)">day</div>
+      <div [mstColor]="mode === DatepickerMode.Week ? 'accent' : null" (click)="onSelectMode(DatepickerMode.Week)">week</div>
+      <div [mstColor]="mode === DatepickerMode.Month ? 'accent' : null" (click)="onSelectMode(DatepickerMode.Month)">month</div>
+    </div>
+
     <mst-datepicker-month *ngIf="!isShowYear"
       [activeDate]="innerDate"
       [startDate]="startDate"
+      [mode]="mode"
       (selectDate)="onSelectDate($event)"></mst-datepicker-month>
 
     <mst-datepicker-year-list *ngIf="isShowYear"

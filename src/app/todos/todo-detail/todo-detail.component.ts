@@ -12,7 +12,7 @@ import {
   Todo,
   TodoStatus,
 } from '@app/model';
-import { InputControl } from '@app/shared';
+import { DatepickerMode, InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
 import { addDays, isToday } from 'date-fns';
 import { merge } from 'ramda';
@@ -35,6 +35,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   status: TodoStatus;
   timeUsed: number;
   datePickerStartDate: number;
+  DatepickerMode = DatepickerMode;
 
   isDoing = false;
 

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TodoService } from '@app/core';
 import { isTodayStarted, now, Subproject, TodoStatus } from '@app/model';
+import { DatepickerMode } from '@app/shared';
 import { Unsub } from '@app/static';
 import { addDays } from 'date-fns';
 
@@ -25,6 +26,7 @@ export class TodoCreateComponent extends Unsub {
   hasTitleError = false;
   hasSubprojectError = false;
   datePickerStartDate: number;
+  DatepickerMode = DatepickerMode;
 
   currentSubproject: Subproject;
 

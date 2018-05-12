@@ -1,6 +1,19 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { now } from '@app/model';
-import { addMonths, format, getDaysInMonth, setDate, startOfMonth } from 'date-fns';
+import {
+  addMonths,
+  endOfDay,
+  endOfMonth,
+  endOfWeek,
+  format,
+  getDaysInMonth,
+  setDate,
+  startOfDay,
+  startOfMonth,
+  startOfWeek,
+} from 'date-fns';
+
+import { DatepickerMode } from '../../model';
 
 @Component({
   selector: 'mst-datepicker-month',
@@ -11,9 +24,10 @@ import { addMonths, format, getDaysInMonth, setDate, startOfMonth } from 'date-f
 export class DatepickerMonthComponent implements OnChanges {
   @Input() set activeDate(value: number) {
     this.originalDate = value;
-    this.selectedDate = value !== undefined ? value : now();
+    this.oneDayOfCurrentMonth = value !== undefined ? value : now();
   }
   @Input() startDate: number;
+  @Input() mode: DatepickerMode;
   @Output() selectDate = new EventEmitter<number>();
   weeks: DayItem[] = [
     { value: 'M', selected: false, valid: true},
@@ -31,40 +45,55 @@ export class DatepickerMonthComponent implements OnChanges {
   row5: DayItem[];
   row6: DayItem[];
 
-  selectedDate: number;
+  oneDayOfCurrentMonth: number;
   private originalDate: number;
 
   ngOnChanges() {
-    if (this.startDate && this.selectedDate) {
+    if (this.startDate && this.oneDayOfCurrentMonth) {
       this.createRows();
     }
   }
 
   nextMonth() {
-    this.selectedDate = addMonths(this.selectedDate, 1).getTime();
+    this.oneDayOfCurrentMonth = addMonths(this.oneDayOfCurrentMonth, 1).getTime();
     this.createRows();
   }
   prevMonth() {
-    this.selectedDate = addMonths(this.selectedDate, -1).getTime();
+    this.oneDayOfCurrentMonth = addMonths(this.oneDayOfCurrentMonth, -1).getTime();
     this.createRows();
   }
   onSelectDate(day: number) {
-    this.selectDate.emit(setDate(this.selectedDate, day).getTime());
+    this.selectDate.emit(setDate(this.oneDayOfCurrentMonth, day).getTime());
   }
 
   private isSelected(day: number): boolean {
-    if (!day || this.originalDate === undefined || this.selectedDate === undefined) {
+    if (!day || this.originalDate === undefined || this.oneDayOfCurrentMonth === undefined || this.mode === undefined) {
       return false;
     }
-    const original = format(this.originalDate, 'YYYYMMD');
-    const selected = format(this.selectedDate, 'YYYYMM') + day;
-    return original === selected;
+    if (this.mode === DatepickerMode.Day) {
+      const startOfActiveDay = startOfDay(this.originalDate).getTime();
+      const endOfActiveDay = endOfDay(this.originalDate).getTime();
+      const currentDay = setDate(this.oneDayOfCurrentMonth, day).getTime();
+      return currentDay > startOfActiveDay && currentDay < endOfActiveDay;
+    } else if (this.mode === DatepickerMode.Week) {
+      const startOfActiveWeek = startOfWeek(this.originalDate, {weekStartsOn: 1}).getTime();
+      const endOfActiveWeek = endOfWeek(this.originalDate, {weekStartsOn: 1}).getTime();
+      const currentDay = setDate(this.oneDayOfCurrentMonth, day).getTime();
+      return currentDay > startOfActiveWeek && currentDay < endOfActiveWeek;
+    } else if (this.mode === DatepickerMode.Month) {
+      const startOfActiveMonth = startOfMonth(this.originalDate).getTime();
+      const endOfActiveMonth = endOfMonth(this.originalDate).getTime();
+      const currentDay = setDate(this.oneDayOfCurrentMonth, day).getTime();
+      return currentDay > startOfActiveMonth && currentDay < endOfActiveMonth;
+    } else {
+      throw Error('invalid date picker mode');
+    }
   }
   private isValid(day: number): boolean {
-    if (!day || this.selectedDate === undefined || !this.startDate) {
+    if (!day || this.oneDayOfCurrentMonth === undefined || !this.startDate) {
       return true;
     }
-    const thisDate = format(setDate(this.selectedDate, day), 'YYYYMMDD');
+    const thisDate = format(setDate(this.oneDayOfCurrentMonth, day), 'YYYYMMDD');
     const startDate = format(this.startDate, 'YYYYMMDD');
     return thisDate >= startDate;
   }
@@ -76,8 +105,8 @@ export class DatepickerMonthComponent implements OnChanges {
     this.row5 = [];
     this.row6 = [];
 
-    const totalDays = getDaysInMonth(this.selectedDate);
-    const weekDayOfFirstDay = startOfMonth(this.selectedDate).getDay() || 7;
+    const totalDays = getDaysInMonth(this.oneDayOfCurrentMonth);
+    const weekDayOfFirstDay = startOfMonth(this.oneDayOfCurrentMonth).getDay() || 7;
     Array(42).fill(1).forEach((a, i) => {
       const j = i + 1;
       const value = j < weekDayOfFirstDay || j > (weekDayOfFirstDay + totalDays - 1) ? '' : j - weekDayOfFirstDay + 1;
