@@ -22,10 +22,8 @@ export class ProjectCreateComponent extends Unsub {
 
   status: ProjectStatus;
   startDate = now();
-  endDate = addDays(this.startDate, 1).getTime();
   endDateStartDate = addDays(this.startDate, 1).getTime();
-
-  subprojects: Subproject[] = [];
+  endDate = this.endDateStartDate;
 
   constructor(private projectService: ProjectService) {
     super();
@@ -63,6 +61,7 @@ export class ProjectCreateComponent extends Unsub {
           if (success) {
             this.isShow = false;
             this.created.emit(true);
+            this.reset();
           }
         })
       );
@@ -73,7 +72,16 @@ export class ProjectCreateComponent extends Unsub {
   }
   onCancel() {
     this.isShow = false;
-    this.hasResultError = false;
+    this.reset();
+  }
+
+  private reset() {
+    this.titleControl.setValue('');
+    this.resultControl.setValue('');
     this.hasTitleError = false;
+    this.hasResultError = false;
+    this.status = ProjectStatus.InProgress;
+    this.startDate = now();
+    this.endDate = this.endDateStartDate;
   }
 }

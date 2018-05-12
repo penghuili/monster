@@ -1,12 +1,14 @@
 <div (click)="onOpen()">{{ innerStatus | todoStatus }}</div>
 
 <mst-overlay *ngIf="isShow">
-  <div [mstLineHeight]="'2'" [mstColor]="innerStatus === TodoStatus.InProgress ? 'accent' : null" (click)="onSelect(TodoStatus.InProgress)">in progress</div>
-  <div [mstLineHeight]="'2'" [mstColor]="innerStatus === TodoStatus.Waiting ? 'accent' : null" (click)="onSelect(TodoStatus.Waiting)">waiting</div>
-  <div [mstLineHeight]="'2'" [mstColor]="innerStatus === TodoStatus.Someday ? 'accent' : null" (click)="onSelect(TodoStatus.Someday)">someday</div>
-  <div [mstLineHeight]="'2'" [mstColor]="innerStatus === TodoStatus.Done ? 'accent' : null" (click)="onSelect(TodoStatus.Done)">done</div>
-  <div [mstLineHeight]="'2'" [mstColor]="innerStatus === TodoStatus.WontDo ? 'accent' : null" (click)="onSelect(TodoStatus.WontDo)">won't do</div>
-  <mst-cancel-confirm
-  (confirm)="onConfirm()"
-  (cancel)="onCancel()"></mst-cancel-confirm>
+  <ng-container *ngIf="isShow">
+    <div [mstLineHeight]="'2'" [mstColor]="innerStatus === TodoStatus.InProgress ? 'accent' : null" (click)="onSelect(TodoStatus.InProgress)">in progress</div>
+    <div [mstLineHeight]="'2'" [mstColor]="innerStatus === TodoStatus.Waiting ? 'accent' : null" (click)="onSelect(TodoStatus.Waiting)">waiting</div>
+    <div [mstLineHeight]="'2'" [mstColor]="innerStatus === TodoStatus.Someday ? 'accent' : null" (click)="onSelect(TodoStatus.Someday)">someday</div>
+    <div [mstLineHeight]="'2'" [mstColor]="innerStatus === TodoStatus.Done ? 'accent' : null" (click)="onSelect(TodoStatus.Done)">done</div>
+    <div [mstLineHeight]="'2'" [mstColor]="innerStatus === TodoStatus.WontDo ? 'accent' : null" (click)="onSelect(TodoStatus.WontDo)">won't do</div>
+    <mst-cancel-confirm
+    (confirm)="onConfirm()"
+    (cancel)="onCancel()"></mst-cancel-confirm>
+  </ng-container>
 </mst-overlay>

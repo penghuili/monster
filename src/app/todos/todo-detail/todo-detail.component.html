@@ -21,7 +21,7 @@
     </mst-project-list>
     <mst-todo-status-picker [status]="status" (select)="onSelectStatus($event)"></mst-todo-status-picker>
     <mst-datepicker [startDate]="datePickerStartDate" [disabled]="disableDatePicker()" [defaultDate]="todo.happenDate" (finish)="onFinishPickDate($event)"></mst-datepicker>
-    <mst-duration-picker [duration]="todo.expectedTime" (change)="onDurationChange($event)"></mst-duration-picker>
+    <mst-duration-picker [defaultValue]="todo.expectedTime" (change)="onDurationChange($event)"></mst-duration-picker>
   </div>
 
   <div [mstPadding]="'0 1.5rem'">

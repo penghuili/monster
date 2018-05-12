@@ -3,7 +3,7 @@
 </div>
 
 <mst-overlay *ngIf="showSlider">
-  <div mstPadding="0 1.5rem">
+  <div mstPadding="0 1.5rem" *ngIf="showSlider">
     <div fxLayout="row" mstPadding="0 0 2rem 0">
       <div mstSize="6rem" [mstColor]="isHoursActive ? 'accent' : null" (click)="onClickHours()">
         hours: {{ hours }}
@@ -12,7 +12,7 @@
         minutes: {{ minutes }}
       </div>
     </div>
-    <mst-slider [min]="min" [max]="max" [defaultValue]="defaultValue" (valueChange)="onValueChange($event)"></mst-slider>
+    <mst-slider [min]="min" [max]="max" [defaultValue]="activeValue" (valueChange)="onValueChange($event)"></mst-slider>
   
     <mst-cancel-confirm (cancel)="onCancel()" (confirm)="onConfirm()"></mst-cancel-confirm>
   </div>

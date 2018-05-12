@@ -2,30 +2,32 @@
 <mst-icon *ngIf="!useActionButton" name="add" (click)="onOpen()"></mst-icon>
 
 <mst-overlay *ngIf="isShow">
-  <mst-input
-    [control]="titleControl"
-    [hasError]="hasTitleError"
-    [autoFocus]="true"></mst-input>
-  
-    <div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'1rem 0'">
-      <div *ngIf="subproject">{{ subproject.title }}</div>
-      <mst-project-list *ngIf="!subproject"
-        [activeSubproject]="currentSubproject"
-        [hasError]="hasSubprojectError"
-        (selected)="onSelectSubproject($event)">
-      </mst-project-list>
-
-      <mst-todo-status-picker (select)="onSelectStatus($event)"></mst-todo-status-picker>
+  <ng-container *ngIf="isShow">
+    <mst-input
+      [control]="titleControl"
+      [hasError]="hasTitleError"
+      [autoFocus]="true"></mst-input>
     
-      <mst-datepicker [startDate]="datePickerStartDate" (finish)="onFinishPickDate($event)"></mst-datepicker>
-      <mst-duration-picker [duration]="expectedTime" (change)="onDurationChange($event)"></mst-duration-picker>
-  </div>
+      <div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'1rem 0'">
+        <div *ngIf="subproject">{{ subproject.title }}</div>
+        <mst-project-list *ngIf="!subproject"
+          [activeSubproject]="currentSubproject"
+          [hasError]="hasSubprojectError"
+          (selected)="onSelectSubproject($event)">
+        </mst-project-list>
   
-  <mst-input
-    [control]="noteControl"
-    minHeight="3rem"></mst-input>
+        <mst-todo-status-picker (select)="onSelectStatus($event)"></mst-todo-status-picker>
+      
+        <mst-datepicker [startDate]="datePickerStartDate" (finish)="onFinishPickDate($event)"></mst-datepicker>
+        <mst-duration-picker (change)="onDurationChange($event)"></mst-duration-picker>
+    </div>
   
-  <mst-cancel-confirm
-    (confirm)="onCreate()"
-    (cancel)="onCancel()"></mst-cancel-confirm>
+    <mst-input
+      [control]="noteControl"
+      minHeight="3rem"></mst-input>
+    
+    <mst-cancel-confirm
+      (confirm)="onCreate()"
+      (cancel)="onCancel()"></mst-cancel-confirm>
+  </ng-container>
 </mst-overlay>

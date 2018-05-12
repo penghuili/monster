@@ -20,7 +20,7 @@ export class TodoCreateComponent extends Unsub {
   titleControl = new InputControl('');
   noteControl = new InputControl('');
   status: TodoStatus;
-  happenDate = now();
+  happenDate: number;
   expectedTime = 0;
   hasTitleError = false;
   hasSubprojectError = false;
@@ -31,6 +31,7 @@ export class TodoCreateComponent extends Unsub {
   constructor(private todoService: TodoService) {
     super();
     this.datePickerStartDate = isTodayStarted() ? addDays(now(), 1).getTime() : now();
+    this.happenDate = this.datePickerStartDate;
   }
 
   onOpen() {
@@ -67,6 +68,7 @@ export class TodoCreateComponent extends Unsub {
           if (success) {
             this.isShow = false;
             this.created.emit(true);
+            this.reset();
           }
         })
       );
@@ -77,5 +79,17 @@ export class TodoCreateComponent extends Unsub {
   }
   onCancel() {
     this.isShow = false;
+    this.reset();
+  }
+
+  private reset() {
+    this.titleControl.setValue('');
+    this.noteControl.setValue('');
+    this.status = TodoStatus.InProgress;
+    this.happenDate = this.datePickerStartDate;
+    this.expectedTime = 0;
+    this.hasTitleError = false;
+    this.hasSubprojectError = false;
+    this.currentSubproject = null;
   }
 }

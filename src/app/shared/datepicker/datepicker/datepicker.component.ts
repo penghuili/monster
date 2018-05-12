@@ -47,5 +47,6 @@ export class DatepickerComponent {
   }
   onCancel() {
     this.isShowDatepicker = false;
+    this.innerDate = this.outerDate;
   }
 }

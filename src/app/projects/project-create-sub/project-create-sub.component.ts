@@ -19,8 +19,6 @@ export class ProjectCreateSubComponent extends Unsub {
   hasTitleError = false;
   hasResultError = false;
 
-  todos: Todo[] = [];
-
   constructor(private projectService: ProjectService) {
     super();
   }
@@ -37,12 +35,12 @@ export class ProjectCreateSubComponent extends Unsub {
       this.addSubscription(
         this.projectService.addSubproject({
           projectId: this.project.id,
-          title, result,
-          todos: this.todos
+          title, result
         }).subscribe(success => {
           if (success) {
             this.isShow = false;
             this.created.emit(true);
+            this.reset();
           }
         })
       );
@@ -53,8 +51,14 @@ export class ProjectCreateSubComponent extends Unsub {
   }
   onCancel() {
     this.isShow = false;
-    this.hasResultError = false;
+    this.reset();
+  }
+
+  private reset() {
+    this.titleControl.setValue('');
+    this.resultControl.setValue('');
     this.hasTitleError = false;
+    this.hasResultError = false;
   }
 
 }

@@ -1,11 +1,13 @@
 <div (click)="onOpen()">{{ innerStatus | projectStatus }}</div>
 
 <mst-overlay *ngIf="isShow">
-  <div [mstLineHeight]="'2'" [mstColor]="innerStatus === ProjectStatus.InProgress ? 'accent' : null" (click)="onSelect(ProjectStatus.InProgress)">in progress</div>
-  <div [mstLineHeight]="'2'" [mstColor]="innerStatus === ProjectStatus.Someday ? 'accent' : null" (click)="onSelect(ProjectStatus.Someday)">someday</div>
-  <div [mstLineHeight]="'2'" [mstColor]="innerStatus === ProjectStatus.Done ? 'accent' : null" (click)="onSelect(ProjectStatus.Done)">done</div>
-
-  <mst-cancel-confirm
-  (confirm)="onConfirm()"
-  (cancel)="onCancel()"></mst-cancel-confirm>
+  <ng-container *ngIf="isShow">
+    <div [mstLineHeight]="'2'" [mstColor]="innerStatus === ProjectStatus.InProgress ? 'accent' : null" (click)="onSelect(ProjectStatus.InProgress)">in progress</div>
+    <div [mstLineHeight]="'2'" [mstColor]="innerStatus === ProjectStatus.Someday ? 'accent' : null" (click)="onSelect(ProjectStatus.Someday)">someday</div>
+    <div [mstLineHeight]="'2'" [mstColor]="innerStatus === ProjectStatus.Done ? 'accent' : null" (click)="onSelect(ProjectStatus.Done)">done</div>
+  
+    <mst-cancel-confirm
+    (confirm)="onConfirm()"
+    (cancel)="onCancel()"></mst-cancel-confirm>
+  </ng-container>
 </mst-overlay>

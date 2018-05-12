@@ -3,6 +3,7 @@
 </div>
 
 <mst-overlay *ngIf="isShow">
+  <ng-container *ngIf="isShow">
     <mst-input
       [control]="titleControl"
       [hasError]="hasTitleError"
@@ -18,4 +19,5 @@
     <mst-cancel-confirm
       (confirm)="onFinish()"
       (cancel)="onCancel()"></mst-cancel-confirm>
+  </ng-container>
 </mst-overlay>
