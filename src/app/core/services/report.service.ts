@@ -10,7 +10,7 @@ import {
   Todo,
   TodoStatus,
 } from '@app/model';
-import { endOfDay, format, isToday, startOfDay, isDate } from 'date-fns';
+import { endOfDay, format, startOfDay } from 'date-fns';
 import { merge, uniq } from 'ramda';
 import { Observable } from 'rxjs/Observable';
 import { combineLatest } from 'rxjs/observable/combineLatest';
