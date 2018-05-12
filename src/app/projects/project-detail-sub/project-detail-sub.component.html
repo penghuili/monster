@@ -7,15 +7,13 @@
   
   <div fxLayout="row" fxLayoutAlign="space-between center" [mstPadding]="'1rem 0'">
     <mst-project-status-picker [status]="subproject.status" (select)="onSelectStatus($event)"></mst-project-status-picker>
-    <ng-container>
-      <div>
-        {{ subproject.startDate | date:'shortDate' }}
-      </div>
-      <mst-icon name="arrow_forward"></mst-icon>
-      <div>
-        {{ subproject.endDate | date:'shortDate' }}
-      </div>
-    </ng-container>
+    <div>
+      {{ subproject.startDate | date:'shortDate' }}
+    </div>
+    <mst-icon name="arrow_forward"></mst-icon>
+    <div>
+      {{ subproject.endDate | date:'shortDate' }}
+    </div>
   </div>
 
   <mst-input
