@@ -5,7 +5,8 @@ import { EventType, mapProjectStatusEvent, now, ProjectStatus, Subproject, Todo 
 import { InputControl } from '@app/shared';
 import { ROUTES, Unsub } from '@app/static';
 import { merge } from 'ramda';
-import { debounceTime, first } from 'rxjs/operators';
+import { debounceTime, first, startWith, switchMap } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'mst-project-detail-sub',
@@ -19,8 +20,8 @@ export class ProjectDetailSubComponent extends Unsub implements OnInit {
   resultControl = new InputControl('');
   hasTitleError = false;
   hasResultError = false;
-  startDate: number;
-  endDate: number;
+
+  private createdTodo = new Subject<boolean>();
 
   constructor(
     private eventService: EventService,
@@ -34,9 +35,11 @@ export class ProjectDetailSubComponent extends Unsub implements OnInit {
   ngOnInit() {
     const subid = +this.route.snapshot.paramMap.get('subid');
     this.addSubscription(
-      this.projectService.getSubprojectById(subid).pipe(
-        first()
-      ).subscribe(subproject => {
+      this.createdTodo.asObservable().pipe(
+        startWith(true),
+        switchMap(() => this.projectService.getSubprojectById(subid).pipe(first()))
+      )
+      .subscribe(subproject => {
         this.subproject = subproject;
         this.titleControl.setValue(this.subproject.title);
         this.resultControl.setValue(this.subproject.result);
@@ -44,12 +47,12 @@ export class ProjectDetailSubComponent extends Unsub implements OnInit {
     );
 
     this.addSubscription(
-      this.todoService.getTodosBySubprojectId(subid).subscribe(todos => {
+      this.createdTodo.asObservable().pipe(
+        startWith(true),
+        switchMap(() => this.todoService.getTodosBySubprojectId(subid))
+      )
+      .subscribe(todos => {
         this.todos = todos;
-        const sorted = this.todos ? this.todos.sort((a, b) => a.happenDate - b.happenDate) : [];
-        const len = sorted.length;
-        this.startDate = sorted[0] ? sorted[0].happenDate : undefined;
-        this.endDate = sorted[len - 1] ? sorted[len - 1].happenDate : undefined;
       })
     );
 
@@ -85,6 +88,9 @@ export class ProjectDetailSubComponent extends Unsub implements OnInit {
   }
   onGotoTodo(id: string) {
     this.router.navigateByUrl(`${ROUTES.TODOS}/${id}`);
+  }
+  onCreatedTodo() {
+    this.createdTodo.next(true);
   }
 
   private update(data: any) {

@@ -3,18 +3,12 @@ Todos
   <div [mstPadding]="'1rem'">
     <mst-copy-text [text]="todosText" (success)="onCopyTodos($event)"></mst-copy-text>
   </div>
-  <div [mstPadding]="'1rem'">
-    <mst-icon name="build" (click)="onProcessTodos()"></mst-icon>
-  </div>
 </div>
 
 Projects
 <div fxLayout="row">
   <div [mstPadding]="'1rem'">
     <mst-copy-text [text]="projectsText" (success)="onCopyProjects($event)"></mst-copy-text>
-  </div>
-  <div [mstPadding]="'1rem'">
-    <mst-icon name="build" (click)="onProcessProjects()"></mst-icon>
   </div>
 </div>
 
@@ -23,9 +17,6 @@ Subprojects
   <div [mstPadding]="'1rem'">
     <mst-copy-text [text]="subprojectsText" (success)="onCopySubprojects($event)"></mst-copy-text>
   </div>
-  <div [mstPadding]="'1rem'">
-    <mst-icon name="build" (click)="onProcessSubprojects()"></mst-icon>
-  </div>
 </div>
 
-<button (click)="onAddUsedTime()">add used time to todo</button>
+<button (click)="onProcess()">add start end date to subproject</button>

@@ -131,6 +131,12 @@ export class TodoDetailComponent extends Unsub implements OnInit {
       newValue: date
     });
 
+    const newTodo = merge(this.todo, {
+      happenDate: date,
+      updatedAt: now()
+    });
+    this.projectService.updateSubprojectStartEndDateWithTodo(newTodo);
+
     this.update({ happenDate: date });
   }
   onStart() {
