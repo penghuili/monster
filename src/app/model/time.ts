@@ -1,4 +1,15 @@
-import { addDays, endOfDay, startOfDay, startOfToday as startOfTodayFromLib } from 'date-fns';
+import {
+  addDays,
+  endOfDay,
+  endOfMonth,
+  endOfWeek as endOfWeekFromLib,
+  startOfDay,
+  startOfMonth,
+  startOfToday as startOfTodayFromLib,
+  startOfWeek as startOfWeekFromLib,
+} from 'date-fns';
+
+import { DatepickerMode } from '../shared/datepicker/model';
 
 export function now(): number {
   return new Date().getTime();
@@ -25,6 +36,12 @@ export function endofTomorrow(): number {
 export function endOfThisWeek(): number {
   return endOfDay(addDays(now(), 7)).getTime();
 }
+export function startOfWeek(date: number): number {
+  return startOfWeekFromLib(date, {weekStartsOn: 1}).getTime();
+}
+export function endOfWeek(date: number): number {
+  return endOfWeekFromLib(date, {weekStartsOn: 1}).getTime();
+}
 export function isBeforeToday(date: number): boolean {
   return date < startOfToday();
 }
@@ -42,4 +59,13 @@ export function isBeforeDay(date: number, targetDay: number): boolean {
 }
 export function isAfterDay(date: number, targetDay: number): boolean {
   return date > new Date(targetDay).getTime();
+}
+export function getStartEnd(date: number, mode: DatepickerMode): number[] {
+  if (mode === DatepickerMode.Week) {
+    return [startOfWeek(date), endOfWeek(date)];
+  } else if (mode === DatepickerMode.Month) {
+    return [startOfMonth(date).getTime(), endOfMonth(date).getTime()];
+  } else {
+    return [startOfDay(date).getTime(), endOfDay(date).getTime()];
+  }
 }

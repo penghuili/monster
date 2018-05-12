@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReportService } from '@app/core';
 import { createReport, isFinishTooEarly, isFinishTooLate, now, Report, Todo, TodoStatus } from '@app/model';
+import { DatepickerMode } from '@app/shared';
 import { ROUTES, Unsub } from '@app/static';
 import { merge } from 'ramda';
 import { switchMap } from 'rxjs/operators';
@@ -11,14 +12,9 @@ import { switchMap } from 'rxjs/operators';
   templateUrl: './report-stats.component.html',
   styleUrls: ['./report-stats.component.scss']
 })
-export class ReportStatsComponent extends Unsub {
-  @Input() set date(value: number) {
-    this._date = value || now();
-    this.getTodosAndReport(this._date);
-  }
-  get date() {
-    return this._date;
-  }
+export class ReportStatsComponent extends Unsub implements OnChanges {
+  @Input() date: number;
+  @Input() mode: DatepickerMode;
   report: Report;
   todos: Todo[] = [];
   notFinished: Todo[] = [];
@@ -37,16 +33,19 @@ export class ReportStatsComponent extends Unsub {
     super();
   }
 
-  onPickDate(date: number) {
-    this.date = date;
-    this.report = null;
-    this.todos = [];
-    this.notFinished = [];
-    this.finishTooLate = [];
-    this.finishTooEarly = [];
-    this.wontDo = [];
-    this.done = [];
-    this.getTodosAndReport(date);
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['date'] || changes['mode']) {
+      if (this.date && this.mode !== undefined) {
+        this.report = null;
+        this.todos = [];
+        this.notFinished = [];
+        this.finishTooLate = [];
+        this.finishTooEarly = [];
+        this.wontDo = [];
+        this.done = [];
+        this.getTodosAndReport(this.date, this.mode);
+      }
+    }
   }
   finishedPlanned() {
     return this.report.planned ? (this.report.done + this.report.wontDo) / this.report.planned : 0;
@@ -64,10 +63,10 @@ export class ReportStatsComponent extends Unsub {
     this.router.navigateByUrl(`/${ROUTES.TODOS}/${id}`);
   }
 
-  private getTodosAndReport(date: number) {
+  private getTodosAndReport(date: number, mode: DatepickerMode) {
     this.isLoading = true;
     this.addSubscription(
-      this.reportService.getTodosForDailyReport(date).pipe(
+      this.reportService.getTodosForDailyReport(date, mode).pipe(
         switchMap(todos => {
           this.todos = todos;
           if (this.todos) {

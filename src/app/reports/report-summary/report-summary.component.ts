@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ReportService } from '@app/core';
-import { now } from '@app/model';
-import { InputControl } from '@app/shared';
+import { DatepickerMode, InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
 
 @Component({
@@ -11,7 +10,8 @@ import { Unsub } from '@app/static';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ReportSummaryComponent extends Unsub implements OnChanges {
-  @Input() date = now();
+  @Input() date: number;
+  @Input() mode: DatepickerMode;
   summaryControl = new InputControl('');
   autoFocus = false;
 
@@ -20,7 +20,7 @@ export class ReportSummaryComponent extends Unsub implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['date'] && this.date) {
+    if (this.date && this.mode !== undefined) {
       this.addSubscription(
         this.reportService.getReport(this.date).subscribe(report => {
           if (report) {
@@ -37,7 +37,7 @@ export class ReportSummaryComponent extends Unsub implements OnChanges {
 
   onCreate() {
     const summary = this.summaryControl.getValue();
-    this.reportService.createOrUpdateReport(this.date, {summary});
+    this.reportService.createOrUpdateReport(this.date, this.mode, {summary});
   }
 
 }

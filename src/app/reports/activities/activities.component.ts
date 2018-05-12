@@ -1,6 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { ReportService } from '@app/core';
 import { Event, EventType, now, Project, Record, Subproject, Todo } from '@app/model';
+import { DatepickerMode } from '@app/shared';
 import { Unsub } from '@app/static';
 
 @Component({
@@ -8,14 +9,9 @@ import { Unsub } from '@app/static';
   templateUrl: './activities.component.html',
   styleUrls: ['./activities.component.scss']
 })
-export class ActivitiesComponent extends Unsub {
-  @Input() set date(value: number) {
-    this._date = value || now();
-    this.getActivities(this._date);
-  }
-  get date() {
-    return this._date;
-  }
+export class ActivitiesComponent extends Unsub implements OnChanges {
+  @Input() date: number;
+  @Input() mode: DatepickerMode;
   activities: Event[] = [];
   data: (Project | Subproject | Todo | Record)[];
   isLoading: boolean;
@@ -26,12 +22,17 @@ export class ActivitiesComponent extends Unsub {
     super();
   }
 
-  private getActivities(date: number) {
+  ngOnChanges() {
+    if (this.date && this.mode !== undefined) {
+      this.getActivities(this.date, this.mode);
+    }
+  }
+  private getActivities(date: number, mode: DatepickerMode) {
     this.isLoading = true;
     this.activities = [];
     this.data = [];
     this.addSubscription(
-      this.reportService.getActivities(date).subscribe(value => {
+      this.reportService.getActivities(date, mode).subscribe(value => {
         this.isLoading = false;
         if (value) {
           this.activities = value.activities;

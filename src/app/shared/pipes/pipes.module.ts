@@ -6,18 +6,20 @@ import { MinuteFormatterPipe } from './minute-formatter.pipe';
 import { MstDatePipe } from './mst-date.pipe';
 import { OverduePipe } from './overdue.pipe';
 import { ShortTextPipe } from './short-text.pipe';
+import { WeekPipe } from './week.pipe';
 
 @NgModule({
   imports: [
     CommonModule
   ],
-  declarations: [Add0Pipe, MinuteFormatterPipe, OverduePipe, MstDatePipe, ShortTextPipe],
+  declarations: [Add0Pipe, MinuteFormatterPipe, OverduePipe, MstDatePipe, ShortTextPipe, WeekPipe],
   exports: [
     Add0Pipe,
     MinuteFormatterPipe,
     OverduePipe,
     MstDatePipe,
-    ShortTextPipe
+    ShortTextPipe,
+    WeekPipe
   ]
 })
 export class PipesModule { }

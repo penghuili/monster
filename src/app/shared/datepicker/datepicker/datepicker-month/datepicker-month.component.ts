@@ -1,17 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
-import { now } from '@app/model';
-import {
-  addMonths,
-  endOfDay,
-  endOfMonth,
-  endOfWeek,
-  format,
-  getDaysInMonth,
-  setDate,
-  startOfDay,
-  startOfMonth,
-  startOfWeek,
-} from 'date-fns';
+import { endOfWeek, now, startOfWeek } from '@app/model';
+import { addMonths, endOfDay, endOfMonth, format, getDaysInMonth, setDate, startOfDay, startOfMonth } from 'date-fns';
 
 import { DatepickerMode } from '../../model';
 
@@ -76,8 +65,8 @@ export class DatepickerMonthComponent implements OnChanges {
       const currentDay = setDate(this.oneDayOfCurrentMonth, day).getTime();
       return currentDay > startOfActiveDay && currentDay < endOfActiveDay;
     } else if (this.mode === DatepickerMode.Week) {
-      const startOfActiveWeek = startOfWeek(this.originalDate, {weekStartsOn: 1}).getTime();
-      const endOfActiveWeek = endOfWeek(this.originalDate, {weekStartsOn: 1}).getTime();
+      const startOfActiveWeek = startOfWeek(this.originalDate);
+      const endOfActiveWeek = endOfWeek(this.originalDate);
       const currentDay = setDate(this.oneDayOfCurrentMonth, day).getTime();
       return currentDay > startOfActiveWeek && currentDay < endOfActiveWeek;
     } else if (this.mode === DatepickerMode.Month) {
