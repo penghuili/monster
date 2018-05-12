@@ -7,13 +7,13 @@
   
   <div fxLayout="row" fxLayoutAlign="space-between center" [mstPadding]="'1rem 0'">
     <mst-project-status-picker [status]="subproject.status" (select)="onSelectStatus($event)"></mst-project-status-picker>
-    <ng-container *ngIf="startDate && endDate">
+    <ng-container>
       <div>
-        {{ startDate | date:'shortDate' }}
+        {{ subproject.startDate | date:'shortDate' }}
       </div>
       <mst-icon name="arrow_forward"></mst-icon>
       <div>
-        {{ endDate | date:'shortDate' }}
+        {{ subproject.endDate | date:'shortDate' }}
       </div>
     </ng-container>
   </div>
@@ -24,11 +24,10 @@
     minHeight="3rem"></mst-input>
   
   <div fxLayout="row" fxLayoutAlign="center" [mstPadding]="'2rem 0'">
-    <mst-todo-create [subproject]="subproject" [useActionButton]="false"></mst-todo-create>
+    <mst-todo-create [subproject]="subproject" [useActionButton]="false" (created)="onCreatedTodo()"></mst-todo-create>
   </div>
   
   <mst-todo-item *ngFor="let todo of todos"
     (click)="onGotoTodo(todo.id)"
     [todo]="todo"></mst-todo-item>
 </ng-container>
-  

@@ -57,7 +57,9 @@ export function createSubproject(data: any): Subproject {
     status: data.status,
     createdAt: timestamp,
     updatedAt: timestamp,
-    position: `${timestamp}3`
+    position: `${timestamp}3`,
+    startDate: timestamp,
+    endDate: timestamp
   };
 }
 export function getChartData(items: ChartSeriesDataItem[]): ChartSeriesDataItem[] {

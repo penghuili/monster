@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { createTodo, EventType, isAfterToday, isBeforeToday, isWithinDay, MonsterEvents, now, Todo } from '@app/model';
-import { addDays, endOfDay, isToday } from 'date-fns';
+import { calcUsedTimeFor, createTodo, Event, EventType, MonsterEvents, now, Todo } from '@app/model';
+import { addDays, endOfDay } from 'date-fns';
 import { Observable } from 'rxjs/Observable';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
@@ -10,6 +10,7 @@ import { DbService } from './db.service';
 import { EventService } from './event.service';
 import { LoadingService } from './loading.service';
 import { NotificationService } from './notification.service';
+import { ProjectService } from './project.service';
 
 @Injectable()
 export class TodoService {
@@ -18,7 +19,8 @@ export class TodoService {
     private eventService: EventService,
     private dbService: DbService,
     private loadingService: LoadingService,
-    private notificationService: NotificationService) {
+    private notificationService: NotificationService,
+    private projectService: ProjectService) {
   }
 
   get7Days(): Observable<Todo[]> {
@@ -116,8 +118,11 @@ export class TodoService {
         });
       }),
       catchError(error => this.handleError('create fails')),
-      tap(() => {
+      tap(success => {
         this.loadingService.stopLoading();
+        if (success) {
+          this.projectService.updateSubprojectStartEndDateWithTodo(todo);
+        }
       })
     );
   }
@@ -126,7 +131,7 @@ export class TodoService {
     return fromPromise(this.dbService.getDB().todos.put(todo)).pipe(
       map(() => true),
       catchError(error => this.handleError('update todo fails')),
-      tap(() => {
+      tap(success => {
         this.loadingService.stopLoading();
       })
     );
@@ -151,8 +156,42 @@ export class TodoService {
     //     .and(x => x.status === TodoStatus.InProgress || x.status === TodoStatus.Waiting)
     // }
   }
-
-  process() {
+  addUsedTimeToAllTodos() {
+    const db = this.dbService.getDB();
+    const transaction = db.transaction('rw', db.todos, db.events, () => {
+      let events: Event[];
+      return db.events
+        .where('type')
+        .equals(EventType.Todo)
+        .toArray()
+        .then(es => {
+          events = es;
+          return db.todos.toArray();
+        })
+        .then(todos => {
+          return [events, todos];
+        });
+    });
+    fromPromise(transaction).subscribe(([events, todos]) => {
+      const startSopEvents = (<Event[]>events).filter(a => a.action === MonsterEvents.StartTodo || a.action === MonsterEvents.StopTodo);
+      if (startSopEvents.length % 2 === 0) {
+        const startEvents = startSopEvents.filter((a, i) => i % 2 === 0);
+        const stopEvents = startSopEvents.filter((a, i) => i % 2 === 1);
+        const todosWithUsedTime = (<Todo[]>todos).map(a => {
+          a.usedTime = calcUsedTimeFor(a.id, startEvents, stopEvents);
+          return a;
+        });
+        db.todos.bulkPut(todosWithUsedTime)
+        .then(() => {
+          this.notificationService.sendMessage('add used time success');
+        })
+        .catch(error => {
+          alert(error);
+        });
+      } else {
+        this.notificationService.sendMessage('events should be even');
+      }
+    });
   }
 
   private handleError(message: string): Observable<any> {

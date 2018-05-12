@@ -1,3 +1,5 @@
+import { Event } from '@app/model';
+
 import { SortableItem } from './item';
 import { isBeforeToday, now, startOfToday } from './time';
 import { MonsterStorage } from './utils';
@@ -68,4 +70,16 @@ export function isTodayEnded(): boolean {
    */
   const end = MonsterStorage.get('end-today');
   return end && end < now() && end > startOfToday();
+}
+export function calcUsedTimeFor(todoId: number, startEvents: Event[], stopEvents: Event[]): number {
+  const todoStarts = startEvents.filter(a => a.refId === todoId);
+  const todoStops = stopEvents.filter(a => a.refId === todoId);
+  if (todoStarts.length === todoStops.length) {
+    const milisec = todoStarts.reduce((total, curr, i) => {
+      return total + todoStops[i].createdAt - curr.createdAt;
+    }, 0);
+    return Math.round(milisec / (1000 * 60));
+  } else {
+    return 0;
+  }
 }
