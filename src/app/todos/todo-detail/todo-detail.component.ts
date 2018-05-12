@@ -35,6 +35,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   status: TodoStatus;
   timeUsed: number;
   datePickerStartDate: number;
+  showSomedayStatus = true;
 
   isDoing = false;
 
@@ -57,6 +58,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
           this.titleControl.setValue(this.todo.title);
           this.noteControl.setValue(this.todo.note);
           this.status = this.todo.status;
+          this.showSomedayStatus = !isTodayStarted() && isBeforeToday(this.todo.happenDate);
         }),
         switchMap(todo => this.eventService.getTodoUsedTime(todo.id)),
         tap(timeUsed => {

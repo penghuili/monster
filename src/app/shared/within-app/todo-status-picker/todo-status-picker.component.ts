@@ -12,6 +12,7 @@ export class TodoStatusPickerComponent {
     this.outerStatus = value;
     this.innerStatus = value;
   }
+  @Input() showSomeday = true;
   @Output() select = new EventEmitter<TodoStatus>();
   isShow = false;
   TodoStatus = TodoStatus;
