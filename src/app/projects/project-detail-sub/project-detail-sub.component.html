@@ -7,13 +7,9 @@
   
   <div fxLayout="row" fxLayoutAlign="space-between center" [mstPadding]="'1rem 0'">
     <mst-project-status-picker [status]="subproject.status" (select)="onSelectStatus($event)"></mst-project-status-picker>
-    <div>
-      {{ subproject.startDate | date:'shortDate' }}
-    </div>
+    {{ subproject.startDate | date:'shortDate' }}
     <mst-icon name="arrow_forward"></mst-icon>
-    <div>
-      {{ subproject.endDate | date:'shortDate' }}
-    </div>
+    {{ subproject.endDate | date:'shortDate' }}
   </div>
 
   <mst-input
