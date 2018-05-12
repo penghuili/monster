@@ -21,8 +21,7 @@ export class ReportsComponent extends Unsub implements OnInit {
     { key: this.ACTIVITIES, value: this.ACTIVITIES },
     { key: this.SUMMARY, value: this.SUMMARY },
   ];
-  // todo: change it back
-  activeTab = this.ACTIVITIES;
+  activeTab = this.STATS;
 
   constructor(private reportService: ReportService) {
     super();
