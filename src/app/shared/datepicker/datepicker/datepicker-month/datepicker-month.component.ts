@@ -82,7 +82,7 @@ export class DatepickerMonthComponent implements OnChanges {
       const j = i + 1;
       const value = j < weekDayOfFirstDay || j > (weekDayOfFirstDay + totalDays - 1) ? '' : j - weekDayOfFirstDay + 1;
       const valid = this.isValid(+value);
-      const selected = valid && this.isSelected(+value);
+      const selected = this.isSelected(+value);
       const data = { value, selected, valid };
       if (j <= 7) {
         this.row1.push(data);
