@@ -108,10 +108,10 @@ export class ReportService {
       })
     );
   }
-  createOrUpdateReport(date: number, data?: any): Observable<Report> {
+  createOrUpdateReport(date: number, data?: any) {
     this.loadingService.isLoading();
     let newReport: Report;
-    return this.getTodosForDailyReport(date).pipe(
+    this.getTodosForDailyReport(date).pipe(
       map(todos => {
         newReport = createReport(todos);
         if (data) {
@@ -129,7 +129,9 @@ export class ReportService {
           return this.update(merge(oldReport, newReport));
         }
       })
-    );
+    ).subscribe(() => {
+      this.loadingService.stopLoading();
+    });
   }
   getTodosForDailyReport(date: number): Observable<Todo[]> {
     this.loadingService.isLoading();

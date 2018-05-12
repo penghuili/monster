@@ -23,7 +23,7 @@ export class RecordCreateComponent extends Unsub implements OnInit {
 
   ngOnInit() {
     this.addSubscription(
-      this.recordControl.value$.pipe(debounceTime(10000)).subscribe(() => {
+      this.recordControl.value$.pipe(debounceTime(1000)).subscribe(() => {
         this.date = now();
       })
     );
