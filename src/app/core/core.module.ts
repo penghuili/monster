@@ -14,6 +14,7 @@ import { IconsService } from './services/icons.service';
 import { LoadingService } from './services/loading.service';
 import { NotificationService } from './services/notification.service';
 import { ProjectService } from './services/project.service';
+import { RecordService } from './services/record.service';
 import { ReportService } from './services/report.service';
 import { TodoService } from './services/todo.service';
 
@@ -34,7 +35,8 @@ import { TodoService } from './services/todo.service';
     NotificationService,
     LoadingService,
     EventService,
-    ReportService
+    ReportService,
+    RecordService
   ],
   declarations: [NavigationComponent, LoadingComponent],
   exports: [

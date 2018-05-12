@@ -18,6 +18,7 @@ export class ReportSummaryComponent extends Unsub implements OnInit {
   constructor(private reportService: ReportService) {
     super();
   }
+
   ngOnInit() {
     this.addSubscription(
       this.summaryControl.value$.pipe(

@@ -7,6 +7,7 @@ import {
   InputModule,
   PipesModule,
   StylingModule,
+  TimelineModule,
   WithinAppModule,
 } from '@app/shared';
 
@@ -27,7 +28,8 @@ import { ReportsComponent } from './reports/reports.component';
     WithinAppModule,
     ButtonModule,
     IconModule,
-    InputModule
+    InputModule,
+    TimelineModule
   ],
   declarations: [ReportsComponent, ReportStatsComponent, ActivitiesComponent, ActivityItemComponent, ReportSummaryComponent]
 })

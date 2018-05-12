@@ -40,3 +40,5 @@ export * from './pipes/pipes.module';
 export * from './progress/progress.module';
 
 export * from './within-app/within-app.module';
+
+export * from './timeline/timeline.module';

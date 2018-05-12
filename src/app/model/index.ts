@@ -8,3 +8,4 @@ export * from './color';
 export * from './event';
 export * from './report';
 export * from './tab';
+export * from './record';

@@ -22,6 +22,7 @@ import { DbService } from './db.service';
 import { LoadingService } from './loading.service';
 import { NotificationService } from './notification.service';
 import { ProjectService } from './project.service';
+import { RecordService } from './record.service';
 import { TodoService } from './todo.service';
 
 @Injectable()
@@ -32,6 +33,7 @@ export class ReportService {
     private loadingService: LoadingService,
     private notificationService: NotificationService,
     private projectService: ProjectService,
+    private recordService: RecordService,
     private todoService: TodoService) { }
 
   getReport(date: number): Observable<Report> {
@@ -75,13 +77,15 @@ export class ReportService {
           const projectIds = uniq(activities.filter(a => a.type === EventType.Project).map(a => a.refId));
           const subprojectIds = uniq(activities.filter(a => a.type === EventType.Subproject).map(a => a.refId));
           const todoIds = uniq(activities.filter(a => a.type === EventType.Todo).map(a => a.refId));
+          const recordIds = uniq(activities.filter(a => a.type === EventType.Record).map(a => a.refId));
           return combineLatest(
             this.projectService.getProjectsByIds(projectIds),
             this.projectService.getSubprojectsByIds(subprojectIds),
-            this.todoService.getTodosByIds(todoIds)
+            this.todoService.getTodosByIds(todoIds),
+            this.recordService.getRecordsByIds(recordIds)
           ).pipe(
-            map(([projects, subprojects, todos]) => {
-              return { activities, projects, subprojects, todos };
+            map(([projects, subprojects, todos, records]) => {
+              return { activities, projects, subprojects, todos, records };
             })
           );
         } else {

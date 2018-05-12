@@ -1,0 +1,16 @@
+@import '../../../static/variables';
+
+.mst-timeline-item {
+  position: relative;
+  padding-left: 1rem;
+  border-left: 2px $accent solid;
+}
+.mst-timeline-icon {
+  position: absolute;
+  left: -13px;
+  top: -7px;
+}
+.mst-timeline-date {
+  font-size: 0.6rem;
+  line-height: 0.6rem;
+}

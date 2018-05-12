@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ReportService } from '@app/core';
-import { Event, EventType, now, Project, Subproject, Todo } from '@app/model';
+import { Event, EventType, now, Project, Record, Subproject, Todo } from '@app/model';
 import { Unsub } from '@app/static';
 
 @Component({
@@ -17,10 +17,7 @@ export class ActivitiesComponent extends Unsub {
     return this._date;
   }
   activities: Event[] = [];
-  projects: Project[] = [];
-  subprojects: Subproject[] = [];
-  todos: Todo[] = [];
-  data: (Project | Subproject | Todo)[];
+  data: (Project | Subproject | Todo | Record)[];
   isLoading: boolean;
 
   private _date = now();
@@ -32,25 +29,25 @@ export class ActivitiesComponent extends Unsub {
   private getActivities(date: number) {
     this.isLoading = true;
     this.activities = [];
-    this.projects = [];
-    this.subprojects = [];
-    this.todos = [];
     this.data = [];
     this.addSubscription(
       this.reportService.getActivities(date).subscribe(value => {
         this.isLoading = false;
         if (value) {
           this.activities = value.activities;
-          this.projects = value.projects;
-          this.subprojects = value.subprojects;
-          this.todos = value.todos;
+          const projects = value.projects;
+          const subprojects = value.subprojects;
+          const todos = value.todos;
+          const records = value.records;
           this.data = this.activities.map(a => {
             if (a.type === EventType.Project) {
-              return this.projects.find(b => b.id === a.refId);
+              return projects.find(b => b.id === a.refId);
             } else if (a.type === EventType.Subproject) {
-              return this.subprojects.find(b => b.id === a.refId);
+              return subprojects.find(b => b.id === a.refId);
+            } else if (a.type === EventType.Record) {
+              return records.find(b => b.id === a.refId);
             } else {
-              return this.todos.find(b => b.id === a.refId);
+              return todos.find(b => b.id === a.refId);
             }
           });
         }

@@ -6,5 +6,6 @@ export * from './services/notification.service';
 export * from './services/loading.service';
 export * from './services/event.service';
 export * from './services/report.service';
+export * from './services/record.service';
 
 export * from './core.module';

@@ -3,7 +3,7 @@ import { createEvent, EventType, MonsterEvents } from '@app/model';
 import { Observable } from 'rxjs/Observable';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 
 import { DbService } from './db.service';
 import { LoadingService } from './loading.service';
@@ -18,6 +18,7 @@ export class EventService {
     private notificationService: NotificationService) {}
 
   getTodoUsedTime(todoId: number): Observable<number> {
+    this.loadingService.isLoading();
     return fromPromise(this.dbService.getDB().events
       .filter(x => x.refId === todoId && x.type === EventType.Todo &&
         (x.action === MonsterEvents.StartTodo || x.action === MonsterEvents.StopTodo))
@@ -39,13 +40,16 @@ export class EventService {
       catchError(error => {
         this.notificationService.sendMessage('get todo used time fails.');
         return of(null);
+      }),
+      tap(() => {
+        this.loadingService.stopLoading();
       })
     );
   }
   add(data: any) {
     this.loadingService.isLoading();
     const event = createEvent(data);
-    return fromPromise(this.dbService.getDB()
+    fromPromise(this.dbService.getDB()
       .events
       .add(event)
     ).pipe(

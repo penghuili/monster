@@ -1,0 +1,15 @@
+<mst-action-button [showPlus]="true" (clicked)="onOpen()"></mst-action-button>
+
+<mst-overlay *ngIf="isShow">
+  {{ date | date:'mediumTime' }}
+  
+  <mst-input
+    [control]="recordControl"
+    [autoFocus]="true"
+    [hasError]="hasError"
+    minHeight="3rem"></mst-input>
+
+  <mst-cancel-confirm
+    (confirm)="onCreate()"
+    (cancel)="onCancel()"></mst-cancel-confirm>
+</mst-overlay>
