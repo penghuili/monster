@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService, ProjectService, TodoService } from '@app/core';
-import { EventType, mapProjectStatusEvent, now, ProjectStatus, Subproject, Todo } from '@app/model';
+import { EventType, mapProjectStatusEvent, now, ProjectStatus, sortTodo, Subproject, Todo } from '@app/model';
 import { InputControl } from '@app/shared';
 import { ROUTES, Unsub } from '@app/static';
 import { merge } from 'ramda';
@@ -52,7 +52,7 @@ export class ProjectDetailSubComponent extends Unsub implements OnInit {
         switchMap(() => this.todoService.getTodosBySubprojectId(subid))
       )
       .subscribe(todos => {
-        this.todos = todos;
+        this.todos = todos.sort((a, b) => sortTodo(a, b));
       })
     );
 
