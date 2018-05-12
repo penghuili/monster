@@ -1,6 +1,21 @@
 import { Injectable } from '@angular/core';
-import { createReport, EventType, isAfterDay, isBeforeDay, isWithinDay, now, Report, Todo, TodoStatus } from '@app/model';
-import { endOfDay, format, startOfDay } from 'date-fns';
+import {
+  createReport,
+  endOfWeek,
+  Event,
+  EventType,
+  getStartEnd,
+  isAfterDay,
+  isBeforeDay,
+  isWithinDay,
+  now,
+  Report,
+  startOfWeek,
+  Todo,
+  TodoStatus,
+} from '@app/model';
+import { DatepickerMode } from '@app/shared';
+import { endOfDay, endOfMonth, format, startOfDay, startOfMonth } from 'date-fns';
 import { merge, uniq } from 'ramda';
 import { Observable } from 'rxjs/Observable';
 import { combineLatest } from 'rxjs/observable/combineLatest';
@@ -54,12 +69,16 @@ export class ReportService {
       })
     );
   }
-  getActivities(date: number): Observable<any> {
+  getActivities(date: number, mode: DatepickerMode): Observable<any> {
     this.loadingService.isLoading();
+    let start: number;
+    let end: number;
+    [start, end] = getStartEnd(date, mode);
+
     return fromPromise(
       this.dbService.getDB().events
         .where('createdAt')
-        .between(startOfDay(date).getTime(), endOfDay(date).getTime())
+        .between(start, end)
         .toArray()
     ).pipe(
       switchMap(activities => {
@@ -108,10 +127,10 @@ export class ReportService {
       })
     );
   }
-  createOrUpdateReport(date: number, data?: any) {
+  createOrUpdateReport(date: number, mode: DatepickerMode, data?: any) {
     this.loadingService.isLoading();
     let newReport: Report;
-    this.getTodosForDailyReport(date).pipe(
+    this.getTodosForDailyReport(date, mode).pipe(
       map(todos => {
         newReport = createReport(todos);
         if (data) {
@@ -133,14 +152,18 @@ export class ReportService {
       this.loadingService.stopLoading();
     });
   }
-  getTodosForDailyReport(date: number): Observable<Todo[]> {
+  getTodosForDailyReport(date: number, mode: DatepickerMode): Observable<Todo[]> {
     this.loadingService.isLoading();
+    let start: number;
+    let end: number;
+    [start, end] = getStartEnd(date, mode);
+
     return fromPromise(
       this.dbService.getDB().todos
         .filter(x => {
-          return (isWithinDay(x.happenDate, date) ||
-            (isBeforeDay(x.happenDate, date) && (!x.finishAt || isAfterDay(x.finishAt, date))) ||
-            isWithinDay(x.finishAt, date)) && x.status !== TodoStatus.Someday;
+          return ((x.happenDate > start && x.happenDate < end) ||
+            (x.happenDate < start && (!x.finishAt || x.finishAt > end)) ||
+            (x.finishAt > start && x.finishAt < end)) && x.status !== TodoStatus.Someday;
         })
         .toArray()
     ).pipe(

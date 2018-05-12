@@ -1,5 +1,13 @@
 <div mstNoSelect (click)="onOpenDatepicker()">
-  {{ innerDate | mstDate:'shortDate' }}
+  <ng-container *ngIf="mode === DatepickerMode.Day">
+    {{ innerDate | mstDate:'shortDate' }}
+  </ng-container>
+  <ng-container *ngIf="mode === DatepickerMode.Week">
+    {{ innerDate | week }}
+  </ng-container>
+  <ng-container *ngIf="mode === DatepickerMode.Month">
+    {{ innerDate | date:'MMM, yyyy' }}
+  </ng-container>
 </div>
 
 <mst-overlay *ngIf="isShowDatepicker">

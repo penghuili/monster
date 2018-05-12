@@ -4,8 +4,8 @@
 
 <mst-tab [tabs]="tabs" [defaultTabKey]="STATS" (change)="onChangeTab($event)"></mst-tab>
 
-<mst-report-stats *ngIf="activeTab === STATS" [date]="date"></mst-report-stats>
+<mst-report-stats *ngIf="activeTab === STATS" [date]="date" [mode]="mode"></mst-report-stats>
 
-<mst-activities *ngIf="activeTab === ACTIVITIES" [date]="date"></mst-activities>
+<mst-activities *ngIf="activeTab === ACTIVITIES" [date]="date" [mode]="mode"></mst-activities>
 
-<mst-report-summary *ngIf="activeTab === SUMMARY" [date]="date"></mst-report-summary>
+<mst-report-summary *ngIf="activeTab === SUMMARY" [date]="date" [mode]="mode"></mst-report-summary>
