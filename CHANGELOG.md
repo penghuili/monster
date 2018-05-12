@@ -1,4 +1,10 @@
-## 1.8.8
+## v1.8.9
+
+bug fix:
+
+- update sub project start end date when todo is created or happenDate is changed
+
+## v1.8.8
 
 bug fix:
 
