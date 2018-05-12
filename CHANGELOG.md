@@ -1,3 +1,9 @@
+## v1.9.1
+
+bug fix:
+
+- load todos for today on report page
+
 ## v1.9.0
 
 feature:
