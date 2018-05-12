@@ -1,3 +1,11 @@
+## v1.9.2
+
+bug fix:
+
+- not cache overlay component state
+- prefill summary input
+- id overlap on todo detail page
+
 ## v1.9.1
 
 bug fix:
