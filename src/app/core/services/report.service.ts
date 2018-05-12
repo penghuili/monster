@@ -10,7 +10,7 @@ import {
   Todo,
   TodoStatus,
 } from '@app/model';
-import { endOfDay, format, isToday, startOfDay } from 'date-fns';
+import { endOfDay, format, isToday, startOfDay, isDate } from 'date-fns';
 import { merge, uniq } from 'ramda';
 import { Observable } from 'rxjs/Observable';
 import { combineLatest } from 'rxjs/observable/combineLatest';
@@ -144,7 +144,7 @@ export class ReportService {
         .filter(x => {
           return (isWithinDay(x.happenDate, date) ||
             (isBeforeToday(x.happenDate) && (!x.finishAt || isAfterToday(x.finishAt))) ||
-            isToday(x.finishAt)) && x.status !== TodoStatus.Someday;
+            isWithinDay(x.finishAt, date)) && x.status !== TodoStatus.Someday;
         })
         .toArray()
     ).pipe(
