@@ -1,3 +1,9 @@
+## v1.9.0
+
+feature:
+
+- add record page
+
 ## v1.8.9
 
 bug fix:

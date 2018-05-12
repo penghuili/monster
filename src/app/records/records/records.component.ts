@@ -15,7 +15,7 @@ export class RecordsComponent extends Unsub implements OnInit {
   defaultDate = now();
   date = this.defaultDate;
 
-  isLading = false;
+  isLoading = false;
 
   datepickerStartDate: number;
 
@@ -51,10 +51,10 @@ export class RecordsComponent extends Unsub implements OnInit {
   }
 
   private getRecords(date: number) {
-    this.isLading = true;
+    this.isLoading = true;
     return this.recordService.getRecordsByDay(date).pipe(
       tap(() => {
-        this.isLading = false;
+        this.isLoading = false;
       })
     );
   }
