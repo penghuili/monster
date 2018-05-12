@@ -1,9 +1,11 @@
+import { isAfterToday } from '../../model/time';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService, ProjectService, TodoService } from '@app/core';
 import {
   EventType,
   isBeforeToday,
+  isTodayOrBefore,
   isTodayStarted,
   mapTodoStatusEvent,
   MonsterEvents,
@@ -11,6 +13,7 @@ import {
   Subproject,
   Todo,
   TodoStatus,
+  isAfterToday,
 } from '@app/model';
 import { InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
@@ -58,7 +61,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
           this.titleControl.setValue(this.todo.title);
           this.noteControl.setValue(this.todo.note);
           this.status = this.todo.status;
-          this.showSomedayStatus = !isTodayStarted() && isBeforeToday(this.todo.happenDate);
+          this.showSomedayStatus = !isTodayStarted() || isAfterToday(this.todo.happenDate);
         }),
         switchMap(todo => this.eventService.getTodoUsedTime(todo.id)),
         tap(timeUsed => {
