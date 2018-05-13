@@ -1,3 +1,30 @@
+## v1.11.0
+
+feature:
+
+- timeline item has a max length
+
+bug fix:
+
+- fix `this week` logic on todos page
+- change `on today` to `for today`
+- if today started, the default date for datepicker is tomorrow
+- diable todo detail page when finished
+- fix the projects order on todo page
+
+## v1.10.0
+
+feature:
+
+- datepicker can select week and month now
+- add weekly and monthly report
+
+bug fix:
+
+- sort todo at sub project correctly
+- not show someday status on todo detail if today is started
+- invalid date can still be selected
+
 ## v1.9.2
 
 bug fix:
