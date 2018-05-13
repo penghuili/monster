@@ -1,3 +1,9 @@
+## v1.11.4
+
+feature:
+
+- add used time of current to report page
+
 ## v1.11.3
 
 bug fix:
