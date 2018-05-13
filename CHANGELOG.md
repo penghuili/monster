@@ -1,3 +1,9 @@
+## v1.11.1
+
+bug fix:
+
+- handle differenct kinds of report correctly
+
 ## v1.11.0
 
 feature:
