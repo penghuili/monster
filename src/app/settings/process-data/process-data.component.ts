@@ -40,6 +40,6 @@ export class ProcessDataComponent implements OnInit {
   }
 
   onProcess() {
-    this.todoService.addUsedTimeToAllTodos();
+    this.dbService.getDB().reports.clear();
   }
 }

@@ -18,11 +18,15 @@ export class ReportChartComponent extends Unsub implements OnInit {
   ngOnInit() {
     this.addSubscription(
       this.reportService.getReports(TimeRangeType.Day).subscribe(reports => {
-        const data = reports.map(a => ({ name: a.date, value: (a.done + a.wontDo) / a.planned }));
+        const series = !reports || reports.length === 0 ?
+          [] :
+          reports
+            .sort((a, b) => a.date - b.date)
+            .map(a => ({ name: new Date(a.date), value: (a.done + a.wontDo) / a.planned }));
         this.data = [
           {
             name: 'finished ratio',
-            series: createChartData(data)
+            series: series
           }
         ];
       })
