@@ -11,10 +11,11 @@ import {
   MonsterEvents,
   now,
   Subproject,
+  TimeRangeType,
   Todo,
   TodoStatus,
 } from '@app/model';
-import { DatepickerMode, DatepickerResult, InputControl } from '@app/shared';
+import { DatepickerResult, InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
 import { addDays, isToday } from 'date-fns';
 import { merge } from 'ramda';
@@ -38,7 +39,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
 
   timeUsed: number;
   datePickerStartDate: number;
-  DatepickerMode = DatepickerMode;
+  TimeRangeType = TimeRangeType;
 
   showSomedayStatus = true;
   isDoing = false;

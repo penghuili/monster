@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DbService, NotificationService, ProjectService, TodoService } from '@app/core';
-import { Event, EventType, MonsterEvents, MonsterStorage, Project, Subproject, Todo, TodoStatus } from '@app/model';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { fromPromise } from 'rxjs/observable/fromPromise';
+import { DbService, NotificationService, ProjectService, ReportService, TodoService } from '@app/core';
+import { MonsterStorage } from '@app/model';
 
 @Component({
   selector: 'mst-process-data',
@@ -18,6 +16,7 @@ export class ProcessDataComponent implements OnInit {
     private dbService: DbService,
     private notificationService: NotificationService,
     private projectService: ProjectService,
+    private reportService: ReportService,
     private todoService: TodoService) {
   }
 
@@ -41,6 +40,6 @@ export class ProcessDataComponent implements OnInit {
   }
 
   onProcess() {
-    this.projectService.addStartEndDateToAllSubprojects();
+    this.reportService.renameCreatedAtAndAddType();
   }
 }

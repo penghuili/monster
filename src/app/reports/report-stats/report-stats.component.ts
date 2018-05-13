@@ -1,8 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReportService } from '@app/core';
-import { createReport, isFinishTooEarly, isFinishTooLate, now, Report, Todo, TodoStatus } from '@app/model';
-import { DatepickerMode } from '@app/shared';
+import { createReport, isFinishTooEarly, isFinishTooLate, Report, TimeRangeType, Todo, TodoStatus } from '@app/model';
 import { ROUTES, Unsub } from '@app/static';
 import { merge } from 'ramda';
 import { switchMap } from 'rxjs/operators';
@@ -14,7 +13,7 @@ import { switchMap } from 'rxjs/operators';
 })
 export class ReportStatsComponent extends Unsub implements OnChanges {
   @Input() date: number;
-  @Input() mode: DatepickerMode;
+  @Input() mode: TimeRangeType;
   report: Report;
   todos: Todo[] = [];
   notFinished: Todo[] = [];
@@ -63,10 +62,10 @@ export class ReportStatsComponent extends Unsub implements OnChanges {
     this.router.navigateByUrl(`/${ROUTES.TODOS}/${id}`);
   }
 
-  private getTodosAndReport(date: number, mode: DatepickerMode) {
+  private getTodosAndReport(date: number, mode: TimeRangeType) {
     this.isLoading = true;
     this.addSubscription(
-      this.reportService.getTodosForDailyReport(date, mode).pipe(
+      this.reportService.getTodosForReport(date, mode).pipe(
         switchMap(todos => {
           this.todos = todos;
           if (this.todos) {
@@ -76,11 +75,11 @@ export class ReportStatsComponent extends Unsub implements OnChanges {
             this.wontDo = this.todos.filter(a => a.status === TodoStatus.WontDo);
             this.done = this.todos.filter(a => a.status === TodoStatus.Done);
           }
-          return this.reportService.getReport(date);
+          return this.reportService.getReport(date, mode);
         })
       ).subscribe(report => {
         this.isLoading = false;
-        this.report = createReport(this.todos);
+        this.report = createReport(this.todos, date, mode);
         if (report) {
           const merged = merge(report, this.report);
           this.reportService.update(merged).subscribe();

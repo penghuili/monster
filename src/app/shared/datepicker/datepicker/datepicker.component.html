@@ -1,11 +1,11 @@
 <div mstNoSelect (click)="onOpenDatepicker()">
-  <ng-container *ngIf="mode === DatepickerMode.Day">
+  <ng-container *ngIf="mode === TimeRangeType.Day">
     {{ innerDate | mstDate:'shortDate' }}
   </ng-container>
-  <ng-container *ngIf="mode === DatepickerMode.Week">
+  <ng-container *ngIf="mode === TimeRangeType.Week">
     {{ innerDate | week }}
   </ng-container>
-  <ng-container *ngIf="mode === DatepickerMode.Month">
+  <ng-container *ngIf="mode === TimeRangeType.Month">
     {{ innerDate | date:'MMM, yyyy' }}
   </ng-container>
 </div>
@@ -15,9 +15,9 @@
     <mst-datepicker-title [date]="innerDate" (openYear)="onOpenYear()" (today)="onGotoToday()"></mst-datepicker-title>
 
     <div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'1rem 2rem 0'" *ngIf="showModePicker">
-      <div [mstColor]="mode === DatepickerMode.Day ? 'accent' : null" (click)="onSelectMode(DatepickerMode.Day)">day</div>
-      <div [mstColor]="mode === DatepickerMode.Week ? 'accent' : null" (click)="onSelectMode(DatepickerMode.Week)">week</div>
-      <div [mstColor]="mode === DatepickerMode.Month ? 'accent' : null" (click)="onSelectMode(DatepickerMode.Month)">month</div>
+      <div [mstColor]="mode === TimeRangeType.Day ? 'accent' : null" (click)="onSelectMode(TimeRangeType.Day)">day</div>
+      <div [mstColor]="mode === TimeRangeType.Week ? 'accent' : null" (click)="onSelectMode(TimeRangeType.Week)">week</div>
+      <div [mstColor]="mode === TimeRangeType.Month ? 'accent' : null" (click)="onSelectMode(TimeRangeType.Month)">month</div>
     </div>
 
     <mst-datepicker-month *ngIf="!isShowYear"

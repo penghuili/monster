@@ -18,7 +18,7 @@
   
         <mst-todo-status-picker (select)="onSelectStatus($event)"></mst-todo-status-picker>
       
-        <mst-datepicker [mode]="DatepickerMode.Day" [defaultDate]="defaultDatepickerDate" [startDate]="datePickerStartDate" (finish)="onFinishPickDate($event)"></mst-datepicker>
+        <mst-datepicker [mode]="TimeRangeType.Day" [defaultDate]="defaultDatepickerDate" [startDate]="datePickerStartDate" (finish)="onFinishPickDate($event)"></mst-datepicker>
         <mst-duration-picker (change)="onDurationChange($event)"></mst-duration-picker>
     </div>
   

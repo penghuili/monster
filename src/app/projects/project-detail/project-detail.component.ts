@@ -11,9 +11,10 @@ import {
   Project,
   ProjectStatus,
   Subproject,
+  TimeRangeType,
   TodoStatus,
 } from '@app/model';
-import { DatepickerMode, DatepickerResult, InputControl } from '@app/shared';
+import { DatepickerResult, InputControl } from '@app/shared';
 import { ROUTES, Unsub } from '@app/static';
 import { addDays, format } from 'date-fns';
 import { merge } from 'ramda';
@@ -38,7 +39,7 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
   startDate: number;
   endDate: number;
   endDateStartDate: number;
-  DatepickerMode = DatepickerMode;
+  TimeRangeType = TimeRangeType;
 
   chartData: ChartDataItem[];
 

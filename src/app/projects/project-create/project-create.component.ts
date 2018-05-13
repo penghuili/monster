@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { ProjectService } from '@app/core';
-import { now, ProjectStatus } from '@app/model';
-import { DatepickerMode, DatepickerResult, InputControl } from '@app/shared';
+import { now, ProjectStatus, TimeRangeType } from '@app/model';
+import { DatepickerResult, InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
 import { addDays } from 'date-fns';
 
@@ -25,7 +25,7 @@ export class ProjectCreateComponent extends Unsub {
   endDateStartDate = addDays(this.startDate, 1).getTime();
   endDate = this.endDateStartDate;
 
-  DatepickerMode = DatepickerMode;
+  TimeRangeType = TimeRangeType;
 
   constructor(private projectService: ProjectService) {
     super();

@@ -1,9 +1,6 @@
-export enum DatepickerMode {
-  Day,
-  Week,
-  Month
-}
+import { TimeRangeType } from '@app/model';
+
 export interface DatepickerResult {
-  mode: DatepickerMode;
+  mode: TimeRangeType;
   date: number;
 }

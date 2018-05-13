@@ -1,8 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
-import { endOfWeek, now, startOfWeek } from '@app/model';
+import { endOfWeek, now, startOfWeek, TimeRangeType } from '@app/model';
 import { addMonths, endOfDay, endOfMonth, format, getDaysInMonth, setDate, startOfDay, startOfMonth } from 'date-fns';
-
-import { DatepickerMode } from '../../model';
 
 @Component({
   selector: 'mst-datepicker-month',
@@ -16,7 +14,7 @@ export class DatepickerMonthComponent implements OnChanges {
     this.oneDayOfCurrentMonth = value !== undefined ? value : now();
   }
   @Input() startDate: number;
-  @Input() mode: DatepickerMode;
+  @Input() mode: TimeRangeType;
   @Output() selectDate = new EventEmitter<number>();
   weeks: DayItem[] = [
     { value: 'M', selected: false, valid: true},
@@ -59,17 +57,17 @@ export class DatepickerMonthComponent implements OnChanges {
     if (!day || this.originalDate === undefined || this.oneDayOfCurrentMonth === undefined || this.mode === undefined) {
       return false;
     }
-    if (this.mode === DatepickerMode.Day) {
+    if (this.mode === TimeRangeType.Day) {
       const startOfActiveDay = startOfDay(this.originalDate).getTime();
       const endOfActiveDay = endOfDay(this.originalDate).getTime();
       const currentDay = setDate(this.oneDayOfCurrentMonth, day).getTime();
       return currentDay > startOfActiveDay && currentDay < endOfActiveDay;
-    } else if (this.mode === DatepickerMode.Week) {
+    } else if (this.mode === TimeRangeType.Week) {
       const startOfActiveWeek = startOfWeek(this.originalDate);
       const endOfActiveWeek = endOfWeek(this.originalDate);
       const currentDay = setDate(this.oneDayOfCurrentMonth, day).getTime();
       return currentDay > startOfActiveWeek && currentDay < endOfActiveWeek;
-    } else if (this.mode === DatepickerMode.Month) {
+    } else if (this.mode === TimeRangeType.Month) {
       const startOfActiveMonth = startOfMonth(this.originalDate).getTime();
       const endOfActiveMonth = endOfMonth(this.originalDate).getTime();
       const currentDay = setDate(this.oneDayOfCurrentMonth, day).getTime();

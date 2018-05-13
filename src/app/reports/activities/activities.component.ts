@@ -1,7 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { ReportService } from '@app/core';
-import { Event, EventType, now, Project, Record, Subproject, Todo } from '@app/model';
-import { DatepickerMode } from '@app/shared';
+import { Event, EventType, now, Project, Record, Subproject, TimeRangeType, Todo } from '@app/model';
 import { Unsub } from '@app/static';
 
 @Component({
@@ -11,7 +10,7 @@ import { Unsub } from '@app/static';
 })
 export class ActivitiesComponent extends Unsub implements OnChanges {
   @Input() date: number;
-  @Input() mode: DatepickerMode;
+  @Input() mode: TimeRangeType;
   activities: Event[] = [];
   data: (Project | Subproject | Todo | Record)[];
   isLoading: boolean;
@@ -27,7 +26,7 @@ export class ActivitiesComponent extends Unsub implements OnChanges {
       this.getActivities(this.date, this.mode);
     }
   }
-  private getActivities(date: number, mode: DatepickerMode) {
+  private getActivities(date: number, mode: TimeRangeType) {
     this.isLoading = true;
     this.activities = [];
     this.data = [];

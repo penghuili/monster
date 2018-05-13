@@ -12,9 +12,9 @@
         <mst-project-status-picker (select)="onSelectStatus($event)"></mst-project-status-picker>
       </div>
       <div [mstPadding]="'0 0 0 2rem'" fxFlex="70%" fxLayout="row" fxLayoutAlign="space-between center">
-        <mst-datepicker [mode]="DatepickerMode.Day" [defaultDate]="startDate" (finish)="onPickStartDate($event)"></mst-datepicker>
+        <mst-datepicker [mode]="TimeRangeType.Day" [defaultDate]="startDate" (finish)="onPickStartDate($event)"></mst-datepicker>
         <mst-icon name="arrow_forward"></mst-icon>
-        <mst-datepicker [mode]="DatepickerMode.Day" [defaultDate]="endDate" [startDate]="endDateStartDate" (finish)="onPickEndDate($event)"></mst-datepicker>
+        <mst-datepicker [mode]="TimeRangeType.Day" [defaultDate]="endDate" [startDate]="endDateStartDate" (finish)="onPickEndDate($event)"></mst-datepicker>
       </div>
     </div>
     

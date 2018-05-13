@@ -1,21 +1,6 @@
 import { Injectable } from '@angular/core';
-import {
-  createReport,
-  endOfWeek,
-  Event,
-  EventType,
-  getStartEnd,
-  isAfterDay,
-  isBeforeDay,
-  isWithinDay,
-  now,
-  Report,
-  startOfWeek,
-  Todo,
-  TodoStatus,
-} from '@app/model';
-import { DatepickerMode } from '@app/shared';
-import { endOfDay, endOfMonth, format, startOfDay, startOfMonth } from 'date-fns';
+import { createReport, EventType, getStartEnd, now, Report, TimeRangeType, Todo, TodoStatus } from '@app/model';
+import { format } from 'date-fns';
 import { merge, uniq } from 'ramda';
 import { Observable } from 'rxjs/Observable';
 import { combineLatest } from 'rxjs/observable/combineLatest';
@@ -41,11 +26,15 @@ export class ReportService {
     private recordService: RecordService,
     private todoService: TodoService) { }
 
-  getReport(date: number): Observable<Report> {
+  getReport(date: number, mode: TimeRangeType): Observable<Report> {
     this.loadingService.isLoading();
+    let start: number;
+    let end: number;
+    [start, end] = getStartEnd(date, mode);
+
     return fromPromise(
       this.dbService.getDB().reports
-        .filter(x => format(x.createdAt, 'YYYYMMDD') === format(date, 'YYYYMMDD'))
+        .filter(x => x.type === mode && x.date > start && x.date < end)
         .first()
     ).pipe(
       catchError(error => this.handleError('getReport fails.')),
@@ -69,7 +58,7 @@ export class ReportService {
       })
     );
   }
-  getActivities(date: number, mode: DatepickerMode): Observable<any> {
+  getActivities(date: number, mode: TimeRangeType): Observable<any> {
     this.loadingService.isLoading();
     let start: number;
     let end: number;
@@ -127,18 +116,18 @@ export class ReportService {
       })
     );
   }
-  createOrUpdateReport(date: number, mode: DatepickerMode, data?: any) {
+  createOrUpdateReport(date: number, mode: TimeRangeType, data?: any) {
     this.loadingService.isLoading();
     let newReport: Report;
-    this.getTodosForDailyReport(date, mode).pipe(
+    this.getTodosForReport(date, mode).pipe(
       map(todos => {
-        newReport = createReport(todos);
+        newReport = createReport(todos, date, mode);
         if (data) {
           newReport = merge(newReport, data);
         }
         return newReport;
       }),
-      switchMap(nr => nr ? this.getReport(date) : of(null)),
+      switchMap(nr => nr ? this.getReport(date, mode) : of(null)),
       switchMap(oldReport => {
         if (!newReport) {
           return of(null);
@@ -152,7 +141,7 @@ export class ReportService {
       this.loadingService.stopLoading();
     });
   }
-  getTodosForDailyReport(date: number, mode: DatepickerMode): Observable<Todo[]> {
+  getTodosForReport(date: number, mode: TimeRangeType): Observable<Todo[]> {
     this.loadingService.isLoading();
     let start: number;
     let end: number;
@@ -172,6 +161,21 @@ export class ReportService {
         this.loadingService.stopLoading();
       })
     );
+  }
+
+  renameCreatedAtAndAddType() {
+    this.loadingService.isLoading();
+    fromPromise(this.dbService.getDB().reports.toArray()).subscribe(reports => {
+      reports = reports.map(r => {
+        r.date = (<any>r).createdAt;
+        r.type = TimeRangeType.Day;
+        delete (<any>r).createdAt;
+        return r;
+      });
+      this.dbService.getDB().reports.bulkPut(reports).then(() => {
+        this.loadingService.stopLoading();
+      });
+    });
   }
 
   private handleError(message: string): Observable<any> {

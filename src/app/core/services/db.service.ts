@@ -33,6 +33,9 @@ class MonsterDB extends Dexie {
     this.version(4).stores({
       records: '++id,createdAt'
     });
+    this.version(5).stores({
+      reports: '++id,date'
+    });
   }
 }
 @Injectable()

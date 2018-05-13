@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { now } from '@app/model';
+import { now, TimeRangeType } from '@app/model';
 import { setYear } from 'date-fns';
 
-import { DatepickerMode, DatepickerResult } from '../model';
+import { DatepickerResult } from '../model';
 
 @Component({
   selector: 'mst-datepicker',
@@ -16,7 +16,7 @@ export class DatepickerComponent implements OnInit {
   }
   @Input() startDate = now();
   @Input() disabled = false;
-  @Input() mode: DatepickerMode;
+  @Input() mode: TimeRangeType;
   @Output() finish = new EventEmitter<DatepickerResult>();
   outerDate = now();
   innerDate = this.outerDate;
@@ -24,12 +24,12 @@ export class DatepickerComponent implements OnInit {
   isShowDatepicker = false;
   isShowYear = false;
 
-  DatepickerMode = DatepickerMode;
+  TimeRangeType = TimeRangeType;
   showModePicker: boolean;
 
   ngOnInit() {
     if (this.mode === undefined) {
-      this.mode = DatepickerMode.Day;
+      this.mode = TimeRangeType.Day;
       this.showModePicker = true;
     } else {
       this.showModePicker = false;
@@ -42,7 +42,7 @@ export class DatepickerComponent implements OnInit {
       this.isShowDatepicker = true;
     }
   }
-  onSelectMode(mode: DatepickerMode) {
+  onSelectMode(mode: TimeRangeType) {
     this.mode = mode;
   }
   onOpenYear() {
