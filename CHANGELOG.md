@@ -1,3 +1,9 @@
+## v1.11.6
+
+bug fix:
+
+- use project start end date to check happen date
+
 ## v1.11.5
 
 bug fix:
