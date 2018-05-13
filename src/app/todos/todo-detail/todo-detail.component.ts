@@ -162,6 +162,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
       usedTime: this.todo.usedTime + Math.round(milisecondToMinute(now() - this.startAt))
     };
     this.update(data);
+    this.startAt = undefined;
   }
   onBack() {
     this.router.navigate([ '../' ], { relativeTo: this.route });
