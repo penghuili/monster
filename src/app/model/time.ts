@@ -1,7 +1,7 @@
 import {
-  addDays,
   endOfDay,
   endOfMonth,
+  endOfTomorrow,
   endOfWeek as endOfWeekFromLib,
   startOfDay,
   startOfMonth,
@@ -31,10 +31,10 @@ export function endOfToday(): number {
   return endOfDay(now()).getTime();
 }
 export function endofTomorrow(): number {
-  return endOfDay(addDays(now(), 1)).getTime();
+  return endOfTomorrow().getTime();
 }
 export function endOfThisWeek(): number {
-  return endOfDay(addDays(now(), 7)).getTime();
+  return endOfWeek(now());
 }
 export function startOfWeek(date: number): number {
   return startOfWeekFromLib(date, {weekStartsOn: 1}).getTime();

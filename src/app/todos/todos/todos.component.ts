@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService, TodoService } from '@app/core';
 import {
+  endOfThisWeek,
+  endOfToday,
+  endofTomorrow,
   isTodayEnded,
   isTodayStarted,
   MonsterStorage,
@@ -13,7 +16,7 @@ import {
   TodoStatus,
 } from '@app/model';
 import { ROUTES, Unsub } from '@app/static';
-import { addDays, endOfDay, format } from 'date-fns';
+import { format } from 'date-fns';
 import { groupBy, keys } from 'ramda';
 import { startWith, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
@@ -133,16 +136,16 @@ export class TodosComponent extends Unsub implements OnInit {
   }
 
   private processTodos(activeTab: string, todos: Todo[]) {
-    const endOfToday = endOfDay(now()).getTime();
-    const endofTomorrow = endOfDay(addDays(now(), 1)).getTime();
-    const endOfThisWeek = endOfDay(addDays(now(), 7)).getTime();
+    const todayEnd = endOfToday();
+    const tomorrowEnd = endofTomorrow();
+    const weekEnd = endOfThisWeek();
     let filtered: Todo[];
     if (activeTab === this.TODAY) {
-      filtered = todos.filter(a => a.happenDate - endOfToday <= 0);
+      filtered = todos.filter(a => a.happenDate - todayEnd <= 0);
     } else if (activeTab === this.TOMORROW) {
-      filtered = todos.filter(a => a.happenDate > endOfToday && a.happenDate <= endofTomorrow);
+      filtered = todos.filter(a => a.happenDate > todayEnd && a.happenDate <= tomorrowEnd);
     } else {
-      filtered = todos.filter(a => a.happenDate > endofTomorrow && a.happenDate <= endOfThisWeek);
+      filtered = todos.filter(a => a.happenDate > tomorrowEnd && a.happenDate <= weekEnd);
     }
     const activeTodos = filtered
       .filter(a => a.status === TodoStatus.InProgress || a.status === TodoStatus.Waiting)
