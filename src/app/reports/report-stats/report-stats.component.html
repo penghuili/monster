@@ -4,8 +4,8 @@
     {{ report.done + report.wontDo }} / {{ report.planned }} = {{ finishedPlanned() | percent }}
   </div>
   <div [mstPadding]="'0 0 1rem'">
-    used time of current day: <br>
-    {{ usedTimeOfDay | minuteFormatter }}
+    used time of selected time range: <br>
+    {{ usedTimeOfSelected | minuteFormatter }}
   </div>
   <div [mstPadding]="'0 0 1rem'">
     used time of all todos / planned time: <br>
