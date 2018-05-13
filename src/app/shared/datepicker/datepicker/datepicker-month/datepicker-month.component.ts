@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
-import { endOfWeek, now, startOfWeek, TimeRangeType } from '@app/model';
-import { addMonths, endOfDay, endOfMonth, format, getDaysInMonth, setDate, startOfDay, startOfMonth } from 'date-fns';
+import { endOfWeek, isWithin, now, startOfWeek, TimeRangeType } from '@app/model';
+import { addMonths, endOfDay, endOfMonth, getDaysInMonth, setDate, startOfDay, startOfMonth } from 'date-fns';
 
 @Component({
   selector: 'mst-datepicker-month',
@@ -14,6 +14,7 @@ export class DatepickerMonthComponent implements OnChanges {
     this.oneDayOfCurrentMonth = value !== undefined ? value : now();
   }
   @Input() startDate: number;
+  @Input() endDate: number;
   @Input() mode: TimeRangeType;
   @Output() selectDate = new EventEmitter<number>();
   weeks: DayItem[] = [
@@ -80,9 +81,8 @@ export class DatepickerMonthComponent implements OnChanges {
     if (!day || this.oneDayOfCurrentMonth === undefined || !this.startDate) {
       return true;
     }
-    const thisDate = format(setDate(this.oneDayOfCurrentMonth, day), 'YYYYMMDD');
-    const startDate = format(this.startDate, 'YYYYMMDD');
-    return thisDate >= startDate;
+    const date = setDate(this.oneDayOfCurrentMonth, day).getTime();
+    return isWithin(date, this.startDate, this.endDate);
   }
   private createRows() {
     this.row1 = [];
