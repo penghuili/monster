@@ -1,6 +1,6 @@
 <div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'0 3rem'">
   <div [style.display]="showChart ? 'none' : 'block'">
-    <mst-datepicker [startDate]="datePickerStartDate" (finish)="onPickDate($event)"></mst-datepicker>
+    <mst-datepicker [defaultDate]="date" [startDate]="datePickerStartDate" (finish)="onPickDate($event)"></mst-datepicker>
   </div>
   <div *ngIf="showChart"></div>
 
