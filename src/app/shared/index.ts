@@ -43,3 +43,5 @@ export * from './progress/progress.module';
 export * from './within-app/within-app.module';
 
 export * from './timeline/timeline.module';
+
+export * from './chart/chart.module';

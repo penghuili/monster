@@ -1,11 +1,23 @@
-<div>
-  <mst-datepicker [startDate]="datePickerStartDate" (finish)="onPickDate($event)"></mst-datepicker>
+<div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'0 3rem'">
+  <div [style.display]="showChart ? 'none' : 'block'">
+    <mst-datepicker [startDate]="datePickerStartDate" (finish)="onPickDate($event)"></mst-datepicker>
+  </div>
+  <div *ngIf="showChart"></div>
+
+  <mst-icon name="show_chart" *ngIf="!showChart" (click)="onShowChart()"></mst-icon>
+  <mst-icon name="close" *ngIf="showChart" (click)="onCloseChart()"></mst-icon>
 </div>
 
-<mst-tab [tabs]="tabs" [defaultTabKey]="STATS" (change)="onChangeTab($event)"></mst-tab>
+<ng-container *ngIf="!showChart">
+  <mst-tab [tabs]="tabs" [defaultTabKey]="STATS" (change)="onChangeTab($event)"></mst-tab>
+  
+  <mst-report-stats *ngIf="activeTab === STATS" [date]="date" [mode]="mode"></mst-report-stats>
+  
+  <mst-activities *ngIf="activeTab === ACTIVITIES" [date]="date" [mode]="mode"></mst-activities>
+  
+  <mst-report-summary *ngIf="activeTab === SUMMARY" [date]="date" [mode]="mode"></mst-report-summary>
+</ng-container>
 
-<mst-report-stats *ngIf="activeTab === STATS" [date]="date" [mode]="mode"></mst-report-stats>
-
-<mst-activities *ngIf="activeTab === ACTIVITIES" [date]="date" [mode]="mode"></mst-activities>
-
-<mst-report-summary *ngIf="activeTab === SUMMARY" [date]="date" [mode]="mode"></mst-report-summary>
+<ng-container *ngIf="showChart">
+  <mst-report-chart></mst-report-chart>
+</ng-container>

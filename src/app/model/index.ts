@@ -9,3 +9,4 @@ export * from './event';
 export * from './report';
 export * from './tab';
 export * from './record';
+export * from './chart';
