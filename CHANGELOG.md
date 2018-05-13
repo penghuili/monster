@@ -1,3 +1,13 @@
+## v1.11.2
+
+feature:
+
+- add report chart
+
+bug fix:
+
+- add used time to todo when stop
+
 ## v1.11.1
 
 bug fix:
