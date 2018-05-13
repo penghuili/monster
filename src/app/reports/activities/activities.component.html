@@ -3,5 +3,5 @@
 </div>
 
 <div *ngIf="(!activities || activities.length === 0) && !isLoading" [mstPadding]="'2rem 0 0'">
-  no activity on {{ date | mstDate:'shortDate' }}
+  no activity for {{ date | mstDate:'shortDate' }}
 </div>
