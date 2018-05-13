@@ -24,7 +24,7 @@ export class ReportSummaryComponent extends Unsub implements OnChanges {
     if (this.date && this.mode !== undefined) {
       this.addSubscription(
         this.reportService.getReport(this.date, this.mode).subscribe(report => {
-          if (report) {
+          if (report && report.summary) {
             this.summaryControl.setValue(report.summary);
             this.autoFocus = !report.summary;
           } else {

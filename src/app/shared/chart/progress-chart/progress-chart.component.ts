@@ -2,11 +2,11 @@ import { Component, Input } from '@angular/core';
 import { ChartDataItem, COLORS } from '@app/model';
 
 @Component({
-  selector: 'mst-project-progress-chart',
-  templateUrl: './project-progress-chart.component.html',
-  styleUrls: ['./project-progress-chart.component.scss']
+  selector: 'mst-progress-chart',
+  templateUrl: './progress-chart.component.html',
+  styleUrls: ['./progress-chart.component.scss']
 })
-export class ProjectProgressChartComponent {
+export class ProgressChartComponent {
   @Input() size = '20rem 20rem';
   @Input() data: ChartDataItem[];
 

@@ -4,7 +4,7 @@ import { EventService, ProjectService, TodoService } from '@app/core';
 import {
   ChartDataItem,
   EventType,
-  getChartData,
+  createChartData,
   mapProjectStatusEvent,
   MonsterEvents,
   now,
@@ -86,8 +86,8 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
           .filter(a => a.status === TodoStatus.Done || a.status === TodoStatus.WontDo)
           .sort((a, b) => a.finishAt - b.finishAt)
           .map(a => ({name: format(a.finishAt, 'YYYY-MM-DD'), value: 1}));
-        const plan = getChartData(items);
-        const done = getChartData(doneItems);
+        const plan = createChartData(items);
+        const done = createChartData(doneItems);
         this.chartData = [
           { name: 'plan', series: plan },
           { name: 'done', series: done }

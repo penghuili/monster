@@ -43,6 +43,20 @@ export class ReportService {
       })
     );
   }
+  getReports(mode: TimeRangeType): Observable<Report[]> {
+    this.loadingService.isLoading();
+    return fromPromise(
+      this.dbService.getDB().reports
+        .where('type')
+        .equals(mode)
+        .toArray()
+    ).pipe(
+      catchError(error => this.handleError('getReports fails.')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
+    );
+  }
   getReportStartDate(): Observable<number> {
     this.loadingService.isLoading();
     return fromPromise(
