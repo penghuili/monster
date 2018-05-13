@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { calcUsedTimeFor, createTodo, Event, EventType, MonsterEvents, now, Todo } from '@app/model';
+import { calcUsedTimeFor, createTodo, Event, EventType, MonsterEvents, now, Todo, TodoStatus } from '@app/model';
 import { addDays, endOfDay } from 'date-fns';
 import { Observable } from 'rxjs/Observable';
 import { fromPromise } from 'rxjs/observable/fromPromise';
@@ -62,8 +62,8 @@ export class TodoService {
         .equals(id)
         .toArray()
         .then(subps => {
-          return db.todos.where('subprojectId')
-            .anyOf(subps.map(a => a.id))
+          return db.todos
+            .filter(a => a.status !== TodoStatus.Someday && !!subps.find(b => b.id === a.subprojectId))
             .toArray();
         });
     });
