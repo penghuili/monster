@@ -8,6 +8,7 @@ import {
   isFinished,
   isTodayStarted,
   mapTodoStatusEvent,
+  milisecondToMinute,
   MonsterEvents,
   now,
   Subproject,
@@ -158,7 +159,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     this.emitEvent({ action: MonsterEvents.StopTodo });
 
     const data = {
-      usedTime: this.todo.usedTime + now() - this.startAt
+      usedTime: this.todo.usedTime + Math.round(milisecondToMinute(now() - this.startAt))
     };
     this.update(data);
   }
