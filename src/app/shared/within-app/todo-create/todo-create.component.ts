@@ -105,7 +105,7 @@ export class TodoCreateComponent extends Unsub {
     this.datePickerStartDate = project && project.startDate > this.datePickerStartDate ? project.startDate : this.datePickerStartDate;
     this.datePickerEndDate = project ? project.endDate : undefined;
 
-    if (this.happenDate && !isWithin(this.happenDate, this.datePickerStartDate, this.datePickerEndDate)) {
+    if (project && this.happenDate && !isWithin(this.happenDate, project.startDate, project.endDate)) {
       this.happenDate = this.datePickerStartDate;
       alert(`your todo's date is out of project ${project.title}'s range. please reselect date.`);
     }

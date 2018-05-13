@@ -1,3 +1,10 @@
+## v1.11.5
+
+bug fix:
+
+- todo's date must be in the range of the project
+- move someday todo to middle of sub project
+
 ## v1.11.4
 
 feature:
