@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { now, Todo, TodoStatus } from '@app/model';
+import { isFinished, now, Todo, TodoStatus } from '@app/model';
 import { startOfDay } from 'date-fns';
 
 @Component({
@@ -15,8 +15,12 @@ export class TodoItemComponent {
 
   getColor(): string {
     return this.todo.status === TodoStatus.Done || this.todo.status === TodoStatus.WontDo ? 'grey' :
+      this.todo.status === TodoStatus.Someday ? 'yellow' :
       this.todo.status === TodoStatus.Waiting ? 'green' :
       this.todo.happenDate < startOfDay(now()).getTime() ? 'error' :
       this.todo.expectedTime === 0 ? 'purple' : null;
+  }
+  isFinished() {
+    return isFinished(this.todo);
   }
 }

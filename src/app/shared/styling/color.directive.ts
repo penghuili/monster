@@ -41,6 +41,9 @@ export class ColorDirective implements OnChanges {
       case 'purple':
         color = COLORS.PURPLE;
         break;
+      case 'yellow':
+        color = COLORS.YELLOW;
+        break;
       case 'error':
        color = COLORS.ERROR;
        break;
@@ -67,6 +70,9 @@ export class ColorDirective implements OnChanges {
         break;
       case 'purple':
         color = COLORS.PURPLE;
+        break;
+      case 'yellow':
+        color = COLORS.YELLOW;
         break;
       case 'grey':
         color = COLORS.GREY;

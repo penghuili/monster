@@ -1,5 +1,5 @@
 <div class="mst-todo-item"
   [class.mst-todo-item-has-note]="todo.note"
-  [class.mst-todo-item-done]="todo.status === TodoStatus.Done || todo.status === TodoStatus.WontDo"
+  [class.mst-todo-item-finished]="isFinished()"
   [mstTextAlign]="'left'"
   [mstColor]="getColor()">{{ todo.title }}</div>

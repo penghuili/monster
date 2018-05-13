@@ -89,12 +89,15 @@ export function sortTodo(a: Todo, b: Todo): number {
     return -1;
   } else if (a.status === TodoStatus.InProgress && isOverDue(a)) {
     return -1;
-  } else if (a.status === TodoStatus.Waiting && isOverDue(a) && b.status === TodoStatus.Waiting) {
+  } else if (a.status === TodoStatus.Waiting && isOverDue(a) && (b.status === TodoStatus.Waiting || b.status === TodoStatus.Someday)) {
     return -1;
   } else if (a.status === TodoStatus.InProgress && !isOverDue(a) &&
     !(isOverDue(b) && b.status === TodoStatus.InProgress)) {
     return -1;
-  } else if (a.status === TodoStatus.Waiting && !isOverDue(a) && b.status === TodoStatus.Waiting) {
+  } else if (a.status === TodoStatus.Waiting && !isOverDue(a) &&
+    ((b.status === TodoStatus.Waiting && !isOverDue(b)) || b.status === TodoStatus.Someday)) {
+    return -1;
+  } else if (a.status === TodoStatus.Someday && b.status === TodoStatus.Someday) {
     return -1;
   } else {
     return 1;
