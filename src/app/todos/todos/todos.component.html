@@ -9,6 +9,7 @@
   <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === TODAY" (click)="onChangeTab(TODAY)">today</div>
   <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === TOMORROW" (click)="onChangeTab(TOMORROW)">tomorrow</div>
   <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === THISWEEK" (click)="onChangeTab(THISWEEK)">this week</div>
+  <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === NEXTWEEK" (click)="onChangeTab(NEXTWEEK)">next week</div>
 </div>
 
 <ng-container *ngIf="activeProjectsWithTodos && activeProjectsWithTodos.length > 0">

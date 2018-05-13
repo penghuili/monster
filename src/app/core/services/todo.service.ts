@@ -1,6 +1,19 @@
 import { Injectable } from '@angular/core';
-import { calcUsedTime, createTodo, Event, EventType, MonsterEvents, now, Todo, TodoStatus } from '@app/model';
-import { addDays, endOfDay } from 'date-fns';
+import {
+  calcUsedTime,
+  createTodo,
+  endOfWeek,
+  Event,
+  EventType,
+  isFinished,
+  isWithin,
+  MonsterEvents,
+  now,
+  startOfWeek,
+  Todo,
+  TodoStatus,
+} from '@app/model';
+import { addDays } from 'date-fns';
 import { Observable } from 'rxjs/Observable';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
@@ -23,17 +36,17 @@ export class TodoService {
     private projectService: ProjectService) {
   }
 
-  get7Days(): Observable<Todo[]> {
+  get2Weeks(): Observable<Todo[]> {
     this.loadingService.isLoading();
-    const endOfThisWeek = endOfDay(addDays(now(), 7)).getTime();
+    const start = startOfWeek(now());
+    const end = endOfWeek(addDays(now(), 7).getTime());
 
     return fromPromise(this.dbService.getDB()
       .todos
-      .where('happenDate')
-      .below(endOfThisWeek)
+      .filter(a => isWithin(a.happenDate, start, end) || (a.happenDate < start && !isFinished(a)))
       .toArray()
     ).pipe(
-      catchError(error => this.handleError('get7Days fails')),
+      catchError(error => this.handleError('get2Weeks fails')),
       tap(() => {
         this.loadingService.stopLoading();
       })
