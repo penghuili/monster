@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import {
   ButtonModule,
+  ChartModule,
   DatepickerModule,
   IconModule,
   InputModule,
@@ -17,6 +19,7 @@ import { ActivityItemRecordComponent } from './activity-item-record/activity-ite
 import { ActivityItemSubprojectComponent } from './activity-item-subproject/activity-item-subproject.component';
 import { ActivityItemTodoComponent } from './activity-item-todo/activity-item-todo.component';
 import { ActivityItemComponent } from './activity-item/activity-item.component';
+import { ReportChartComponent } from './report-chart/report-chart.component';
 import { ReportStatsComponent } from './report-stats/report-stats.component';
 import { ReportSummaryComponent } from './report-summary/report-summary.component';
 import { ReportsRoutingModule } from './reports-routing.module';
@@ -33,7 +36,9 @@ import { ReportsComponent } from './reports/reports.component';
     ButtonModule,
     IconModule,
     InputModule,
-    TimelineModule
+    TimelineModule,
+    FlexLayoutModule,
+    ChartModule
   ],
   declarations: [
     ReportsComponent,
@@ -44,6 +49,8 @@ import { ReportsComponent } from './reports/reports.component';
     ActivityItemProjectComponent,
     ActivityItemSubprojectComponent,
     ActivityItemTodoComponent,
-    ActivityItemRecordComponent]
+    ActivityItemRecordComponent,
+    ReportChartComponent,
+  ]
 })
 export class ReportsModule { }

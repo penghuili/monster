@@ -10,6 +10,7 @@ import { Unsub } from '@app/static';
   styleUrls: ['./reports.component.scss']
 })
 export class ReportsComponent extends Unsub implements OnInit {
+  showChart = false;
   date = now();
   mode = TimeRangeType.Day;
   datePickerStartDate = now();
@@ -42,6 +43,12 @@ export class ReportsComponent extends Unsub implements OnInit {
   onPickDate(result: DatepickerResult) {
     this.date = result.date;
     this.mode = result.mode;
+  }
+  onShowChart() {
+    this.showChart = true;
+  }
+  onCloseChart() {
+    this.showChart = false;
   }
 
 }
