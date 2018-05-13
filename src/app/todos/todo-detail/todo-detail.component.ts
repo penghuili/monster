@@ -5,6 +5,7 @@ import {
   EventType,
   isAfterToday,
   isBeforeToday,
+  isFinished,
   isTodayStarted,
   mapTodoStatusEvent,
   MonsterEvents,
@@ -34,13 +35,14 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   hasError = false;
   currentSubproject: Subproject;
   status: TodoStatus;
-  showSomedayStatus = true;
 
   timeUsed: number;
   datePickerStartDate: number;
   DatepickerMode = DatepickerMode;
 
+  showSomedayStatus = true;
   isDoing = false;
+  finished = true;
 
   constructor(
     private eventService: EventService,
@@ -62,6 +64,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
           this.noteControl.setValue(this.todo.note);
           this.status = this.todo.status;
           this.showSomedayStatus = !isTodayStarted() || isAfterToday(this.todo.happenDate);
+          this.finished = !isFinished(this.todo);
         }),
         switchMap(todo => this.eventService.getTodoUsedTime(todo.id)),
         tap(timeUsed => {
@@ -113,6 +116,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     this.status = status;
     const timestamp = now();
     if (status === TodoStatus.Done || status === TodoStatus.WontDo) {
+      this.finished = true;
       if (this.isDoing) {
         this.onStop();
       }
@@ -127,7 +131,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     }
   }
   disableDatePicker() {
-    return isBeforeToday(this.todo.happenDate) || (isToday(this.todo.happenDate) && isTodayStarted());
+    return !this.finished || isBeforeToday(this.todo.happenDate) || (isToday(this.todo.happenDate) && isTodayStarted());
   }
   onFinishPickDate(result: DatepickerResult) {
     this.emitEvent({

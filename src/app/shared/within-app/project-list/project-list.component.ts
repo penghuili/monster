@@ -17,6 +17,7 @@ export class ProjectListComponent extends Unsub implements OnInit {
     this.outerSubproject = value;
     this.innerSubproject = value;
   }
+  @Input() disabled = false;
   @Input() hasError: boolean;
   @Output() selected = new EventEmitter<Subproject>();
 
@@ -53,7 +54,9 @@ export class ProjectListComponent extends Unsub implements OnInit {
   }
 
   onOpen() {
-    this.isShow = true;
+    if (!this.disabled) {
+      this.isShow = true;
+    }
   }
   onClose() {
     this.isShow = false;
