@@ -85,3 +85,6 @@ export function getStartEnd(date: number, mode: TimeRangeType): number[] {
     throw Error('invalid time range.');
   }
 }
+export function milisecondToMinute(milisec: number): number {
+  return milisec / (1000 * 60);
+}

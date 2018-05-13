@@ -8,6 +8,7 @@ import {
   isFinished,
   isTodayStarted,
   mapTodoStatusEvent,
+  milisecondToMinute,
   MonsterEvents,
   now,
   Subproject,
@@ -37,11 +38,11 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   currentSubproject: Subproject;
   status: TodoStatus;
 
-  timeUsed: number;
   datePickerStartDate: number;
   TimeRangeType = TimeRangeType;
 
   showSomedayStatus = true;
+  startAt: number;
   isDoing = false;
   finished = true;
 
@@ -66,10 +67,6 @@ export class TodoDetailComponent extends Unsub implements OnInit {
           this.status = this.todo.status;
           this.showSomedayStatus = !isTodayStarted() || isAfterToday(this.todo.happenDate);
           this.finished = !isFinished(this.todo);
-        }),
-        switchMap(todo => this.eventService.getTodoUsedTime(todo.id)),
-        tap(timeUsed => {
-          this.timeUsed = timeUsed;
         }),
         switchMap(todo => this.projectService.getSubprojectById(this.todo.subprojectId))
       ).subscribe(subproject => {
@@ -123,8 +120,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
       }
       const data = {
         finishAt: timestamp,
-        status,
-        updatedAt: timestamp
+        status
       };
       this.update(data);
     } else {
@@ -153,6 +149,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     if (!this.isDoing) {
       this.isDoing = true;
       this.timer.start();
+      this.startAt = now();
       this.emitEvent({ action: MonsterEvents.StartTodo });
     }
   }
@@ -160,6 +157,11 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     this.timer.stop();
     this.isDoing = false;
     this.emitEvent({ action: MonsterEvents.StopTodo });
+
+    const data = {
+      usedTime: this.todo.usedTime + Math.round(milisecondToMinute(now() - this.startAt))
+    };
+    this.update(data);
   }
   onBack() {
     this.router.navigate([ '../' ], { relativeTo: this.route });

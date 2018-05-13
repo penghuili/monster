@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class TodoTimerComponent implements OnChanges {
   @Input() expectedTime: number;
-  @Input() timeUsed: number;
+  @Input() usedTime: number;
 
   progress = 0;
   totalTime: string;
@@ -22,9 +22,9 @@ export class TodoTimerComponent implements OnChanges {
   ngOnChanges() {
     if (this.expectedTime) {
       this.expectedTime = this.expectedTime;
-      this.timeUsed = this.timeUsed || 0;
+      this.usedTime = this.usedTime || 0;
       this.totalTime = this.parseTime(this.expectedTime);
-      this.prevProgress = this.timeUsed / (1000 * 60) / this.expectedTime;
+      this.prevProgress = this.usedTime / this.expectedTime;
       this.progress = this.prevProgress;
     }
   }
