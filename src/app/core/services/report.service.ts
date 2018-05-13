@@ -1,6 +1,16 @@
 import { Injectable } from '@angular/core';
-import { createReport, EventType, getStartEnd, now, Report, TimeRangeType, Todo, TodoStatus } from '@app/model';
-import { format } from 'date-fns';
+import {
+  calcUsedTime,
+  createReport,
+  EventType,
+  getStartEnd,
+  MonsterEvents,
+  now,
+  Report,
+  TimeRangeType,
+  Todo,
+  TodoStatus,
+} from '@app/model';
 import { merge, uniq } from 'ramda';
 import { Observable } from 'rxjs/Observable';
 import { combineLatest } from 'rxjs/observable/combineLatest';
@@ -66,6 +76,31 @@ export class ReportService {
       catchError(error => {
         this.notificationService.sendMessage('get report start date fails, use today');
         return of(now());
+      }),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
+    );
+  }
+  getUsedTime(date: number, mode: TimeRangeType, todoId?: number): Observable<number> {
+    this.loadingService.isLoading();
+    this.loadingService.isLoading();
+    let start: number;
+    let end: number;
+    [start, end] = getStartEnd(date, mode);
+
+    return fromPromise(
+      this.dbService.getDB().events
+        .filter(x => x.createdAt > start && x.createdAt < end &&
+          (x.action === MonsterEvents.StartTodo || x.action === MonsterEvents.StopTodo) &&
+          (todoId ? x.refId === todoId : true)
+        )
+        .toArray()
+    ).pipe(
+      map(events => calcUsedTime(events, todoId)),
+      catchError(error => {
+        this.notificationService.sendMessage('getUsedTime failed');
+        return of(0);
       }),
       tap(() => {
         this.loadingService.stopLoading();

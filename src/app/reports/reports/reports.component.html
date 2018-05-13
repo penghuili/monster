@@ -9,7 +9,9 @@
 </div>
 
 <ng-container *ngIf="!showChart">
-  <mst-tab [tabs]="tabs" [defaultTabKey]="STATS" (change)="onChangeTab($event)"></mst-tab>
+  <div [mstPadding]="'0 0 1rem'">
+    <mst-tab [tabs]="tabs" [defaultTabKey]="STATS" (change)="onChangeTab($event)"></mst-tab>
+  </div>
   
   <mst-report-stats *ngIf="activeTab === STATS" [date]="date" [mode]="mode"></mst-report-stats>
   

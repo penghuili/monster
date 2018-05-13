@@ -68,12 +68,16 @@ export function isTodayEnded(): boolean {
   const end = MonsterStorage.get('end-today');
   return end && end < now() && end > startOfToday();
 }
-export function calcUsedTimeFor(todoId: number, startEvents: Event[], stopEvents: Event[]): number {
-  const todoStarts = startEvents.filter(a => a.refId === todoId);
-  const todoStops = stopEvents.filter(a => a.refId === todoId);
-  if (todoStarts.length === todoStops.length) {
-    const milisec = todoStarts.reduce((total, curr, i) => {
-      return total + todoStops[i].createdAt - curr.createdAt;
+export function calcUsedTime(startSopEvents: Event[], todoId: number): number {
+  let startEvents = startSopEvents.filter((a, i) => i % 2 === 0);
+  let stopEvents = startSopEvents.filter((a, i) => i % 2 === 1);
+  if (todoId !== undefined) {
+    startEvents = startEvents.filter(a => a.refId === todoId);
+    stopEvents = stopEvents.filter(a => a.refId === todoId);
+  }
+  if (startEvents.length === stopEvents.length) {
+    const milisec = startEvents.reduce((total, curr, i) => {
+      return total + stopEvents[i].createdAt - curr.createdAt;
     }, 0);
     return Math.round(milisec / (1000 * 60));
   } else {

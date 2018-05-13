@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { calcUsedTimeFor, createTodo, Event, EventType, MonsterEvents, now, Todo, TodoStatus } from '@app/model';
+import { calcUsedTime, createTodo, Event, EventType, MonsterEvents, now, Todo, TodoStatus } from '@app/model';
 import { addDays, endOfDay } from 'date-fns';
 import { Observable } from 'rxjs/Observable';
 import { fromPromise } from 'rxjs/observable/fromPromise';
@@ -176,10 +176,8 @@ export class TodoService {
     fromPromise(transaction).subscribe(([events, todos]) => {
       const startSopEvents = (<Event[]>events).filter(a => a.action === MonsterEvents.StartTodo || a.action === MonsterEvents.StopTodo);
       if (startSopEvents.length % 2 === 0) {
-        const startEvents = startSopEvents.filter((a, i) => i % 2 === 0);
-        const stopEvents = startSopEvents.filter((a, i) => i % 2 === 1);
         const todosWithUsedTime = (<Todo[]>todos).map(a => {
-          a.usedTime = calcUsedTimeFor(a.id, startEvents, stopEvents);
+          a.usedTime = calcUsedTime(startSopEvents, a.id);
           return a;
         });
         db.todos.bulkPut(todosWithUsedTime)
