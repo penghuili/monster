@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
-import { EventType, MonsterEvents, now, Todo } from '@app/model';
-import { find, merge } from 'ramda';
+import { EventType, MonsterEvents, now, sortByPosition, Todo } from '@app/model';
+import { uniq } from 'ramda';
 import { Observable } from 'rxjs/Observable';
-import { combineLatest } from 'rxjs/observable/combineLatest';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
-import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, filter, switchMap, tap } from 'rxjs/operators';
 
-import { createProject, createSubproject, Project, Subproject } from '../../model/project';
+import { createProject, createSubproject, Project, ProjectWithTodos, Subproject } from '../../model/project';
 import { DbService } from './db.service';
 import { EventService } from './event.service';
 import { LoadingService } from './loading.service';
@@ -63,20 +62,32 @@ export class ProjectService {
       })
     );
   }
-  addProjectTitleToTodos(todos: Todo[]): Observable<Todo[]> {
+  getProjectsWithTodos(todos: Todo[]): Observable<ProjectWithTodos[]> {
     if (!todos || todos.length === 0) {
       return of([]);
     }
     this.loadingService.isLoading();
-    return combineLatest(this.getProjects(), this.getSubprojects()).pipe(
-      map(([projects, subprojects]) => {
-        return todos
-          .map(a => find(b => b.id === a.subprojectId, subprojects))
-          .map(a => find(b => b.id === a.projectId, projects))
-          .map((a, i) => merge(todos[i], { projectTitle: a.title }));
-      })
-    ).pipe(
-      catchError(error => this.handleError('addProjectTitleToTodos fails')),
+    let subprojects: Subproject[] = [];
+    const db = this.dbService.getDB();
+    const transaction = db.transaction('r', db.projects, db.subprojects, () => {
+      const subprojectIds = uniq(todos.map(a => a.subprojectId));
+      return db.subprojects.where('id').anyOf(subprojectIds).toArray()
+        .then(sps => {
+          subprojects = sps;
+          const projectIds = uniq(subprojects.map(a => a.projectId));
+          return db.projects.where('id').anyOf(projectIds).toArray();
+        })
+        .then(projects => {
+          projects = <Project[]>sortByPosition(projects);
+          return projects.map(p => {
+            const sps = subprojects.filter(a => a.projectId === p.id);
+            const tds = todos.filter(a => !!sps.find(b => b.id === a.subprojectId));
+            return { project: p, todos: tds };
+          });
+        });
+    });
+    return fromPromise(transaction).pipe(
+      catchError(error => this.handleError('getProjectsWithTodos fails')),
       tap(() => {
         this.loadingService.stopLoading();
       })

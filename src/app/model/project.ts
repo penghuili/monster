@@ -19,6 +19,10 @@ export interface Subproject extends ProjectBase {
   startDate?: number;
   endDate?: number;
 }
+export interface ProjectWithTodos {
+  project: Project;
+  todos: Todo[];
+}
 export enum ProjectStatus {
   InProgress,
   Someday,

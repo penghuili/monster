@@ -10,6 +10,7 @@ import { IconModule } from '../icon/icon.module';
 import { InputModule } from '../input/input.module';
 import { OverlayModule } from '../overlay/overlay.module';
 import { StylingModule } from '../styling/styling.module';
+import { ExpectedTimePipe } from './pipes/expected-time.pipe';
 import { ProjectStatusPipe } from './pipes/project-status.pipe';
 import { TodoStatusPipe } from './pipes/todo-status.pipe';
 import { ProjectItemComponent } from './project-item/project-item.component';
@@ -40,11 +41,13 @@ import { TodoStatusPickerComponent } from './todo-status-picker/todo-status-pick
     TodoStatusPipe,
     TodoStatusPickerComponent,
     ProjectStatusPickerComponent,
-    ProjectStatusPipe
+    ProjectStatusPipe,
+    ExpectedTimePipe
   ],
   exports: [
     TodoStatusPipe,
     ProjectStatusPipe,
+    ExpectedTimePipe,
 
     TodoCreateComponent,
     ProjectListComponent,
