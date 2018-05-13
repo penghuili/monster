@@ -7,10 +7,13 @@ import {
   isBeforeToday,
   isFinished,
   isTodayStarted,
+  isWithin,
   mapTodoStatusEvent,
   milisecondToMinute,
   MonsterEvents,
   now,
+  Project,
+  ProjectWithSubproject,
   Subproject,
   TimeRangeType,
   Todo,
@@ -20,6 +23,7 @@ import { DatepickerResult, InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
 import { addDays, isToday } from 'date-fns';
 import { merge } from 'ramda';
+import { of } from 'rxjs/observable/of';
 import { debounceTime, switchMap, tap } from 'rxjs/operators';
 
 import { TodoTimerComponent } from './todo-timer/todo-timer.component';
@@ -39,6 +43,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   status: TodoStatus;
 
   datePickerStartDate: number;
+  datePickerEndDate: number;
   TimeRangeType = TimeRangeType;
 
   showSomedayStatus = true;
@@ -68,9 +73,13 @@ export class TodoDetailComponent extends Unsub implements OnInit {
           this.showSomedayStatus = !isTodayStarted() || isAfterToday(this.todo.happenDate);
           this.finished = !isFinished(this.todo);
         }),
-        switchMap(todo => this.projectService.getSubprojectById(this.todo.subprojectId))
-      ).subscribe(subproject => {
-        this.currentSubproject = subproject;
+        switchMap(todo => todo ? this.projectService.getSubprojectById(this.todo.subprojectId) : of(null)),
+        switchMap(subproject => {
+          this.currentSubproject = subproject;
+          return subproject ? this.projectService.getProjectById(subproject.projectId) : of(null);
+        })
+      ).subscribe((project: Project) => {
+        this.setDatepickerRange(project);
       })
     );
 
@@ -99,9 +108,10 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     });
     this.update({ expectedTime: duration });
   }
-  onSelectSubproject(subproject: Subproject) {
-    this.currentSubproject = subproject;
-    this.update({ subprojectId: subproject.id });
+  onSelectSubproject(selected: ProjectWithSubproject) {
+    this.currentSubproject = selected.subproject;
+    this.update({ subprojectId: this.currentSubproject.id });
+    this.setDatepickerRange(selected.project);
   }
   onSelectStatus(status: TodoStatus) {
     const action = mapTodoStatusEvent(status);
@@ -168,6 +178,15 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     this.router.navigate([ '../' ], { relativeTo: this.route });
   }
 
+  private setDatepickerRange(project: Project) {
+    this.datePickerStartDate = project && project.startDate > this.datePickerStartDate ? project.startDate : this.datePickerStartDate;
+    this.datePickerEndDate = project ? project.endDate : undefined;
+
+    if (this.todo && !isWithin(this.todo.happenDate, this.datePickerStartDate, this.datePickerEndDate)) {
+      this.update({ happenDate: this.datePickerStartDate });
+      alert(`your todo's date is out of project ${project.title}'s range. please reselect date.`);
+    }
+  }
   private emitEvent(data: any) {
     const event = {
       ...data,

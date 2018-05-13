@@ -21,7 +21,7 @@ export class ReportStatsComponent extends Unsub implements OnChanges {
   finishTooEarly: Todo[] = [];
   wontDo: Todo[] = [];
   done: Todo[] = [];
-  usedTimeOfDay = 0;
+  usedTimeOfSelected = 0;
 
   isLoading = true;
 
@@ -92,7 +92,7 @@ export class ReportStatsComponent extends Unsub implements OnChanges {
 
     this.addSubscription(
       this.reportService.getUsedTime(date, mode).subscribe(time => {
-        this.usedTimeOfDay = time;
+        this.usedTimeOfSelected = time;
       })
     );
   }

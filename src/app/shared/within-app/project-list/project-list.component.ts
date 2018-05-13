@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProjectService } from '@app/core';
-import { Project, ProjectStatus, Subproject } from '@app/model';
+import { Project, ProjectStatus, ProjectWithSubproject, Subproject } from '@app/model';
 import { ROUTES, Unsub } from '@app/static';
 import { switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
@@ -19,7 +19,7 @@ export class ProjectListComponent extends Unsub implements OnInit {
   }
   @Input() disabled = false;
   @Input() hasError: boolean;
-  @Output() selected = new EventEmitter<Subproject>();
+  @Output() selected = new EventEmitter<ProjectWithSubproject>();
 
   projects: Project[];
   subprojects: Subproject[];
@@ -69,7 +69,7 @@ export class ProjectListComponent extends Unsub implements OnInit {
   }
   onSelectSubproject(subproject: Subproject) {
     this.innerSubproject = subproject;
-    this.selected.emit(subproject);
+    this.selected.emit({ project: this.activeProject, subproject });
     this.isShow = false;
   }
 

@@ -1,6 +1,15 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TodoService } from '@app/core';
-import { isTodayStarted, now, Subproject, TimeRangeType, TodoStatus } from '@app/model';
+import {
+  isTodayStarted,
+  isWithin,
+  now,
+  Project,
+  ProjectWithSubproject,
+  Subproject,
+  TimeRangeType,
+  TodoStatus,
+} from '@app/model';
 import { Unsub } from '@app/static';
 import { addDays } from 'date-fns';
 
@@ -28,8 +37,10 @@ export class TodoCreateComponent extends Unsub {
 
   defaultDatepickerDate: number;
   datePickerStartDate: number;
+  datePickerEndDate: number;
   TimeRangeType = TimeRangeType;
 
+  currentProject: Project;
   currentSubproject: Subproject;
 
   constructor(private todoService: TodoService) {
@@ -42,8 +53,11 @@ export class TodoCreateComponent extends Unsub {
   onOpen() {
     this.isShow = true;
   }
-  onSelectSubproject(project: Subproject) {
-    this.currentSubproject = project;
+  onSelectSubproject(selected: ProjectWithSubproject) {
+    this.currentProject = selected.project;
+    this.currentSubproject = selected.subproject;
+
+    this.setDatepickerRange(selected.project);
   }
   onSelectStatus(status: TodoStatus) {
     this.status = status;
@@ -87,6 +101,15 @@ export class TodoCreateComponent extends Unsub {
     this.reset();
   }
 
+  private setDatepickerRange(project: Project) {
+    this.datePickerStartDate = project && project.startDate > this.datePickerStartDate ? project.startDate : this.datePickerStartDate;
+    this.datePickerEndDate = project ? project.endDate : undefined;
+
+    if (this.happenDate && !isWithin(this.happenDate, this.datePickerStartDate, this.datePickerEndDate)) {
+      this.happenDate = this.datePickerStartDate;
+      alert(`your todo's date is out of project ${project.title}'s range. please reselect date.`);
+    }
+  }
   private reset() {
     this.titleControl.setValue('');
     this.noteControl.setValue('');
@@ -95,6 +118,7 @@ export class TodoCreateComponent extends Unsub {
     this.expectedTime = 0;
     this.hasTitleError = false;
     this.hasSubprojectError = false;
+    this.currentProject = null;
     this.currentSubproject = null;
   }
 }

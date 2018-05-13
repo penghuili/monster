@@ -64,6 +64,11 @@ export function isTodayOrBefore(date: number): boolean {
 export function isWithinDay(date: number, targetDay: number): boolean {
   return date > startOfDay(targetDay).getTime() && date < endOfDay(targetDay).getTime();
 }
+export function isWithin(date: number, start: number, end?: number): boolean {
+  const startDate = startOfDay(start).getTime();
+  const endDate = end ? endOfDay(end).getTime() : Infinity;
+  return date > startDate && date < endDate;
+}
 export function isBeforeDay(date: number, targetDay: number): boolean {
   return date < new Date(targetDay).getTime();
 }

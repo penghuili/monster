@@ -15,6 +15,7 @@ export class DatepickerComponent implements OnInit {
     this.innerDate = value;
   }
   @Input() startDate = now();
+  @Input() endDate: number;
   @Input() disabled = false;
   @Input() mode: TimeRangeType;
   @Output() finish = new EventEmitter<DatepickerResult>();

@@ -18,6 +18,10 @@ export interface Subproject extends ProjectBase {
   startDate?: number;
   endDate?: number;
 }
+export interface ProjectWithSubproject {
+  project: Project;
+  subproject: Subproject;
+}
 export interface ProjectWithTodos {
   project: Project;
   todos: Todo[];
