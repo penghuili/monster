@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TodoService } from '@app/core';
-import { isTodayStarted, now, Subproject, TodoStatus } from '@app/model';
+import { isTodayStarted, now, Subproject, TimeRangeType, TodoStatus } from '@app/model';
 import { Unsub } from '@app/static';
 import { addDays } from 'date-fns';
 
-import { DatepickerMode, DatepickerResult } from '../../datepicker/model';
+import { DatepickerResult } from '../../datepicker/model';
 import { InputControl } from '../../input/input-control';
 
 @Component({
@@ -28,7 +28,7 @@ export class TodoCreateComponent extends Unsub {
 
   defaultDatepickerDate: number;
   datePickerStartDate: number;
-  DatepickerMode = DatepickerMode;
+  TimeRangeType = TimeRangeType;
 
   currentSubproject: Subproject;
 

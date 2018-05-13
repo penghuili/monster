@@ -1,15 +1,25 @@
 import {
   endOfDay,
   endOfMonth,
+  endOfQuarter,
   endOfTomorrow,
   endOfWeek as endOfWeekFromLib,
+  endOfYear,
   startOfDay,
   startOfMonth,
+  startOfQuarter,
   startOfToday as startOfTodayFromLib,
   startOfWeek as startOfWeekFromLib,
+  startOfYear,
 } from 'date-fns';
 
-import { DatepickerMode } from '../shared/datepicker/model';
+export enum TimeRangeType {
+  Day,
+  Week,
+  Month,
+  Quarter,
+  Year
+}
 
 export function now(): number {
   return new Date().getTime();
@@ -60,12 +70,18 @@ export function isBeforeDay(date: number, targetDay: number): boolean {
 export function isAfterDay(date: number, targetDay: number): boolean {
   return date > new Date(targetDay).getTime();
 }
-export function getStartEnd(date: number, mode: DatepickerMode): number[] {
-  if (mode === DatepickerMode.Week) {
-    return [startOfWeek(date), endOfWeek(date)];
-  } else if (mode === DatepickerMode.Month) {
-    return [startOfMonth(date).getTime(), endOfMonth(date).getTime()];
-  } else {
+export function getStartEnd(date: number, mode: TimeRangeType): number[] {
+  if (mode === TimeRangeType.Day) {
     return [startOfDay(date).getTime(), endOfDay(date).getTime()];
+  } else if (mode === TimeRangeType.Week) {
+    return [startOfWeek(date), endOfWeek(date)];
+  } else if (mode === TimeRangeType.Month) {
+    return [startOfMonth(date).getTime(), endOfMonth(date).getTime()];
+  } else if (mode === TimeRangeType.Quarter) {
+    return [startOfQuarter(date).getTime(), endOfQuarter(date).getTime()];
+  } else if (mode === TimeRangeType.Year) {
+    return [startOfYear(date).getTime(), endOfYear(date).getTime()];
+  } else {
+    throw Error('invalid time range.');
   }
 }

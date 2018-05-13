@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ReportService } from '@app/core';
-import { now } from '@app/model';
-import { DatepickerMode, DatepickerResult } from '@app/shared';
+import { now, TimeRangeType } from '@app/model';
+import { DatepickerResult } from '@app/shared';
 import { Unsub } from '@app/static';
 
 @Component({
@@ -11,7 +11,7 @@ import { Unsub } from '@app/static';
 })
 export class ReportsComponent extends Unsub implements OnInit {
   date = now();
-  mode = DatepickerMode.Day;
+  mode = TimeRangeType.Day;
   datePickerStartDate = now();
 
   STATS = 'stats';

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ReportService } from '@app/core';
-import { DatepickerMode, InputControl } from '@app/shared';
+import { TimeRangeType } from '@app/model';
+import { InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
 
 @Component({
@@ -11,7 +12,7 @@ import { Unsub } from '@app/static';
 })
 export class ReportSummaryComponent extends Unsub implements OnChanges {
   @Input() date: number;
-  @Input() mode: DatepickerMode;
+  @Input() mode: TimeRangeType;
   summaryControl = new InputControl('');
   autoFocus = false;
 
@@ -22,7 +23,7 @@ export class ReportSummaryComponent extends Unsub implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (this.date && this.mode !== undefined) {
       this.addSubscription(
-        this.reportService.getReport(this.date).subscribe(report => {
+        this.reportService.getReport(this.date, this.mode).subscribe(report => {
           if (report) {
             this.summaryControl.setValue(report.summary);
             this.autoFocus = !report.summary;

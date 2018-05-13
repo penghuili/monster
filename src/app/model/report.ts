@@ -1,9 +1,10 @@
-import { isBeforeToday, now } from './time';
+import { isBeforeToday, TimeRangeType } from './time';
 import { isFinished, isFinishTooEarly, isFinishTooLate, Todo, TodoStatus } from './todo';
 
 export interface Report {
   id?: number;
-  createdAt: number;
+  type: TimeRangeType;
+  date: number;
   // todo counts
   planned: number;
   inProgress: number;
@@ -22,12 +23,14 @@ export interface Report {
   finishedPlannedTime: number;
   summary?: string;
 }
-export function createReport(todos: Todo[]): Report {
+
+export function createReport(todos: Todo[], date: number, type: TimeRangeType): Report {
   if (!todos || todos.length === 0) {
     return null;
   }
   return {
-    createdAt: now(),
+    date: date,
+    type: type,
     planned: todos.length,
     inProgress: todos.filter(a => a.status === TodoStatus.InProgress).length,
     waiting: todos.filter(a => a.status === TodoStatus.Waiting).length,
