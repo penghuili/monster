@@ -26,9 +26,6 @@ export enum TodoStatus {
   Done,
   WontDo
 }
-export interface TodoGroup {
-  [key: string]: Todo[];
-}
 
 export function createTodo(data: any): Todo {
   const timestamp = now();
