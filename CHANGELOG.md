@@ -1,3 +1,9 @@
+## v1.11.7
+
+feature:
+
+- show next week todos
+
 ## v1.11.6
 
 bug fix:
