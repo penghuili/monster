@@ -6,3 +6,5 @@
 
   <ng-content></ng-content>
 </div>
+<div class="mst-timeline-item-dot" *ngIf="overMax"></div>
+<div class="mst-timeline-item" [style.height.px]="paddingBottom" *ngIf="overMax"></div>
