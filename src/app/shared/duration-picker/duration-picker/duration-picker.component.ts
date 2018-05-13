@@ -18,6 +18,7 @@ export class DurationPickerComponent {
       this.activeValue = this.isHoursActive ? this.hours : this.minutes;
     }
   }
+  @Input() disabled = false;
   @Output() change = new EventEmitter<number>();
   // never change outerValue
   outerValue = 0;
@@ -39,7 +40,9 @@ export class DurationPickerComponent {
 
 
   onShowSlider() {
-    this.showSlider = true;
+    if (!this.disabled) {
+      this.showSlider = true;
+    }
   }
   onClickMinutes() {
     this.min = this.minMinute;

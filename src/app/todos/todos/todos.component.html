@@ -1,6 +1,6 @@
 <div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'0.5rem 0'">
   <div [mstColor]="todayStarted || activeTab !== TODAY ? 'grey' : null" (click)="onStartToday()">start today</div>
-  <div [mstPadding]="'0 1rem'">{{ activeTodosExpectedTime | minuteFormatter }}</div>
+  <div [mstPadding]="'0 1rem'">{{ activeTodos | expectedTime | minuteFormatter }}</div>
   <div [mstPadding]="'0 1rem'">{{ noTimeActiveTodosCount }}</div>
   <div [mstColor]="todayEnded || activeTab !== TODAY ? 'grey' : null" (click)="onCallItADay()">call it a day</div>
 </div>
@@ -11,17 +11,17 @@
   <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === THISWEEK" (click)="onChangeTab(THISWEEK)">this week</div>
 </div>
 
-<ng-container *ngIf="activeGroups && activeGroups.length > 0">
-  <div *ngFor="let group of activeGroups">
-    <div [mstPadding]="'0.5rem 0 0'">
-      {{group}} {{ calcExpectedTime(activeTodoGroup[group]) | minuteFormatter }}
+<ng-container *ngIf="activeProjectsWithTodos && activeProjectsWithTodos.length > 0">
+  <div *ngFor="let pwts of activeProjectsWithTodos">
+    <div [mstPadding]="'0.5rem 0 0'" *ngIf="pwts.todos.length > 0">
+      {{pwts.project.title}} {{ pwts.todos | expectedTime | minuteFormatter }}
     </div>
-    <div [mstPadding]="'0.5rem 0 0.5rem 1rem'">
-      <mst-drop-zone [dragIndex]="dragIndex" (drop)="onDrop($event, group)">
-        <mst-drag-item *ngFor="let todo of activeTodoGroup[group]; let i = index;"
+    <div [mstPadding]="'0.5rem 0 0.5rem 1rem'" *ngIf="pwts.todos.length > 0">
+      <mst-drop-zone [dragIndex]="dragIndex" (drop)="onDrop($event, pwts.project.id)">
+        <mst-drag-item *ngFor="let todo of pwts.todos; let i = index;"
           [item]="todo"
           [index]="i"
-          (start)="onDragStart($event, group)">
+          (start)="onDragStart($event, pwts.project.id)">
           <mst-todo-item
             [todo]="todo"
             (click)="onShowDetail(todo)">
@@ -32,14 +32,14 @@
   </div>
 </ng-container>
 
-<ng-container *ngIf="doneGroups && doneGroups.length > 0">
+<ng-container *ngIf="activeTab === TODAY && doneProjectsWithTodos && doneProjectsWithTodos.length > 0">
   <div [mstTextAlign]="'center'" [mstPadding]="'2rem 0 0'">Done</div>
-  <div *ngFor="let group of doneGroups">
-    <div [mstPadding]="'0.5rem 0 0'">
-      {{group}}
+  <div *ngFor="let pwts of doneProjectsWithTodos">
+    <div [mstPadding]="'0.5rem 0 0'" *ngIf="pwts.todos.length > 0">
+      {{pwts.project.title}}
     </div>
-    <div [mstPadding]="'0.5rem 0 0.5rem 1rem'">
-      <mst-todo-item *ngFor="let todo of doneTodoGroup[group]"
+    <div [mstPadding]="'0.5rem 0 0.5rem 1rem'" *ngIf="pwts.todos.length > 0">
+      <mst-todo-item *ngFor="let todo of pwts.todos"
         [todo]="todo"
         (click)="onShowDetail(todo)">
       </mst-todo-item>

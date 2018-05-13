@@ -9,15 +9,14 @@ import {
   isTodayStarted,
   MonsterStorage,
   now,
-  Project,
+  ProjectWithTodos,
   sortTodo,
   Todo,
-  TodoGroup,
   TodoStatus,
 } from '@app/model';
 import { ROUTES, Unsub } from '@app/static';
 import { format } from 'date-fns';
-import { groupBy, keys } from 'ramda';
+import { merge } from 'ramda';
 import { startWith, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 
@@ -27,12 +26,11 @@ import { Subject } from 'rxjs/Subject';
   styleUrls: ['./todos.component.scss']
 })
 export class TodosComponent extends Unsub implements OnInit {
-  activeTodoGroup: TodoGroup;
-  activeGroups: string[];
+  activeProjectsWithTodos: ProjectWithTodos[];
+  doneProjectsWithTodos: ProjectWithTodos[];
+
   activeTodosExpectedTime = 0;
   noTimeActiveTodosCount = 0;
-  doneTodoGroup: TodoGroup;
-  doneGroups: string[];
 
   dragIndex: number;
 
@@ -44,11 +42,12 @@ export class TodosComponent extends Unsub implements OnInit {
   todayStarted = false;
   todayEnded = false;
 
+  activeTodos: Todo[];
   private todos: Todo[];
-  private projects: Project[];
+  private projectsWithTodos: ProjectWithTodos[];
 
-  private drapGroup: string;
-  private createdTodo = new Subject<boolean>();
+  private drapProjectId: number;
+  private shouldReload = new Subject<boolean>();
 
   constructor(
     private route: ActivatedRoute,
@@ -61,16 +60,19 @@ export class TodosComponent extends Unsub implements OnInit {
   ngOnInit() {
     this.todayStarted = isTodayStarted();
     this.todayEnded = isTodayEnded();
-
     this.activeTab = MonsterStorage.get('activeTab') || this.TODAY;
+
     this.addSubscription(
-      this.createdTodo.asObservable().pipe(
+      this.shouldReload.asObservable().pipe(
         startWith(true),
         switchMap(() => this.todoService.get7Days()),
-        switchMap(todos => this.projectService.addProjectTitleToTodos(todos))
-      ).subscribe(todos => {
-        this.todos = todos.sort((a, b) => b.position > a.position ? 1 : -1);
-        this.processTodos(this.activeTab, this.todos);
+        switchMap(todos => {
+          this.todos = todos;
+          return this.projectService.getProjectsWithTodos(todos);
+        })
+      ).subscribe(projectsWithTodos => {
+        this.projectsWithTodos = projectsWithTodos;
+        this.process(this.activeTab, this.projectsWithTodos, this.todos);
       })
     );
   }
@@ -100,22 +102,23 @@ export class TodosComponent extends Unsub implements OnInit {
   onChangeTab(tab: string) {
     MonsterStorage.set('activeTab', tab);
     this.activeTab = tab;
-    this.processTodos(this.activeTab, this.todos);
+
+    this.process(this.activeTab, this.projectsWithTodos, this.todos);
   }
   onCreate() {
     this.router.navigate([ ROUTES.CREATE ], { relativeTo: this.route });
   }
   onCreated() {
-    this.createdTodo.next(true);
+    this.shouldReload.next(true);
   }
   onShowDetail(todo: Todo) {
     this.router.navigate([ todo.id ], { relativeTo: this.route });
   }
-  onDragStart(dragIndex: number, group: string) {
+  onDragStart(dragIndex: number, projectId: number) {
     this.dragIndex = dragIndex;
-    this.drapGroup = group;
+    this.drapProjectId = projectId;
   }
-  onDrop(dropIndex: number, group: string) {
+  onDrop(dropIndex: number, projectId: number) {
     // if (this.drapGroup === group && dropIndex !== this.dragIndex) {
     //   const dragged = this.activeTodoGroup[group][this.dragIndex];
     //   const dropped = this.activeTodoGroup[group][dropIndex];
@@ -125,17 +128,45 @@ export class TodosComponent extends Unsub implements OnInit {
     //   }
     // }
     this.dragIndex = undefined;
-    this.drapGroup = undefined;
-  }
-  /**
-   * @todo cache value, not do calc in template, use pipe maybe?
-   */
-  calcExpectedTime(todos: Todo[]): number {
-    return todos.filter(a => a.expectedTime !== 0 && a.status === TodoStatus.InProgress)
-      .reduce((sum, a) => sum + a.expectedTime, 0);
+    this.drapProjectId = undefined;
   }
 
-  private processTodos(activeTab: string, todos: Todo[]) {
+  process(activeTab: string, projectsWithTodos: ProjectWithTodos[], todos: Todo[]) {
+    this.calcTotal(activeTab, todos);
+    this.processTodos(activeTab, projectsWithTodos);
+  }
+  private processTodos(activeTab: string, projectsWithTodos: ProjectWithTodos[]) {
+    const todayEnd = endOfToday();
+    const tomorrowEnd = endofTomorrow();
+    const weekEnd = endOfThisWeek();
+    let filteredActive: ProjectWithTodos[];
+    let activeFilterFunction: (a: Todo) => boolean;
+    if (activeTab === this.TODAY) {
+      activeFilterFunction = a => a.happenDate - todayEnd <= 0;
+    } else if (activeTab === this.TOMORROW) {
+      activeFilterFunction = a => a.happenDate > todayEnd && a.happenDate <= tomorrowEnd;
+    } else {
+      activeFilterFunction = a => a.happenDate > tomorrowEnd && a.happenDate <= weekEnd;
+    }
+    filteredActive = projectsWithTodos.map(pt => {
+      const tds = pt.todos.filter(activeFilterFunction);
+      return merge(pt, { todos: tds });
+    });
+    this.activeProjectsWithTodos = filteredActive.map(pt => {
+      const tds = pt.todos
+        .filter(a => a.status === TodoStatus.InProgress || a.status === TodoStatus.Waiting)
+        .sort((a, b) => sortTodo(a, b));
+      return merge(pt, { todos: tds });
+    });
+
+    this.doneProjectsWithTodos = projectsWithTodos.map(pt => {
+      const tds = pt.todos
+        .filter(a => this.isDoneOnToday(a))
+        .sort((a, b) => b.finishAt - a.finishAt);
+      return merge(pt, { todos: tds });
+    });
+  }
+  private calcTotal(activeTab: string, todos: Todo[]) {
     const todayEnd = endOfToday();
     const tomorrowEnd = endofTomorrow();
     const weekEnd = endOfThisWeek();
@@ -147,23 +178,9 @@ export class TodosComponent extends Unsub implements OnInit {
     } else {
       filtered = todos.filter(a => a.happenDate > tomorrowEnd && a.happenDate <= weekEnd);
     }
-    const activeTodos = filtered
-      .filter(a => a.status === TodoStatus.InProgress || a.status === TodoStatus.Waiting)
-      .sort((a, b) => sortTodo(a, b));
-    this.noTimeActiveTodosCount = activeTodos.filter(a => a.expectedTime === 0).length;
-    this.activeTodosExpectedTime = this.calcExpectedTime(activeTodos);
-    this.activeTodoGroup = this.groupTodos(activeTodos);
-    this.activeGroups = keys(this.activeTodoGroup);
 
-    this.doneTodoGroup = this.groupTodos(
-      filtered
-      .filter(a => this.isDoneOnToday(a))
-      .sort((a, b) => b.finishAt - a.finishAt)
-    );
-    this.doneGroups = keys(this.doneTodoGroup);
-  }
-  private groupTodos(todos: Todo[]): TodoGroup {
-    return groupBy(a => a.projectTitle, todos);
+    this.activeTodos = filtered.filter(a => a.status === TodoStatus.InProgress || a.status === TodoStatus.Waiting);
+    this.noTimeActiveTodosCount = this.activeTodos.filter(a => a.expectedTime === 0).length;
   }
   private isDoneOnToday(todo: Todo): boolean {
     return (todo.status === TodoStatus.Done || todo.status === TodoStatus.WontDo) &&

@@ -1,7 +1,7 @@
 import { Event } from '@app/model';
 
 import { SortableItem } from './item';
-import { isBeforeToday, now, startOfToday, isWithinDay } from './time';
+import { isBeforeToday, isWithinDay, now, startOfToday } from './time';
 import { MonsterStorage } from './utils';
 
 export interface Todo extends SortableItem {
@@ -25,9 +25,6 @@ export enum TodoStatus {
   Someday,
   Done,
   WontDo
-}
-export interface TodoGroup {
-  [key: string]: Todo[];
 }
 
 export function createTodo(data: any): Todo {
