@@ -1,7 +1,7 @@
 import { Event } from '@app/model';
 
 import { SortableItem } from './item';
-import { isBeforeToday, now, startOfToday } from './time';
+import { isBeforeToday, now, startOfToday, isWithinDay } from './time';
 import { MonsterStorage } from './utils';
 
 export interface Todo extends SortableItem {
@@ -62,7 +62,7 @@ export function isFinishTooEarly(todo: Todo): boolean {
  */
 export function isTodayStarted(): boolean {
   const start = MonsterStorage.get('start-today');
-  return start && start < now() && start > startOfToday();
+  return start && isWithinDay(start, now());
 }
 export function isTodayEnded(): boolean {
   /**

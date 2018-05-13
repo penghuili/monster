@@ -25,6 +25,8 @@ export class TodoCreateComponent extends Unsub {
   expectedTime = 0;
   hasTitleError = false;
   hasSubprojectError = false;
+
+  defaultDatepickerDate: number;
   datePickerStartDate: number;
   DatepickerMode = DatepickerMode;
 
@@ -33,6 +35,7 @@ export class TodoCreateComponent extends Unsub {
   constructor(private todoService: TodoService) {
     super();
     this.datePickerStartDate = isTodayStarted() ? addDays(now(), 1).getTime() : now();
+    this.defaultDatepickerDate = this.datePickerStartDate;
     this.happenDate = this.datePickerStartDate;
   }
 
