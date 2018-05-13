@@ -40,6 +40,6 @@ export class ProcessDataComponent implements OnInit {
   }
 
   onProcess() {
-    this.reportService.renameCreatedAtAndAddType();
+    this.todoService.addUsedTimeToAllTodos();
   }
 }
