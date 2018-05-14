@@ -103,3 +103,10 @@ export function sortTodo(a: Todo, b: Todo): number {
     return 1;
   }
 }
+export function calcStartEndDate(todos: Todo[]): number[] {
+  const sortedByHappenDate = todos ? todos.sort((a, b) => a.happenDate - b.happenDate) : [];
+  const len = sortedByHappenDate.length;
+  const startDate = sortedByHappenDate[0] ? sortedByHappenDate[0].happenDate : now();
+  const endDate = sortedByHappenDate[len - 1] ? sortedByHappenDate[len - 1].happenDate : now();
+  return [startDate, endDate];
+}

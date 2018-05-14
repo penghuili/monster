@@ -23,7 +23,6 @@ import { DbService } from './db.service';
 import { EventService } from './event.service';
 import { LoadingService } from './loading.service';
 import { NotificationService } from './notification.service';
-import { ProjectService } from './project.service';
 
 @Injectable()
 export class TodoService {
@@ -32,8 +31,7 @@ export class TodoService {
     private eventService: EventService,
     private dbService: DbService,
     private loadingService: LoadingService,
-    private notificationService: NotificationService,
-    private projectService: ProjectService) {
+    private notificationService: NotificationService) {
   }
 
   get2Weeks(): Observable<Todo[]> {
@@ -134,9 +132,6 @@ export class TodoService {
       catchError(error => this.handleError('create fails')),
       tap(success => {
         this.loadingService.stopLoading();
-        if (success) {
-          this.projectService.updateSubprojectStartEndDateWithTodo(todo);
-        }
       })
     );
   }

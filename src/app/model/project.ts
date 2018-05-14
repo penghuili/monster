@@ -15,8 +15,6 @@ export interface Project extends ProjectBase {
 }
 export interface Subproject extends ProjectBase {
   projectId: number;
-  startDate?: number;
-  endDate?: number;
 }
 export interface ProjectWithSubproject {
   project: Project;
@@ -57,8 +55,6 @@ export function createSubproject(data: any): Subproject {
     status: data.status,
     createdAt: timestamp,
     updatedAt: timestamp,
-    position: `${timestamp}3`,
-    startDate: timestamp,
-    endDate: timestamp
+    position: `${timestamp}3`
   };
 }

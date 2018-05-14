@@ -1,7 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService, ProjectService, TodoService } from '@app/core';
-import { EventType, mapProjectStatusEvent, now, ProjectStatus, sortTodo, Subproject, Todo } from '@app/model';
+import {
+  calcStartEndDate,
+  EventType,
+  mapProjectStatusEvent,
+  now,
+  ProjectStatus,
+  sortTodo,
+  Subproject,
+  Todo,
+} from '@app/model';
 import { InputControl } from '@app/shared';
 import { ROUTES, Unsub } from '@app/static';
 import { merge } from 'ramda';
@@ -20,6 +29,8 @@ export class ProjectDetailSubComponent extends Unsub implements OnInit {
   resultControl = new InputControl('');
   hasTitleError = false;
   hasResultError = false;
+  startDate: number;
+  endDate: number;
 
   private createdTodo = new Subject<boolean>();
 
@@ -52,7 +63,10 @@ export class ProjectDetailSubComponent extends Unsub implements OnInit {
         switchMap(() => this.todoService.getTodosBySubprojectId(subid))
       )
       .subscribe(todos => {
-        this.todos = todos.sort((a, b) => sortTodo(a, b));
+        this.todos = todos ? todos.sort((a, b) => sortTodo(a, b)) : [];
+        const startEnd = calcStartEndDate(todos);
+        this.startDate = startEnd[0];
+        this.endDate = startEnd[1];
       })
     );
 

@@ -11,6 +11,7 @@ import { DbService } from './db.service';
 import { EventService } from './event.service';
 import { LoadingService } from './loading.service';
 import { NotificationService } from './notification.service';
+import { TodoService } from './todo.service';
 
 @Injectable()
 export class ProjectService {
@@ -206,61 +207,12 @@ export class ProjectService {
       this.loadingService.stopLoading();
     });
   }
-  updateSubprojectStartEndDateWithTodo(todo: Todo) {
-    if (todo) {
-      this.loadingService.isLoading();
-      fromPromise(
-        this.dbService.getDB().subprojects
-          .get(todo.subprojectId)
-      ).subscribe(subproject => {
-        let changed = false;
-        if (!subproject.startDate || subproject.startDate > todo.happenDate) {
-          subproject.startDate = todo.happenDate;
-          changed = true;
-        }
-        if (!subproject.endDate || subproject.endDate < todo.happenDate) {
-          subproject.endDate = todo.happenDate;
-          changed = true;
-        }
-        this.loadingService.stopLoading();
-        if (changed) {
-          this.updateSubproject(subproject);
-        }
-      });
-    }
-  }
   swapProjects(dragged: Project, dropped: Project) {
     // const projects: Project[] = MonsterStorage.get('projects');
     // const swapped = <Project[]>swapItems(dragged, dropped, projects);
     // if (swapped) {
     //   this.updateProjects(swapped);
     // }
-  }
-  addStartEndDateToAllSubprojects() {
-    this.loadingService.isLoading();
-    let subprojects: Subproject[] = [];
-    const db = this.dbService.getDB();
-    fromPromise(
-      db.subprojects.toArray()
-    ).pipe(
-      switchMap(sps => {
-        subprojects = sps;
-        return fromPromise(db.todos.toArray());
-      })
-    ).subscribe(todos => {
-      const sorted = todos ? todos.sort((a, b) => a.happenDate - b.happenDate) : [];
-      subprojects = subprojects.map(sp => {
-        const todosOfThisSubproject = sorted.filter(a => a.subprojectId === sp.id);
-        const len = todosOfThisSubproject.length;
-        const startDate = todosOfThisSubproject[0] ? todosOfThisSubproject[0].happenDate : now();
-        const endDate = todosOfThisSubproject[len - 1] ? todosOfThisSubproject[len - 1].happenDate : now();
-        sp.startDate = startDate;
-        sp.endDate = endDate;
-        return sp;
-      });
-      this.loadingService.stopLoading();
-      this.updateSubprojects(subprojects);
-    });
   }
 
   private handleError(message: string): Observable<any> {

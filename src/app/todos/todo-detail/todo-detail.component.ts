@@ -163,7 +163,6 @@ export class TodoDetailComponent extends Unsub implements OnInit {
       happenDate: result.date,
       updatedAt: now()
     });
-    this.projectService.updateSubprojectStartEndDateWithTodo(newTodo);
 
     this.update({ happenDate: result.date });
   }
