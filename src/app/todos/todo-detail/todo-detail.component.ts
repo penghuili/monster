@@ -71,7 +71,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
           this.noteControl.setValue(this.todo.note);
           this.status = this.todo.status;
           this.showSomedayStatus = !isTodayStarted() || isAfterToday(this.todo.happenDate);
-          this.finished = !isFinished(this.todo);
+          this.finished = isFinished(this.todo);
         }),
         switchMap(todo => todo ? this.projectService.getSubprojectById(this.todo.subprojectId) : of(null)),
         switchMap(subproject => {
@@ -123,6 +123,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
 
     this.status = status;
     const timestamp = now();
+    this.finished = false;
     if (status === TodoStatus.Done || status === TodoStatus.WontDo) {
       this.finished = true;
       if (this.isDoing) {
@@ -149,7 +150,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     }
   }
   disableDatePicker() {
-    return !this.finished || isBeforeToday(this.todo.happenDate) || (isToday(this.todo.happenDate) && isTodayStarted());
+    return this.finished || isBeforeToday(this.todo.happenDate) || (isToday(this.todo.happenDate) && isTodayStarted());
   }
   onFinishPickDate(result: DatepickerResult) {
     this.emitEvent({
