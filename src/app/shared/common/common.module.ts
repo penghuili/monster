@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { RouterModule } from '@angular/router';
 
 import { IconModule } from '../icon/icon.module';
@@ -16,7 +17,8 @@ import { LinkComponent } from './link/link.component';
     RouterModule,
     IconModule,
     InputModule,
-    StylingModule
+    StylingModule,
+    FlexLayoutModule
   ],
   declarations: [
     CopyTextComponent,

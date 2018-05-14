@@ -3,4 +3,6 @@
 [control]="summaryControl"
 minHeight="3rem"></mst-input>
 
-<mst-icon-done [isFilled]="false" (click)="onCreate()"></mst-icon-done>
+<div [mstPadding]="'1rem 0 0'">
+  <mst-icon name="done" (click)="onCreate()"></mst-icon>
+</div>

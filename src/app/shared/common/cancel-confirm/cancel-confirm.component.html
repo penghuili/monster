@@ -1,4 +1,4 @@
-<mst-wrapper mainAxis="between" padding="1rem 0 0">
-  <mst-icon-close [isFilled]="false" (click)="cancel.emit(true)"></mst-icon-close>
-  <mst-icon-done [isFilled]="false" (click)="confirm.emit(true)"></mst-icon-done>
-</mst-wrapper>
+<div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'1rem 0 0'">
+  <mst-icon name="close" color="grey" (click)="cancel.emit(true)"></mst-icon>
+  <mst-icon name="done" (click)="confirm.emit(true)"></mst-icon>
+</div>

@@ -11,14 +11,12 @@ import { NoSelectDirective } from './no-select.directive';
 import { PaddingDirective } from './padding.directive';
 import { SizeDirective } from './size.directive';
 import { TextAlignDirective } from './text-align.directive';
-import { WrapperComponent } from './wrapper/wrapper.component';
 
 @NgModule({
   imports: [
     CommonModule
   ],
   declarations: [
-    WrapperComponent,
     PaddingDirective,
     ColorDirective,
     SizeDirective,
@@ -31,8 +29,6 @@ import { WrapperComponent } from './wrapper/wrapper.component';
     FontWeightDirective
   ],
   exports: [
-    WrapperComponent,
-
     PaddingDirective,
     ColorDirective,
     SizeDirective,
