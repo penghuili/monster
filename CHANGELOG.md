@@ -1,3 +1,11 @@
+#v1.11.8
+
+bug fix:
+
+- change process shadow color when time is over
+- group projects
+- delete wrapper component
+
 ## v1.11.7
 
 feature:
