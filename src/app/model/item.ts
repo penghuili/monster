@@ -13,116 +13,96 @@ export interface SortableItem extends Item {
   nextId?: number;
   prevId?: number;
 }
-export function swapItems(dragged: SortableItem, dropped: SortableItem, items: SortableItem[]): SortableItem[] {
-  const indexDragged = findIndex(a => a.id === dragged.id, items);
-  const indexDropped = findIndex(a => a.id === dropped.id, items);
-  const updatedItems: SortableItem[] = [];
-  if (indexDragged > -1 && indexDropped > -1) {
-    let start: SortableItem;
-    let end: SortableItem;
-    let index3: number;
-    if (dragged.prevId && !dragged.nextId) {
-      const draggedPrevIndex = findIndex(a => a.id === dragged.prevId, items);
-      if (draggedPrevIndex > -1) {
-        items[draggedPrevIndex].nextId = undefined;
-        updatedItems.push(items[draggedPrevIndex]);
-      }
+export function repositionItems(items: SortableItem[]): SortableItem[] {
+  const dragged = items[0];
+  const dropped = items[1];
+  const draggedIndexPrev = items[2];
+  const draggedIndexNext = items[3];
+  const droppedIndexPrev = items[4];
+  const droppedIndexNext = items[5];
+  const droppedPositionPrev = items[6];
+  const droppedPositionNext = items[7];
+
+  const repositioned: SortableItem[] = [];
+
+  if (!dragged || !dropped) {
+    return null;
+  }
+
+  if (dragged.prevId && !dragged.nextId && draggedIndexPrev) {
+    draggedIndexPrev.nextId = undefined;
+    repositioned.push(draggedIndexPrev);
+  }
+  if (dragged.nextId && !dragged.prevId && draggedIndexNext) {
+    draggedIndexNext.prevId = undefined;
+    repositioned.push(draggedIndexNext);
+  }
+
+  let start: SortableItem;
+  let end: SortableItem;
+  if (dragged.position > dropped.position) {
+    start = dropped;
+    end = droppedPositionNext || droppedIndexNext;
+  } else {
+    start = droppedPositionPrev || droppedIndexPrev;
+    end = dropped;
+  }
+
+  const nextId = dragged.nextId;
+  const prevId = dragged.prevId;
+  if (!start) {
+    if (end.nextId === dragged.id) {
+      end.nextId = nextId;
     }
-    if (dragged.nextId && !dragged.prevId) {
-      const draggedNextIndex = findIndex(a => a.id === dragged.nextId, items);
-      if (draggedNextIndex > -1) {
-        items[draggedNextIndex].prevId = undefined;
-        updatedItems.push(items[draggedNextIndex]);
-      }
+    end.prevId = dragged.id;
+    dragged.prevId = undefined;
+    dragged.nextId = end.id;
+
+    dragged.position = now().toString() + '3';
+
+    repositioned.push(end);
+    repositioned.push(dragged);
+  } else if (!end) {
+    if (start.prevId === dragged.id) {
+      start.prevId = prevId;
     }
-    if (dragged.position > dropped.position) {
-      start = dropped;
-      if (dropped.nextId || isItemDragged(dropped)) {
-        index3 = findIndex(a => a.id === dropped.nextId, items);
-        end = items[index3];
-      } else {
-        index3 = indexDropped + 1;
-        end = items[index3];
-      }
-    } else {
-      if (dropped.prevId || isItemDragged(dropped)) {
-        index3 = findIndex(a => a.id === dropped.prevId, items);
-        start = items[index3];
-      } else {
-        index3 = indexDropped - 1;
-        start = items[index3];
-      }
-      end = dropped;
+    start.nextId = dragged.id;
+    dragged.prevId = start.id;
+    dragged.nextId = undefined;
+
+    const position = start.position;
+    const len = position.length;
+    dragged.position = position.slice(0, len - 1) + (+position[len - 1] - 1);
+
+    repositioned.push(start);
+    repositioned.push(dragged);
+  } else {
+    if (start.prevId === dragged.id) {
+      start.prevId = prevId;
     }
+    start.nextId = dragged.id;
+    if (end.nextId === dragged.id) {
+      end.nextId = nextId;
+    }
+    end.prevId = dragged.id;
+    dragged.prevId = start.id;
+    dragged.nextId = end.id;
 
-    const nextId = dragged.nextId;
-    const prevId = dragged.prevId;
-    if (!start) {
-      if (end.nextId === dragged.id) {
-        end.nextId = nextId;
-      }
-      end.prevId = dragged.id;
-      dragged.prevId = undefined;
-      dragged.nextId = end.id;
-
-      dragged.position = now().toString() + '3';
-
-      items[indexDragged] = dragged;
-      items[indexDropped] = end;
-      updatedItems.push(dragged);
-      updatedItems.push(end);
-    } else if (!end) {
-      if (start.prevId === dragged.id) {
-        start.prevId = prevId;
-      }
-      start.nextId = dragged.id;
-      dragged.prevId = start.id;
-      dragged.nextId = undefined;
-
+    const try1 = end.position + '3';
+    if (try1 === start.position) {
       const position = start.position;
       const len = position.length;
-      dragged.position = position.slice(0, len - 1) + (+position[len - 1] - 1);
-
-      items[indexDragged] = dragged;
-      items[indexDropped] = start;
-      updatedItems.push(dragged);
-      updatedItems.push(start);
+      dragged.position = position.slice(0, len - 1) + '23';
     } else {
-      if (start.prevId === dragged.id) {
-        start.prevId = prevId;
-      }
-      start.nextId = dragged.id;
-      if (end.nextId === dragged.id) {
-        end.nextId = nextId;
-      }
-      end.prevId = dragged.id;
-      dragged.prevId = start.id;
-      dragged.nextId = end.id;
-
-      const try1 = end.position + '3';
-      if (try1 === start.position) {
-        const position = start.position;
-        const len = position.length;
-        dragged.position = position.slice(0, len - 1) + '23';
-      } else {
-        dragged.position = try1;
-      }
-
-      items[indexDragged] = dragged;
-      if (start.id === dropped.id) {
-        items[indexDropped] = start;
-        items[index3] = end;
-      } else {
-        items[indexDropped] = end;
-        items[index3] = start;
-      }
-      updatedItems.push(start);
-      updatedItems.push(dragged);
-      updatedItems.push(end);
+      dragged.position = try1;
     }
-    return updatedItems;
+
+    repositioned.push(start);
+    repositioned.push(end);
+    repositioned.push(dragged);
   }
-  return null;
+
+  return repositioned;
 }
 export function moveItem(from: number, to: number, items: Item[]) {
   if (!items || from === to) {

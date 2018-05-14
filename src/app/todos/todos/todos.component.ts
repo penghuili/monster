@@ -5,12 +5,13 @@ import {
   endOfThisWeek,
   endOfToday,
   endofTomorrow,
+  isOverDue,
   isTodayEnded,
   isTodayStarted,
   MonsterStorage,
   now,
   ProjectWithTodos,
-  sortTodo,
+  sortTodos,
   Todo,
   TodoStatus,
 } from '@app/model';
@@ -120,21 +121,39 @@ export class TodosComponent extends Unsub implements OnInit {
     this.drapProjectId = projectId;
   }
   onDrop(dropIndex: number, projectId: number) {
-    // if (this.drapGroup === group && dropIndex !== this.dragIndex) {
-    //   const dragged = this.activeTodoGroup[group][this.dragIndex];
-    //   const dropped = this.activeTodoGroup[group][dropIndex];
-    //   if (dragged && dropped && dragged.status === dropped.status &&
-    //     dragged.status !== TodoStatus.Waiting && dropped.status !== TodoStatus.Waiting) {
-    //       this.todoService.swap(dragged, dropped);
-    //   }
-    // }
+    if (this.drapProjectId === projectId && dropIndex !== this.dragIndex) {
+      const projectWithTodos = this.activeProjectsWithTodos.find(a => a.project.id === this.drapProjectId);
+      const dragged = projectWithTodos ? projectWithTodos.todos[this.dragIndex] : null;
+      const dropped = projectWithTodos ? projectWithTodos.todos[dropIndex] : null;
+      if (this.bothAreOverdue(dragged, dropped) ||
+        this.bothAreNotOverdueAndInProgress(dragged, dropped) ||
+        this.bothAreWaiting(dragged, dropped)) {
+          this.addSubscription(
+            this.todoService.repositionTodos(dragged, dropped).subscribe(success => {
+              if (success) {
+                this.shouldReload.next(true);
+              }
+            })
+          );
+      }
+    }
     this.dragIndex = undefined;
     this.drapProjectId = undefined;
   }
 
   process(activeTab: string, projectsWithTodos: ProjectWithTodos[], todos: Todo[]) {
-    this.calcTotal(activeTab, todos);
     this.processTodos(activeTab, projectsWithTodos);
+    this.calcTotal(activeTab, todos);
+  }
+  private bothAreOverdue(dragged: Todo, dropped: Todo): boolean {
+    return dragged && dropped && isOverDue(dragged) && isOverDue(dropped);
+  }
+  private bothAreNotOverdueAndInProgress(dragged: Todo, dropped: Todo): boolean {
+    return dragged && dropped && !isOverDue(dragged) && !isOverDue(dropped) &&
+      dragged.status === TodoStatus.InProgress && dropped.status === TodoStatus.InProgress;
+  }
+  private bothAreWaiting(dragged: Todo, dropped: Todo): boolean {
+    return dragged && dropped && dragged.status === TodoStatus.Someday && dropped.status === TodoStatus.Someday;
   }
   private processTodos(activeTab: string, projectsWithTodos: ProjectWithTodos[]) {
     const todayEnd = endOfToday();
@@ -156,10 +175,9 @@ export class TodosComponent extends Unsub implements OnInit {
       return merge(pt, { todos: tds });
     });
     this.activeProjectsWithTodos = filteredActive.map(pt => {
-      const tds = pt.todos
-        .filter(a => a.status === TodoStatus.InProgress || a.status === TodoStatus.Waiting)
-        .sort((a, b) => sortTodo(a, b));
-      return merge(pt, { todos: tds });
+      const tds = pt.todos.filter(a => a.status === TodoStatus.InProgress || a.status === TodoStatus.Waiting);
+      const sorted = sortTodos(tds);
+      return merge(pt, { todos: sorted });
     });
 
     this.doneProjectsWithTodos = projectsWithTodos.map(pt => {

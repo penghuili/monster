@@ -7,14 +7,14 @@ import {
   mapProjectStatusEvent,
   now,
   ProjectStatus,
-  sortTodo,
+  sortTodos,
   Subproject,
   Todo,
 } from '@app/model';
 import { InputControl } from '@app/shared';
 import { ROUTES, Unsub } from '@app/static';
 import { merge } from 'ramda';
-import { debounceTime, filter, first, startWith, switchMap } from 'rxjs/operators';
+import { debounceTime, first, startWith, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 
 @Component({
@@ -61,7 +61,7 @@ export class ProjectDetailSubComponent extends Unsub implements OnInit {
         switchMap(() => this.todoService.getTodosBySubprojectId(subid))
       )
       .subscribe(todos => {
-        this.todos = todos ? todos.sort((a, b) => sortTodo(a, b)) : [];
+        this.todos = sortTodos(todos);
         const startEnd = calcStartEndDate(todos);
         this.startDate = startEnd[0];
         this.endDate = startEnd[1];

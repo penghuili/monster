@@ -1,6 +1,6 @@
 import { Event } from '@app/model';
 
-import { SortableItem } from './item';
+import { SortableItem, sortByPosition } from './item';
 import { isBeforeToday, isWithinDay, now, startOfToday } from './time';
 import { MonsterStorage } from './utils';
 
@@ -102,6 +102,23 @@ export function sortTodo(a: Todo, b: Todo): number {
   } else {
     return 1;
   }
+}
+export function sortTodos(todos: Todo[]): Todo[] {
+  if (!todos || todos.length === 0) {
+    return [];
+  }
+  const overdue = <Todo[]>sortByPosition(todos.filter(a => a.status === TodoStatus.InProgress && isOverDue(a)));
+  const inProgress = <Todo[]>sortByPosition(todos.filter(a => a.status === TodoStatus.InProgress && !isOverDue(a)));
+  const waiting = <Todo[]>sortByPosition(todos.filter(a => a.status === TodoStatus.Waiting));
+  const someday = <Todo[]>sortByPosition(todos.filter(a => a.status === TodoStatus.Someday));
+  const finished = <Todo[]>sortByPosition(todos.filter(a => isFinished(a)));
+  return [
+    ...overdue,
+    ...inProgress,
+    ...waiting,
+    ...someday,
+    ...finished
+  ];
 }
 export function calcStartEndDate(todos: Todo[]): number[] {
   const sortedByHappenDate = todos ? todos.sort((a, b) => a.happenDate - b.happenDate) : [];

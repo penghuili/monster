@@ -57,12 +57,14 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
     this.addSubscription(
       this.projectService.getProjectById(id).pipe(first()).subscribe(project => {
         this.project = project;
-        this.titleControl.setValue(project.title);
-        this.resultControl.setValue(project.result);
-        this.status = this.project.status;
-        this.startDate = project.startDate;
-        this.endDateStartDate = addDays(this.startDate, 1).getTime();
-        this.endDate = project.endDate;
+        if (project) {
+          this.titleControl.setValue(project.title);
+          this.resultControl.setValue(project.result);
+          this.status = this.project.status;
+          this.startDate = project.startDate;
+          this.endDateStartDate = addDays(this.startDate, 1).getTime();
+          this.endDate = project.endDate;
+        }
       })
     );
 

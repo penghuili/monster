@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { EventType, MonsterEvents, now, sortByPosition, Todo } from '@app/model';
+import { EventType, MonsterEvents, now, repositionItems, sortByPosition, Todo } from '@app/model';
 import { uniq } from 'ramda';
 import { Observable } from 'rxjs/Observable';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
-import { catchError, filter, tap } from 'rxjs/operators';
+import { catchError, filter, switchMap, tap } from 'rxjs/operators';
 
 import { createProject, Project, ProjectWithTodos, Subproject } from '../../model/project';
 import { DbService } from './db.service';
@@ -124,12 +124,42 @@ export class ProjectService {
       this.loadingService.stopLoading();
     });
   }
-  swapProjects(dragged: Project, dropped: Project) {
-    // const projects: Project[] = MonsterStorage.get('projects');
-    // const swapped = <Project[]>swapItems(dragged, dropped, projects);
-    // if (swapped) {
-    //   this.updateProjects(swapped);
-    // }
+  updateProjects(projects: Project[]): Observable<any> {
+    this.loadingService.isLoading();
+    return fromPromise(
+      this.dbService.getDB().projects.bulkPut(projects)
+    ).pipe(
+      catchError(error => this.handleError('updateProjects fails')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
+    );
+  }
+  repositionProjects(dragged: Project, dropped: Project): Observable<any> {
+    const ids: number[] = [
+      dragged.id + 1,
+      dragged.id - 1,
+      dropped.id + 1,
+      dropped.id - 1
+    ];
+    if (dropped.prevId) {
+      ids.push(dropped.prevId);
+    }
+    if (dropped.nextId) {
+      ids.push(dropped.nextId);
+    }
+    return this.getProjectsByIds(ids).pipe(
+      switchMap(ps => {
+        if (ps) {
+          ps.unshift(dropped);
+          ps.unshift(dragged);
+          const repositioned = <Project[]>repositionItems(ps);
+          return this.updateProjects(repositioned);
+        } else {
+          return of(null);
+        }
+      })
+    );
   }
 
   private handleError(message: string): Observable<any> {

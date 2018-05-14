@@ -9,6 +9,7 @@ import {
   isWithin,
   MonsterEvents,
   now,
+  repositionItems,
   startOfWeek,
   Todo,
   TodoStatus,
@@ -17,7 +18,7 @@ import { addDays } from 'date-fns';
 import { Observable } from 'rxjs/Observable';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
-import { catchError, filter, map, tap } from 'rxjs/operators';
+import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 
 import { DbService } from './db.service';
 import { EventService } from './event.service';
@@ -145,25 +146,42 @@ export class TodoService {
       })
     );
   }
-  updateTodos(todos: Todo[]) {
+  updateTodos(todos: Todo[]): Observable<any> {
     this.loadingService.isLoading();
-    fromPromise(
+    return fromPromise(
       this.dbService.getDB().todos.bulkPut(todos)
     ).pipe(
-      catchError(error => this.handleError('update todos fails'))
-    ).subscribe(() => {
-      this.loadingService.stopLoading();
-    });
+      catchError(error => this.handleError('update todos fails')),
+      tap(success => {
+        this.loadingService.stopLoading();
+      })
+    );
   }
-  swap(dragged: Todo, dropped: Todo) {
-    // const todayEnd = endOfToday();
-    // const swapped = <Todo[]>swapItems(dragged, dropped, todos);
-    // if (swapped) {
-    //   return this.dbService.getDB().todos
-    //     .where('happenDate')
-    //     .below(todayEnd)
-    //     .and(x => x.status === TodoStatus.InProgress || x.status === TodoStatus.Waiting)
-    // }
+  repositionTodos(dragged: Todo, dropped: Todo): Observable<any> {
+    const ids: number[] = [
+      dragged.id + 1,
+      dragged.id - 1,
+      dropped.id + 1,
+      dropped.id - 1
+    ];
+    if (dropped.prevId) {
+      ids.push(dropped.prevId);
+    }
+    if (dropped.nextId) {
+      ids.push(dropped.nextId);
+    }
+    return this.getTodosByIds(ids).pipe(
+      switchMap(tds => {
+        if (tds) {
+          tds.unshift(dropped);
+          tds.unshift(dragged);
+          const repositioned = <Todo[]>repositionItems(tds);
+          return this.updateTodos(repositioned);
+        } else {
+          return of(null);
+        }
+      })
+    );
   }
   addUsedTimeToAllTodos() {
     const db = this.dbService.getDB();

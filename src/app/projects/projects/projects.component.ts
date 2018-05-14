@@ -18,7 +18,7 @@ export class ProjectsComponent extends Unsub implements OnInit {
 
   dragIndex: number;
 
-  private createdProject = new Subject<boolean>();
+  private shouldLoad = new Subject<boolean>();
 
   constructor(
     private projectService: ProjectService,
@@ -29,7 +29,7 @@ export class ProjectsComponent extends Unsub implements OnInit {
 
   ngOnInit() {
     this.addSubscription(
-      this.createdProject.asObservable().pipe(
+      this.shouldLoad.asObservable().pipe(
         startWith(true),
         switchMap(() => this.projectService.getProjects())
       ).subscribe(projects => {
@@ -45,14 +45,20 @@ export class ProjectsComponent extends Unsub implements OnInit {
     this.dragIndex = dragIndex;
   }
   onDrop(dropIndex: number) {
-    // if (dropIndex !== this.dragIndex) {
-    //   const dragged = this.activeProjects[this.dragIndex];
-    //   const dropped = this.activeProjects[dropIndex];
-    //   this.projectService.swapProjects(dragged, dropped);
-    // }
+    if (dropIndex !== this.dragIndex) {
+      const dragged = this.activeProjects[this.dragIndex];
+      const dropped = this.activeProjects[dropIndex];
+      this.addSubscription(
+        this.projectService.repositionProjects(dragged, dropped).subscribe(success => {
+          if (success) {
+            this.shouldLoad.next(true);
+          }
+        })
+      );
+    }
   }
   onCreated() {
-    this.createdProject.next(true);
+    this.shouldLoad.next(true);
   }
 
   private updateProjects(projects: Project[]) {
