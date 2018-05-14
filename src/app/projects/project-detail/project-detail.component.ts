@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EventService, ProjectService, TodoService } from '@app/core';
+import { EventService, ProjectService, SubprojectService, TodoService } from '@app/core';
 import {
   ChartDataItem,
-  EventType,
   createChartData,
+  EventType,
   mapProjectStatusEvent,
   MonsterEvents,
   now,
@@ -50,6 +50,7 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private projectService: ProjectService,
+    private subprojectService: SubprojectService,
     private todoService: TodoService) {
     super();
   }
@@ -71,7 +72,7 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
     this.addSubscription(
       this.createdSub.asObservable().pipe(
         startWith(true),
-        switchMap(() => this.projectService.getSubprojects(id))
+        switchMap(() => this.subprojectService.getSubprojects(id))
       ).subscribe(subprojects => {
         this.subprojects = subprojects;
       })

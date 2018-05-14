@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
-import { ProjectService } from '@app/core';
+import { ProjectService, SubprojectService } from '@app/core';
 import { Project, ProjectStatus, ProjectWithSubproject, Subproject } from '@app/model';
 import { ROUTES, Unsub } from '@app/static';
 import { switchMap } from 'rxjs/operators';
@@ -33,7 +33,8 @@ export class ProjectListComponent extends Unsub implements OnInit {
 
   constructor(
     private projectService: ProjectService,
-    private router: Router) {
+    private router: Router,
+    private subprojectService: SubprojectService) {
     super();
   }
 
@@ -46,7 +47,7 @@ export class ProjectListComponent extends Unsub implements OnInit {
 
     this.addSubscription(
       this.clickProject.asObservable().pipe(
-        switchMap(project => this.projectService.getSubprojects(project.id))
+        switchMap(project => this.subprojectService.getSubprojects(project.id))
       ).subscribe(subprojects => {
         this.subprojects = subprojects;
       })

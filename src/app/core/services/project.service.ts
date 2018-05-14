@@ -4,14 +4,13 @@ import { uniq } from 'ramda';
 import { Observable } from 'rxjs/Observable';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
-import { catchError, filter, switchMap, tap } from 'rxjs/operators';
+import { catchError, filter, tap } from 'rxjs/operators';
 
-import { createProject, createSubproject, Project, ProjectWithTodos, Subproject } from '../../model/project';
+import { createProject, Project, ProjectWithTodos, Subproject } from '../../model/project';
 import { DbService } from './db.service';
 import { EventService } from './event.service';
 import { LoadingService } from './loading.service';
 import { NotificationService } from './notification.service';
-import { TodoService } from './todo.service';
 
 @Injectable()
 export class ProjectService {
@@ -94,47 +93,6 @@ export class ProjectService {
       })
     );
   }
-  getSubprojects(projectId?: number): Observable<Subproject[]> {
-    this.loadingService.isLoading();
-    return fromPromise(
-      this.dbService.getDB().subprojects
-        .filter(x => projectId ? x.projectId === projectId : true)
-        .toArray()
-    ).pipe(
-      catchError(error => this.handleError('getSubprojects fails')),
-      tap(() => {
-        this.loadingService.stopLoading();
-      })
-    );
-  }
-  getSubprojectById(subid: number): Observable<Subproject> {
-    this.loadingService.isLoading();
-    return fromPromise(
-      this.dbService.getDB().subprojects
-         .where('id')
-         .equals(subid)
-        .first()
-    ).pipe(
-      catchError(error => this.handleError('getSubprojectById fails')),
-      tap(() => {
-        this.loadingService.stopLoading();
-      })
-    );
-  }
-  getSubprojectsByIds(ids: number[]): Observable<Subproject[]> {
-    this.loadingService.isLoading();
-    return fromPromise(
-      this.dbService.getDB().subprojects
-        .where('id')
-        .anyOf(ids)
-        .toArray()
-    ).pipe(
-      catchError(error => this.handleError('getSubprojectsByIds fails')),
-      tap(() => {
-        this.loadingService.stopLoading();
-      })
-    );
-  }
   addProject(data: any): Observable<any> {
     this.loadingService.isLoading();
     const p = createProject(data);
@@ -156,53 +114,12 @@ export class ProjectService {
       })
     );
   }
-  addSubproject(data: any): Observable<any> {
-    this.loadingService.isLoading();
-    const sp = createSubproject(data);
-    return fromPromise(
-      this.dbService.getDB().subprojects.add(sp)
-    ).pipe(
-      tap(id => {
-        this.eventService.add({
-          createdAt: now(),
-          refId: id,
-          type: EventType.Subproject,
-          action: MonsterEvents.CreateSubproject
-        });
-      })
-    ).pipe(
-      catchError(error => this.handleError('addSubproject fails')),
-      tap(() => {
-        this.loadingService.stopLoading();
-      })
-    );
-  }
   updateProject(project: Project) {
     this.loadingService.isLoading();
     fromPromise(
       this.dbService.getDB().projects.put(project)
     ).pipe(
       catchError(error => this.handleError('updateProject fails'))
-    ).subscribe(() => {
-      this.loadingService.stopLoading();
-    });
-  }
-  updateSubproject(subproject: Subproject) {
-    this.loadingService.isLoading();
-    fromPromise(
-      this.dbService.getDB().subprojects.put(subproject)
-    ).pipe(
-      catchError(error => this.handleError('updateSubproject fails'))
-    ).subscribe(() => {
-      this.loadingService.stopLoading();
-    });
-  }
-  updateSubprojects(subprojects: Subproject[]) {
-    this.loadingService.isLoading();
-    fromPromise(
-      this.dbService.getDB().subprojects.bulkPut(subprojects)
-    ).pipe(
-      catchError(error => this.handleError('updateSubprojects fails'))
     ).subscribe(() => {
       this.loadingService.stopLoading();
     });

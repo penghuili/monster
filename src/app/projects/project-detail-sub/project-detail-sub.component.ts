@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EventService, ProjectService, TodoService } from '@app/core';
+import { EventService, SubprojectService, TodoService } from '@app/core';
 import {
   calcStartEndDate,
   EventType,
@@ -38,7 +38,7 @@ export class ProjectDetailSubComponent extends Unsub implements OnInit {
     private eventService: EventService,
     private route: ActivatedRoute,
     private router: Router,
-    private projectService: ProjectService,
+    private subprojectService: SubprojectService,
     private todoService: TodoService) {
     super();
   }
@@ -48,7 +48,7 @@ export class ProjectDetailSubComponent extends Unsub implements OnInit {
     this.addSubscription(
       this.createdTodo.asObservable().pipe(
         startWith(true),
-        switchMap(() => this.projectService.getSubprojectById(subid).pipe(first()))
+        switchMap(() => this.subprojectService.getSubprojectById(subid).pipe(first()))
       )
       .subscribe(subproject => {
         this.subproject = subproject;
@@ -117,7 +117,7 @@ export class ProjectDetailSubComponent extends Unsub implements OnInit {
       this.subproject = merge(this.subproject, {
         ...data, updatedAt: now()
       });
-      this.projectService.updateSubproject(this.subproject);
+      this.subprojectService.updateSubproject(this.subproject);
     } else {
       this.hasTitleError = !title;
       this.hasResultError = !result;

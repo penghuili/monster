@@ -16,7 +16,9 @@ import { NotificationService } from './services/notification.service';
 import { ProjectService } from './services/project.service';
 import { RecordService } from './services/record.service';
 import { ReportService } from './services/report.service';
+import { SubprojectService } from './services/subproject.service';
 import { TodoService } from './services/todo.service';
+
 
 @NgModule({
   imports: [
@@ -36,7 +38,8 @@ import { TodoService } from './services/todo.service';
     LoadingService,
     EventService,
     ReportService,
-    RecordService
+    RecordService,
+    SubprojectService
   ],
   declarations: [NavigationComponent, LoadingComponent],
   exports: [

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EventService, ProjectService, TodoService } from '@app/core';
+import { EventService, ProjectService, SubprojectService, TodoService } from '@app/core';
 import {
   EventType,
   isAfterToday,
@@ -56,6 +56,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     private projectService: ProjectService,
     private route: ActivatedRoute,
     private router: Router,
+    private subprojectService: SubprojectService,
     private todoService: TodoService) {
       super();
     }
@@ -73,7 +74,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
           this.showSomedayStatus = !isTodayStarted() || isAfterToday(this.todo.happenDate);
           this.finished = isFinished(this.todo);
         }),
-        switchMap(todo => todo ? this.projectService.getSubprojectById(this.todo.subprojectId) : of(null)),
+        switchMap(todo => todo ? this.subprojectService.getSubprojectById(this.todo.subprojectId) : of(null)),
         switchMap(subproject => {
           this.currentSubproject = subproject;
           return subproject ? this.projectService.getProjectById(subproject.projectId) : of(null);

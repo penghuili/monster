@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ProjectService } from '@app/core';
-import { Project, Todo } from '@app/model';
+import { SubprojectService } from '@app/core';
+import { Project } from '@app/model';
 import { InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
 
@@ -19,7 +19,7 @@ export class ProjectCreateSubComponent extends Unsub {
   hasTitleError = false;
   hasResultError = false;
 
-  constructor(private projectService: ProjectService) {
+  constructor(private subprojectService: SubprojectService) {
     super();
   }
 
@@ -33,7 +33,7 @@ export class ProjectCreateSubComponent extends Unsub {
       this.hasResultError = false;
       this.hasTitleError = false;
       this.addSubscription(
-        this.projectService.addSubproject({
+        this.subprojectService.addSubproject({
           projectId: this.project.id,
           title, result
         }).subscribe(success => {
