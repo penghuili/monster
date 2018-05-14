@@ -19,12 +19,17 @@ export interface Report {
   // time in minute
   plannedTime: number;
   usedTime: number;
+  usedTimeOfTimeRange: number;
   finishedUsedTime: number;
   finishedPlannedTime: number;
   summary?: string;
 }
+export interface ReportWithTodos {
+  report: Report;
+  todos: Todo[];
+}
 
-export function createReport(todos: Todo[], date: number, type: TimeRangeType): Report {
+export function createReport(date: number, type: TimeRangeType, todos: Todo[], usedTimeOfTimeRange: number): Report {
   if (!todos || todos.length === 0) {
     return null;
   }
@@ -43,6 +48,7 @@ export function createReport(todos: Todo[], date: number, type: TimeRangeType): 
     withoutTime: todos.filter(a => !a.expectedTime).length,
     plannedTime: todos.reduce((total, curr) => total + curr.expectedTime, 0),
     usedTime: todos.reduce((total, curr) => total + curr.usedTime, 0),
+    usedTimeOfTimeRange,
     finishedUsedTime: todos.filter(a => isFinished(a)).reduce((total, curr) => total + curr.usedTime, 0),
     finishedPlannedTime: todos.filter(a => isFinished(a)).reduce((total, curr) => total + curr.expectedTime, 0)
   };

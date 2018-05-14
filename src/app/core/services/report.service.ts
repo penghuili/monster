@@ -7,6 +7,7 @@ import {
   MonsterEvents,
   now,
   Report,
+  ReportWithTodos,
   TimeRangeType,
   Todo,
   TodoStatus,
@@ -36,20 +37,33 @@ export class ReportService {
     private recordService: RecordService,
     private todoService: TodoService) { }
 
-  getReport(date: number, mode: TimeRangeType): Observable<Report> {
+  getReportWithTodos(date: number, mode: TimeRangeType): Observable<ReportWithTodos> {
     this.loadingService.isLoading();
     let start: number;
     let end: number;
     [start, end] = getStartEnd(date, mode);
 
-    return fromPromise(
-      this.dbService.getDB().reports
-        .filter(x => x.type === mode && x.date > start && x.date < end)
-        .first()
-    ).pipe(
-      catchError(error => this.handleError('getReport fails.')),
-      tap(() => {
-        this.loadingService.stopLoading();
+    let reportWithTodos: ReportWithTodos;
+    const todos$ = this.getTodosForReport(date, mode);
+    const report$ = this.getReport(date, mode);
+    const usedTimeOfSelectedTimeRange$ = this.getUsedTimeOfTimeRange(date, mode);
+
+    return combineLatest(todos$, report$, usedTimeOfSelectedTimeRange$).pipe(
+      switchMap(([todos, oldReport, usedTimeOfTimeRange]) => {
+        const newReport = merge(oldReport, createReport(date, mode, todos, usedTimeOfTimeRange));
+        reportWithTodos = { report: newReport, todos };
+
+        if (newReport && oldReport) {
+          return this.update(newReport).pipe(
+            map(() => reportWithTodos)
+          );
+        } else if (newReport && !oldReport) {
+          return this.create(newReport).pipe(
+            map(r => ({ report: r, todos }))
+          );
+        } else {
+          return of(reportWithTodos);
+        }
       })
     );
   }
@@ -76,31 +90,6 @@ export class ReportService {
       catchError(error => {
         this.notificationService.sendMessage('get report start date fails, use today');
         return of(now());
-      }),
-      tap(() => {
-        this.loadingService.stopLoading();
-      })
-    );
-  }
-  getUsedTime(date: number, mode: TimeRangeType, todoId?: number): Observable<number> {
-    this.loadingService.isLoading();
-    this.loadingService.isLoading();
-    let start: number;
-    let end: number;
-    [start, end] = getStartEnd(date, mode);
-
-    return fromPromise(
-      this.dbService.getDB().events
-        .filter(x => x.createdAt > start && x.createdAt < end &&
-          (x.action === MonsterEvents.StartTodo || x.action === MonsterEvents.StopTodo) &&
-          (todoId ? x.refId === todoId : true)
-        )
-        .toArray()
-    ).pipe(
-      map(events => calcUsedTime(events, todoId)),
-      catchError(error => {
-        this.notificationService.sendMessage('getUsedTime failed');
-        return of(0);
       }),
       tap(() => {
         this.loadingService.stopLoading();
@@ -145,52 +134,50 @@ export class ReportService {
       })
     );
   }
-  create(report: Report): Observable<any> {
-    this.loadingService.isLoading();
-    return fromPromise(this.dbService.getDB().reports.add(report)).pipe(
-      map(() => report),
-      catchError(error => this.handleError('create report fails.')),
-      tap(() => {
-        this.loadingService.stopLoading();
-      })
-    );
-  }
-  update(report: Report): Observable<any> {
+  update(report: Report): Observable<Report> {
     this.loadingService.isLoading();
     return fromPromise(this.dbService.getDB().reports.put(report)).pipe(
-      map(() => report),
+      map(id => merge(report, {id})),
       catchError(error => this.handleError('update report fails.')),
       tap(() => {
         this.loadingService.stopLoading();
       })
     );
   }
-  createOrUpdateReport(date: number, mode: TimeRangeType, data?: any) {
+
+
+  renameCreatedAtAndAddType() {
     this.loadingService.isLoading();
-    let newReport: Report;
-    this.getTodosForReport(date, mode).pipe(
-      map(todos => {
-        newReport = createReport(todos, date, mode);
-        if (data) {
-          newReport = merge(newReport, data);
-        }
-        return newReport;
-      }),
-      switchMap(nr => nr ? this.getReport(date, mode) : of(null)),
-      switchMap(oldReport => {
-        if (!newReport) {
-          return of(null);
-        } else if (!oldReport) {
-          return this.create(newReport);
-        } else {
-          return this.update(merge(oldReport, newReport));
-        }
-      })
-    ).subscribe(() => {
-      this.loadingService.stopLoading();
+    fromPromise(this.dbService.getDB().reports.toArray()).subscribe(reports => {
+      reports = reports.map(r => {
+        r.date = (<any>r).createdAt;
+        r.type = TimeRangeType.Day;
+        delete (<any>r).createdAt;
+        return r;
+      });
+      this.dbService.getDB().reports.bulkPut(reports).then(() => {
+        this.loadingService.stopLoading();
+      });
     });
   }
-  getTodosForReport(date: number, mode: TimeRangeType): Observable<Todo[]> {
+  private getReport(date: number, mode: TimeRangeType): Observable<Report> {
+    this.loadingService.isLoading();
+    let start: number;
+    let end: number;
+    [start, end] = getStartEnd(date, mode);
+
+    return fromPromise(
+      this.dbService.getDB().reports
+        .filter(x => x.type === mode && x.date > start && x.date < end)
+        .first()
+    ).pipe(
+      catchError(error => this.handleError('getReport fails.')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
+    );
+  }
+  private getTodosForReport(date: number, mode: TimeRangeType): Observable<Todo[]> {
     this.loadingService.isLoading();
     let start: number;
     let end: number;
@@ -211,22 +198,40 @@ export class ReportService {
       })
     );
   }
-
-  renameCreatedAtAndAddType() {
+  private getUsedTimeOfTimeRange(date: number, mode: TimeRangeType, todoId?: number): Observable<number> {
     this.loadingService.isLoading();
-    fromPromise(this.dbService.getDB().reports.toArray()).subscribe(reports => {
-      reports = reports.map(r => {
-        r.date = (<any>r).createdAt;
-        r.type = TimeRangeType.Day;
-        delete (<any>r).createdAt;
-        return r;
-      });
-      this.dbService.getDB().reports.bulkPut(reports).then(() => {
-        this.loadingService.stopLoading();
-      });
-    });
-  }
+    let start: number;
+    let end: number;
+    [start, end] = getStartEnd(date, mode);
 
+    return fromPromise(
+      this.dbService.getDB().events
+        .filter(x => x.createdAt > start && x.createdAt < end &&
+          (x.action === MonsterEvents.StartTodo || x.action === MonsterEvents.StopTodo) &&
+          (todoId ? x.refId === todoId : true)
+        )
+        .toArray()
+    ).pipe(
+      map(events => calcUsedTime(events, todoId)),
+      catchError(error => {
+        this.notificationService.sendMessage('getUsedTime failed');
+        return of(0);
+      }),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
+    );
+  }
+  private create(report: Report): Observable<Report> {
+    this.loadingService.isLoading();
+    return fromPromise(this.dbService.getDB().reports.add(report)).pipe(
+      map(id => merge(report, {id})),
+      catchError(error => this.handleError('create report fails.')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
+    );
+  }
   private handleError(message: string): Observable<any> {
     this.notificationService.sendMessage(message);
     return of(null);

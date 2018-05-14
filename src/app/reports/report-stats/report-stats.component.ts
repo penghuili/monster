@@ -1,10 +1,8 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReportService } from '@app/core';
-import { createReport, isFinishTooEarly, isFinishTooLate, Report, TimeRangeType, Todo, TodoStatus } from '@app/model';
+import { isFinishTooEarly, isFinishTooLate, Report, TimeRangeType, Todo, TodoStatus } from '@app/model';
 import { ROUTES, Unsub } from '@app/static';
-import { merge } from 'ramda';
-import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'mst-report-stats',
@@ -21,7 +19,7 @@ export class ReportStatsComponent extends Unsub implements OnChanges {
   finishTooEarly: Todo[] = [];
   wontDo: Todo[] = [];
   done: Todo[] = [];
-  usedTimeOfSelected = 0;
+  usedTimeOfTimeRange = 0;
 
   isLoading = true;
 
@@ -66,33 +64,18 @@ export class ReportStatsComponent extends Unsub implements OnChanges {
   private getTodosAndReport(date: number, mode: TimeRangeType) {
     this.isLoading = true;
     this.addSubscription(
-      this.reportService.getTodosForReport(date, mode).pipe(
-        switchMap(todos => {
-          this.todos = todos;
-          if (this.todos) {
-            this.notFinished = this.todos.filter(a => a.status === TodoStatus.InProgress || a.status === TodoStatus.Waiting);
-            this.finishTooLate = this.todos.filter(a => isFinishTooLate(a));
-            this.finishTooEarly = this.todos.filter(a => isFinishTooEarly(a));
-            this.wontDo = this.todos.filter(a => a.status === TodoStatus.WontDo);
-            this.done = this.todos.filter(a => a.status === TodoStatus.Done);
-          }
-          return this.reportService.getReport(date, mode);
-        })
-      ).subscribe(report => {
+      this.reportService.getReportWithTodos(date, mode).subscribe(reportWithTodos => {
         this.isLoading = false;
-        this.report = createReport(this.todos, date, mode);
-        if (report) {
-          const merged = merge(report, this.report);
-          this.reportService.update(merged).subscribe();
-        } else {
-          this.reportService.create(this.report).subscribe();
+        this.todos = reportWithTodos.todos;
+        this.report = reportWithTodos.report;
+        this.usedTimeOfTimeRange = this.report ? this.report.usedTimeOfTimeRange : 0;
+        if (this.todos) {
+          this.notFinished = this.todos.filter(a => a.status === TodoStatus.InProgress || a.status === TodoStatus.Waiting);
+          this.finishTooLate = this.todos.filter(a => isFinishTooLate(a));
+          this.finishTooEarly = this.todos.filter(a => isFinishTooEarly(a));
+          this.wontDo = this.todos.filter(a => a.status === TodoStatus.WontDo);
+          this.done = this.todos.filter(a => a.status === TodoStatus.Done);
         }
-      })
-    );
-
-    this.addSubscription(
-      this.reportService.getUsedTime(date, mode).subscribe(time => {
-        this.usedTimeOfSelected = time;
       })
     );
   }

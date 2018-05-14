@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { ReportService } from '@app/core';
-import { TimeRangeType } from '@app/model';
+import { NotificationService, ReportService } from '@app/core';
+import { Report, TimeRangeType } from '@app/model';
 import { InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
+import { merge } from 'ramda';
 
 @Component({
   selector: 'mst-report-summary',
@@ -16,17 +17,22 @@ export class ReportSummaryComponent extends Unsub implements OnChanges {
   summaryControl = new InputControl('');
   autoFocus = false;
 
-  constructor(private reportService: ReportService) {
+  private report: Report;
+
+  constructor(
+    private notificationService: NotificationService,
+    private reportService: ReportService) {
     super();
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.date && this.mode !== undefined) {
       this.addSubscription(
-        this.reportService.getReport(this.date, this.mode).subscribe(report => {
-          if (report && report.summary) {
-            this.summaryControl.setValue(report.summary);
-            this.autoFocus = !report.summary;
+        this.reportService.getReportWithTodos(this.date, this.mode).subscribe(reportWithTodos => {
+          this.report = reportWithTodos.report;
+          if (reportWithTodos.report && reportWithTodos.report.summary) {
+            this.summaryControl.setValue(reportWithTodos.report.summary);
+            this.autoFocus = false;
           } else {
             this.summaryControl.setValue('');
             this.autoFocus = true;
@@ -37,8 +43,16 @@ export class ReportSummaryComponent extends Unsub implements OnChanges {
   }
 
   onCreate() {
-    const summary = this.summaryControl.getValue();
-    this.reportService.createOrUpdateReport(this.date, this.mode, {summary});
+    if (this.report) {
+      const summary = this.summaryControl.getValue();
+      this.addSubscription(
+        this.reportService.update(merge(this.report, {summary})).subscribe(report => {
+          if (report) {
+            this.notificationService.sendMessage('saved summary.');
+          }
+        })
+      );
+    }
   }
 
 }
