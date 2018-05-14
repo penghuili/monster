@@ -133,6 +133,17 @@ export class TodoDetailComponent extends Unsub implements OnInit {
         status
       };
       this.update(data);
+    } else if (status === TodoStatus.Someday) {
+      const twoWeeksLater = addDays(now(), 14).getTime();
+      const happenDate = twoWeeksLater > this.todo.happenDate ? twoWeeksLater : this.todo.happenDate;
+      const data = { status, happenDate };
+      this.update(data);
+    } else if (this.todo.status === TodoStatus.Someday) {
+      const data = {
+        status,
+        happenDate: now()
+      };
+      this.update(data);
     } else {
       this.update({ status, finishAt: undefined });
     }
@@ -182,9 +193,10 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     this.datePickerStartDate = project && project.startDate > this.datePickerStartDate ? project.startDate : this.datePickerStartDate;
     this.datePickerEndDate = project ? project.endDate : undefined;
 
-    if (project && this.todo && !isWithin(this.todo.happenDate, project.startDate, project.endDate)) {
-      this.update({ happenDate: this.datePickerStartDate });
-      alert(`your todo's date is out of project ${project.title}'s range. please reselect date.`);
+    if (project && this.todo && this.todo.status !== TodoStatus.Someday &&
+      !isWithin(this.todo.happenDate, project.startDate, project.endDate)) {
+        this.update({ happenDate: this.datePickerStartDate });
+        alert(`your todo's date is out of project ${project.title}'s range. please reselect date.`);
     }
   }
   private emitEvent(data: any) {

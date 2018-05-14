@@ -60,6 +60,14 @@ export class TodoCreateComponent extends Unsub {
     this.setDatepickerRange(selected.project);
   }
   onSelectStatus(status: TodoStatus) {
+    if (status === TodoStatus.Someday) {
+      const twoWeeksLater = addDays(now(), 14).getTime();
+      this.happenDate = this.happenDate && twoWeeksLater < this.happenDate ? this.happenDate : twoWeeksLater;
+      this.defaultDatepickerDate = this.happenDate;
+    } else if (this.status === TodoStatus.Someday && (status === TodoStatus.InProgress || status === TodoStatus.Waiting)) {
+      this.happenDate = now();
+      this.defaultDatepickerDate = this.happenDate;
+    }
     this.status = status;
   }
   onFinishPickDate(result: DatepickerResult) {
@@ -105,9 +113,11 @@ export class TodoCreateComponent extends Unsub {
     this.datePickerStartDate = project && project.startDate > this.datePickerStartDate ? project.startDate : this.datePickerStartDate;
     this.datePickerEndDate = project ? project.endDate : undefined;
 
-    if (project && this.happenDate && !isWithin(this.happenDate, project.startDate, project.endDate)) {
-      this.happenDate = this.datePickerStartDate;
-      alert(`your todo's date is out of project ${project.title}'s range. please reselect date.`);
+    if (project && this.happenDate &&
+      (this.status === undefined || this.status !== TodoStatus.Someday) &&
+      !isWithin(this.happenDate, project.startDate, project.endDate)) {
+        this.happenDate = this.datePickerStartDate;
+        alert(`your todo's date is out of project ${project.title}'s range. please reselect date.`);
     }
   }
   private reset() {
