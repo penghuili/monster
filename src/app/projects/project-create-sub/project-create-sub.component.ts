@@ -14,10 +14,8 @@ export class ProjectCreateSubComponent extends Unsub {
   @Output() created = new EventEmitter<boolean>();
   isShow = false;
 
-  titleControl = new InputControl('');
-  resultControl = new InputControl('');
-  hasTitleError = false;
-  hasResultError = false;
+  titleControl = new InputControl({ required: true });
+  resultControl = new InputControl({ required: true });
 
   constructor(private subprojectService: SubprojectService) {
     super();
@@ -27,15 +25,12 @@ export class ProjectCreateSubComponent extends Unsub {
     this.isShow = true;
   }
   onFinish() {
-    const title = this.titleControl.getValue();
-    const result = this.resultControl.getValue();
-    if (title && result && this.project) {
-      this.hasResultError = false;
-      this.hasTitleError = false;
+    if (this.titleControl.valid && this.resultControl.valid && this.project) {
       this.addSubscription(
         this.subprojectService.addSubproject({
           projectId: this.project.id,
-          title, result
+          title: this.titleControl.getValue(),
+          result: this.resultControl.getValue()
         }).subscribe(success => {
           if (success) {
             this.isShow = false;
@@ -44,9 +39,6 @@ export class ProjectCreateSubComponent extends Unsub {
           }
         })
       );
-    } else {
-      this.hasTitleError = !title;
-      this.hasResultError = !result;
     }
   }
   onCancel() {
@@ -57,8 +49,6 @@ export class ProjectCreateSubComponent extends Unsub {
   private reset() {
     this.titleControl.setValue('');
     this.resultControl.setValue('');
-    this.hasTitleError = false;
-    this.hasResultError = false;
   }
 
 }

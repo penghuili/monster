@@ -29,11 +29,8 @@ import { Subject } from 'rxjs/Subject';
 export class ProjectDetailComponent extends Unsub implements OnInit {
   project: Project;
   subprojects: Subproject[];
-  titleControl = new InputControl('');
-  resultControl = new InputControl('');
-
-  hasTitleError = false;
-  hasResultError = false;
+  titleControl = new InputControl({ required: true });
+  resultControl = new InputControl({ required: true });
 
   status: ProjectStatus;
   startDate: number;
@@ -167,20 +164,12 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
     this.eventService.add(event);
   }
   private update(data: any) {
-    const title = this.titleControl.getValue();
-    const result = this.resultControl.getValue();
-
-    if (title && result) {
-      this.hasResultError = false;
-      this.hasTitleError = false;
+    if (this.titleControl.valid && this.resultControl.valid) {
       this.project = merge(this.project, {
         ...data,
         updatedAt: now()
       });
       this.projectService.updateProject(this.project);
-    } else {
-      this.hasTitleError = !title;
-      this.hasResultError = !result;
     }
   }
 }

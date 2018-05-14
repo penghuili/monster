@@ -5,8 +5,7 @@
     <span class="mst-todo-detail-index" [style.width.rem]="todo.id < 100 ? 2 : 2.5">{{ todo.id }}: </span>
     <mst-input
       [control]="titleControl"
-      [padding]="todo.id < 100 ? '0.5rem 2rem 0.5rem 2rem' : '0.5rem 2rem 0.5rem 2.5rem'"
-      [hasError]="hasError"></mst-input>
+      [padding]="todo.id < 100 ? '0.5rem 2rem 0.5rem 2rem' : '0.5rem 2rem 0.5rem 2.5rem'"></mst-input>
     <div class="mst-start-todo" *ngIf="todo.expectedTime && !finished">
       <mst-icon name="play_circle_filled" (click)="onStart()" *ngIf="!isDoing"></mst-icon>
       <mst-icon name="pause_circle_filled" (click)="onStop()" *ngIf="isDoing"></mst-icon>

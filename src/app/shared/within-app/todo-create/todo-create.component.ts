@@ -27,12 +27,11 @@ export class TodoCreateComponent extends Unsub {
   @Output() created = new EventEmitter<boolean>();
   isShow = false;
 
-  titleControl = new InputControl('');
-  noteControl = new InputControl('');
+  titleControl = new InputControl({ required: true });
+  noteControl = new InputControl();
   status: TodoStatus;
   happenDate: number;
   expectedTime = 0;
-  hasTitleError = false;
   hasSubprojectError = false;
 
   defaultDatepickerDate: number;
@@ -77,14 +76,13 @@ export class TodoCreateComponent extends Unsub {
     this.expectedTime = duration;
   }
   onCreate() {
-    const title = this.titleControl.getValue();
     const note = this.noteControl.getValue();
     const subproject = this.subproject || this.currentSubproject;
-    if (title && subproject) {
-      this.hasTitleError = false;
+    if (this.titleControl.valid && subproject) {
       this.hasSubprojectError = false;
       const todo = {
-        title, note,
+        title: this.titleControl.getValue(),
+        note,
         subprojectId: subproject.id,
         status: this.status === undefined ? TodoStatus.InProgress : this.status,
         expectedTime: this.expectedTime,
@@ -100,7 +98,6 @@ export class TodoCreateComponent extends Unsub {
         })
       );
     } else {
-      this.hasTitleError = !title;
       this.hasSubprojectError = !subproject;
     }
   }
@@ -126,7 +123,6 @@ export class TodoCreateComponent extends Unsub {
     this.status = TodoStatus.InProgress;
     this.happenDate = this.datePickerStartDate;
     this.expectedTime = 0;
-    this.hasTitleError = false;
     this.hasSubprojectError = false;
     this.currentProject = null;
     this.currentSubproject = null;

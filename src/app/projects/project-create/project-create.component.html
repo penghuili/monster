@@ -4,7 +4,6 @@
   <ng-container *ngIf="isShow">
     <mst-input
       [control]="titleControl"
-      [hasError]="hasTitleError"
       [autoFocus]="true"></mst-input>
     
     <div fxLayout="row" fxLayoutAlign="center center" [mstPadding]="'1rem'">
@@ -20,7 +19,6 @@
     
     <mst-input
       [control]="resultControl"
-      [hasError]="hasResultError"
       minHeight="3rem"></mst-input>
   
     <mst-cancel-confirm

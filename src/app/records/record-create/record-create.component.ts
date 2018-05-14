@@ -12,10 +12,9 @@ import { debounceTime } from 'rxjs/operators';
 })
 export class RecordCreateComponent extends Unsub implements OnInit {
   @Output() created = new EventEmitter<boolean>();
-  recordControl = new InputControl('');
+  recordControl = new InputControl({ required: true });
   date = now();
   isShow = false;
-  hasError = false;
 
   constructor(private recordService: RecordService) {
     super();
@@ -33,10 +32,8 @@ export class RecordCreateComponent extends Unsub implements OnInit {
     this.isShow = true;
   }
   onCreate() {
-    const title = this.recordControl.getValue();
-    if (title) {
-      this.hasError = false;
-      const record = createRecord({ title });
+    if (this.recordControl.valid) {
+      const record = createRecord({ title: this.recordControl.getValue() });
       this.addSubscription(
         this.recordService.add(record).subscribe(success => {
           this.isShow = false;
@@ -44,8 +41,6 @@ export class RecordCreateComponent extends Unsub implements OnInit {
           this.reset();
         })
       );
-    } else {
-      this.hasError = true;
     }
   }
   onCancel() {
@@ -55,7 +50,6 @@ export class RecordCreateComponent extends Unsub implements OnInit {
 
   private reset() {
     this.recordControl.setValue('');
-    this.hasError = false;
   }
 
 }

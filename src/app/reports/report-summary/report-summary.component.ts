@@ -14,7 +14,7 @@ import { merge } from 'ramda';
 export class ReportSummaryComponent extends Unsub implements OnChanges {
   @Input() date: number;
   @Input() mode: TimeRangeType;
-  summaryControl = new InputControl('');
+  summaryControl = new InputControl();
   autoFocus = false;
 
   private report: Report;

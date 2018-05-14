@@ -36,9 +36,8 @@ import { TodoTimerComponent } from './todo-timer/todo-timer.component';
 export class TodoDetailComponent extends Unsub implements OnInit {
   @ViewChild(TodoTimerComponent) timer: TodoTimerComponent;
   todo: Todo;
-  titleControl = new InputControl('');
-  noteControl = new InputControl('');
-  hasError = false;
+  titleControl = new InputControl({ required: true });
+  noteControl = new InputControl();
   currentSubproject: Subproject;
   status: TodoStatus;
 
@@ -210,9 +209,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     this.eventService.add(event);
   }
   private update(data: any) {
-    const title = this.titleControl.getValue();
-    if (title) {
-      this.hasError = false;
+    if (this.titleControl.valid) {
       this.todo = merge(this.todo, {
         ...data,
         updatedAt: now()
@@ -221,8 +218,6 @@ export class TodoDetailComponent extends Unsub implements OnInit {
         this.todoService.update(this.todo).subscribe(success => {
         })
       );
-    } else {
-      this.hasError = true;
     }
   }
 }

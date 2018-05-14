@@ -14,11 +14,8 @@ export class ProjectCreateComponent extends Unsub {
   @Output() created = new EventEmitter<boolean>();
   isShow = false;
 
-  titleControl = new InputControl('');
-  resultControl = new InputControl('');
-
-  hasTitleError = false;
-  hasResultError = false;
+  titleControl = new InputControl({ required: true });
+  resultControl = new InputControl({ required: true });
 
   status: ProjectStatus;
   startDate = now();
@@ -48,14 +45,11 @@ export class ProjectCreateComponent extends Unsub {
     this.endDate = result.date;
   }
   onFinish() {
-    const title = this.titleControl.getValue();
-    const result = this.resultControl.getValue();
-    if (title && result) {
-      this.hasResultError = false;
-      this.hasTitleError = false;
+    if (this.titleControl.valid && this.resultControl.valid) {
       this.addSubscription(
         this.projectService.addProject({
-          title, result,
+          title: this.titleControl.getValue(),
+          result: this.resultControl.getValue(),
           startDate: this.startDate,
           endDate: this.endDate,
           status: this.status === undefined ? ProjectStatus.InProgress : this.status
@@ -67,9 +61,6 @@ export class ProjectCreateComponent extends Unsub {
           }
         })
       );
-    } else {
-      this.hasTitleError = !title;
-      this.hasResultError = !result;
     }
   }
   onCancel() {
@@ -80,8 +71,6 @@ export class ProjectCreateComponent extends Unsub {
   private reset() {
     this.titleControl.setValue('');
     this.resultControl.setValue('');
-    this.hasTitleError = false;
-    this.hasResultError = false;
     this.status = ProjectStatus.InProgress;
     this.startDate = now();
     this.endDate = this.endDateStartDate;

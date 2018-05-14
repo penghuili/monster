@@ -1,9 +1,7 @@
 <mst-go-back></mst-go-back>
 
 <ng-container *ngIf="subproject">
-  <mst-input
-    [control]="titleControl"
-    [hasError]="hasTitleError"></mst-input>
+  <mst-input [control]="titleControl"></mst-input>
   
   <div fxLayout="row" fxLayoutAlign="space-between center" [mstPadding]="'1rem 0'">
     <mst-project-status-picker [status]="subproject.status" (select)="onSelectStatus($event)"></mst-project-status-picker>
@@ -14,7 +12,6 @@
 
   <mst-input
     [control]="resultControl"
-    [hasError]="hasResultError"
     minHeight="3rem"></mst-input>
   
   <div fxLayout="row" fxLayoutAlign="center" [mstPadding]="'2rem 0'">

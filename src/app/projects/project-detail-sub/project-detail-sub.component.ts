@@ -14,7 +14,7 @@ import {
 import { InputControl } from '@app/shared';
 import { ROUTES, Unsub } from '@app/static';
 import { merge } from 'ramda';
-import { debounceTime, first, startWith, switchMap } from 'rxjs/operators';
+import { debounceTime, filter, first, startWith, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 
 @Component({
@@ -25,10 +25,8 @@ import { Subject } from 'rxjs/Subject';
 export class ProjectDetailSubComponent extends Unsub implements OnInit {
   subproject: Subproject;
   todos: Todo[];
-  titleControl = new InputControl('');
-  resultControl = new InputControl('');
-  hasTitleError = false;
-  hasResultError = false;
+  titleControl = new InputControl({ required: true });
+  resultControl = new InputControl({ required: true });
   startDate: number;
   endDate: number;
 
@@ -108,19 +106,11 @@ export class ProjectDetailSubComponent extends Unsub implements OnInit {
   }
 
   private update(data: any) {
-    const title = this.titleControl.getValue();
-    const result = this.resultControl.getValue();
-
-    if (title && result) {
-      this.hasResultError = false;
-      this.hasTitleError = false;
+    if (this.titleControl.valid && this.resultControl.valid) {
       this.subproject = merge(this.subproject, {
         ...data, updatedAt: now()
       });
       this.subprojectService.updateSubproject(this.subproject);
-    } else {
-      this.hasTitleError = !title;
-      this.hasResultError = !result;
     }
   }
 
