@@ -13,6 +13,7 @@ import { Subject } from 'rxjs/Subject';
 })
 export class ProjectsComponent extends Unsub implements OnInit {
   activeProjects: Project[];
+  somedayProjects: Project[];
   doneProjects: Project[];
 
   dragIndex: number;
@@ -55,7 +56,8 @@ export class ProjectsComponent extends Unsub implements OnInit {
   }
 
   private updateProjects(projects: Project[]) {
-    this.activeProjects = projects.filter(a => a.status !== ProjectStatus.Done);
+    this.activeProjects = projects.filter(a => a.status === ProjectStatus.InProgress);
+    this.somedayProjects = projects.filter(a => a.status === ProjectStatus.Someday);
     this.doneProjects = projects.filter(a => a.status === ProjectStatus.Done).sort((a, b) => b.finishAt - a.finishAt);
   }
 

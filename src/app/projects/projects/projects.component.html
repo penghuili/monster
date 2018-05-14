@@ -11,6 +11,15 @@
 </mst-drop-zone>
 
 
+<ng-container *ngIf="somedayProjects && somedayProjects.length > 0">
+  <div [mstTextAlign]="'center'" [mstPadding]="'2rem 0 0'">Someday</div>
+  <mst-project-item *ngFor="let project of somedayProjects"
+    [project]="project"
+    (click)="onShowDetail(project)">
+  </mst-project-item>
+</ng-container>
+
+
 <ng-container *ngIf="doneProjects && doneProjects.length > 0">
   <div [mstTextAlign]="'center'" [mstPadding]="'2rem 0 0'">Done</div>
   <mst-project-item *ngFor="let project of doneProjects"
