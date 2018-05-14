@@ -3,7 +3,7 @@
   <div class="mst-progress-valid" [style.width.px]="validWidth"></div>
   <div class="mst-progress-invalid" [style.left.px]="validWidth" [style.width.px]="invalidWidth"></div>
   <div class="mst-progress-thumb-wrapper" [style.left.px]="thumbLeft">
-    <div class="mst-progress-thumb-shadow" *ngIf="starting"></div>
+    <div class="mst-progress-thumb-shadow" [class.mst-progress-thumb-shadow--error]="invalidWidth > 0" *ngIf="starting"></div>
     <mst-icon class="mst-progress-thumb" name="label" color="accent"></mst-icon>
     <div class="mst-progress-thumb-label">{{ progress | percent }}</div>
   </div>

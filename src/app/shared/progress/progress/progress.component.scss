@@ -52,6 +52,9 @@
   animation-duration: 1s;
   animation-iteration-count: infinite;
 }
+.mst-progress-thumb-shadow--error {
+  background-color: $error;
+}
 
 @keyframes toggle {
   50%  { width: 3rem; height: 3rem; left: -0.5rem; top: -0.5rem }
