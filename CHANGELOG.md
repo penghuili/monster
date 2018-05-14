@@ -1,3 +1,16 @@
+#v1.11.9
+
+feature:
+
+- when select someday, auto select in two weeks
+- save used time of time range to database
+- add input required handling
+- enable drag drop
+
+bug fix;
+
+- always get start end date of sub from database
+
 #v1.11.8
 
 bug fix:
