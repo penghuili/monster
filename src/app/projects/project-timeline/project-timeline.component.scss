@@ -1,0 +1,24 @@
+@import '../../static/variables';
+
+.mst-timeline-wrapper {
+  max-width: calc(100vw - 2rem);
+  min-height: 15rem;
+  padding: 0 1rem;
+
+  position: relative;
+}
+.mst-timeline-now {
+  position: absolute;
+  min-width: calc(100vw - 4rem);
+  height: 1px;
+  background-color: $yellow;
+}
+
+@media screen and (min-width: $max-width + 1) {
+  .mst-timeline-wrapper {
+    max-width: calc(536px - 2rem);
+  }
+  .mst-timeline-now {
+    min-width: calc(536px - 4rem);
+  }
+}

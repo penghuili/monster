@@ -1,4 +1,4 @@
-<div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'1rem 0'" *ngIf="tabs && tabs.length > 0">
+<div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="padding" *ngIf="tabs && tabs.length > 0">
   <div class="mst-tab" *ngFor="let tab of tabs"
     [class.mst-tab--active]="activeTabKey === tab.key"
     (click)="onClick(tab.key)">{{ tab.value }}</div>

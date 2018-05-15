@@ -24,10 +24,20 @@ export interface ProjectWithTodos {
   project: Project;
   todos: Todo[];
 }
+export interface SubprojectsWithTodos {
+  subprojects: Subproject[];
+  todos: Todo[];
+}
 export enum ProjectStatus {
   InProgress,
   Someday,
   Done
+}
+export interface ProjectTimelineItem {
+  name: string;
+  start: number;
+  end: number;
+  finished: boolean;
 }
 
 

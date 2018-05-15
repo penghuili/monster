@@ -1,0 +1,8 @@
+<div [mstSize]="'1rem'">
+  <div [style.height.px]="item.start"></div>
+  <div class="mst-timeline-item-name">
+    {{ item.name }}
+  </div>
+  <div [style.height.px]="item.end - item.start"  mstColor [mstColor.bg]="item.finished ? 'green': 'accent'">
+  </div>
+</div>

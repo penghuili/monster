@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService, ProjectService, SubprojectService, TodoService } from '@app/core';
 import {
+  calcStartEndDate,
   ChartDataItem,
   createChartData,
   EventType,
@@ -10,8 +11,11 @@ import {
   now,
   Project,
   ProjectStatus,
+  ProjectTimelineItem,
   Subproject,
+  Tab,
   TimeRangeType,
+  Todo,
   TodoStatus,
 } from '@app/model';
 import { DatepickerResult, InputControl } from '@app/shared';
@@ -39,6 +43,14 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
   TimeRangeType = TimeRangeType;
 
   chartData: ChartDataItem[];
+  timelineData: ProjectTimelineItem[];
+  GROWTH = 'growth';
+  TIMELINE = 'timeline';
+  tabs: Tab[] = [
+    { key: this.GROWTH, value: this.GROWTH },
+    { key: this.TIMELINE, value: this.TIMELINE }
+  ];
+  activeTab = this.GROWTH;
 
   private createdSub = new Subject<boolean>();
 
@@ -71,27 +83,11 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
     this.addSubscription(
       this.createdSub.asObservable().pipe(
         startWith(true),
-        switchMap(() => this.subprojectService.getSubprojects(id))
-      ).subscribe(subprojects => {
-        this.subprojects = subprojects;
-      })
-    );
-
-    this.addSubscription(
-      this.todoService.getTodosByProjectId(id).subscribe(todos => {
-        const items = todos
-          .sort((a, b) => a.happenDate - b.happenDate)
-          .map(a => ({name: format(a.happenDate, 'YYYY-MM-DD'), value: 1}));
-        const doneItems = todos
-          .filter(a => a.status === TodoStatus.Done || a.status === TodoStatus.WontDo)
-          .sort((a, b) => a.finishAt - b.finishAt)
-          .map(a => ({name: format(a.finishAt, 'YYYY-MM-DD'), value: 1}));
-        const plan = createChartData(items);
-        const done = createChartData(doneItems);
-        this.chartData = [
-          { name: 'plan', series: plan },
-          { name: 'done', series: done }
-        ];
+        switchMap(() => this.subprojectService.getSubprojectsWithTodosByProjectId(id))
+      ).subscribe(value => {
+        this.subprojects = value.subprojects;
+        this.createChart(value.todos);
+        this.createTimeline(value.subprojects, value.todos);
       })
     );
 
@@ -155,7 +151,65 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
   onCreateSub() {
     this.createdSub.next(true);
   }
+  onChangeTab(key: string) {
+    this.activeTab = key;
+  }
 
+  private createChart(todos: Todo[]) {
+    if (todos) {
+      const items = todos
+        .sort((a, b) => a.happenDate - b.happenDate)
+        .map(a => ({name: format(a.happenDate, 'YYYY-MM-DD'), value: 1}));
+      const doneItems = todos
+        .filter(a => a.status === TodoStatus.Done || a.status === TodoStatus.WontDo)
+        .sort((a, b) => a.finishAt - b.finishAt)
+        .map(a => ({name: format(a.finishAt, 'YYYY-MM-DD'), value: 1}));
+      const plan = createChartData(items);
+      const done = createChartData(doneItems);
+
+      this.chartData = [
+        { name: 'plan', series: plan },
+        { name: 'done', series: done }
+      ];
+    }
+  }
+  private createTimeline(subprojects: Subproject[], todos: Todo[]) {
+    if (subprojects && todos) {
+      this.timelineData = subprojects
+      .map(s => {
+        const ownTodos = todos.filter(a => a.subprojectId === s.id);
+        if (!s || ownTodos.length === 0) {
+          return null;
+        } else {
+          const startEnd = calcStartEndDate(ownTodos);
+          return {
+            name: s.title,
+            start: startEnd[0],
+            end: startEnd[1],
+            finished: s.status === ProjectStatus.Done
+          };
+        }
+      })
+      .filter(a => !!a)
+      .sort((a, b) => a.start - b.start);
+
+      if (this.timelineData.length > 0) {
+        const beggining = this.timelineData[0].start;
+        this.timelineData = this.timelineData.map(a => {
+          return {
+            name: a.name,
+            start: Math.round((a.start - beggining) / (1000 * 60 * 60)),
+            end: Math.round((a.end - beggining) / (1000 * 60 * 60)),
+            finished: a.finished
+          };
+        });
+      } else {
+        return [];
+      }
+    } else {
+      this.timelineData = [];
+    }
+  }
   private emitEvent(data: any) {
     const event = {
       ...data,

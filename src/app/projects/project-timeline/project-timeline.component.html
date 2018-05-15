@@ -1,0 +1,6 @@
+<div fxLayout="row" fxLayoutAlign="start" class="mst-timeline-wrapper">
+  <div class="mst-timeline-now" [style.top.px]="getNowTop()" [style.width.rem]="getNowWidth()"></div>
+  <div *ngFor="let item of items" [mstSize]="'2rem'">
+    <mst-project-timeline-item [item]="item"></mst-project-timeline-item>
+  </div>
+</div>

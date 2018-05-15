@@ -10,6 +10,7 @@ import { Tab } from '@app/model';
 export class TabComponent implements OnInit {
   @Input() tabs: Tab[] = [];
   @Input() defaultTabKey: string;
+  @Input() padding = '1rem 0';
   @Output() change = new EventEmitter<string>();
   activeTabKey: string;
 

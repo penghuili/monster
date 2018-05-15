@@ -1,0 +1,7 @@
+@import '../../static/variables';
+
+.mst-timeline-item-name {
+  display: block;
+  transform: rotate(90deg) translate(1rem, -1rem);
+  white-space: nowrap;
+}

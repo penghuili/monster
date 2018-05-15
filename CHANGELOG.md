@@ -1,3 +1,9 @@
+# v1.12.0
+
+feature:
+
+- add urgent todos to today
+
 #v1.11.10
 
 bug fix:

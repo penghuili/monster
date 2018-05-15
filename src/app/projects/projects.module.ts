@@ -21,6 +21,8 @@ import { ProjectDetailSubComponent } from './project-detail-sub/project-detail-s
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { ProjectsRoutingModule } from './projects-routing.module';
 import { ProjectsComponent } from './projects/projects.component';
+import { ProjectTimelineComponent } from './project-timeline/project-timeline.component';
+import { ProjectTimelineItemComponent } from './project-timeline-item/project-timeline-item.component';
 
 @NgModule({
   imports: [
@@ -45,7 +47,9 @@ import { ProjectsComponent } from './projects/projects.component';
     ProjectCreateComponent,
     ProjectDetailComponent,
     ProjectCreateSubComponent,
-    ProjectDetailSubComponent
+    ProjectDetailSubComponent,
+    ProjectTimelineComponent,
+    ProjectTimelineItemComponent
   ]
 })
 export class ProjectsModule { }

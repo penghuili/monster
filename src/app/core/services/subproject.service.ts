@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { EventType, MonsterEvents, now } from '@app/model';
+import { calcStartEndDate, EventType, MonsterEvents, now, Todo, TodoStatus } from '@app/model';
 import { Observable } from 'rxjs/Observable';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 
-import { createSubproject, Subproject } from '../../model/project';
+import { createSubproject, Subproject, SubprojectsWithTodos } from '../../model/project';
 import { DbService } from './db.service';
 import { EventService } from './event.service';
 import { LoadingService } from './loading.service';
@@ -57,6 +57,30 @@ export class SubprojectService {
         .toArray()
     ).pipe(
       catchError(error => this.handleError('getSubprojectsByIds fails')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
+    );
+  }
+  getSubprojectsWithTodosByProjectId(id: number): Observable<SubprojectsWithTodos> {
+    this.loadingService.isLoading();
+    const db = this.dbService.getDB();
+    let subprojects: Subproject[];
+    const transaction = db.transaction('r', db.subprojects, db.todos, () => {
+      return db.subprojects
+        .where('projectId')
+        .equals(id)
+        .toArray()
+        .then(subps => {
+          subprojects = subps;
+          return db.todos
+            .filter(a => a.status !== TodoStatus.Someday && !!subps.find(b => b.id === a.subprojectId))
+            .toArray();
+        });
+    });
+    return fromPromise(transaction).pipe(
+      catchError(error => this.handleError('getTodosByProjectId fails.')),
+      map((todos: Todo[]) => ({ subprojects, todos })),
       tap(() => {
         this.loadingService.stopLoading();
       })
