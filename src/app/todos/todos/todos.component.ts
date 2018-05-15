@@ -9,6 +9,7 @@ import {
   isOverDue,
   isTodayEnded,
   isTodayStarted,
+  isWithinDay,
   MonsterStorage,
   now,
   ProjectWithTodos,
@@ -17,7 +18,6 @@ import {
   TodoStatus,
 } from '@app/model';
 import { ROUTES, Unsub } from '@app/static';
-import { format } from 'date-fns';
 import { merge } from 'ramda';
 import { startWith, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
@@ -207,7 +207,6 @@ export class TodosComponent extends Unsub implements OnInit {
     this.noTimeActiveTodosCount = this.activeTodos.filter(a => a.expectedTime === 0).length;
   }
   private isDoneOnToday(todo: Todo): boolean {
-    return (todo.status === TodoStatus.Done || todo.status === TodoStatus.WontDo) &&
-      format(todo.finishAt, 'YYYYMMDD') === format(now(), 'YYYYMMDD');
+    return isFinished(todo) && isWithinDay(todo.finishAt, now());
   }
 }
