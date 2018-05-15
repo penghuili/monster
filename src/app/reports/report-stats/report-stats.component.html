@@ -4,6 +4,9 @@
     {{ report.done + report.wontDo }} / {{ report.planned }} = {{ finishedPlanned() | percent }}
   </div>
   <div [mstPadding]="'0 0 1rem'">
+    added later: {{ report.addedLater }}
+  </div>
+  <div [mstPadding]="'0 0 1rem'">
     used time of selected time range: <br>
     {{ usedTimeOfTimeRange | minuteFormatter }}
   </div>

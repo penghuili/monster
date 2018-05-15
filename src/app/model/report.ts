@@ -7,6 +7,7 @@ export interface Report {
   date: number;
   // todo counts
   planned: number;
+  addedLater: number;
   inProgress: number;
   waiting: number;
   wontDo: number;
@@ -37,6 +38,7 @@ export function createReport(date: number, type: TimeRangeType, todos: Todo[], u
     date: date,
     type: type,
     planned: todos.length,
+    addedLater: todos.filter(a => a.addedLater).length,
     inProgress: todos.filter(a => a.status === TodoStatus.InProgress).length,
     waiting: todos.filter(a => a.status === TodoStatus.Waiting).length,
     wontDo: todos.filter(a => a.status === TodoStatus.WontDo).length,
