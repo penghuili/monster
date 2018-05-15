@@ -5,6 +5,7 @@ import {
   endOfThisWeek,
   endOfToday,
   endofTomorrow,
+  isFinished,
   isOverDue,
   isTodayEnded,
   isTodayStarted,
@@ -175,7 +176,7 @@ export class TodosComponent extends Unsub implements OnInit {
       return merge(pt, { todos: tds });
     });
     this.activeProjectsWithTodos = filteredActive.map(pt => {
-      const tds = pt.todos.filter(a => a.status === TodoStatus.InProgress || a.status === TodoStatus.Waiting);
+      const tds = pt.todos.filter(a => !isFinished(a));
       const sorted = sortTodos(tds);
       return merge(pt, { todos: sorted });
     });
