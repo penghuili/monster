@@ -5,3 +5,7 @@
 <div *ngIf="(!activities || activities.length === 0) && !isLoading" [mstPadding]="'2rem 0 0'">
   no activity for {{ date | mstDate:'shortDate' }}
 </div>
+
+<div class="mst-activity-up">
+  <mst-icon name="keyboard_arrow_up" (click)="onToTop()"></mst-icon>
+</div>

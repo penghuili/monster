@@ -26,6 +26,10 @@ export class ActivitiesComponent extends Unsub implements OnChanges {
       this.getActivities(this.date, this.mode);
     }
   }
+
+  onToTop() {
+    window.scrollTo(0, 0);
+  }
   private getActivities(date: number, mode: TimeRangeType) {
     this.isLoading = true;
     this.activities = [];
