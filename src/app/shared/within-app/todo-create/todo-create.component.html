@@ -17,7 +17,19 @@
   
         <mst-todo-status-picker (select)="onSelectStatus($event)"></mst-todo-status-picker>
       
-        <mst-datepicker [mode]="TimeRangeType.Day" [defaultDate]="defaultDatepickerDate" [startDate]="datePickerStartDate" (finish)="onFinishPickDate($event)"></mst-datepicker>
+        <div>
+          <div class="mst-todo-unhappy-wrapper">
+            <mst-icon class="mst-todo-unhappy" [class.mst-todo-unhappy--show]="showUnhappy"
+            name="sentiment_dissatisfied"
+            [color]="enableToday ? 'error' : null" (click)="onEnableToday()"></mst-icon>
+          </div>
+          <mst-datepicker
+            [mode]="TimeRangeType.Day"
+            [defaultDate]="defaultDatepickerDate"
+            [startDate]="datePickerStartDate"
+            [disabled]="enableToday"
+            (finish)="onFinishPickDate($event)"></mst-datepicker>
+        </div>
         <mst-duration-picker (change)="onDurationChange($event)"></mst-duration-picker>
     </div>
   

@@ -13,7 +13,7 @@ export interface Todo extends SortableItem {
   usedTime?: number;
   status: TodoStatus;
   finishAt?: number;
-  projectTitle?: string;
+  addedLater?: boolean;
 }
 export interface TodoActivity {
   startAt: number;
@@ -39,7 +39,8 @@ export function createTodo(data: any): Todo {
     status: data.status,
     position: timestamp.toString() + '3',
     createdAt: timestamp,
-    updatedAt: timestamp
+    updatedAt: timestamp,
+    addedLater: data.addedLater
   };
 }
 export function isOverDue(todo: Todo): boolean {

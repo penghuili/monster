@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TodoService } from '@app/core';
 import {
   isTodayStarted,
@@ -12,6 +12,7 @@ import {
 } from '@app/model';
 import { Unsub } from '@app/static';
 import { addDays } from 'date-fns';
+import { debounceTime, filter } from 'rxjs/operators';
 
 import { DatepickerResult } from '../../datepicker/model';
 import { InputControl } from '../../input/input-control';
@@ -21,7 +22,7 @@ import { InputControl } from '../../input/input-control';
   templateUrl: './todo-create.component.html',
   styleUrls: ['./todo-create.component.scss']
 })
-export class TodoCreateComponent extends Unsub {
+export class TodoCreateComponent extends Unsub implements OnInit {
   @Input() subproject: Subproject;
   @Input() useActionButton = false;
   @Output() created = new EventEmitter<boolean>();
@@ -34,6 +35,9 @@ export class TodoCreateComponent extends Unsub {
   expectedTime = 0;
   hasSubprojectError = false;
 
+  isTodayStarted: boolean;
+  showUnhappy: boolean;
+  enableToday: boolean;
   defaultDatepickerDate: number;
   datePickerStartDate: number;
   datePickerEndDate: number;
@@ -44,9 +48,18 @@ export class TodoCreateComponent extends Unsub {
 
   constructor(private todoService: TodoService) {
     super();
-    this.datePickerStartDate = isTodayStarted() ? addDays(now(), 1).getTime() : now();
-    this.defaultDatepickerDate = this.datePickerStartDate;
-    this.happenDate = this.datePickerStartDate;
+    this.setDatepickerWithToday();
+  }
+
+  ngOnInit() {
+    this.addSubscription(
+      this.noteControl.value$.pipe(
+        filter(() => this.isTodayStarted),
+        debounceTime(300)
+      ).subscribe(note => {
+        this.showUnhappy = note.indexOf('i should not do this.') > -1;
+      })
+    );
   }
 
   onOpen() {
@@ -56,7 +69,7 @@ export class TodoCreateComponent extends Unsub {
     this.currentProject = selected.project;
     this.currentSubproject = selected.subproject;
 
-    this.setDatepickerRange(selected.project);
+    this.setDatepickerWithProject(selected.project);
   }
   onSelectStatus(status: TodoStatus) {
     if (status === TodoStatus.Someday) {
@@ -86,7 +99,8 @@ export class TodoCreateComponent extends Unsub {
         subprojectId: subproject.id,
         status: this.status === undefined ? TodoStatus.InProgress : this.status,
         expectedTime: this.expectedTime,
-        happenDate: this.happenDate
+        happenDate: this.happenDate,
+        addedLater: this.enableToday
       };
       this.addSubscription(
         this.todoService.add(todo).subscribe(success => {
@@ -105,8 +119,24 @@ export class TodoCreateComponent extends Unsub {
     this.isShow = false;
     this.reset();
   }
+  onEnableToday() {
+    this.enableToday = !this.enableToday;
+    if (this.enableToday) {
+      this.datePickerStartDate = now();
+    } else {
+      this.datePickerStartDate = addDays(now(), 1).getTime();
+    }
+    this.defaultDatepickerDate = this.datePickerStartDate;
+    this.happenDate = this.defaultDatepickerDate;
+  }
 
-  private setDatepickerRange(project: Project) {
+  private setDatepickerWithToday() {
+    this.isTodayStarted = isTodayStarted();
+    this.datePickerStartDate = this.isTodayStarted ? addDays(now(), 1).getTime() : now();
+    this.defaultDatepickerDate = this.datePickerStartDate;
+    this.happenDate = this.datePickerStartDate;
+  }
+  private setDatepickerWithProject(project: Project) {
     this.datePickerStartDate = project && project.startDate > this.datePickerStartDate ? project.startDate : this.datePickerStartDate;
     this.datePickerEndDate = project ? project.endDate : undefined;
 
@@ -120,8 +150,10 @@ export class TodoCreateComponent extends Unsub {
   private reset() {
     this.titleControl.reset();
     this.noteControl.reset();
+    this.setDatepickerWithToday();
+    this.showUnhappy = false;
+    this.enableToday = false;
     this.status = TodoStatus.InProgress;
-    this.happenDate = this.datePickerStartDate;
     this.expectedTime = 0;
     this.hasSubprojectError = false;
     this.currentProject = null;

@@ -1,5 +1,9 @@
 @import '../../../static/variables';
 
+:host {
+  width: 24px;
+  height: 24px;
+}
 .mst-icon-default {
   color: $primary;
   cursor: pointer;
@@ -12,4 +16,7 @@
 }
 .mst-icon-white {
   color: $white;
+}
+.mst-icon-error {
+  color: $error;
 }

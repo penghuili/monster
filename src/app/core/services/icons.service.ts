@@ -36,5 +36,8 @@ export class IconsService {
     this.matIconRegistry.addSvgIconSet(
       this.domSanitizer.bypassSecurityTrustResourceUrl(getIconUrl('svg-sprite-file'))
     );
+    this.matIconRegistry.addSvgIconSet(
+      this.domSanitizer.bypassSecurityTrustResourceUrl(getIconUrl('svg-sprite-social'))
+    );
   }
 }
