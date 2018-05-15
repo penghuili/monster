@@ -1,3 +1,11 @@
+#v1.11.10
+
+bug fix:
+
+- show someday todos
+- show someday projects in project list
+- scroll to top on activities
+
 #v1.11.9
 
 feature:
