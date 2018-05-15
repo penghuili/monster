@@ -49,7 +49,7 @@ export class RecordCreateComponent extends Unsub implements OnInit {
   }
 
   private reset() {
-    this.recordControl.setValue('');
+    this.recordControl.reset();
   }
 
 }

@@ -118,8 +118,8 @@ export class TodoCreateComponent extends Unsub {
     }
   }
   private reset() {
-    this.titleControl.setValue('');
-    this.noteControl.setValue('');
+    this.titleControl.reset();
+    this.noteControl.reset();
     this.status = TodoStatus.InProgress;
     this.happenDate = this.datePickerStartDate;
     this.expectedTime = 0;

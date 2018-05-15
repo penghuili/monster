@@ -17,25 +17,35 @@ export class InputControl {
 
   constructor(options?: InputControlOptions) {
     const value = options && options.value ? options.value : '';
-    const required = options ? !!options.required : false;
+    this.required = options ? !!options.required : false;
+    this.valid = this.isValid(value);
+
     this._value$ = new BehaviorSubject<string>(value);
     this.value$ = this._value$.asObservable();
     this.setValue$ = this._setValue$.asObservable();
-    this.required = required;
   }
 
   getValue(): string {
     return this._value$.getValue();
   }
   setValue(value: string) {
-    this.valid = this.required ? !!value : true;
+    this.valid = this.isValid(value);
     if (this.valid) {
       this._value$.next(value);
       this._setValue$.next(value);
     }
   }
   receiveValue(value: string) {
-    this.valid = this.required ? !!value : true;
+    this.valid = this.isValid(value);
     this._value$.next(value);
+  }
+  reset() {
+    this._setValue$.next('');
+    this._value$.next('');
+    this.valid = this.isValid('');
+  }
+
+  private isValid(value: string) {
+    return this.required ? !!value : true;
   }
 }

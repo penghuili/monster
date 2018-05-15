@@ -47,8 +47,8 @@ export class ProjectCreateSubComponent extends Unsub {
   }
 
   private reset() {
-    this.titleControl.setValue('');
-    this.resultControl.setValue('');
+    this.titleControl.reset();
+    this.resultControl.reset();
   }
 
 }

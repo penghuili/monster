@@ -69,8 +69,8 @@ export class ProjectCreateComponent extends Unsub {
   }
 
   private reset() {
-    this.titleControl.setValue('');
-    this.resultControl.setValue('');
+    this.titleControl.reset();
+    this.resultControl.reset();
     this.status = ProjectStatus.InProgress;
     this.startDate = now();
     this.endDate = this.endDateStartDate;

@@ -34,7 +34,7 @@ export class ReportSummaryComponent extends Unsub implements OnChanges {
             this.summaryControl.setValue(reportWithTodos.report.summary);
             this.autoFocus = false;
           } else {
-            this.summaryControl.setValue('');
+            this.summaryControl.reset();
             this.autoFocus = true;
           }
         })
