@@ -22,6 +22,7 @@ export class ProjectListComponent extends Unsub implements OnInit {
   @Output() selected = new EventEmitter<ProjectWithSubproject>();
 
   projects: Project[];
+  somedayProjects: Project[];
   subprojects: Subproject[];
 
   isShow = false;
@@ -42,6 +43,7 @@ export class ProjectListComponent extends Unsub implements OnInit {
     this.addSubscription(
       this.projectService.getProjects().subscribe(data => {
         this.projects = data.filter(a => a.status === ProjectStatus.InProgress);
+        this.somedayProjects = data.filter(a => a.status === ProjectStatus.Someday);
       })
     );
 

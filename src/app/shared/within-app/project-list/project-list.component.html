@@ -20,5 +20,22 @@
           (click)="onSelectSubproject(subproject)"></mst-project-item>
       </div>
     </div>
+
+    <div [mstTextAlign]="'center'" *ngIf="somedayProjects && somedayProjects.length > 0">
+      someday
+    </div>
+    <div *ngFor="let project of somedayProjects">
+      <mst-project-item
+        [project]="project"
+        (click)="onSelectProject(project)">
+      </mst-project-item>
+      <div *ngIf="activeProject && activeProject.id === project.id"
+        [mstPadding]="'0 0 0 1rem'">
+        <mst-project-item
+          *ngFor="let subproject of subprojects"
+          [project]="subproject"
+          (click)="onSelectSubproject(subproject)"></mst-project-item>
+      </div>
+    </div>
   </ng-container>
 </mst-overlay>
