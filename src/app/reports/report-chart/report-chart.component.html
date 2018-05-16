@@ -1,3 +1,37 @@
 <div fxLayout="row" fxLayoutAlign="center" [mstPadding]="'2rem 0'">
   <mst-progress-chart [data]="data"></mst-progress-chart>
 </div>
+
+<div>
+  <div class="mst-report-chart-button"
+  [class.mst-report-chart-button--active]="active === RATIO"
+  (click)="onRatio()">finished ratio</div>
+  
+  <div class="mst-report-chart-button"
+  [class.mst-report-chart-button--active]="active === PLANNEDFINISHED"
+  (click)="onPlannedFinished()">finished planned</div>
+
+  <div class="mst-report-chart-button"
+  [class.mst-report-chart-button--active]="active === PLANNEDUSEDTIME"
+  (click)="onPlannedUsedTime()">planned used time</div>
+
+  <div class="mst-report-chart-button"
+  [class.mst-report-chart-button--active]="active === FINISHTOO"
+  (click)="onFinishToo()">finish time is weird</div>
+
+  <div class="mst-report-chart-button"
+  [class.mst-report-chart-button--active]="active === ADDLATER"
+  (click)="onAddLater()">add later</div>
+
+  <div class="mst-report-chart-button"
+  [class.mst-report-chart-button--active]="active === BEFORE"
+  (click)="onBefore()">before</div>
+
+  <div class="mst-report-chart-button"
+  [class.mst-report-chart-button--active]="active === WAITING"
+  (click)="onWaiting()">waiting</div>
+
+  <div class="mst-report-chart-button"
+  [class.mst-report-chart-button--active]="active === WONTDO"
+  (click)="onWontdo()">won't do</div>
+</div>

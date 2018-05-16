@@ -1,0 +1,8 @@
+@import '../../static/variables';
+
+.mst-report-chart-button {
+  padding: 0.5rem 1rem;
+}
+.mst-report-chart-button--active {
+  border: 1px $accent solid;
+}
