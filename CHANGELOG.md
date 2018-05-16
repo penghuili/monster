@@ -1,3 +1,10 @@
+#v1.13.1
+
+bug fix:
+
+- time in chart is hours now
+- calc used time correctly
+
 #v1.13.0
 
 feature:

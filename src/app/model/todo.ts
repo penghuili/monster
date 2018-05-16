@@ -91,6 +91,9 @@ export function calcUsedTime(startSopEvents: Event[], endOfTimeRange: number, to
   let stopEvents: Event[];
 
   const eventsOfTimeRange = startSopEvents.filter(a => a.createdAt < endOfTimeRange);
+  if (eventsOfTimeRange[0] && eventsOfTimeRange[0].action === MonsterEvents.StopTodo) {
+    eventsOfTimeRange.unshift();
+  }
   startEvents = eventsOfTimeRange.filter(a => a.action === MonsterEvents.StartTodo);
   stopEvents = eventsOfTimeRange.filter(a => a.action === MonsterEvents.StopTodo);
 
