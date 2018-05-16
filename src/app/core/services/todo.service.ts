@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {
-  calcUsedTime,
   createTodo,
   endOfWeek,
   Event,
@@ -182,41 +181,6 @@ export class TodoService {
         }
       })
     );
-  }
-  addUsedTimeToAllTodos() {
-    const db = this.dbService.getDB();
-    const transaction = db.transaction('rw', db.todos, db.events, () => {
-      let events: Event[];
-      return db.events
-        .where('type')
-        .equals(EventType.Todo)
-        .toArray()
-        .then(es => {
-          events = es;
-          return db.todos.toArray();
-        })
-        .then(todos => {
-          return [events, todos];
-        });
-    });
-    fromPromise(transaction).subscribe(([events, todos]) => {
-      const startSopEvents = (<Event[]>events).filter(a => a.action === MonsterEvents.StartTodo || a.action === MonsterEvents.StopTodo);
-      if (startSopEvents.length % 2 === 0) {
-        const todosWithUsedTime = (<Todo[]>todos).map(a => {
-          a.usedTime = calcUsedTime(startSopEvents, a.id);
-          return a;
-        });
-        db.todos.bulkPut(todosWithUsedTime)
-        .then(() => {
-          this.notificationService.sendMessage('add used time success');
-        })
-        .catch(error => {
-          alert(error);
-        });
-      } else {
-        this.notificationService.sendMessage('events should be even');
-      }
-    });
   }
 
   private handleError(message: string): Observable<any> {

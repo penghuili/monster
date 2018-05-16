@@ -1,4 +1,5 @@
-import { Event } from '@app/model';
+import { Event, MonsterEvents } from '@app/model';
+import { last } from 'ramda';
 
 import { SortableItem, sortByPosition } from './item';
 import { isBeforeToday, isWithinDay, now, startOfToday } from './time';
@@ -69,9 +70,27 @@ export function isTodayEnded(): boolean {
   const end = MonsterStorage.get('end-today');
   return end && end < now() && end > startOfToday();
 }
-export function calcUsedTime(startSopEvents: Event[], todoId: number): number {
-  let startEvents = startSopEvents.filter((a, i) => i % 2 === 0);
-  let stopEvents = startSopEvents.filter((a, i) => i % 2 === 1);
+export function calcUsedTime(startSopEvents: Event[], endOfTimeRange: number, todoId: number): number {
+  let startEvents: Event[];
+  let stopEvents: Event[];
+
+  const eventsOfTimeRange = startSopEvents.filter(a => a.createdAt < endOfTimeRange);
+  startEvents = eventsOfTimeRange.filter(a => a.action === MonsterEvents.StartTodo);
+  stopEvents = eventsOfTimeRange.filter(a => a.action === MonsterEvents.StopTodo);
+
+  const lastEventOfTimeRange = last(eventsOfTimeRange);
+  if (lastEventOfTimeRange.action === MonsterEvents.StartTodo) {
+    const secondDayEvents = startSopEvents.filter(a => a.createdAt > endOfTimeRange);
+    const firstEventOfSecondDay = secondDayEvents[0];
+    if (firstEventOfSecondDay &&
+      firstEventOfSecondDay.action === MonsterEvents.StopTodo &&
+      firstEventOfSecondDay.refId === lastEventOfTimeRange.refId) {
+        stopEvents.push(firstEventOfSecondDay);
+    } else {
+      startEvents.pop();
+    }
+  }
+
   if (todoId !== undefined) {
     startEvents = startEvents.filter(a => a.refId === todoId);
     stopEvents = stopEvents.filter(a => a.refId === todoId);
