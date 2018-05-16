@@ -69,12 +69,11 @@ export class ReportService {
       })
     );
   }
-  getReports(mode: TimeRangeType): Observable<Report[]> {
+  getReports(mode?: TimeRangeType): Observable<Report[]> {
     this.loadingService.isLoading();
     return fromPromise(
       this.dbService.getDB().reports
-        .where('type')
-        .equals(mode)
+        .filter(a => mode === undefined ? true : a.type === mode)
         .toArray()
     ).pipe(
       catchError(error => this.handleError('getReports fails.')),

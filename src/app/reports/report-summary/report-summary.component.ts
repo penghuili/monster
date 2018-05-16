@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { NotificationService, ReportService } from '@app/core';
 import { Report, TimeRangeType } from '@app/model';
 import { InputControl } from '@app/shared';
@@ -8,14 +8,14 @@ import { merge } from 'ramda';
 @Component({
   selector: 'mst-report-summary',
   templateUrl: './report-summary.component.html',
-  styleUrls: ['./report-summary.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./report-summary.component.scss']
 })
-export class ReportSummaryComponent extends Unsub implements OnChanges {
+export class ReportSummaryComponent extends Unsub implements OnChanges, OnInit {
   @Input() date: number;
   @Input() mode: TimeRangeType;
   summaryControl = new InputControl();
   autoFocus = false;
+  reports: Report[];
 
   private report: Report;
 
@@ -23,6 +23,14 @@ export class ReportSummaryComponent extends Unsub implements OnChanges {
     private notificationService: NotificationService,
     private reportService: ReportService) {
     super();
+  }
+
+  ngOnInit() {
+    this.addSubscription(
+      this.reportService.getReports().subscribe(reports => {
+        this.reports = reports ? reports.filter(a => !!a.summary).sort((a, b) => b.date - a.date) : [];
+      })
+    );
   }
 
   ngOnChanges(changes: SimpleChanges) {

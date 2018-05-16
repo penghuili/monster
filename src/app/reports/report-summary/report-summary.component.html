@@ -6,3 +6,13 @@ minHeight="3rem"></mst-input>
 <div [mstPadding]="'1rem 0 0'">
   <mst-icon name="done" (click)="onCreate()"></mst-icon>
 </div>
+
+<div [mstPadding]="'2rem 0 0'">
+  <div *ngFor="let report of reports" [mstPadding]="'0.5rem 0'">
+    <div>
+      <sub>{{ report.date | mstDate:'shortDate' }}</sub>
+      <sub>{{ report.type | timeRangeType }}</sub>
+    </div>
+    <div>{{ report.summary }}</div>
+  </div>
+</div>
