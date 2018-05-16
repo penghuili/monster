@@ -1,10 +1,13 @@
-<mst-activity-item *ngFor="let activity of activities; let i = index"
-  [activity]="activity" [nextActivity]="activities[i+1]" [data]="data[i]"></mst-activity-item>
+<div #activityWrapper>
+  <mst-activity-item *ngFor="let activity of activities; let i = index"
+    [activity]="activity" [nextActivity]="activities[i+1]" [data]="data[i]"></mst-activity-item>
+</div>
 
 <div *ngIf="(!activities || activities.length === 0) && !isLoading" [mstPadding]="'2rem 0 0'">
   no activity for {{ date | mstDate:'shortDate' }}
 </div>
 
 <div class="mst-activity-up">
-  <mst-icon name="keyboard_arrow_up" (click)="onToTop()"></mst-icon>
+  <mst-icon *ngIf="!showToBottom" name="keyboard_arrow_up" (click)="onToTop()"></mst-icon>
+  <mst-icon *ngIf="showToBottom" name="keyboard_arrow_down" (click)="onToBottom()"></mst-icon>
 </div>

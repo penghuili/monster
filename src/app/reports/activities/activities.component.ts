@@ -1,7 +1,9 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, ViewChild } from '@angular/core';
 import { ReportService } from '@app/core';
 import { Event, EventType, now, Project, Record, Subproject, TimeRangeType, Todo } from '@app/model';
-import { Unsub } from '@app/static';
+import { FONT_SIZE, Unsub } from '@app/static';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'mst-activities',
@@ -11,14 +13,21 @@ import { Unsub } from '@app/static';
 export class ActivitiesComponent extends Unsub implements OnChanges {
   @Input() date: number;
   @Input() mode: TimeRangeType;
+  @ViewChild('activityWrapper') wrapper: ElementRef;
   activities: Event[] = [];
   data: (Project | Subproject | Todo | Record)[];
   isLoading: boolean;
+  showToBottom = true;
 
   private _date = now();
 
   constructor(private reportService: ReportService) {
     super();
+    this.addSubscription(
+      fromEvent(window, 'scroll').pipe(debounceTime(300)).subscribe(() => {
+        this.showToBottom = window.scrollY + window.innerHeight + FONT_SIZE * 2 < document.body.offsetHeight;
+      })
+    );
   }
 
   ngOnChanges() {
@@ -30,6 +39,10 @@ export class ActivitiesComponent extends Unsub implements OnChanges {
   onToTop() {
     window.scrollTo(0, 0);
   }
+  onToBottom() {
+    window.scrollTo(0, document.body.scrollHeight);
+  }
+
   private getActivities(date: number, mode: TimeRangeType) {
     this.isLoading = true;
     this.activities = [];
