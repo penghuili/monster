@@ -66,11 +66,11 @@ export class ReportChartComponent extends Unsub implements OnInit {
     this.data = [
       {
         name: 'planned time',
-        series: this.reports.map(a => ({ name: new Date(a.date), value: a.plannedTime }))
+        series: this.reports.map(a => ({ name: new Date(a.date), value: a.plannedTime / 60 }))
       },
       {
         name: 'used time',
-        series: this.reports.map(a => ({ name: new Date(a.date), value: a.usedTimeOfTimeRange }))
+        series: this.reports.map(a => ({ name: new Date(a.date), value: a.usedTimeOfTimeRange / 60 }))
       }
     ];
   }

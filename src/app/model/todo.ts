@@ -95,7 +95,7 @@ export function calcUsedTime(startSopEvents: Event[], endOfTimeRange: number, to
   stopEvents = eventsOfTimeRange.filter(a => a.action === MonsterEvents.StopTodo);
 
   const lastEventOfTimeRange = last(eventsOfTimeRange);
-  if (lastEventOfTimeRange.action === MonsterEvents.StartTodo) {
+  if (lastEventOfTimeRange && lastEventOfTimeRange.action === MonsterEvents.StartTodo) {
     const secondDayEvents = startSopEvents.filter(a => a.createdAt > endOfTimeRange);
     const firstEventOfSecondDay = secondDayEvents[0];
     if (firstEventOfSecondDay &&
