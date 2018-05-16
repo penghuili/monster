@@ -1,3 +1,16 @@
+#v1.13.0
+
+feature:
+
+- more report chart
+- scroll to top bottom
+- show time for timer, not percentage
+- show all report summary
+
+bug fix:
+
+- make sure start end right
+
 # v1.12.1
 
 feature:

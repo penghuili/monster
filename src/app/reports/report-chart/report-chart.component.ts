@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ReportService } from '@app/core';
-import { ChartDataItem, createChartData, TimeRangeType, Report } from '@app/model';
+import { ChartDataItem, Report, TimeRangeType } from '@app/model';
 import { Unsub } from '@app/static';
 
 @Component({
