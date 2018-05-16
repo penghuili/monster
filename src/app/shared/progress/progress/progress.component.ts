@@ -5,6 +5,7 @@ import {
   Input,
   OnChanges,
   OnInit,
+  SimpleChanges,
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
@@ -21,6 +22,7 @@ export class ProgressComponent implements OnInit, OnChanges {
   // percent
   @Input() progress = 0;
   @Input() starting = false;
+  @Input() label: string;
   @Input() endLabel: string;
   @ViewChild('bar') bar: ElementRef;
 
@@ -34,8 +36,10 @@ export class ProgressComponent implements OnInit, OnChanges {
     this.barWidth = this.bar.nativeElement.clientWidth;
     this.getLeft();
   }
-  ngOnChanges() {
-    this.getLeft();
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['process']) {
+      this.getLeft();
+    }
   }
 
   private getLeft() {
