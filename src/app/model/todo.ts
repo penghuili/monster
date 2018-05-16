@@ -1,6 +1,6 @@
-import { Event, MonsterEvents } from '@app/model';
 import { last } from 'ramda';
 
+import { Event, MonsterEvents } from './event';
 import { SortableItem, sortByPosition } from './item';
 import { isBeforeToday, isWithinDay, now, startOfToday } from './time';
 import { MonsterStorage } from './utils';
@@ -43,6 +43,22 @@ export function createTodo(data: any): Todo {
     updatedAt: timestamp,
     addedLater: data.addedLater
   };
+}
+export function mapTodoStatusEvent(status: TodoStatus): string {
+  switch (status) {
+    case TodoStatus.InProgress:
+      return MonsterEvents.InProgressTodo;
+    case TodoStatus.Waiting:
+      return MonsterEvents.WaitingTodo;
+    case TodoStatus.Someday:
+      return MonsterEvents.SomedayTodo;
+    case TodoStatus.Done:
+      return MonsterEvents.DoneTodo;
+    case TodoStatus.WontDo:
+      return MonsterEvents.WontDoTodo;
+    default:
+      throw Error('invalid todo status');
+  }
 }
 export function isOverDue(todo: Todo): boolean {
   return isBeforeToday(todo.happenDate) && !isFinished(todo);

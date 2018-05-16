@@ -56,31 +56,3 @@ export function createEvent(data: any): Event {
     newValue: data.newValue
   };
 }
-export function mapTodoStatusEvent(status: TodoStatus): string {
-  switch (status) {
-    case TodoStatus.InProgress:
-      return MonsterEvents.InProgressTodo;
-    case TodoStatus.Waiting:
-      return MonsterEvents.WaitingTodo;
-    case TodoStatus.Someday:
-      return MonsterEvents.SomedayTodo;
-    case TodoStatus.Done:
-      return MonsterEvents.DoneTodo;
-    case TodoStatus.WontDo:
-      return MonsterEvents.WontDoTodo;
-    default:
-      throw Error('invalid todo status');
-  }
-}
-export function mapProjectStatusEvent(status: ProjectStatus): string {
-  switch (status) {
-    case ProjectStatus.InProgress:
-      return MonsterEvents.InProgressTodo;
-    case ProjectStatus.Someday:
-      return MonsterEvents.SomedayTodo;
-    case ProjectStatus.Done:
-      return MonsterEvents.DoneTodo;
-    default:
-      throw Error('invalid project status');
-  }
-}

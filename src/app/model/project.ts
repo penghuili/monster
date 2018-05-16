@@ -1,7 +1,7 @@
-import { Todo } from '@app/model';
-
+import { MonsterEvents } from './event';
 import { SortableItem } from './item';
 import { now } from './time';
+import { Todo } from './todo';
 
 export interface ProjectBase extends SortableItem {
   result: string;
@@ -67,4 +67,16 @@ export function createSubproject(data: any): Subproject {
     updatedAt: timestamp,
     position: `${timestamp}3`
   };
+}
+export function mapProjectStatusEvent(status: ProjectStatus): string {
+  switch (status) {
+    case ProjectStatus.InProgress:
+      return MonsterEvents.InProgressTodo;
+    case ProjectStatus.Someday:
+      return MonsterEvents.SomedayTodo;
+    case ProjectStatus.Done:
+      return MonsterEvents.DoneTodo;
+    default:
+      throw Error('invalid project status');
+  }
 }

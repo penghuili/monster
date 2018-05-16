@@ -204,16 +204,17 @@ export class ReportService {
     let start: number;
     let end: number;
     [start, end] = getStartEnd(date, mode);
+    const endPlus6Hours = end + 6 * 60 * 60 * 1000;
 
     return fromPromise(
       this.dbService.getDB().events
-        .filter(x => x.createdAt > start && x.createdAt < end &&
+        .filter(x => x.createdAt > start && x.createdAt < endPlus6Hours &&
           (x.action === MonsterEvents.StartTodo || x.action === MonsterEvents.StopTodo) &&
           (todoId ? x.refId === todoId : true)
         )
         .toArray()
     ).pipe(
-      map(events => calcUsedTime(events, todoId)),
+      map(events => calcUsedTime(events, end, todoId)),
       catchError(error => {
         this.notificationService.sendMessage('getUsedTime failed');
         return of(0);
