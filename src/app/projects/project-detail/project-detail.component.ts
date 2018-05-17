@@ -217,7 +217,7 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
       refId: this.project.id,
       type: EventType.Project
     };
-    this.eventService.add(event);
+    this.eventService.add(event).subscribe();
   }
   private update(data: any) {
     if (this.titleControl.valid && this.resultControl.valid) {

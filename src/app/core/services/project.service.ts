@@ -105,7 +105,7 @@ export class ProjectService {
           refId: id,
           type: EventType.Project,
           action: MonsterEvents.CreateProject
-        });
+        }).subscribe();
       })
     ).pipe(
       catchError(error => this.handleError('addProject fails')),

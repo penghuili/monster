@@ -127,7 +127,7 @@ export class TodoService {
           type: EventType.Todo,
           refId: id,
           action: MonsterEvents.CreateTodo
-        });
+        }).subscribe();
       }),
       catchError(error => this.handleError('create fails')),
       tap(success => {

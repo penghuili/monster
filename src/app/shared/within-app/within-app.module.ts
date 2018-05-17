@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { RouterModule } from '@angular/router';
 
 import { ButtonModule } from '../button/button.module';
 import { MonsterCommonModule } from '../common/common.module';
@@ -9,7 +10,16 @@ import { DurationPickerModule } from '../duration-picker/duration-picker.module'
 import { IconModule } from '../icon/icon.module';
 import { InputModule } from '../input/input.module';
 import { OverlayModule } from '../overlay/overlay.module';
+import { PipesModule } from '../pipes/pipes.module';
 import { StylingModule } from '../styling/styling.module';
+import { TimelineModule } from '../timeline/timeline.module';
+import { ActivityItemProjectComponent } from './activity-item/activity-item-project/activity-item-project.component';
+import { ActivityItemRecordComponent } from './activity-item/activity-item-record/activity-item-record.component';
+import {
+  ActivityItemSubprojectComponent,
+} from './activity-item/activity-item-subproject/activity-item-subproject.component';
+import { ActivityItemTodoComponent } from './activity-item/activity-item-todo/activity-item-todo.component';
+import { ActivityItemComponent } from './activity-item/activity-item.component';
 import { ExpectedTimePipe } from './pipes/expected-time.pipe';
 import { ProjectStatusPipe } from './pipes/project-status.pipe';
 import { TodoStatusPipe } from './pipes/todo-status.pipe';
@@ -31,7 +41,10 @@ import { TodoStatusPickerComponent } from './todo-status-picker/todo-status-pick
     StylingModule,
     DatepickerModule,
     DurationPickerModule,
-    MonsterCommonModule
+    MonsterCommonModule,
+    RouterModule,
+    PipesModule,
+    TimelineModule
   ],
   declarations: [
     TodoCreateComponent,
@@ -42,7 +55,13 @@ import { TodoStatusPickerComponent } from './todo-status-picker/todo-status-pick
     TodoStatusPickerComponent,
     ProjectStatusPickerComponent,
     ProjectStatusPipe,
-    ExpectedTimePipe
+    ExpectedTimePipe,
+    ActivityItemProjectComponent,
+    ActivityItemSubprojectComponent,
+    ActivityItemTodoComponent,
+    ActivityItemRecordComponent,
+    ActivityItemProjectComponent,
+    ActivityItemComponent
   ],
   exports: [
     TodoStatusPipe,
@@ -54,7 +73,8 @@ import { TodoStatusPickerComponent } from './todo-status-picker/todo-status-pick
     TodoItemComponent,
     ProjectItemComponent,
     TodoStatusPickerComponent,
-    ProjectStatusPickerComponent
+    ProjectStatusPickerComponent,
+    ActivityItemComponent
   ]
 })
 export class WithinAppModule { }

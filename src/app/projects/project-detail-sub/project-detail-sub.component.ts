@@ -95,7 +95,7 @@ export class ProjectDetailSubComponent extends Unsub implements OnInit {
       oldValue: this.subproject.status,
       newValue: status
     };
-    this.eventService.add(event);
+    this.eventService.add(event).subscribe();
     this.update({ status });
   }
   onGotoTodo(id: string) {

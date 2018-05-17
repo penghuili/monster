@@ -1,5 +1,8 @@
 <ng-container *ngIf="todo">
-  <mst-go-back></mst-go-back>
+  <div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'0 1rem 0 0'">
+    <mst-go-back></mst-go-back>
+    <div>{{ todo.happenDate | daysDiff }}</div>
+  </div>
 
   <div class="mst-todo-detail-title-wrapper">
     <span class="mst-todo-detail-index" [style.width.rem]="todo.id < 100 ? 2 : 2.5">{{ todo.id }}: </span>
@@ -31,4 +34,18 @@
   <mst-input
     [control]="noteControl"
     minHeight="3rem"></mst-input>
+
+  <div [mstPadding]="'3rem 0'">
+    current thought:
+    <mst-input
+      [control]="currentThoughtControl"
+      minHeight="3rem"></mst-input>
+    <mst-icon name="done" (click)="onAddCurrentThought()"></mst-icon>
+  </div>
+
+  activities:
+  <div [mstPadding]="'1rem'">
+    <mst-activity-item *ngFor="let activity of activities; let i = index"
+    [activity]="activity" [nextActivity]="activities[i+1]" [data]="todo"></mst-activity-item>
+  </div>
 </ng-container>

@@ -73,7 +73,7 @@ export class RecordService {
             refId: id,
             type: EventType.Record,
             action: MonsterEvents.CreateRecord
-          });
+          }).subscribe();
         }
       })
     );

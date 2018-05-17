@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService, ProjectService, SubprojectService, TodoService } from '@app/core';
 import {
+  Event,
   EventType,
   isAfterToday,
   isBeforeToday,
@@ -24,9 +25,10 @@ import { Unsub } from '@app/static';
 import { addDays, isToday } from 'date-fns';
 import { merge } from 'ramda';
 import { of } from 'rxjs/observable/of';
-import { debounceTime, switchMap, tap } from 'rxjs/operators';
+import { debounceTime, switchMap, tap, startWith } from 'rxjs/operators';
 
 import { TodoTimerComponent } from './todo-timer/todo-timer.component';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'mst-todo-detail',
@@ -38,6 +40,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   todo: Todo;
   titleControl = new InputControl({ required: true });
   noteControl = new InputControl();
+  currentThoughtControl = new InputControl();
   currentSubproject: Subproject;
   status: TodoStatus;
 
@@ -50,6 +53,9 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   isDoing = false;
   finished = true;
 
+  activities: Event[];
+  private laodEvents = new Subject<boolean>();
+
   constructor(
     private eventService: EventService,
     private projectService: ProjectService,
@@ -61,10 +67,12 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     }
 
   ngOnInit() {
+    const id = +this.route.snapshot.paramMap.get('id');
+
     this.datePickerStartDate = isTodayStarted() ? addDays(now(), 1).getTime() : now();
 
     this.addSubscription(
-      this.todoService.getById(+this.route.snapshot.paramMap.get('id')).pipe(
+      this.todoService.getById(id).pipe(
         tap(todo => {
           this.todo = todo;
           this.titleControl.setValue(this.todo.title);
@@ -80,6 +88,15 @@ export class TodoDetailComponent extends Unsub implements OnInit {
         })
       ).subscribe((project: Project) => {
         this.setDatepickerRange(project);
+      })
+    );
+
+    this.addSubscription(
+      this.laodEvents.asObservable().pipe(
+        startWith(true),
+        switchMap(() => this.eventService.getEventsByTodoId(id))
+      ).subscribe(activities => {
+        this.activities = activities ? activities : [];
       })
     );
 
@@ -185,6 +202,12 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     this.update(data);
     this.startAt = undefined;
   }
+  onAddCurrentThought() {
+    const thought = this.currentThoughtControl.getValue();
+    if (thought) {
+      this.emitEvent({ action: MonsterEvents.CurrentThougntTodo, newValue: thought });
+    }
+  }
   onBack() {
     this.router.navigate([ '../' ], { relativeTo: this.route });
   }
@@ -206,7 +229,12 @@ export class TodoDetailComponent extends Unsub implements OnInit {
       refId: this.todo.id,
       type: EventType.Todo
     };
-    this.eventService.add(event);
+    this.eventService.add(event).subscribe(success => {
+      if (success) {
+        this.laodEvents.next(true);
+        this.currentThoughtControl.reset();
+      }
+    });
   }
   private update(data: any) {
     if (this.titleControl.valid) {

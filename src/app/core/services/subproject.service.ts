@@ -98,7 +98,7 @@ export class SubprojectService {
           refId: id,
           type: EventType.Subproject,
           action: MonsterEvents.CreateSubproject
-        });
+        }).subscribe();
       })
     ).pipe(
       catchError(error => this.handleError('addSubproject fails')),
