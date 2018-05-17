@@ -56,7 +56,7 @@ export class TodoTimerComponent implements OnChanges {
   }
   private parseSeconds(seconds: number): string {
     const hours = Math.floor(seconds / 3600);
-    const mins = Math.floor(seconds / 60);
+    const mins = Math.floor((seconds - hours * 3600) / 60);
     const secs = seconds - hours * 3600 - mins * 60;
     return hours > 0 ? `${add0(hours)}:${add0(mins)}:${add0(secs)}` : `${add0(mins)}:${add0(secs)}`;
   }
