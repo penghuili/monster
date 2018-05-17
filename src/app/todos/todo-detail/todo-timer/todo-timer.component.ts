@@ -21,10 +21,11 @@ export class TodoTimerComponent implements OnChanges {
   private sub: Subscription;
 
   ngOnChanges() {
-    if (this.expectedTime) {
+    if (this.expectedTime && this.usedTime !== undefined) {
       this.expectedTime = this.expectedTime;
       this.usedTime = this.usedTime || 0;
       this.totalTime = this.parseMinute(this.expectedTime);
+      this.label = this.parseSeconds(this.usedTime * 60);
       this.prevProgress = this.usedTime / this.expectedTime;
       this.progress = this.prevProgress;
     }
@@ -39,7 +40,7 @@ export class TodoTimerComponent implements OnChanges {
       const seconds = this.expectedTime * 60;
       this.sub = interval(1000).subscribe(a => {
         this.progress = this.prevProgress + a / seconds;
-        this.label = this.parseSeconds(a);
+        this.label = this.parseSeconds(a + this.usedTime * 60);
       });
     }
   }

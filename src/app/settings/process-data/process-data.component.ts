@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { DbService, NotificationService, ProjectService, ReportService, TodoService } from '@app/core';
-import { MonsterStorage } from '@app/model';
+import { merge } from 'ramda';
+import { fromPromise } from 'rxjs/observable/fromPromise';
 
 @Component({
   selector: 'mst-process-data',
@@ -19,5 +20,9 @@ export class ProcessDataComponent {
 
 
   onProcess() {
+    fromPromise(this.dbService.getDB().todos.toArray()).subscribe(todos => {
+      todos = todos.map(a => merge(a, { usedTime: a.usedTime * 60 }));
+      this.dbService.getDB().todos.bulkPut(todos);
+    });
   }
 }
