@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { IconsService } from '@app/core';
-import { ROUTES } from '@app/static';
 
 @Component({
   selector: 'mst-root',
