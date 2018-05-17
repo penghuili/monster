@@ -5,6 +5,6 @@
   <div class="mst-progress-thumb-wrapper" [style.left.px]="thumbLeft">
     <div class="mst-progress-thumb-shadow" [class.mst-progress-thumb-shadow--error]="invalidWidth > 0" *ngIf="starting"></div>
     <mst-icon class="mst-progress-thumb" name="label" color="accent"></mst-icon>
-    <div class="mst-progress-thumb-label">{{ label }}</div>
+    <div class="mst-progress-thumb-label" [style.left]="labelLeft" [style.right]="labelRight">{{ label }}</div>
   </div>
 </div>
