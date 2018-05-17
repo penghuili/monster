@@ -1,11 +1,17 @@
-#v1.13.1
+## v1.13.2
+
+bug fix:
+
+- show default time for timer
+
+## v1.13.1
 
 bug fix:
 
 - time in chart is hours now
 - calc used time correctly
 
-#v1.13.0
+## v1.13.0
 
 feature:
 
@@ -18,19 +24,19 @@ bug fix:
 
 - make sure start end right
 
-# v1.12.1
+## v1.12.1
 
 feature:
 
 - project timeline
 
-# v1.12.0
+## v1.12.0
 
 feature:
 
 - add urgent todos to today
 
-#v1.11.10
+## v1.11.10
 
 bug fix:
 
@@ -38,7 +44,7 @@ bug fix:
 - show someday projects in project list
 - scroll to top on activities
 
-#v1.11.9
+## v1.11.9
 
 feature:
 
@@ -51,7 +57,7 @@ bug fix;
 
 - always get start end date of sub from database
 
-#v1.11.8
+## v1.11.8
 
 bug fix:
 
