@@ -1,33 +1,35 @@
 <mst-go-back></mst-go-back>
 
-<mst-input [control]="titleControl"></mst-input>
-
-<div fxLayout="row" fxLayoutAlign="center center" [mstPadding]="'1rem'">
-  <div fxFlex="30%">
-    <mst-project-status-picker [status]="status" (select)="onSelectStatus($event)"></mst-project-status-picker>
+<ng-container *ngIf="project">
+  <mst-input [control]="titleControl"></mst-input>
+  
+  <div fxLayout="row" fxLayoutAlign="center center" [mstPadding]="'1rem'">
+    <div fxFlex="30%">
+      <mst-project-status-picker [status]="status" (select)="onSelectStatus($event)"></mst-project-status-picker>
+    </div>
+    <div [mstPadding]="'0 0 0 2rem'" fxFlex="70%" fxLayout="row" fxLayoutAlign="space-between center">
+      <mst-datepicker [mode]="TimeRangeType.Day" [defaultDate]="startDate" (finish)="onPickStartDate($event)"></mst-datepicker>
+      <mst-icon name="arrow_forward"></mst-icon>
+      <mst-datepicker [mode]="TimeRangeType.Day" [defaultDate]="endDate" [startDate]="endDateStartDate" (finish)="onPickEndDate($event)"></mst-datepicker>
+    </div>
   </div>
-  <div [mstPadding]="'0 0 0 2rem'" fxFlex="70%" fxLayout="row" fxLayoutAlign="space-between center">
-    <mst-datepicker [mode]="TimeRangeType.Day" [defaultDate]="startDate" (finish)="onPickStartDate($event)"></mst-datepicker>
-    <mst-icon name="arrow_forward"></mst-icon>
-    <mst-datepicker [mode]="TimeRangeType.Day" [defaultDate]="endDate" [startDate]="endDateStartDate" (finish)="onPickEndDate($event)"></mst-datepicker>
+  
+  <mst-input
+    [control]="resultControl"
+    minHeight="3rem"></mst-input>
+  
+  <mst-tab [tabs]="tabs" [defaultTabKey]="GROWTH" [padding]="'1rem 2rem'" (change)="onChangeTab($event)"></mst-tab>
+  <div fxLayout="row" fxLayoutAlign="center" [mstPadding]="'2rem 0'" *ngIf="activeTab === GROWTH">
+    <mst-progress-chart [data]="chartData"></mst-progress-chart>
   </div>
-</div>
-
-<mst-input
-  [control]="resultControl"
-  minHeight="3rem"></mst-input>
-
-<mst-tab [tabs]="tabs" [defaultTabKey]="GROWTH" [padding]="'1rem 2rem'" (change)="onChangeTab($event)"></mst-tab>
-<div fxLayout="row" fxLayoutAlign="center" [mstPadding]="'2rem 0'" *ngIf="activeTab === GROWTH">
-  <mst-progress-chart [data]="chartData"></mst-progress-chart>
-</div>
-<div *ngIf="activeTab === TIMELINE" [mstPadding]="'1rem 0 0'">
-  <mst-project-timeline [items]="timelineData" [start]="startDate"></mst-project-timeline>
-</div>
-
-<mst-project-create-sub (created)="onCreateSub()" [project]="project"></mst-project-create-sub>
-
-<mst-project-item *ngFor="let subproject of subprojects"
-  (click)="onGotoSub(subproject.id)"
-  [project]="subproject"></mst-project-item>
+  <div *ngIf="activeTab === TIMELINE" [mstPadding]="'1rem 0 0'">
+    <mst-project-timeline [items]="timelineData" [start]="startDate"></mst-project-timeline>
+  </div>
+  
+  <mst-project-create-sub (created)="onCreateSub()" [project]="project"></mst-project-create-sub>
+  
+  <mst-project-item *ngFor="let subproject of subprojects"
+    (click)="onGotoSub(subproject.id)"
+    [project]="subproject"></mst-project-item>
+</ng-container>
 

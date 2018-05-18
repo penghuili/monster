@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ProjectBase, ProjectStatus } from '@app/model';
+import { now, Project, ProjectStatus } from '@app/model';
+import { startOfDay } from 'date-fns';
 
 @Component({
   selector: 'mst-project-item',
@@ -8,7 +9,13 @@ import { ProjectBase, ProjectStatus } from '@app/model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProjectItemComponent {
-  @Input() project: ProjectBase;
+  @Input() project: Project;
 
   ProjectStatus = ProjectStatus;
+
+  getColor(): string {
+    return this.project.status === ProjectStatus.Done ? 'grey' :
+      this.project.status === ProjectStatus.Someday ? 'yellow' :
+      this.project.endDate < startOfDay(now()).getTime() ? 'error' : null;
+  }
 }

@@ -1,10 +1,14 @@
-<!-- <mst-action-button [showPlus]="true" (clicked)="onOpen()"></mst-action-button>
+<mst-action-button [showPlus]="true" (clicked)="onOpen()"></mst-action-button>
 
 <mst-overlay *ngIf="isShow">
   <ng-container *ngIf="isShow">
     <mst-input
       [control]="titleControl"
       [autoFocus]="true"></mst-input>
+
+    <div [mstPadding]="'2rem 1rem 0'">
+      <mst-week-day-picker (selected)="onSelectWeekDays($event)"></mst-week-day-picker>
+    </div>
     
     <div fxLayout="row" fxLayoutAlign="center center" [mstPadding]="'1rem'">
       <div fxFlex="30%">
@@ -16,7 +20,7 @@
         <mst-datepicker [mode]="TimeRangeType.Day" [defaultDate]="endDate" [startDate]="endDateStartDate" (finish)="onPickEndDate($event)"></mst-datepicker>
       </div>
     </div>
-    
+  
     <mst-input
       [control]="resultControl"
       minHeight="3rem"></mst-input>
@@ -25,4 +29,4 @@
       (confirm)="onFinish()"
       (cancel)="onCancel()"></mst-cancel-confirm>
   </ng-container>
-</mst-overlay> -->
+</mst-overlay>

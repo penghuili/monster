@@ -1,3 +1,30 @@
-<p>
-  habits works!
-</p>
+<mst-drop-zone>
+  <mst-drag-item *ngFor="let habit of activeHabits; let i = index;"
+    [item]="habit"
+    [index]="i">
+    <mst-project-item
+      [project]="habit"
+      (click)="onShowDetail(habit)">
+    </mst-project-item>
+  </mst-drag-item>
+</mst-drop-zone>
+
+
+<ng-container *ngIf="somedayHabits && somedayHabits.length > 0">
+  <div [mstTextAlign]="'center'" [mstPadding]="'2rem 0 0'">Someday</div>
+  <mst-project-item *ngFor="let habit of somedayHabits"
+    [project]="habit"
+    (click)="onShowDetail(habit)">
+  </mst-project-item>
+</ng-container>
+
+
+<ng-container *ngIf="doneHabits && doneHabits.length > 0">
+  <div [mstTextAlign]="'center'" [mstPadding]="'2rem 0 0'">Done</div>
+  <mst-project-item *ngFor="let habit of doneHabits"
+    [project]="habit"
+    (click)="onShowDetail(habit)">
+  </mst-project-item>
+</ng-container>
+
+<mst-habit-create></mst-habit-create>
