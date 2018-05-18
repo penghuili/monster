@@ -10,3 +10,4 @@ export * from './report';
 export * from './tab';
 export * from './record';
 export * from './chart';
+export * from './habit';

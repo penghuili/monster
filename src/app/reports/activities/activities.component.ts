@@ -17,30 +17,17 @@ export class ActivitiesComponent extends Unsub implements OnChanges {
   activities: Event[] = [];
   data: (Project | Subproject | Todo | Record)[];
   isLoading: boolean;
-  showToBottom = true;
 
   private _date = now();
 
   constructor(private reportService: ReportService) {
     super();
-    this.addSubscription(
-      fromEvent(window, 'scroll').pipe(debounceTime(300)).subscribe(() => {
-        this.showToBottom = window.scrollY + window.innerHeight + FONT_SIZE * 2 < document.body.offsetHeight;
-      })
-    );
   }
 
   ngOnChanges() {
     if (this.date && this.mode !== undefined) {
       this.getActivities(this.date, this.mode);
     }
-  }
-
-  onToTop() {
-    window.scrollTo(0, 0);
-  }
-  onToBottom() {
-    window.scrollTo(0, document.body.scrollHeight);
   }
 
   private getActivities(date: number, mode: TimeRangeType) {

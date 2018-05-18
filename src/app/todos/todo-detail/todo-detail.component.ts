@@ -25,10 +25,10 @@ import { Unsub } from '@app/static';
 import { addDays, isToday } from 'date-fns';
 import { merge } from 'ramda';
 import { of } from 'rxjs/observable/of';
-import { debounceTime, switchMap, tap, startWith } from 'rxjs/operators';
+import { debounceTime, startWith, switchMap, tap } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 
 import { TodoTimerComponent } from './todo-timer/todo-timer.component';
-import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'mst-todo-detail',

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Event, Project, Record, Report, Subproject, Todo } from '@app/model';
+import { Event, Habit, Project, Record, Report, Subproject, Todo } from '@app/model';
 import Dexie from 'dexie';
 import { Observable } from 'rxjs/Observable';
 import { fromPromise } from 'rxjs/observable/fromPromise';
@@ -10,6 +10,7 @@ class MonsterDB extends Dexie {
   todos: Dexie.Table<Todo, number>;
   projects: Dexie.Table<Project, number>;
   subprojects: Dexie.Table<Subproject, number>;
+  habits: Dexie.Table<Habit, number>;
   events: Dexie.Table<Event, number>;
   reports: Dexie.Table<Report, number>;
   records: Dexie.Table<Record, number>;
@@ -38,6 +39,9 @@ class MonsterDB extends Dexie {
     });
     this.version(6).stores({
       reports: '++id,date,type'
+    });
+    this.version(7).stores({
+      habits: '++id'
     });
   }
 }

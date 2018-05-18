@@ -48,4 +48,6 @@
     <mst-activity-item *ngFor="let activity of activities; let i = index"
     [activity]="activity" [nextActivity]="activities[i+1]" [data]="todo"></mst-activity-item>
   </div>
+
+  <mst-page-top-bottom-button></mst-page-top-bottom-button>
 </ng-container>

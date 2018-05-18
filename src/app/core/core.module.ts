@@ -10,6 +10,7 @@ import { LoadingComponent } from './components/loading/loading.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { DbService } from './services/db.service';
 import { EventService } from './services/event.service';
+import { HabitService } from './services/habit.service';
 import { IconsService } from './services/icons.service';
 import { LoadingService } from './services/loading.service';
 import { NotificationService } from './services/notification.service';
@@ -18,7 +19,6 @@ import { RecordService } from './services/record.service';
 import { ReportService } from './services/report.service';
 import { SubprojectService } from './services/subproject.service';
 import { TodoService } from './services/todo.service';
-
 
 @NgModule({
   imports: [
@@ -39,7 +39,8 @@ import { TodoService } from './services/todo.service';
     EventService,
     ReportService,
     RecordService,
-    SubprojectService
+    SubprojectService,
+    HabitService
   ],
   declarations: [NavigationComponent, LoadingComponent],
   exports: [
