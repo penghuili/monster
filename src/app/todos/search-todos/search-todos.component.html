@@ -1,0 +1,11 @@
+<div class="mst-search-wrapper">
+  <mst-icon class="mst-search-icon" name="search" color="grey"></mst-icon>
+  <mst-input [control]="searchControl" [padding]="'0.25rem 0.25rem 0.25rem 1.75rem'"></mst-input>
+</div>
+
+<div [mstPadding]="'0 0 0 1rem'">
+  <mst-todo-item *ngFor="let todo of results"
+  [todo]="todo"
+  (click)="onShowDetail(todo)">
+  </mst-todo-item>
+</div>

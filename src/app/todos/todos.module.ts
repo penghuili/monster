@@ -16,6 +16,7 @@ import {
 } from '@app/shared';
 import { DndModule } from 'ngx-drag-drop';
 
+import { SearchTodosComponent } from './search-todos/search-todos.component';
 import { TodoDetailComponent } from './todo-detail/todo-detail.component';
 import { TodoTimerComponent } from './todo-detail/todo-timer/todo-timer.component';
 import { TodosRoutingModule } from './todos-routing.module';
@@ -44,6 +45,7 @@ import { TodosComponent } from './todos/todos.component';
     TodosComponent,
     TodoDetailComponent,
     TodoTimerComponent,
+    SearchTodosComponent,
   ]
 })
 export class TodosModule { }

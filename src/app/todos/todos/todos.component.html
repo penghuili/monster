@@ -1,3 +1,5 @@
+<mst-search-todos [todos]="todos"></mst-search-todos>
+
 <div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'0.5rem 0'">
   <div [mstColor]="todayStarted || activeTab !== TODAY ? 'grey' : null" (click)="onStartToday()">start today</div>
   <div [mstPadding]="'0 1rem'">{{ activeTodos | expectedTime | minuteFormatter }}</div>

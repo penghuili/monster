@@ -29,9 +29,10 @@ import { Subject } from 'rxjs/Subject';
   styleUrls: ['./todos.component.scss']
 })
 export class TodosComponent extends Unsub implements OnInit {
+  todos: Todo[];
+  activeTodos: Todo[];
   activeProjectsWithTodos: ProjectWithTodos[];
   doneProjectsWithTodos: ProjectWithTodos[];
-  activeTodos: Todo[];
 
   activeTodosExpectedTime = 0;
   noTimeActiveTodosCount = 0;
@@ -49,7 +50,6 @@ export class TodosComponent extends Unsub implements OnInit {
 
   habits: Habit[];
 
-  private todos: Todo[];
   private projectsWithTodos: ProjectWithTodos[];
   private drapProjectId: number;
   private shouldReload = new Subject<boolean>();
