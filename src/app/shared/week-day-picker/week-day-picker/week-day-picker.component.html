@@ -1,9 +1,23 @@
 <div class="mst-week-day-wrapper">
-  <div class="mst-week-day-item" [class.mst-week-day-item--active]="monday" (click)="onMonday()"></div>
-  <div class="mst-week-day-item" [class.mst-week-day-item--active]="tuesday" (click)="onTuesday()"></div>
-  <div class="mst-week-day-item" [class.mst-week-day-item--active]="wednesday" (click)="onWednesday()"></div>
-  <div class="mst-week-day-item" [class.mst-week-day-item--active]="thursday" (click)="onThursday()"></div>
-  <div class="mst-week-day-item" [class.mst-week-day-item--active]="friday" (click)="onFriday()"></div>
-  <div class="mst-week-day-item" [class.mst-week-day-item--active]="saturday" (click)="onSaturday()"></div>
-  <div class="mst-week-day-item" [class.mst-week-day-item--active]="sunday" (click)="onSunday()"></div>
+  <div class="mst-week-day-item"
+    [class.mst-week-day-item--active]="monday"
+    [class.mst-week-day-item--error]="monday === false" (click)="onMonday()"></div>
+  <div class="mst-week-day-item"
+    [class.mst-week-day-item--active]="tuesday"
+    [class.mst-week-day-item--error]="tuesday === false" (click)="onTuesday()"></div>
+  <div class="mst-week-day-item"
+    [class.mst-week-day-item--active]="wednesday"
+    [class.mst-week-day-item--error]="wednesday === false" (click)="onWednesday()"></div>
+  <div class="mst-week-day-item" 
+    [class.mst-week-day-item--active]="thursday"
+    [class.mst-week-day-item--error]="thursday === false" (click)="onThursday()"></div>
+  <div class="mst-week-day-item" 
+    [class.mst-week-day-item--active]="friday"
+    [class.mst-week-day-item--error]="friday === false" (click)="onFriday()"></div>
+  <div class="mst-week-day-item" 
+    [class.mst-week-day-item--active]="saturday"
+    [class.mst-week-day-item--error]="saturday === false" (click)="onSaturday()"></div>
+  <div class="mst-week-day-item" 
+    [class.mst-week-day-item--active]="sunday"
+    [class.mst-week-day-item--error]="sunday === false" (click)="onSunday()"></div>
 </div>

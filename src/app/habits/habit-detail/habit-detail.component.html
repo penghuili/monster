@@ -1,26 +1,30 @@
-<mst-go-back></mst-go-back>
+<div fxLayout="row" fxLayoutAlign="space-between">
+  <mst-go-back></mst-go-back>
+  <div *ngIf="habit && !habit.doneForToday" (click)="onDone()">
+    <span *ngIf="needToDo">do</span>
+    <span *ngIf="!needToDo">don't need to do today</span>
+  </div>
+  <div *ngIf="habit && habit.doneForToday" (click)="onDone()">done for today</div>
+</div>
 
-<!-- <ng-container *ngIf="habit">
-  <mst-input
-    [control]="titleControl"
-    [autoFocus]="true"></mst-input>
+<ng-container *ngIf="habit">
+  <mst-input [control]="titleControl"></mst-input>
   
-  <div [mstPadding]="'2rem 1rem 0'">
-    <mst-week-day-picker (selected)="onSelectWeekDays($event)"></mst-week-day-picker>
+  <div [mstPadding]="'2rem 1rem 1rem'">
+    <mst-week-day-picker [weekDays]="weekDays" [editable]="false"></mst-week-day-picker>
   </div>
   
-  <div fxLayout="row" fxLayoutAlign="center center" [mstPadding]="'1rem'">
-    <div fxFlex="30%">
-      <mst-project-status-picker (select)="onSelectStatus($event)"></mst-project-status-picker>
-    </div>
-    <div [mstPadding]="'0 0 0 2rem'" fxFlex="70%" fxLayout="row" fxLayoutAlign="space-between center">
-      <mst-datepicker [mode]="TimeRangeType.Day" [defaultDate]="startDate" (finish)="onPickStartDate($event)"></mst-datepicker>
-      <mst-icon name="arrow_forward"></mst-icon>
-      <mst-datepicker [mode]="TimeRangeType.Day" [defaultDate]="endDate" [startDate]="endDateStartDate" (finish)="onPickEndDate($event)"></mst-datepicker>
-    </div>
+  <div fxLayout="row" fxLayoutAlign="space-between center" [mstPadding]="'1rem'">
+    <div>{{ startDate | mstDate:'shortDate' }}</div>
+    <mst-icon name="arrow_forward"></mst-icon>
+    <div>{{ endDate | mstDate:'shortDate' }}</div>
   </div>
   
   <mst-input
     [control]="resultControl"
     minHeight="3rem"></mst-input>
-</ng-container> -->
+
+  <div [mstPadding]="'2rem 1rem 1rem'" *ngFor="let p of progress">
+    <mst-week-day-picker [weekDays]="p" [editable]="false"></mst-week-day-picker>
+  </div>
+</ng-container>

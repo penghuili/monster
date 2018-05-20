@@ -12,6 +12,16 @@
   <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === NEXTWEEK" (click)="onChangeTab(NEXTWEEK)">next week</div>
 </div>
 
+<ng-container *ngIf="activeTab === TODAY && habits && habits.length > 0">
+  <div>Habits</div>
+  <div [mstPadding]="'0.5rem 0 0.5rem 1rem'">
+    <mst-habit-item *ngFor="let habit of habits"
+      [habit]="habit"
+      (click)="onShowHabitDetail(habit)">
+    </mst-habit-item>
+  </div>
+</ng-container>
+
 <ng-container *ngIf="activeProjectsWithTodos && activeProjectsWithTodos.length > 0">
   <div *ngFor="let pwts of activeProjectsWithTodos">
     <div [mstPadding]="'0.5rem 0 0'" *ngIf="pwts.todos.length > 0">

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { HabitService } from '@app/core';
-import { HabitStatus, now, TimeRangeType, WeekDays } from '@app/model';
+import { now, TimeRangeType, WeekDays } from '@app/model';
 import { DatepickerResult, InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
 import { addDays } from 'date-fns';
@@ -17,7 +17,6 @@ export class HabitCreateComponent extends Unsub implements OnInit {
   titleControl = new InputControl({ required: true });
   resultControl = new InputControl({ required: true });
 
-  status: HabitStatus;
   startDate = now();
   endDateStartDate = addDays(this.startDate, 1).getTime();
   endDate = this.endDateStartDate;
@@ -39,9 +38,6 @@ export class HabitCreateComponent extends Unsub implements OnInit {
   onSelectWeekDays(weekDays: WeekDays) {
     this.weekDays = weekDays;
   }
-  onSelectStatus(status: HabitStatus) {
-    this.status = status;
-  }
   onPickStartDate(result: DatepickerResult) {
     this.startDate = result.date;
     this.endDateStartDate = addDays(this.startDate, 1).getTime();
@@ -60,7 +56,6 @@ export class HabitCreateComponent extends Unsub implements OnInit {
           result: this.resultControl.getValue(),
           startDate: this.startDate,
           endDate: this.endDate,
-          status: this.status === undefined ? HabitStatus.InProgress : this.status,
           ...this.weekDays
         }).subscribe(success => {
           if (success) {
@@ -80,7 +75,6 @@ export class HabitCreateComponent extends Unsub implements OnInit {
   private reset() {
     this.titleControl.reset();
     this.resultControl.reset();
-    this.status = HabitStatus.InProgress;
     this.startDate = now();
     this.endDate = this.endDateStartDate;
     this.weekDays = null;

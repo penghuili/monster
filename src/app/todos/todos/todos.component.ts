@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProjectService, TodoService } from '@app/core';
+import { HabitService, ProjectService, TodoService } from '@app/core';
 import {
   endOfThisWeek,
   endOfToday,
   endofTomorrow,
+  Habit,
   isFinished,
   isOverDue,
   isTodayEnded,
@@ -30,6 +31,7 @@ import { Subject } from 'rxjs/Subject';
 export class TodosComponent extends Unsub implements OnInit {
   activeProjectsWithTodos: ProjectWithTodos[];
   doneProjectsWithTodos: ProjectWithTodos[];
+  activeTodos: Todo[];
 
   activeTodosExpectedTime = 0;
   noTimeActiveTodosCount = 0;
@@ -45,14 +47,15 @@ export class TodosComponent extends Unsub implements OnInit {
   todayStarted = false;
   todayEnded = false;
 
-  activeTodos: Todo[];
+  habits: Habit[];
+
   private todos: Todo[];
   private projectsWithTodos: ProjectWithTodos[];
-
   private drapProjectId: number;
   private shouldReload = new Subject<boolean>();
 
   constructor(
+    private habitService: HabitService,
     private route: ActivatedRoute,
     private router: Router,
     private projectService: ProjectService,
@@ -76,6 +79,12 @@ export class TodosComponent extends Unsub implements OnInit {
       ).subscribe(projectsWithTodos => {
         this.projectsWithTodos = projectsWithTodos;
         this.process(this.activeTab, this.projectsWithTodos, this.todos);
+      })
+    );
+
+    this.addSubscription(
+      this.habitService.getTodaysHabits().subscribe(habits => {
+        this.habits = habits;
       })
     );
   }
@@ -141,8 +150,11 @@ export class TodosComponent extends Unsub implements OnInit {
     this.dragIndex = undefined;
     this.drapProjectId = undefined;
   }
+  onShowHabitDetail(habit: Habit) {
+    this.router.navigateByUrl(`${ROUTES.HABITS}/${habit.id}`);
+  }
 
-  process(activeTab: string, projectsWithTodos: ProjectWithTodos[], todos: Todo[]) {
+  private process(activeTab: string, projectsWithTodos: ProjectWithTodos[], todos: Todo[]) {
     this.processTodos(activeTab, projectsWithTodos);
     this.calcTotal(activeTab, todos);
   }

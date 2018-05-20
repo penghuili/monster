@@ -35,43 +35,43 @@ export class WeekDayPickerComponent implements OnChanges {
 
   onMonday() {
     if (this.editable) {
-      this.monday = !this.monday;
+      this.monday = this.monday ? undefined : true;
       this.emitValue();
     }
   }
   onTuesday() {
     if (this.editable) {
-      this.tuesday = !this.tuesday;
+      this.tuesday = this.tuesday ? undefined : true;
       this.emitValue();
     }
   }
   onWednesday() {
     if (this.editable) {
-      this.wednesday = !this.wednesday;
+      this.wednesday = this.wednesday ? undefined : true;
       this.emitValue();
     }
   }
   onThursday() {
     if (this.editable) {
-      this.thursday = !this.thursday;
+      this.thursday = this.thursday ? undefined : true;
       this.emitValue();
     }
   }
   onFriday() {
     if (this.editable) {
-      this.friday = !this.friday;
+      this.friday = this.friday ? undefined : true;
       this.emitValue();
     }
   }
   onSaturday() {
     if (this.editable) {
-      this.saturday = !this.saturday;
+      this.saturday = this.saturday ? undefined : true;
       this.emitValue();
     }
   }
   onSunday() {
     if (this.editable) {
-      this.sunday = !this.sunday;
+      this.sunday = this.sunday ? undefined : true;
       this.emitValue();
     }
   }

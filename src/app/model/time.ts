@@ -5,6 +5,7 @@ import {
   endOfTomorrow,
   endOfWeek as endOfWeekFromLib,
   endOfYear,
+  getDay,
   startOfDay,
   startOfMonth,
   startOfQuarter,
@@ -68,21 +69,24 @@ export function isAfterToday(date: number): boolean {
   return date > endOfToday();
 }
 export function isTodayOrBefore(date: number): boolean {
-  return date < endOfToday();
+  return date <= endOfToday();
 }
 export function isWithinDay(date: number, targetDay: number): boolean {
-  return date > startOfDay(targetDay).getTime() && date < endOfDay(targetDay).getTime();
+  return date >= startOfDay(targetDay).getTime() && date <= endOfDay(targetDay).getTime();
 }
 export function isWithin(date: number, start: number, end?: number): boolean {
   const startDate = startOfDay(start).getTime();
   const endDate = end ? endOfDay(end).getTime() : Infinity;
-  return date > startDate && date < endDate;
+  return date >= startDate && date <= endDate;
+}
+export function isWithinWeek(date: number, targetDay: number): boolean {
+  return date >= startOfWeek(targetDay) && date <= endOfWeek(targetDay);
 }
 export function isBeforeDay(date: number, targetDay: number): boolean {
-  return date < new Date(targetDay).getTime();
+  return date < startOfDay(targetDay).getTime();
 }
 export function isAfterDay(date: number, targetDay: number): boolean {
-  return date > new Date(targetDay).getTime();
+  return date > endOfDay(targetDay).getTime();
 }
 export function getStartEnd(date: number, mode: TimeRangeType): number[] {
   if (mode === TimeRangeType.Day) {
@@ -101,4 +105,27 @@ export function getStartEnd(date: number, mode: TimeRangeType): number[] {
 }
 export function milisecondToMinute(milisec: number): number {
   return milisec / (1000 * 60);
+}
+export function mapWeekDay(date: number): string {
+  const weekDay = getDay(date);
+  switch (weekDay) {
+    case 1:
+      return 'monday';
+    case 2:
+      return 'tuesday';
+    case 3:
+      return 'wednesday';
+    case 4:
+      return 'thursday';
+    case 5:
+      return 'friday';
+    case 6:
+      return 'saturday';
+    case 0:
+    case 7:
+      return 'sunday';
+
+    default:
+      throw Error('invalid date for week day.');
+  }
 }

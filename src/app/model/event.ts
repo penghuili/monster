@@ -16,7 +16,8 @@ export enum EventType {
   Todo,
   Project,
   Subproject,
-  Record
+  Record,
+  Habit
 }
 export const MonsterEvents = {
   CreateProject: 'CreateProject',
@@ -43,7 +44,9 @@ export const MonsterEvents = {
   StopTodo: 'StopTodo',
   CurrentThougntTodo: 'CurrentThougntTodo',
 
-  CreateRecord: 'CreateRecord'
+  CreateRecord: 'CreateRecord',
+
+  FinishHabit: 'FinishHabit'
 };
 
 export function createEvent(data: any): Event {

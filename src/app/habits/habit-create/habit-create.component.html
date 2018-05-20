@@ -6,21 +6,16 @@
       [control]="titleControl"
       [autoFocus]="true"></mst-input>
 
-    <div [mstPadding]="'2rem 1rem 0'">
+    <div [mstPadding]="'2rem 1rem 1rem'">
       <mst-week-day-picker (selected)="onSelectWeekDays($event)"></mst-week-day-picker>
     </div>
     
-    <div fxLayout="row" fxLayoutAlign="center center" [mstPadding]="'1rem'">
-      <div fxFlex="30%">
-        <mst-project-status-picker (select)="onSelectStatus($event)"></mst-project-status-picker>
-      </div>
-      <div [mstPadding]="'0 0 0 2rem'" fxFlex="70%" fxLayout="row" fxLayoutAlign="space-between center">
-        <mst-datepicker [mode]="TimeRangeType.Day" [defaultDate]="startDate" (finish)="onPickStartDate($event)"></mst-datepicker>
-        <mst-icon name="arrow_forward"></mst-icon>
-        <mst-datepicker [mode]="TimeRangeType.Day" [defaultDate]="endDate" [startDate]="endDateStartDate" (finish)="onPickEndDate($event)"></mst-datepicker>
-      </div>
+    <div fxLayout="row" fxLayoutAlign="space-between center" [mstPadding]="'1rem'">
+      <mst-datepicker [mode]="TimeRangeType.Day" [defaultDate]="startDate" (finish)="onPickStartDate($event)"></mst-datepicker>
+      <mst-icon name="arrow_forward"></mst-icon>
+      <mst-datepicker [mode]="TimeRangeType.Day" [defaultDate]="endDate" [startDate]="endDateStartDate" (finish)="onPickEndDate($event)"></mst-datepicker>
     </div>
-  
+
     <mst-input
       [control]="resultControl"
       minHeight="3rem"></mst-input>

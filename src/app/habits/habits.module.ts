@@ -9,6 +9,7 @@ import {
   InputModule,
   MonsterCommonModule,
   OverlayModule,
+  PipesModule,
   StylingModule,
   WeekDayPickerModule,
   WithinAppModule,
@@ -33,7 +34,8 @@ import { HabitsComponent } from './habits/habits.component';
     WeekDayPickerModule,
     FlexLayoutModule,
     WithinAppModule,
-    DragDropModule
+    DragDropModule,
+    PipesModule
   ],
   declarations: [
     HabitsComponent,

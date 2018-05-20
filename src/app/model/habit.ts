@@ -1,12 +1,12 @@
 import { SortableItem } from './item';
-import { now } from './time';
+import { now, WeekDays } from './time';
 
 export interface Habit extends SortableItem {
   result: string;
-  status: HabitStatus;
-  finishAt?: number;
   startDate: number;
   endDate: number;
+  doneForToday?: boolean;
+
   monday: boolean;
   tuesday: boolean;
   wednesday: boolean;
@@ -15,10 +15,9 @@ export interface Habit extends SortableItem {
   saturday: boolean;
   sunday: boolean;
 }
-export enum HabitStatus {
-  InProgress,
-  Someday,
-  Done
+export interface HabitWithProgress {
+  habit: Habit;
+  progress: WeekDays[];
 }
 
 export function createHabit(data: any): Habit {
@@ -35,7 +34,6 @@ export function createHabit(data: any): Habit {
     friday: data.friday,
     saturday: data.saturday,
     sunday: data.sunday,
-    status: data.status,
     createdAt: timestamp,
     updatedAt: timestamp,
     position: `${timestamp}3`

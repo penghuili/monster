@@ -20,6 +20,7 @@ import {
 } from './activity-item/activity-item-subproject/activity-item-subproject.component';
 import { ActivityItemTodoComponent } from './activity-item/activity-item-todo/activity-item-todo.component';
 import { ActivityItemComponent } from './activity-item/activity-item.component';
+import { HabitItemComponent } from './habit-item/habit-item.component';
 import { ExpectedTimePipe } from './pipes/expected-time.pipe';
 import { ProjectStatusPipe } from './pipes/project-status.pipe';
 import { TodoStatusPipe } from './pipes/todo-status.pipe';
@@ -61,7 +62,8 @@ import { TodoStatusPickerComponent } from './todo-status-picker/todo-status-pick
     ActivityItemTodoComponent,
     ActivityItemRecordComponent,
     ActivityItemProjectComponent,
-    ActivityItemComponent
+    ActivityItemComponent,
+    HabitItemComponent
   ],
   exports: [
     TodoStatusPipe,
@@ -74,7 +76,8 @@ import { TodoStatusPickerComponent } from './todo-status-picker/todo-status-pick
     ProjectItemComponent,
     TodoStatusPickerComponent,
     ProjectStatusPickerComponent,
-    ActivityItemComponent
+    ActivityItemComponent,
+    HabitItemComponent
   ]
 })
 export class WithinAppModule { }
