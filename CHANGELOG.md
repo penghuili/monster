@@ -1,3 +1,15 @@
+## v1.14.1
+
+bug fix:
+
+- show done todos right
+
+## v1.14.0
+
+feature:
+ 
+- finish habit
+
 ## v1.13.5
 
 feature:
