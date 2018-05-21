@@ -20,7 +20,10 @@ export class EventService {
   getEventsByTodoId(id: number): Observable<Event[]> {
     this.loadingService.isLoading();
     return fromPromise(
-      this.dbService.getDB().events.filter(a => a.refId === id && a.type === EventType.Todo).toArray()
+      this.dbService.getDB().events
+      .filter(a => a.refId === id && a.type === EventType.Todo)
+      .reverse()
+      .toArray()
     ).pipe(
       catchError(error => {
         this.notificationService.sendMessage('add event fails.');
