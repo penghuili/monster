@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EventService, ProjectService, SubprojectService, TodoService } from '@app/core';
+import { EventService, ProjectService, ReportService, SubprojectService, TodoService } from '@app/core';
 import {
   Event,
   EventType,
@@ -15,6 +15,7 @@ import {
   now,
   Project,
   ProjectWithSubproject,
+  Report,
   Subproject,
   TimeRangeType,
   Todo,
@@ -44,6 +45,8 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   currentSubproject: Subproject;
   status: TodoStatus;
 
+  defaultExpectedTime: number;
+  defaultDatepickerDate: number;
   datePickerStartDate: number;
   datePickerEndDate: number;
   TimeRangeType = TimeRangeType;
@@ -57,9 +60,13 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   private laodEvents = new Subject<boolean>();
   private currentProject: Project;
 
+  private report: Report;
+  private checkDate = new Subject<any>();
+
   constructor(
     private eventService: EventService,
     private projectService: ProjectService,
+    private reportService: ReportService,
     private route: ActivatedRoute,
     private router: Router,
     private subprojectService: SubprojectService,
@@ -76,11 +83,15 @@ export class TodoDetailComponent extends Unsub implements OnInit {
       this.todoService.getById(id).pipe(
         tap(todo => {
           this.todo = todo;
-          this.titleControl.setValue(this.todo.title);
-          this.noteControl.setValue(this.todo.note);
-          this.status = this.todo.status;
-          this.showSomedayStatus = !isTodayStarted() || isAfterToday(this.todo.happenDate);
-          this.finished = isFinished(this.todo);
+          if (todo) {
+            this.titleControl.setValue(this.todo.title);
+            this.noteControl.setValue(this.todo.note);
+            this.status = this.todo.status;
+            this.showSomedayStatus = !isTodayStarted() || isAfterToday(this.todo.happenDate);
+            this.finished = isFinished(this.todo);
+            this.defaultDatepickerDate = this.todo.happenDate;
+            this.defaultExpectedTime = this.todo.expectedTime;
+          }
         }),
         switchMap(todo => todo ? this.subprojectService.getSubprojectById(this.todo.subprojectId) : of(null)),
         switchMap(subproject => {
@@ -90,6 +101,36 @@ export class TodoDetailComponent extends Unsub implements OnInit {
       ).subscribe((project: Project) => {
         this.currentProject = project;
         this.setDatepickerRange(project);
+      })
+    );
+
+    let happenDate: number;
+    let expectedTime: number;
+    this.addSubscription(
+      this.checkDate.asObservable().pipe(
+        switchMap(value => {
+          happenDate = value.happenDate || this.todo.happenDate;
+          expectedTime = value.expectedTime || this.todo.expectedTime;
+          return this.reportService.getReportWithTodos(happenDate, TimeRangeType.Day);
+        })
+      ).subscribe(report => {
+        if (report) {
+          if (report.report.plannedTime + expectedTime > 7 * 60) {
+            const want = confirm('there will be more than 7 hours on this day, do you still want to plan it on this day?');
+            if (want) {
+              this.updateHappenDateOrExpectedTime({ happenDate, expectedTime });
+              this.defaultDatepickerDate = happenDate;
+              this.defaultExpectedTime = expectedTime;
+            } else {
+              this.defaultDatepickerDate = this.todo.happenDate + 0.001;
+              this.defaultExpectedTime = this.todo.expectedTime + 0.001;
+            }
+          } else {
+            this.updateHappenDateOrExpectedTime({ happenDate, expectedTime });
+          }
+        } else {
+          this.updateHappenDateOrExpectedTime({ happenDate, expectedTime });
+        }
       })
     );
 
@@ -120,12 +161,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   }
 
   onDurationChange(duration: number) {
-    this.emitEvent({
-      action: MonsterEvents.ChangeTodoExpectedTime,
-      oldValue: this.todo.expectedTime,
-      newValue: duration
-    });
-    this.update({ expectedTime: duration });
+    this.checkDate.next({ expectedTime: duration });
   }
   onSelectSubproject(selected: ProjectWithSubproject) {
     this.currentProject = selected.project;
@@ -175,18 +211,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     return this.finished || isBeforeToday(this.todo.happenDate) || (isToday(this.todo.happenDate) && isTodayStarted());
   }
   onFinishPickDate(result: DatepickerResult) {
-    this.emitEvent({
-      action: MonsterEvents.ChangeTodoHappenDate,
-      oldValue: this.todo.happenDate,
-      newValue: result.date
-    });
-
-    const newTodo = merge(this.todo, {
-      happenDate: result.date,
-      updatedAt: now()
-    });
-
-    this.update({ happenDate: result.date });
+    this.checkDate.next({ happenDate: result.date });
   }
   onStart() {
     if (!this.isDoing) {
@@ -252,5 +277,22 @@ export class TodoDetailComponent extends Unsub implements OnInit {
         })
       );
     }
+  }
+  private updateHappenDateOrExpectedTime(data: any) {
+    if (data.happenDate !== this.todo.happenDate) {
+      this.emitEvent({
+        action: MonsterEvents.ChangeTodoHappenDate,
+        oldValue: this.todo.happenDate,
+        newValue: data.happenDate
+      });
+    } else {
+      this.emitEvent({
+        action: MonsterEvents.ChangeTodoExpectedTime,
+        oldValue: this.todo.expectedTime,
+        newValue: data.expectedTime
+      });
+    }
+
+    this.update(data);
   }
 }

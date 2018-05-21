@@ -11,6 +11,7 @@ import { DatepickerResult } from '../model';
 })
 export class DatepickerComponent implements OnInit {
   @Input() set defaultDate(value: number) {
+    value = Math.round(value);
     this.outerDate = value;
     this.innerDate = value;
   }

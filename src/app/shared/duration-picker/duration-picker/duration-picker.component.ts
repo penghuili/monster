@@ -11,7 +11,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class DurationPickerComponent {
   @Input() set defaultValue(value: number) {
-    this.outerValue = value ? value : 0;
+    this.outerValue = value ? Math.round(value) : 0;
     if (this.outerValue) {
       this.hours = this.getHours(this.outerValue);
       this.minutes = this.getMinutes(this.outerValue);
