@@ -55,6 +55,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
 
   activities: Event[];
   private laodEvents = new Subject<boolean>();
+  private currentProject: Project;
 
   constructor(
     private eventService: EventService,
@@ -87,6 +88,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
           return subproject ? this.projectService.getProjectById(subproject.projectId) : of(null);
         })
       ).subscribe((project: Project) => {
+        this.currentProject = project;
         this.setDatepickerRange(project);
       })
     );
@@ -126,6 +128,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     this.update({ expectedTime: duration });
   }
   onSelectSubproject(selected: ProjectWithSubproject) {
+    this.currentProject = selected.project;
     this.currentSubproject = selected.subproject;
     this.update({ subprojectId: this.currentSubproject.id });
     this.setDatepickerRange(selected.project);
@@ -165,6 +168,8 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     } else {
       this.update({ status, finishAt: undefined });
     }
+
+    this.setDatepickerRange(this.currentProject);
   }
   disableDatePicker() {
     return this.finished || isBeforeToday(this.todo.happenDate) || (isToday(this.todo.happenDate) && isTodayStarted());
@@ -214,7 +219,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
 
   private setDatepickerRange(project: Project) {
     this.datePickerStartDate = project && project.startDate > this.datePickerStartDate ? project.startDate : this.datePickerStartDate;
-    this.datePickerEndDate = project ? project.endDate : undefined;
+    this.datePickerEndDate = project && this.todo && this.todo.status !== TodoStatus.Someday ? project.endDate : undefined;
 
     if (project && this.todo && this.todo.status !== TodoStatus.Someday &&
       !isWithin(this.todo.happenDate, project.startDate, project.endDate)) {
