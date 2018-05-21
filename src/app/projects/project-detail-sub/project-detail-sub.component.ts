@@ -61,7 +61,7 @@ export class ProjectDetailSubComponent extends Unsub implements OnInit {
         switchMap(() => this.todoService.getTodosBySubprojectId(subid))
       )
       .subscribe(todos => {
-        this.todos = sortTodos(todos);
+        this.todos = sortTodos(todos, { compare: (a, b) => a.createdAt - b.createdAt });
         const startEnd = calcStartEndDate(todos);
         this.startDate = startEnd[0];
         this.endDate = startEnd[1];

@@ -142,15 +142,17 @@ export function sortTodo(a: Todo, b: Todo): number {
     return 1;
   }
 }
-export function sortTodos(todos: Todo[]): Todo[] {
+export function sortTodos(todos: Todo[], options?: any): Todo[] {
   if (!todos || todos.length === 0) {
     return [];
   }
-  const overdue = <Todo[]>sortByPosition(todos.filter(a => a.status === TodoStatus.InProgress && isOverDue(a)));
-  const inProgress = <Todo[]>sortByPosition(todos.filter(a => a.status === TodoStatus.InProgress && !isOverDue(a)));
-  const waiting = <Todo[]>sortByPosition(todos.filter(a => a.status === TodoStatus.Waiting));
-  const someday = <Todo[]>sortByPosition(todos.filter(a => a.status === TodoStatus.Someday));
-  const finished = <Todo[]>sortByPosition(todos.filter(a => isFinished(a)));
+  const func = options && options.compare ? items => items.sort((a, b) => options.compare(a, b)) :
+    sortByPosition;
+  const overdue = <Todo[]>func(todos.filter(a => a.status === TodoStatus.InProgress && isOverDue(a)));
+  const inProgress = <Todo[]>func(todos.filter(a => a.status === TodoStatus.InProgress && !isOverDue(a)));
+  const waiting = <Todo[]>func(todos.filter(a => a.status === TodoStatus.Waiting));
+  const someday = <Todo[]>func(todos.filter(a => a.status === TodoStatus.Someday));
+  const finished = <Todo[]>func(todos.filter(a => isFinished(a)));
   return [
     ...overdue,
     ...inProgress,
