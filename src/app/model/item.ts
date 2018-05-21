@@ -13,6 +13,22 @@ export interface SortableItem extends Item {
   nextId?: number;
   prevId?: number;
 }
+
+export function prepareRepostionIds(dragged: SortableItem, dropped: SortableItem): number[] {
+  const ids: number[] = [
+    dragged.id + 1,
+    dragged.id - 1,
+    dropped.id + 1,
+    dropped.id - 1
+  ];
+  if (dropped.prevId) {
+    ids.push(dropped.prevId);
+  }
+  if (dropped.nextId) {
+    ids.push(dropped.nextId);
+  }
+  return ids;
+}
 export function repositionItems(items: SortableItem[]): SortableItem[] {
   const dragged = items[0];
   const dropped = items[1];

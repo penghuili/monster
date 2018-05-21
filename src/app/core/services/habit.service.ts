@@ -9,6 +9,8 @@ import {
   mapWeekDay,
   MonsterEvents,
   now,
+  prepareRepostionIds,
+  repositionItems,
   startOfWeek,
 } from '@app/model';
 import { addDays, addWeeks, differenceInCalendarWeeks, isToday } from 'date-fns';
@@ -16,7 +18,7 @@ import { find, merge } from 'ramda';
 import { Observable } from 'rxjs/Observable';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 
 import { DbService } from './db.service';
 import { LoadingService } from './loading.service';
@@ -133,6 +135,20 @@ export class HabitService {
       })
     );
   }
+  getHabitsByIds(ids: number[]): Observable<Habit[]> {
+    this.loadingService.isLoading();
+    return fromPromise(
+      this.dbService.getDB().habits
+        .where('id')
+        .anyOf(ids)
+        .toArray()
+    ).pipe(
+      catchError(error => this.handleError('getHabitsByIds fails')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
+    );
+  }
   add(habit: Habit): Observable<any> {
     this.loadingService.isLoading();
     return fromPromise(
@@ -152,6 +168,33 @@ export class HabitService {
       catchError(error => this.handleError('update habit fails')),
       tap(() => {
         this.loadingService.stopLoading();
+      })
+    );
+  }
+  updateHabits(habits: Habit[]): Observable<any> {
+    this.loadingService.isLoading();
+    return fromPromise(
+      this.dbService.getDB().habits.bulkPut(habits)
+    ).pipe(
+      catchError(error => this.handleError('updateHabits fails')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
+    );
+  }
+  repositionHabits(dragged: Habit, dropped: Habit): Observable<any> {
+    const ids = prepareRepostionIds(dragged, dropped);
+
+    return this.getHabitsByIds(ids).pipe(
+      switchMap(hs => {
+        if (hs) {
+          hs.unshift(dropped);
+          hs.unshift(dragged);
+          const repositioned = <Habit[]>repositionItems(hs);
+          return this.updateHabits(repositioned);
+        } else {
+          return of(null);
+        }
       })
     );
   }

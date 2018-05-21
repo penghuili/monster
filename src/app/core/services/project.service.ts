@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EventType, MonsterEvents, now, repositionItems, sortByPosition, Todo } from '@app/model';
+import { EventType, MonsterEvents, now, prepareRepostionIds, repositionItems, sortByPosition, Todo } from '@app/model';
 import { uniq } from 'ramda';
 import { Observable } from 'rxjs/Observable';
 import { fromPromise } from 'rxjs/observable/fromPromise';
@@ -136,18 +136,8 @@ export class ProjectService {
     );
   }
   repositionProjects(dragged: Project, dropped: Project): Observable<any> {
-    const ids: number[] = [
-      dragged.id + 1,
-      dragged.id - 1,
-      dropped.id + 1,
-      dropped.id - 1
-    ];
-    if (dropped.prevId) {
-      ids.push(dropped.prevId);
-    }
-    if (dropped.nextId) {
-      ids.push(dropped.nextId);
-    }
+    const ids = prepareRepostionIds(dragged, dropped);
+
     return this.getProjectsByIds(ids).pipe(
       switchMap(ps => {
         if (ps) {

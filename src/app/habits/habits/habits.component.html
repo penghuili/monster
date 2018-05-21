@@ -1,7 +1,8 @@
-<mst-drop-zone>
+<mst-drop-zone [dragIndex]="dragIndex" (drop)="onDrop($event)">
   <mst-drag-item *ngFor="let habit of activeHabits; let i = index;"
     [item]="habit"
-    [index]="i">
+    [index]="i"
+    (start)="onDragStart($event)">
     <mst-project-item
       [project]="habit"
       (click)="onShowDetail(habit)">

@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import {
   createTodo,
   endOfWeek,
-  Event,
   EventType,
   isFinished,
   isWithin,
   MonsterEvents,
   now,
+  prepareRepostionIds,
   repositionItems,
   startOfWeek,
   Todo,
@@ -159,18 +159,8 @@ export class TodoService {
     );
   }
   repositionTodos(dragged: Todo, dropped: Todo): Observable<any> {
-    const ids: number[] = [
-      dragged.id + 1,
-      dragged.id - 1,
-      dropped.id + 1,
-      dropped.id - 1
-    ];
-    if (dropped.prevId) {
-      ids.push(dropped.prevId);
-    }
-    if (dropped.nextId) {
-      ids.push(dropped.nextId);
-    }
+    const ids = prepareRepostionIds(dragged, dropped);
+
     return this.getTodosByIds(ids).pipe(
       switchMap(tds => {
         if (tds) {
