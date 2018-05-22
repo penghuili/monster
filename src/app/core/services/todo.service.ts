@@ -5,6 +5,7 @@ import {
   EventType,
   isFinished,
   isWithin,
+  isWithinDay,
   MonsterEvents,
   now,
   prepareRepostionIds,
@@ -114,6 +115,19 @@ export class TodoService {
         this.loadingService.stopLoading();
       }),
       filter(a => !!a)
+    );
+  }
+  getInProgressTodosByHappenDate(date: number): Observable<Todo[]> {
+    this.loadingService.isLoading();
+    return fromPromise(this.dbService.getDB()
+      .todos
+      .filter(a => isWithinDay(a.happenDate, date) && a.status === TodoStatus.InProgress)
+      .toArray()
+    ).pipe(
+      catchError(error => this.handleError('getInProgressTodosByHappenDate fails.')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
     );
   }
   add(data: any): Observable<any> {

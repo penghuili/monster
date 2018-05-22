@@ -123,6 +123,9 @@ export function calcUsedTime(startSopEvents: Event[], endOfTimeRange: number, to
     return 0;
   }
 }
+export function calcExpectedTime(todos: Todo[]): number {
+  return todos.reduce((sum, curr) => sum + curr.expectedTime, 0);
+}
 export function sortTodo(a: Todo, b: Todo): number {
   if (isFinished(b)) {
     return -1;

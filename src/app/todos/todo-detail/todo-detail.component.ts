@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EventService, ProjectService, ReportService, SubprojectService, TodoService } from '@app/core';
+import { EventService, ProjectService, SubprojectService, TodoService } from '@app/core';
 import {
+  calcExpectedTime,
   Event,
   EventType,
   isAfterToday,
@@ -66,7 +67,6 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   constructor(
     private eventService: EventService,
     private projectService: ProjectService,
-    private reportService: ReportService,
     private route: ActivatedRoute,
     private router: Router,
     private subprojectService: SubprojectService,
@@ -111,11 +111,11 @@ export class TodoDetailComponent extends Unsub implements OnInit {
         switchMap(value => {
           happenDate = value.happenDate || this.todo.happenDate;
           expectedTime = value.expectedTime || this.todo.expectedTime;
-          return this.reportService.getReportWithTodos(happenDate, TimeRangeType.Day);
+          return this.todoService.getInProgressTodosByHappenDate(happenDate);
         })
-      ).subscribe(report => {
-        if (report) {
-          if (report.report.plannedTime + expectedTime > 7 * 60) {
+      ).subscribe(todos => {
+        if (todos) {
+          if (calcExpectedTime(todos) + expectedTime > 7 * 60) {
             const want = confirm('there will be more than 7 hours on this day, do you still want to plan it on this day?');
             if (want) {
               this.updateHappenDateOrExpectedTime({ happenDate, expectedTime });

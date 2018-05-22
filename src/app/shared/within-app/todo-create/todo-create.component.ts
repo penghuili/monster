@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ReportService, TodoService } from '@app/core';
+import { TodoService } from '@app/core';
 import {
+  calcExpectedTime,
   isTodayStarted,
   isWithin,
   now,
@@ -52,9 +53,7 @@ export class TodoCreateComponent extends Unsub implements OnInit {
   private report: Report;
   private checkDate = new Subject<any>();
 
-  constructor(
-    private reportService: ReportService,
-    private todoService: TodoService) {
+  constructor(private todoService: TodoService) {
     super();
   }
 
@@ -77,11 +76,11 @@ export class TodoCreateComponent extends Unsub implements OnInit {
         switchMap(value => {
           date = value.date || this.happenDate;
           expectedTime = value.expectedTime || this.expectedTime;
-          return this.reportService.getReportWithTodos(date, TimeRangeType.Day);
+          return this.todoService.getInProgressTodosByHappenDate(date);
         })
-      ).subscribe(report => {
-        if (report) {
-          if (report.report.plannedTime + expectedTime > 7 * 60) {
+      ).subscribe(todos => {
+        if (todos) {
+          if (calcExpectedTime(todos) + expectedTime > 7 * 60) {
             const want = confirm('there will be more than 7 hours on this day, do you still want to plan it on this day?');
             if (want) {
               this.happenDate = date;
