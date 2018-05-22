@@ -4,19 +4,8 @@
     {{ report.done + report.wontDo }} / {{ report.planned }} = {{ finishedPlanned() | percent }}
   </div>
   <div [mstPadding]="'0 0 1rem'">
-    added later: {{ report.addedLater }}
-  </div>
-  <div [mstPadding]="'0 0 1rem'">
-    used time of selected time range: <br>
-    {{ usedTimeOfTimeRange | minuteFormatter }}
-  </div>
-  <div [mstPadding]="'0 0 1rem'">
     used time of all todos / planned time: <br>
-    {{ report.usedTime | minuteFormatter }} / {{ report.plannedTime | minuteFormatter }} = {{ usedTimePlannedTime() | percent }}
-  </div>
-  <div [mstPadding]="'0 0 1rem'">
-    finished todos used time / planned time of these todos: <br>
-    {{ report.finishedUsedTime | minuteFormatter }} / {{ report.finishedPlannedTime | minuteFormatter }} = {{ finishedUsedTimeFinishedPlannedTime() | percent }}
+    {{ report.usedTimeOfTimeRange | minuteFormatter }} / {{ report.plannedTime | minuteFormatter }} = {{ usedTimePlannedTime() | percent }}
   </div>
 
 
@@ -39,6 +28,12 @@
     </div>
   </div>
   <div>
+      added later: {{ addedLater.length }} {{ getTodosRatio(addedLater) | percent }}
+      <div [mstPadding]="'0 0 1rem 1rem'">
+        <mst-todo-item *ngFor="let todo of addedLater" [todo]="todo" (click)="onGotoTodo(todo.id)"></mst-todo-item>
+      </div>
+    </div>
+  <div>
     won't do: {{ wontDo.length }} {{ getTodosRatio(wontDo) | percent }}
     <div [mstPadding]="'0 0 1rem 1rem'">
       <mst-todo-item *ngFor="let todo of wontDo" [todo]="todo" (click)="onGotoTodo(todo.id)"></mst-todo-item>
@@ -52,6 +47,6 @@
   </div>
 </div>
 
-<div *ngIf="!report && !isLoading" [mstPadding]="'2rem 0 0'">
+<div *ngIf="!report && !isLoading">
   no report for {{ date | mstDate:'shortDate' }}
 </div>

@@ -14,10 +14,10 @@ export class ReportChartComponent extends Unsub implements OnInit {
   RATIO = 'RATIO';
   PLANNEDFINISHED = 'PLANNEDFINISHED';
   PLANNEDUSEDTIME = 'PLANNEDUSEDTIME';
-  FINISHTOO = 'FINISHTOO';
+  TOOLATE = 'TOOLATE';
+  TOOEARLY = 'TOOEARLY';
   ADDLATER = 'ADDLATER';
   BEFORE = 'BEFORE';
-  WAITING = 'WAITING';
   WONTDO = 'WONTDO';
   active: string;
 
@@ -74,15 +74,20 @@ export class ReportChartComponent extends Unsub implements OnInit {
       }
     ];
   }
-  onFinishToo() {
-    this.active = this.FINISHTOO;
+  onFinishTooLate() {
+    this.active = this.TOOLATE;
     this.data = [
       {
-        name: 'planned time',
+        name: 'finished too late',
         series: this.reports.map(a => ({ name: new Date(a.date), value: a.finishTooLate }))
-      },
+      }
+    ];
+  }
+  onFinishTooEarly() {
+    this.active = this.TOOEARLY;
+    this.data = [
       {
-        name: 'used time',
+        name: 'finish too early',
         series: this.reports.map(a => ({ name: new Date(a.date), value: a.finishTooEarly }))
       }
     ];
@@ -99,13 +104,6 @@ export class ReportChartComponent extends Unsub implements OnInit {
     this.data = [{
       name: 'before',
       series: this.reports.map(a => ({ name: new Date(a.date), value: a.beforeToday }))
-    }];
-  }
-  onWaiting() {
-    this.active = this.WAITING;
-    this.data = [{
-      name: 'waiting',
-      series: this.reports.map(a => ({ name: new Date(a.date), value: a.waiting }))
     }];
   }
   onWontdo() {

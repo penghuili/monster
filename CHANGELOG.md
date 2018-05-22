@@ -1,3 +1,9 @@
+## v1.15.3
+
+feature:
+
+- move navigation to bottom
+
 ## v1.15.2
 
 bug fix:

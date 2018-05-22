@@ -16,8 +16,12 @@
   (click)="onPlannedUsedTime()">planned used time</div>
 
   <div class="mst-report-chart-button"
-  [class.mst-report-chart-button--active]="active === FINISHTOO"
-  (click)="onFinishToo()">finish time is weird</div>
+  [class.mst-report-chart-button--active]="active === TOOLATE"
+  (click)="onFinishTooLate()">finish too late</div>
+
+  <div class="mst-report-chart-button"
+  [class.mst-report-chart-button--active]="active === TOOEARLY"
+  (click)="onFinishTooEarly()">finish too early</div>
 
   <div class="mst-report-chart-button"
   [class.mst-report-chart-button--active]="active === ADDLATER"
@@ -26,10 +30,6 @@
   <div class="mst-report-chart-button"
   [class.mst-report-chart-button--active]="active === BEFORE"
   (click)="onBefore()">before</div>
-
-  <div class="mst-report-chart-button"
-  [class.mst-report-chart-button--active]="active === WAITING"
-  (click)="onWaiting()">waiting</div>
 
   <div class="mst-report-chart-button"
   [class.mst-report-chart-button--active]="active === WONTDO"

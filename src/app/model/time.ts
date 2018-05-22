@@ -85,8 +85,14 @@ export function isWithinWeek(date: number, targetDay: number): boolean {
 export function isBeforeDay(date: number, targetDay: number): boolean {
   return date < startOfDay(targetDay).getTime();
 }
+export function isDayOrBefore(date: number, targetDay: number): boolean {
+  return date <= endOfDay(targetDay).getTime();
+}
 export function isAfterDay(date: number, targetDay: number): boolean {
   return date > endOfDay(targetDay).getTime();
+}
+export function isDayOrAfter(date: number, targetDay: number): boolean {
+  return date >= startOfDay(targetDay).getTime();
 }
 export function getStartEnd(date: number, mode: TimeRangeType): number[] {
   if (mode === TimeRangeType.Day) {
