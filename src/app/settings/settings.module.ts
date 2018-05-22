@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { IconModule, InputModule, MonsterCommonModule, StylingModule } from '@app/shared';
 
-import { ProcessDataComponent } from './process-data/process-data.component';
 import { SettingsRoutingModule } from './settings-routing.module';
 import { SettingsComponent } from './settings/settings.component';
 
@@ -18,8 +17,7 @@ import { SettingsComponent } from './settings/settings.component';
     FlexLayoutModule
   ],
   declarations: [
-    SettingsComponent,
-    ProcessDataComponent
+    SettingsComponent
   ]
 })
 export class SettingsModule { }

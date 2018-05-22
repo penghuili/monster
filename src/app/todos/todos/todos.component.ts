@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HabitService, ProjectService, TodoService } from '@app/core';
 import {
+  Color,
   endOfThisWeek,
   endOfToday,
   endofTomorrow,
@@ -49,6 +50,10 @@ export class TodosComponent extends Unsub implements OnInit {
 
   habits: Habit[];
 
+  showSearch = false;
+
+  Color = Color;
+
   private projectsWithTodos: ProjectWithTodos[];
   private drapProjectId: number;
   private shouldReload = new Subject<boolean>();
@@ -88,6 +93,12 @@ export class TodosComponent extends Unsub implements OnInit {
     );
   }
 
+  isStartTodayEnabled() {
+    return !this.todayStarted && this.activeTab === this.TODAY;
+  }
+  onToggleSearch() {
+    this.showSearch = !this.showSearch;
+  }
   onStartToday() {
     if (this.activeTab === this.TODAY) {
       const want = confirm('are you sure to start today now?');
@@ -95,17 +106,6 @@ export class TodosComponent extends Unsub implements OnInit {
         if (!this.todayStarted) {
           this.todayStarted = true;
           MonsterStorage.set('start-today', now());
-        }
-      }
-    }
-  }
-  onCallItADay() {
-    if (this.activeTab === this.TODAY) {
-      const want = confirm('are you sure to end today?');
-      if (want) {
-        if (!this.todayEnded) {
-          this.todayEnded = true;
-          MonsterStorage.set('end-today', now());
         }
       }
     }

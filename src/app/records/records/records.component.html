@@ -6,7 +6,7 @@
   [record]="record" [recordNext]="records[i+1]"></mst-record-item>
 
 
-<div *ngIf="(!records || records.length === 0) && !isLoading" [mstPadding]="'2rem 0 0'">
+<div *ngIf="(!records || records.length === 0) && !isLoading">
   no records for {{ date | mstDate:'shortDate' }}
 </div>
 

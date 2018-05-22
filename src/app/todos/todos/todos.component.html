@@ -1,10 +1,19 @@
-<mst-search-todos [todos]="todos"></mst-search-todos>
+<div fxLayout="row" fxLayoutAlign="space-between">
+  <div
+    [mstBorder]="isStartTodayEnabled() ? Color.Accent : null"
+    [mstColor]="isStartTodayEnabled() ? null : 'grey'"
+    [mstPadding]="'0 0.5rem'"
+    fxLayout="row" fxLayoutAlign="center center"
+    (click)="onStartToday()">start today</div>
+  <mst-icon name="search" [color]="showSearch ? 'accent' : null" (click)="onToggleSearch()"></mst-icon>
+</div>
+<div [mstPadding]="'1rem 0 0'" *ngIf="showSearch">
+  <mst-search-todos [todos]="todos"></mst-search-todos>
+</div>
 
-<div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'0.5rem 0'">
-  <div [mstColor]="todayStarted || activeTab !== TODAY ? 'grey' : null" (click)="onStartToday()">start today</div>
+<div fxLayout="row" fxLayoutAlign="center" [mstPadding]="'1rem 0 0'">
   <div [mstPadding]="'0 1rem'">{{ activeTodos | expectedTime | minuteFormatter }}</div>
   <div [mstPadding]="'0 1rem'">{{ noTimeActiveTodosCount }}</div>
-  <div [mstColor]="todayEnded || activeTab !== TODAY ? 'grey' : null" (click)="onCallItADay()">call it a day</div>
 </div>
 
 <div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'1rem 0'">
