@@ -3,9 +3,9 @@ import {
   EventType,
   Habit,
   HabitWithProgress,
+  isBeforeDay,
   isWithin,
   isWithinDay,
-  isWithinWeek,
   mapWeekDay,
   MonsterEvents,
   now,
@@ -117,7 +117,7 @@ export class HabitService {
               const doneEvent = find(b => isWithinDay(b.createdAt, day), es);
               const shouldDo = habit[weekDay];
               const done = doneEvent ? true :
-                shouldDo && isWithinWeek(day, now()) && isWithin(day, habit.startDate, habit.endDate) ? false :
+                shouldDo && isBeforeDay(day, now()) && isWithin(day, habit.startDate, habit.endDate) ? false :
                 undefined;
               return merge(total, { [weekDay]: done });
             }, {});
