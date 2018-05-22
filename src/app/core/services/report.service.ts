@@ -4,7 +4,7 @@ import {
   createReport,
   EventType,
   getStartEnd,
-  isBeforeDay,
+  isDayOrBefore,
   MonsterEvents,
   now,
   Report,
@@ -74,7 +74,7 @@ export class ReportService {
     this.loadingService.isLoading();
     return fromPromise(
       this.dbService.getDB().reports
-        .filter(a => (date ? isBeforeDay(a.date, date) : true) &&
+        .filter(a => (date ? isDayOrBefore(a.date, date) : true) &&
           (mode === undefined ? true : a.type === mode))
         .toArray()
     ).pipe(
