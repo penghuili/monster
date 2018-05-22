@@ -1,3 +1,11 @@
+## v1.15.2
+
+bug fix:
+
+- only show reports that before today in chart
+- 7 hours only checks in progress todos happen on that day
+- habit in future should not be red
+
 ## v1.15.1
 
 bug fix:
