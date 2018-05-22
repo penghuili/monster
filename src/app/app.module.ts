@@ -8,8 +8,7 @@ import { NotificationModule } from '@app/shared';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HabitsModule } from './habits/habits.module';
-import { ProjectsModule } from './projects/projects.module';
+import { PlansModule } from './plans/plans.module';
 import { RecordsModule } from './records/records.module';
 import { ReportsModule } from './reports/reports.module';
 import { SettingsModule } from './settings/settings.module';
@@ -29,8 +28,7 @@ import { TodosModule } from './todos/todos.module';
     NotificationModule,
 
     TodosModule,
-    ProjectsModule,
-    HabitsModule,
+    PlansModule,
     RecordsModule,
     ReportsModule,
     SettingsModule,

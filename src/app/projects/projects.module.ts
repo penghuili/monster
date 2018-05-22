@@ -19,10 +19,9 @@ import { ProjectCreateSubComponent } from './project-create-sub/project-create-s
 import { ProjectCreateComponent } from './project-create/project-create.component';
 import { ProjectDetailSubComponent } from './project-detail-sub/project-detail-sub.component';
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
-import { ProjectsRoutingModule } from './projects-routing.module';
-import { ProjectsComponent } from './projects/projects.component';
-import { ProjectTimelineComponent } from './project-timeline/project-timeline.component';
 import { ProjectTimelineItemComponent } from './project-timeline-item/project-timeline-item.component';
+import { ProjectTimelineComponent } from './project-timeline/project-timeline.component';
+import { ProjectsComponent } from './projects/projects.component';
 
 @NgModule({
   imports: [
@@ -39,8 +38,6 @@ import { ProjectTimelineItemComponent } from './project-timeline-item/project-ti
     OverlayModule,
     WithinAppModule,
     ChartModule,
-
-    ProjectsRoutingModule
   ],
   declarations: [
     ProjectsComponent,
@@ -50,6 +47,11 @@ import { ProjectTimelineItemComponent } from './project-timeline-item/project-ti
     ProjectDetailSubComponent,
     ProjectTimelineComponent,
     ProjectTimelineItemComponent
+  ],
+  exports: [
+    ProjectsComponent,
+    ProjectDetailComponent,
+    ProjectDetailSubComponent
   ]
 })
 export class ProjectsModule { }

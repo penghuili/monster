@@ -17,13 +17,11 @@ import {
 
 import { HabitCreateComponent } from './habit-create/habit-create.component';
 import { HabitDetailComponent } from './habit-detail/habit-detail.component';
-import { HabitsRoutingModule } from './habits-routing.module';
 import { HabitsComponent } from './habits/habits.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    HabitsRoutingModule,
     ButtonModule,
     OverlayModule,
     InputModule,
@@ -40,6 +38,10 @@ import { HabitsComponent } from './habits/habits.component';
   declarations: [
     HabitsComponent,
     HabitCreateComponent,
+    HabitDetailComponent
+  ],
+  exports: [
+    HabitsComponent,
     HabitDetailComponent
   ]
 })

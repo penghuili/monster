@@ -1,3 +1,5 @@
+<mst-go-back></mst-go-back>
+
 <mst-drop-zone [dragIndex]="dragIndex" (drop)="onDrop($event)">
   <mst-drag-item *ngFor="let habit of activeHabits; let i = index;"
     [item]="habit"
