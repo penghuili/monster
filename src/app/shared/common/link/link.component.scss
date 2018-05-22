@@ -1,5 +1,8 @@
 @import '../../../static/variables';
 
+.mst-link {
+  text-decoration: none;
+}
 .mst-link-active {
   color: $accent;
 }
