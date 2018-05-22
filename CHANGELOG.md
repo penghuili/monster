@@ -1,3 +1,9 @@
+## v1.15.4
+
+bug fix:
+
+- make reports a little bit simpler
+
 ## v1.15.3
 
 feature:
