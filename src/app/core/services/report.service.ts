@@ -4,6 +4,7 @@ import {
   createReport,
   EventType,
   getStartEnd,
+  isBeforeDay,
   MonsterEvents,
   now,
   Report,
@@ -69,11 +70,12 @@ export class ReportService {
       })
     );
   }
-  getReports(mode?: TimeRangeType): Observable<Report[]> {
+  getReportsBefore(date?: number, mode?: TimeRangeType): Observable<Report[]> {
     this.loadingService.isLoading();
     return fromPromise(
       this.dbService.getDB().reports
-        .filter(a => mode === undefined ? true : a.type === mode)
+        .filter(a => (date ? isBeforeDay(a.date, date) : true) &&
+          (mode === undefined ? true : a.type === mode))
         .toArray()
     ).pipe(
       catchError(error => this.handleError('getReports fails.')),

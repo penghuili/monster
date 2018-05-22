@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ReportService } from '@app/core';
-import { ChartDataItem, Report, TimeRangeType } from '@app/model';
+import { ChartDataItem, now, Report, TimeRangeType } from '@app/model';
 import { Unsub } from '@app/static';
 
 @Component({
@@ -29,7 +29,7 @@ export class ReportChartComponent extends Unsub implements OnInit {
 
   ngOnInit() {
     this.addSubscription(
-      this.reportService.getReports(TimeRangeType.Day).subscribe(reports => {
+      this.reportService.getReportsBefore(now(), TimeRangeType.Day).subscribe(reports => {
         this.reports = (!reports || reports.length === 0 ? [] : reports).sort((a, b) => a.date - b.date);
 
         this.active = this.RATIO;

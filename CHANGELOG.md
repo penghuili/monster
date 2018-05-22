@@ -1,3 +1,13 @@
+## v1.15.1
+
+bug fix:
+
+- sort todo on sub project page decreasingly
+- newest event comes first on todo detail
+- not disable end date on datepicker if status is someday
+- enable habit drag drop
+- show warning when there are too many todos on one day, and you still want to add more
+
 ## v1.14.1
 
 bug fix:

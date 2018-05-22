@@ -34,7 +34,6 @@ export class TodosComponent extends Unsub implements OnInit {
   activeProjectsWithTodos: ProjectWithTodos[];
   doneProjectsWithTodos: ProjectWithTodos[];
 
-  activeTodosExpectedTime = 0;
   noTimeActiveTodosCount = 0;
 
   dragIndex: number;

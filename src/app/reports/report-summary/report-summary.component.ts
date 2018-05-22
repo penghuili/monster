@@ -27,7 +27,7 @@ export class ReportSummaryComponent extends Unsub implements OnChanges, OnInit {
 
   ngOnInit() {
     this.addSubscription(
-      this.reportService.getReports().subscribe(reports => {
+      this.reportService.getReportsBefore().subscribe(reports => {
         this.reports = reports ? reports.filter(a => !!a.summary).sort((a, b) => b.date - a.date) : [];
       })
     );
