@@ -35,8 +35,6 @@ export class TodosComponent extends Unsub implements OnInit {
   activeProjectsWithTodos: ProjectWithTodos[];
   doneProjectsWithTodos: ProjectWithTodos[];
 
-  noTimeActiveTodosCount = 0;
-
   dragIndex: number;
 
   TODAY = 'today';
@@ -77,11 +75,11 @@ export class TodosComponent extends Unsub implements OnInit {
         startWith(true),
         switchMap(() => this.todoService.get2Weeks()),
         switchMap(todos => {
-          this.todos = todos;
+          this.todos = todos || [];
           return this.projectService.getProjectsWithTodos(todos);
         })
       ).subscribe(projectsWithTodos => {
-        this.projectsWithTodos = projectsWithTodos;
+        this.projectsWithTodos = projectsWithTodos || [];
         this.process(this.activeTab, this.projectsWithTodos, this.todos);
       })
     );
@@ -212,7 +210,6 @@ export class TodosComponent extends Unsub implements OnInit {
     }
 
     this.activeTodos = filtered.filter(a => a.status === TodoStatus.InProgress || a.status === TodoStatus.Waiting);
-    this.noTimeActiveTodosCount = this.activeTodos.filter(a => a.expectedTime === 0).length;
   }
   private isDoneOnToday(todo: Todo): boolean {
     return isFinished(todo) && isWithinDay(todo.finishAt, now());
