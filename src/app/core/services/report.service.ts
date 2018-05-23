@@ -4,7 +4,10 @@ import {
   createReport,
   EventType,
   getStartEnd,
+  isAfterDay,
+  isBeforeDay,
   isDayOrBefore,
+  isWithin,
   MonsterEvents,
   now,
   Report,
@@ -189,9 +192,11 @@ export class ReportService {
     return fromPromise(
       this.dbService.getDB().todos
         .filter(x => {
-          return ((x.happenDate > start && x.happenDate < end) ||
-            (x.happenDate < start && (!x.finishAt || x.finishAt > end)) ||
-            (x.finishAt > start && x.finishAt < end)) && x.status !== TodoStatus.Someday;
+          return (
+            (isWithin(x.happenDate, start, end) && (!x.finishAt || isWithin(x.finishAt, start, end))) ||
+            (isBeforeDay(x.happenDate, start) && (!x.finishAt || isAfterDay(x.finishAt, end))) ||
+            (isAfterDay(x.happenDate, end) && isWithin(x.finishAt, start, end))
+          ) && x.status !== TodoStatus.Someday;
         })
         .toArray()
     ).pipe(
