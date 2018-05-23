@@ -10,6 +10,7 @@ import { FONT_SIZE } from '@app/static';
 export class TimelineItemComponent implements OnChanges {
   @Input() time: number;
   @Input() timeNext: number;
+  @Input() reverse = false;
 
   MAX_PADDING_BOTTOM = 200;
 
@@ -21,7 +22,7 @@ export class TimelineItemComponent implements OnChanges {
       this.paddingBottom = 0;
       this.overMax = false;
     } else if (this.time) {
-      const padding = Math.round((this.timeNext - this.time) / (1000 * 60)) + FONT_SIZE;
+      const padding = Math.abs(Math.round((this.timeNext - this.time) / (1000 * 60)) + FONT_SIZE);
       if (padding >= this.MAX_PADDING_BOTTOM) {
         this.overMax = true;
         this.paddingBottom = this.MAX_PADDING_BOTTOM / 2;

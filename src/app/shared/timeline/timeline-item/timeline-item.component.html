@@ -1,6 +1,7 @@
 <div class="mst-timeline-item" [style.padding-bottom.px]="paddingBottom">
   <div class="mst-timeline-icon">
-    <mst-icon name="keyboard_arrow_down" [color]="'accent'"></mst-icon>
+    <mst-icon name="keyboard_arrow_down" [color]="'accent'" *ngIf="!reverse"></mst-icon>
+    <mst-icon name="keyboard_arrow_up" [color]="'accent'" *ngIf="reverse"></mst-icon>
   </div>
   <div class="mst-timeline-date" [mstPadding]="'0 0 0.25rem'">{{ time | date:'mediumTime' }}</div>
 

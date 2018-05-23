@@ -12,6 +12,7 @@ export class ActivityItemComponent {
   @Input() activity: Event;
   @Input() nextActivity: Event;
   @Input() data: Project | Subproject | Todo;
+  @Input() reverse = false;
   EventType = EventType;
   MonsterEvents = MonsterEvents;
   ROUTES = ROUTES;
