@@ -7,7 +7,7 @@
 
 
 <div *ngIf="(!records || records.length === 0) && !isLoading">
-  no records for {{ date | mstDate:'shortDate' }}
+  no records.
 </div>
 
 <mst-record-create (created)="onCreated()"></mst-record-create>

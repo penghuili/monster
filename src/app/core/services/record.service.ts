@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EventType, isWithinDay, MonsterEvents, now, Record } from '@app/model';
+import { EventType, getStartEnd, isWithin, MonsterEvents, now, Record, TimeRangeType } from '@app/model';
 import { Observable } from 'rxjs/Observable';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
@@ -18,11 +18,13 @@ export class RecordService {
     private loadingService: LoadingService,
     private notificationService: NotificationService) {}
 
-  getRecordsByDay(date: number): Observable<Record[]> {
+  getRecords(date: number, mode: TimeRangeType): Observable<Record[]> {
     this.loadingService.isLoading();
+    const [start, end] = getStartEnd(date, mode);
+
     return fromPromise(
       this.dbService.getDB().records
-        .filter(a => isWithinDay(a.createdAt, date))
+        .filter(a => isWithin(a.createdAt, start, end))
         .toArray()
     ).pipe(
       catchError(error => this.handleError('getRecordsByDay fails.')),
