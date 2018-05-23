@@ -1,3 +1,24 @@
+## v1.15.7
+
+bug fix:
+
+- sort project list by position
+- exclude todos not done on today
+- load records by mode
+- arrow up activities on todo details
+
+## v1.15.6
+
+bug fix:
+
+- navigate projects and habits correctly
+
+## v1.15.5
+
+bug gix:
+
+- also show today's report in chart
+
 ## v1.15.4
 
 bug fix:
