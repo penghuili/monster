@@ -11,10 +11,10 @@ export class MinuteFormatterPipe implements PipeTransform {
   }
 
   private getHours(duration: number): number {
-    return Math.floor(duration / 60);
+    return duration === undefined ? 0 : Math.floor(duration / 60);
   }
   private getMinutes(duration: number): number {
-    return duration - this.getHours(duration) * 60;
+    return duration === undefined ? 0 : duration - this.getHours(duration) * 60;
   }
 
 }
