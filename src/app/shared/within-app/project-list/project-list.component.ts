@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProjectService, SubprojectService } from '@app/core';
-import { Project, ProjectStatus, ProjectWithSubproject, Subproject } from '@app/model';
-import { ROUTES, Unsub } from '@app/static';
+import { Project, ProjectStatus, ProjectWithSubproject, sortByPosition, Subproject } from '@app/model';
+import { Unsub } from '@app/static';
 import { switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 
@@ -42,8 +42,8 @@ export class ProjectListComponent extends Unsub implements OnInit {
   ngOnInit() {
     this.addSubscription(
       this.projectService.getProjects().subscribe(data => {
-        this.projects = data.filter(a => a.status === ProjectStatus.InProgress);
-        this.somedayProjects = data.filter(a => a.status === ProjectStatus.Someday);
+        this.projects = <Project[]>sortByPosition(data.filter(a => a.status === ProjectStatus.InProgress));
+        this.somedayProjects = <Project[]>sortByPosition(data.filter(a => a.status === ProjectStatus.Someday));
       })
     );
 
