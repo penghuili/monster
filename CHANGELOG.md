@@ -1,3 +1,10 @@
+## v1.15.8
+
+bug fix:
+
+- move expected time on todo page to top
+- minor fixes
+
 ## v1.15.7
 
 bug fix:
