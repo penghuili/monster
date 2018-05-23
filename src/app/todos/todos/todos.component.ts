@@ -116,9 +116,6 @@ export class TodosComponent extends Unsub implements OnInit {
 
     this.process(this.activeTab, this.projectsWithTodos, this.todos);
   }
-  onCreate() {
-    this.router.navigate([ ROUTES.CREATE ], { relativeTo: this.route });
-  }
   onCreated() {
     this.shouldReload.next(true);
   }
@@ -150,7 +147,7 @@ export class TodosComponent extends Unsub implements OnInit {
     this.drapProjectId = undefined;
   }
   onShowHabitDetail(habit: Habit) {
-    this.router.navigateByUrl(`${ROUTES.HABITS}/${habit.id}`);
+    this.router.navigateByUrl(`${ROUTES.PLANS}/${ROUTES.HABITS}/${habit.id}`);
   }
 
   private process(activeTab: string, projectsWithTodos: ProjectWithTodos[], todos: Todo[]) {

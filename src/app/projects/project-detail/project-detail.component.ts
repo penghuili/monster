@@ -146,7 +146,7 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
     this.update({ endDate: result.date });
   }
   onGotoSub(subid: string) {
-    this.router.navigate([ ROUTES.SUB_PROJECTS, subid ]);
+    this.router.navigateByUrl(`${ROUTES.PLANS}/${ROUTES.SUB_PROJECTS}/${subid}`);
   }
   onCreateSub() {
     this.createdSub.next(true);

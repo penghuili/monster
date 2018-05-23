@@ -238,9 +238,6 @@ export class TodoDetailComponent extends Unsub implements OnInit {
       this.emitEvent({ action: MonsterEvents.CurrentThougntTodo, newValue: thought });
     }
   }
-  onBack() {
-    this.router.navigate([ '../' ], { relativeTo: this.route });
-  }
 
   private setDatepickerRange(project: Project) {
     this.datePickerStartDate = project && project.startDate > this.datePickerStartDate ? project.startDate : this.datePickerStartDate;

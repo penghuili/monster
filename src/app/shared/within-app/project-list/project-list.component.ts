@@ -75,10 +75,4 @@ export class ProjectListComponent extends Unsub implements OnInit {
     this.selected.emit({ project: this.activeProject, subproject });
     this.isShow = false;
   }
-
-  onGotoSubproject() {
-    if (this.activeSubproject) {
-      this.router.navigateByUrl(`${ROUTES.PROJECTS}/${this.activeSubproject.projectId}/${this.activeSubproject.id}`);
-    }
-  }
 }
