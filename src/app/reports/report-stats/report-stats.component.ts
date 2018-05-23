@@ -55,8 +55,11 @@ export class ReportStatsComponent extends Unsub implements OnChanges {
       }
     }
   }
+  finishedCount() {
+    return this.report.done !== undefined && this.report.wontDo !== undefined ? this.report.done + this.report.wontDo : 0;
+  }
   finishedPlanned() {
-    return this.report.planned ? (this.report.done + this.report.wontDo) / this.report.planned : 0;
+    return this.report.planned ? this.finishedCount() / this.report.planned : 0;
   }
   usedTimePlannedTime() {
     return this.report.plannedTime ? this.report.usedTimeOfTimeRange / this.report.plannedTime : 0;
