@@ -3,8 +3,7 @@ import {
   createTodo,
   endOfWeek,
   EventType,
-  isFinished,
-  isWithin,
+  isValidTodoWithin,
   isWithinDay,
   MonsterEvents,
   now,
@@ -42,9 +41,7 @@ export class TodoService {
 
     return fromPromise(this.dbService.getDB()
       .todos
-      .filter(a => isWithin(a.happenDate, start, end) ||
-        (a.happenDate < start && (!isFinished(a) || isWithin(a.finishAt, start, end)))
-      )
+      .filter(a => isValidTodoWithin(a, start, end))
       .toArray()
     ).pipe(
       catchError(error => this.handleError('get2Weeks fails')),

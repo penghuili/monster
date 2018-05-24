@@ -4,10 +4,8 @@ import {
   createReport,
   EventType,
   getStartEnd,
-  isAfterDay,
-  isBeforeDay,
   isDayOrBefore,
-  isWithin,
+  isValidTodoWithin,
   MonsterEvents,
   now,
   Report,
@@ -191,13 +189,7 @@ export class ReportService {
 
     return fromPromise(
       this.dbService.getDB().todos
-        .filter(x => {
-          return (
-            (isWithin(x.happenDate, start, end) && (!x.finishAt || isWithin(x.finishAt, start, end))) ||
-            (isBeforeDay(x.happenDate, start) && (!x.finishAt || isAfterDay(x.finishAt, end))) ||
-            (isAfterDay(x.happenDate, end) && isWithin(x.finishAt, start, end))
-          ) && x.status !== TodoStatus.Someday;
-        })
+        .filter(x => isValidTodoWithin(x, start, end) && x.status !== TodoStatus.Someday)
         .toArray()
     ).pipe(
       catchError(error => this.handleError('getTodosForDailyReport fails.')),
