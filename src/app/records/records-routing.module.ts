@@ -6,7 +6,7 @@ import { RecordsComponent } from './records/records.component';
 
 const recordsRoutes: Routes = [
   {
-    path: ROUTES.RECORDS,
+    path: ROUTES.THOUGHTS,
     component: RecordsComponent
   }
 ];

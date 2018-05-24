@@ -4,7 +4,7 @@ export const ROUTES = {
   PROJECTS: 'projects',
   SUB_PROJECTS: 'sub-projects',
   HABITS: 'habit',
-  RECORDS: 'records',
+  THOUGHTS: 'thoughts',
   REPORTS: 'reports',
   CREATE: 'create',
   SETTINGS: 'settings',
