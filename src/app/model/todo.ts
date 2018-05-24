@@ -2,7 +2,7 @@ import { last } from 'ramda';
 
 import { Event, MonsterEvents } from './event';
 import { SortableItem, sortByPosition } from './item';
-import { isAfterDay, isBeforeDay, isBeforeToday, isWithin, isWithinDay, now, startOfToday } from './time';
+import { isAfterDay, isBeforeDay, isBeforeToday, isDayOrAfter, isWithin, isWithinDay, now, startOfToday } from './time';
 import { MonsterStorage } from './utils';
 
 export interface Todo extends SortableItem {
@@ -173,6 +173,6 @@ export function calcStartEndDate(todos: Todo[]): number[] {
 }
 export function isValidTodoWithin(todo: Todo, start: number, end: number): boolean {
   return isWithin(todo.happenDate, start, end) ||
-  (isBeforeDay(todo.happenDate, start) && (!todo.finishAt || isAfterDay(todo.finishAt, end))) ||
+  (isBeforeDay(todo.happenDate, start) && (!todo.finishAt || isDayOrAfter(todo.finishAt, start))) ||
   (isAfterDay(todo.happenDate, end) && isWithin(todo.finishAt, start, end));
 }
