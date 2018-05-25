@@ -24,7 +24,7 @@ export class TodoTimerComponent implements OnChanges {
     if (this.expectedTime && this.usedTime !== undefined) {
       this.expectedTime = this.expectedTime;
       this.usedTime = this.usedTime || 0;
-      this.totalTime = this.parseMinute(this.expectedTime);
+      this.totalTime = this.parseSeconds(this.expectedTime);
       this.label = this.parseSeconds(this.usedTime * 60);
       this.prevProgress = this.usedTime / this.expectedTime;
       this.progress = this.prevProgress;
@@ -49,15 +49,10 @@ export class TodoTimerComponent implements OnChanges {
     this.sub.unsubscribe();
   }
 
-  private parseMinute(minutes: number): string {
-    const hours = Math.floor(minutes / 60);
-    const mins = minutes - hours * 60;
-    return `${add0(hours)}:${add0(mins)}`;
-  }
   private parseSeconds(seconds: number): string {
     const hours = Math.floor(seconds / 3600);
     const mins = Math.floor((seconds - hours * 3600) / 60);
     const secs = seconds - hours * 3600 - mins * 60;
-    return hours > 0 ? `${add0(hours)}:${add0(mins)}:${add0(secs)}` : `${add0(mins)}:${add0(secs)}`;
+    return `${add0(hours)}:${add0(mins)}:${add0(secs)}`;
   }
 }

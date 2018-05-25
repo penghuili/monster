@@ -1,5 +1,5 @@
 <div class="mst-progress-bar" #bar>
-  <div class="mst-progress-end-label" [style.left.px]="endLeft" *ngIf="endLabel">{{ endLabel }}</div>
+  <div class="mst-progress-end-label" [style.left]="endLeft" [style.right]="endRight" *ngIf="endLabel">{{ endLabel }}</div>
   <div class="mst-progress-valid" [style.width.px]="validWidth"></div>
   <div class="mst-progress-invalid" [style.left.px]="validWidth" [style.width.px]="invalidWidth"></div>
   <div class="mst-progress-thumb-wrapper" [style.left.px]="thumbLeft">

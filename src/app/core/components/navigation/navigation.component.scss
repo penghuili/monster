@@ -14,3 +14,11 @@
   background-color: $white;
   border-top: 1px solid $grey;
 }
+@media screen and (min-width: $max-width + 1) {
+  .mst-navigation {
+    width: $max-width;
+    left: calc(50% - 284px);
+    border-left: 1px solid $grey;
+    border-right: 1px solid $grey;
+  }
+}

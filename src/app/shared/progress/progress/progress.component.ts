@@ -31,7 +31,8 @@ export class ProgressComponent implements OnInit, OnChanges {
   thumbLeft: number;
   labelLeft: string;
   labelRight: string;
-  endLeft: number;
+  endLeft: string;
+  endRight: string;
   private barWidth: number;
 
   ngOnInit() {
@@ -50,15 +51,18 @@ export class ProgressComponent implements OnInit, OnChanges {
       this.invalidWidth = 0;
       this.thumbLeft = this.validWidth - FONT_SIZE;
       this.thumbLeft = this.thumbLeft < - FONT_SIZE / 2 ? - FONT_SIZE / 2 : this.thumbLeft;
-      this.endLeft = this.barWidth - FONT_SIZE * 3;
-      this.labelLeft = this.thumbLeft < FONT_SIZE * 1.5 ? '0' :
-        this.thumbLeft < this.endLeft ? '-50%' : 'auto';
-      this.labelRight = this.thumbLeft < this.endLeft ? 'auto' : '0';
+      this.endLeft = 'auto';
+      this.endRight = '0';
+      this.labelLeft = this.thumbLeft < FONT_SIZE * 1.5 ? '4px' : '-50%';
+      this.labelRight = 'auto';
     } else {
       this.validWidth = 1 / this.progress * this.barWidth - FONT_SIZE;
       this.invalidWidth = this.barWidth - this.validWidth;
       this.thumbLeft = this.barWidth - FONT_SIZE;
-      this.endLeft = this.validWidth - FONT_SIZE * 3;
+      this.endLeft = `${this.validWidth - FONT_SIZE * 3}px`;
+      this.endRight = 'auto';
+      this.labelLeft = 'auto';
+      this.labelRight = '4px';
     }
   }
 }
