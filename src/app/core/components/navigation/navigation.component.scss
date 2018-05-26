@@ -17,9 +17,18 @@
 }
 @media screen and (min-width: $max-width + 1) {
   .mst-navigation {
-    width: $max-width;
-    left: calc(50% - 284px);
-    border-left: 1px solid $grey;
-    border-right: 1px solid $grey;
+    width: 7rem;
+    left: calc(50% - 284px - 9rem);
+    bottom: auto;
+    top: 0;
+
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 3.5rem 0 0;
+
+    border: 0;
+  }
+  mst-link {
+    height: 3rem;
   }
 }
