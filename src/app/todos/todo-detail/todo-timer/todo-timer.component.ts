@@ -24,7 +24,7 @@ export class TodoTimerComponent implements OnChanges {
     if (this.expectedTime && this.usedTime !== undefined) {
       this.expectedTime = this.expectedTime;
       this.usedTime = this.usedTime || 0;
-      this.totalTime = this.parseSeconds(this.expectedTime);
+      this.totalTime = this.parseSeconds(this.expectedTime * 60);
       this.label = this.parseSeconds(this.usedTime * 60);
       this.prevProgress = this.usedTime / this.expectedTime;
       this.progress = this.prevProgress;
