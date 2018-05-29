@@ -1,21 +1,18 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TodoService } from '@app/core';
 import {
-  calcExpectedTime,
   isTodayStarted,
   isWithin,
   now,
   Project,
   ProjectWithSubproject,
-  Report,
   Subproject,
   TimeRangeType,
   TodoStatus,
 } from '@app/model';
 import { Unsub } from '@app/static';
 import { addDays } from 'date-fns';
-import { debounceTime, filter, switchMap } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
+import { debounceTime, filter } from 'rxjs/operators';
 
 import { DatepickerResult } from '../../datepicker/model';
 import { InputControl } from '../../input/input-control';
@@ -36,7 +33,6 @@ export class TodoCreateComponent extends Unsub implements OnInit {
   status: TodoStatus;
   happenDate: number;
   expectedTime = 0;
-  defaultExpectedTime = this.expectedTime;
   hasSubprojectError = false;
 
   isTodayStarted: boolean;
@@ -49,9 +45,6 @@ export class TodoCreateComponent extends Unsub implements OnInit {
 
   currentProject: Project;
   currentSubproject: Subproject;
-
-  private report: Report;
-  private checkDate = new Subject<any>();
 
   constructor(private todoService: TodoService) {
     super();
@@ -66,39 +59,6 @@ export class TodoCreateComponent extends Unsub implements OnInit {
         debounceTime(300)
       ).subscribe(note => {
         this.showUnhappy = note.indexOf('i should not do this.') > -1;
-      })
-    );
-
-    let date: number;
-    let expectedTime: number;
-    this.addSubscription(
-      this.checkDate.asObservable().pipe(
-        switchMap(value => {
-          date = value.date || this.happenDate;
-          expectedTime = value.expectedTime || this.expectedTime;
-          return this.todoService.getInProgressTodosByHappenDate(date);
-        })
-      ).subscribe(todos => {
-        if (todos) {
-          if (calcExpectedTime(todos) + expectedTime > 7 * 60) {
-            const want = confirm('there will be more than 7 hours on this day, do you still want to plan it on this day?');
-            if (want) {
-              this.happenDate = date;
-              this.expectedTime = expectedTime;
-              this.defaultDatepickerDate = date;
-              this.defaultExpectedTime = expectedTime;
-            } else {
-              this.defaultDatepickerDate = this.happenDate + 0.001;
-              this.defaultExpectedTime = this.expectedTime + 0.001;
-            }
-          } else {
-            this.happenDate = date;
-            this.expectedTime = expectedTime;
-          }
-        } else {
-          this.happenDate = date;
-          this.expectedTime = expectedTime;
-        }
       })
     );
   }
@@ -124,10 +84,10 @@ export class TodoCreateComponent extends Unsub implements OnInit {
     this.status = status;
   }
   onFinishPickDate(result: DatepickerResult) {
-    this.checkDate.next({ date: result.date });
+    this.happenDate = result.date;
   }
   onDurationChange(duration: number) {
-    this.checkDate.next({ expectedTime: duration });
+    this.expectedTime = duration;
   }
   onCreate() {
     const note = this.noteControl.getValue();
@@ -196,10 +156,8 @@ export class TodoCreateComponent extends Unsub implements OnInit {
     this.enableToday = false;
     this.status = TodoStatus.InProgress;
     this.expectedTime = 0;
-    this.defaultExpectedTime = this.expectedTime;
     this.hasSubprojectError = false;
     this.currentProject = null;
     this.currentSubproject = null;
-    this.report = null;
   }
 }

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HabitService, ProjectService, TodoService } from '@app/core';
+import { HabitService, NotificationService, ProjectService, TodoService } from '@app/core';
 import {
+  calcExpectedTime,
   Color,
   endOfThisWeek,
   endOfToday,
@@ -21,7 +22,7 @@ import {
 } from '@app/model';
 import { ROUTES, Unsub } from '@app/static';
 import { merge } from 'ramda';
-import { startWith, switchMap } from 'rxjs/operators';
+import { map, startWith, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 
 @Component({
@@ -58,6 +59,7 @@ export class TodosComponent extends Unsub implements OnInit {
 
   constructor(
     private habitService: HabitService,
+    private notificationService: NotificationService,
     private route: ActivatedRoute,
     private router: Router,
     private projectService: ProjectService,
@@ -99,12 +101,17 @@ export class TodosComponent extends Unsub implements OnInit {
   }
   onStartToday() {
     if (this.activeTab === this.TODAY) {
-      const want = confirm('are you sure to start today now?');
-      if (want) {
-        if (!this.todayStarted) {
-          this.todayStarted = true;
-          MonsterStorage.set('start-today', now());
+      const canStart = !this.activeTodos || calcExpectedTime(this.activeTodos) <= 7 * 60;
+      if (canStart) {
+        const want = confirm('are you sure to start today now?');
+        if (want) {
+          if (!this.todayStarted) {
+            this.todayStarted = true;
+            MonsterStorage.set('start-today', now());
+          }
         }
+      } else {
+        this.notificationService.sendMessage(`there will be more than 7 hours on this day, you can't start today.`);
       }
     }
   }

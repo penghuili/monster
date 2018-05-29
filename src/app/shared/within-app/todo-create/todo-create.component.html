@@ -30,7 +30,7 @@
             [disabled]="enableToday"
             (finish)="onFinishPickDate($event)"></mst-datepicker>
         </div>
-        <mst-duration-picker [defaultValue]="defaultExpectedTime" (change)="onDurationChange($event)"></mst-duration-picker>
+        <mst-duration-picker (change)="onDurationChange($event)"></mst-duration-picker>
     </div>
   
     <mst-input
