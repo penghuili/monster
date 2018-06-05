@@ -101,7 +101,8 @@ export class TodosComponent extends Unsub implements OnInit {
   }
   onStartToday() {
     if (this.activeTab === this.TODAY) {
-      const canStart = !this.activeTodos || calcExpectedTime(this.activeTodos) <= 7 * 60;
+      const inProgressTodos = this.activeTodos.filter(a => a.status === TodoStatus.InProgress);
+      const canStart = calcExpectedTime(inProgressTodos) <= 7 * 60;
       if (canStart) {
         const want = confirm('are you sure to start today now?');
         if (want) {
