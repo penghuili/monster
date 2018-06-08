@@ -26,7 +26,7 @@ export class SearchTodosComponent extends Unsub implements OnInit {
         filter(text => !!text && !!text.trim())
       ).subscribe(text => {
         const todos = this.todos || [];
-        this.results = todos.filter(a => a.title.indexOf(text) > -1);
+        this.results = todos.filter(a => a.title.toLowerCase().indexOf(text.toLowerCase()) > -1);
       })
     );
   }
