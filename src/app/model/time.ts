@@ -1,4 +1,5 @@
 import {
+  addDays,
   endOfDay,
   endOfMonth,
   endOfQuarter,
@@ -33,6 +34,9 @@ export interface WeekDays {
 
 export function now(): number {
   return new Date().getTime();
+}
+export function yesterday(): number {
+  return addDays(now(), -1).getTime();
 }
 export function createDate(year: number, month: number, day: number): number {
   const n = new Date();
