@@ -19,11 +19,13 @@ import {
   sortTodos,
   Todo,
   TodoStatus,
+  isBeforeToday,
 } from '@app/model';
 import { ROUTES, Unsub } from '@app/static';
 import { merge } from 'ramda';
 import { map, startWith, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
+import { isToday, isTomorrow } from 'date-fns';
 
 @Component({
   selector: 'mst-todos',
@@ -38,6 +40,7 @@ export class TodosComponent extends Unsub implements OnInit {
 
   dragIndex: number;
 
+  OVERDUE = 'overdue';
   TODAY = 'today';
   TOMORROW = 'tomorrow';
   THISWEEK = 'this week';
@@ -101,8 +104,8 @@ export class TodosComponent extends Unsub implements OnInit {
   }
   onStartToday() {
     if (this.activeTab === this.TODAY) {
-      const inProgressTodos = this.activeTodos.filter(a => a.status === TodoStatus.InProgress);
-      const canStart = calcExpectedTime(inProgressTodos) <= 7 * 60;
+      const todaysTodos = this.activeTodos.filter(a => isToday(a.happenDate) && a.status === TodoStatus.InProgress);
+      const canStart = calcExpectedTime(todaysTodos) <= 7 * 60;
       if (canStart) {
         const want = confirm('are you sure to start today now?');
         if (want) {
@@ -171,15 +174,16 @@ export class TodosComponent extends Unsub implements OnInit {
     return dragged && dropped && dragged.status === TodoStatus.Someday && dropped.status === TodoStatus.Someday;
   }
   private processTodos(activeTab: string, projectsWithTodos: ProjectWithTodos[]) {
-    const todayEnd = endOfToday();
     const tomorrowEnd = endofTomorrow();
     const weekEnd = endOfThisWeek();
     let filteredActive: ProjectWithTodos[];
     let activeFilterFunction: (a: Todo) => boolean;
-    if (activeTab === this.TODAY) {
-      activeFilterFunction = a => a.happenDate - todayEnd <= 0;
+    if (activeTab === this.OVERDUE) {
+      activeFilterFunction = a => isBeforeToday(a.happenDate);
+    } else if (activeTab === this.TODAY) {
+      activeFilterFunction = a => isToday(a.happenDate);
     } else if (activeTab === this.TOMORROW) {
-      activeFilterFunction = a => a.happenDate > todayEnd && a.happenDate <= tomorrowEnd;
+      activeFilterFunction = a => isTomorrow(a.happenDate);
     } else if (activeTab === this.THISWEEK) {
       activeFilterFunction = a => a.happenDate > tomorrowEnd && a.happenDate <= weekEnd;
     } else {
