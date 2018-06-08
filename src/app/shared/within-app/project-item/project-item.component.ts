@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { now, Project, ProjectStatus } from '@app/model';
-import { startOfDay } from 'date-fns';
+import { isBeforeToday, Project, ProjectStatus } from '@app/model';
 
 @Component({
   selector: 'mst-project-item',
@@ -16,6 +15,6 @@ export class ProjectItemComponent {
   getColor(): string {
     return this.project.status === ProjectStatus.Done ? 'grey' :
       this.project.status === ProjectStatus.Someday ? 'yellow' :
-      this.project.endDate < startOfDay(now()).getTime() ? 'error' : null;
+      this.project.endDate && isBeforeToday(this.project.endDate) ? 'error' : null;
   }
 }
