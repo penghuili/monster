@@ -25,6 +25,7 @@ export class RecordService {
     return fromPromise(
       this.dbService.getDB().records
         .filter(a => isWithin(a.createdAt, start, end))
+        .reverse()
         .toArray()
     ).pipe(
       catchError(error => this.handleError('getRecordsByDay fails.')),
