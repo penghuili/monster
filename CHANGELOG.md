@@ -1,3 +1,14 @@
+## v1.15.18
+
+bug fix:
+
+- sub project will never be red
+- listen to window active event on todo detail page
+- not show todos of done projects
+- make search case insensitive
+- reverse thoughts
+- not show today in report chart
+
 ## v1.15.17
 
 feature:
