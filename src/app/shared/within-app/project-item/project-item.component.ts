@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { isBeforeToday, Project, ProjectStatus } from '@app/model';
+import { isBeforeToday, Project, ProjectStatus, Subproject } from '@app/model';
 
 @Component({
   selector: 'mst-project-item',
@@ -8,13 +8,13 @@ import { isBeforeToday, Project, ProjectStatus } from '@app/model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProjectItemComponent {
-  @Input() project: Project;
+  @Input() project: Project | Subproject;
 
   ProjectStatus = ProjectStatus;
 
   getColor(): string {
     return this.project.status === ProjectStatus.Done ? 'grey' :
       this.project.status === ProjectStatus.Someday ? 'yellow' :
-      this.project.endDate && isBeforeToday(this.project.endDate) ? 'error' : null;
+      !(<Subproject>this.project).projectId && isBeforeToday((<Project>this.project).endDate) ? 'error' : null;
   }
 }
