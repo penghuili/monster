@@ -8,6 +8,7 @@ import {
   endOfToday,
   endofTomorrow,
   Habit,
+  isBeforeToday,
   isFinished,
   isOverDue,
   isTodayEnded,
@@ -19,13 +20,12 @@ import {
   sortTodos,
   Todo,
   TodoStatus,
-  isBeforeToday,
 } from '@app/model';
 import { ROUTES, Unsub } from '@app/static';
-import { merge } from 'ramda';
-import { map, startWith, switchMap } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
 import { isToday, isTomorrow } from 'date-fns';
+import { merge } from 'ramda';
+import { startWith, switchMap } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'mst-todos',
