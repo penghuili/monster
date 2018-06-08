@@ -1,3 +1,9 @@
+## v1.15.19
+
+bug fix:
+- make sure sub project never be red
+- if search field is empty, show no result
+
 ## v1.15.18
 
 bug fix:

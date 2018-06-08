@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Todo } from '@app/model';
 import { InputControl } from '@app/shared';
 import { ROUTES, Unsub } from '@app/static';
-import { debounceTime, filter } from 'rxjs/operators';
+import { debounceTime, filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'mst-search-todos',
@@ -23,10 +23,14 @@ export class SearchTodosComponent extends Unsub implements OnInit {
     this.addSubscription(
       this.searchControl.value$.pipe(
         debounceTime(300),
-        filter(text => !!text && !!text.trim())
+        map(text => text.trim())
       ).subscribe(text => {
-        const todos = this.todos || [];
-        this.results = todos.filter(a => a.title.toLowerCase().indexOf(text.toLowerCase()) > -1);
+        if (text) {
+          const todos = this.todos || [];
+          this.results = todos.filter(a => a.title.toLowerCase().indexOf(text.toLowerCase()) > -1);
+        } else {
+          this.results = null;
+        }
       })
     );
   }
