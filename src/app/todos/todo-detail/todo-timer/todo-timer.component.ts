@@ -1,6 +1,8 @@
-import { Component, Input, OnChanges } from '@angular/core';
-import { add0, Todo } from '@app/model';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { add0, now } from '@app/model';
+import { fromEvent } from 'rxjs/observable/fromEvent';
 import { interval } from 'rxjs/observable/interval';
+import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -8,7 +10,7 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: './todo-timer.component.html',
   styleUrls: ['./todo-timer.component.scss']
 })
-export class TodoTimerComponent implements OnChanges {
+export class TodoTimerComponent implements OnChanges, OnInit {
   @Input() expectedTime: number;
   @Input() usedTime: number;
 
@@ -19,7 +21,15 @@ export class TodoTimerComponent implements OnChanges {
 
   private prevProgress: number;
   private sub: Subscription;
+  private startTime: number;
 
+  ngOnInit() {
+    fromEvent(window, 'focus').pipe(
+      filter(() => this.isDoing)
+    ).subscribe(() => {
+      this.start();
+    });
+  }
   ngOnChanges() {
     if (this.expectedTime && this.usedTime !== undefined) {
       this.expectedTime = this.expectedTime;
@@ -37,15 +47,25 @@ export class TodoTimerComponent implements OnChanges {
       if (this.sub) {
         this.sub.unsubscribe();
       }
+      let inActiveTime: number;
+      const timestamp = now();
+      if (!this.startTime) {
+        inActiveTime = 0;
+        this.startTime = timestamp;
+      } else {
+        inActiveTime = Math.round((timestamp - this.startTime) / 1000);
+        this.startTime = timestamp;
+      }
       const seconds = this.expectedTime * 60;
       this.sub = interval(1000).subscribe(a => {
-        this.progress = this.prevProgress + a / seconds;
-        this.label = this.parseSeconds(a + this.usedTime * 60);
+        this.progress = this.prevProgress + (a + inActiveTime) / seconds;
+        this.label = this.parseSeconds(a + inActiveTime + this.usedTime * 60);
       });
     }
   }
   stop() {
     this.isDoing = false;
+    this.startTime = undefined;
     this.sub.unsubscribe();
   }
 
