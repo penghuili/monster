@@ -16,6 +16,7 @@ import {
   isWithinDay,
   MonsterStorage,
   now,
+  ProjectStatus,
   ProjectWithTodos,
   sortTodos,
   Todo,
@@ -84,7 +85,8 @@ export class TodosComponent extends Unsub implements OnInit {
           return this.projectService.getProjectsWithTodos(todos);
         })
       ).subscribe(projectsWithTodos => {
-        this.projectsWithTodos = projectsWithTodos || [];
+        this.projectsWithTodos = (projectsWithTodos || [])
+          .filter(a => a.project.status !== ProjectStatus.Done);
         this.process(this.activeTab, this.projectsWithTodos, this.todos);
       })
     );
