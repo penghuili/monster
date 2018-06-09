@@ -1,20 +1,7 @@
 @import '../../static/variables';
 
-.mst-plans {
-  padding: 2.5rem 0;  
-}
 .mst-plans-link {
   display: block;
   text-decoration: none;
-  padding-bottom: 2rem;
-}
-
-@media screen and (max-width: $max-width) {
-  .mst-plans {
-    display: flex;
-    flex-direction: column;
-    height: calc(100vh - 7rem);
-    justify-content: center;
-    padding: 0;
-  }
+  padding-bottom: 1rem;
 }

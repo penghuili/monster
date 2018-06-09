@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HabitService, NotificationService, ProjectService, TodoService } from '@app/core';
+import { AppHeaderService, HabitService, NotificationService, ProjectService, TodoService } from '@app/core';
 import {
   calcExpectedTime,
   Color,
-  endOfThisWeek,
   endOfToday,
   endofTomorrow,
   Habit,
@@ -25,6 +24,7 @@ import {
 import { ROUTES, Unsub } from '@app/static';
 import { isToday, isTomorrow } from 'date-fns';
 import { merge } from 'ramda';
+import { merge as mergeO } from 'rxjs/observable/merge';
 import { startWith, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 
@@ -35,7 +35,6 @@ import { Subject } from 'rxjs/Subject';
 })
 export class TodosComponent extends Unsub implements OnInit {
   todos: Todo[];
-  activeTodos: Todo[];
   activeProjectsWithTodos: ProjectWithTodos[];
   doneProjectsWithTodos: ProjectWithTodos[];
 
@@ -45,7 +44,6 @@ export class TodosComponent extends Unsub implements OnInit {
   TODAY = 'today';
   TOMORROW = 'tomorrow';
   THISWEEK = 'this week';
-  NEXTWEEK = 'next week';
   activeTab: string;
 
   todayStarted = false;
@@ -57,11 +55,13 @@ export class TodosComponent extends Unsub implements OnInit {
 
   Color = Color;
 
+  private activeTodos: Todo[];
   private projectsWithTodos: ProjectWithTodos[];
   private drapProjectId: number;
   private shouldReload = new Subject<boolean>();
 
   constructor(
+    private appHeaderService: AppHeaderService,
     private habitService: HabitService,
     private notificationService: NotificationService,
     private route: ActivatedRoute,
@@ -77,9 +77,11 @@ export class TodosComponent extends Unsub implements OnInit {
     this.activeTab = MonsterStorage.get('activeTab') || this.TODAY;
 
     this.addSubscription(
-      this.shouldReload.asObservable().pipe(
-        startWith(true),
-        switchMap(() => this.todoService.get2Weeks()),
+      mergeO(
+        this.shouldReload.asObservable().pipe(startWith(true)),
+        this.todoService.onCreatedTodo()
+      ).pipe(
+        switchMap(() => this.todoService.getForTodoPage()),
         switchMap(todos => {
           this.todos = todos || [];
           return this.projectService.getProjectsWithTodos(todos);
@@ -96,13 +98,16 @@ export class TodosComponent extends Unsub implements OnInit {
         this.habits = habits;
       })
     );
+
+    this.addSubscription(
+      this.appHeaderService.getSearchStatus().subscribe(isSearching => {
+        this.showSearch = isSearching;
+      })
+    );
   }
 
   isStartTodayEnabled() {
     return !this.todayStarted && this.activeTab === this.TODAY;
-  }
-  onToggleSearch() {
-    this.showSearch = !this.showSearch;
   }
   onStartToday() {
     if (this.activeTab === this.TODAY) {
@@ -126,9 +131,6 @@ export class TodosComponent extends Unsub implements OnInit {
     this.activeTab = tab;
 
     this.process(this.activeTab, this.projectsWithTodos, this.todos);
-  }
-  onCreated() {
-    this.shouldReload.next(true);
   }
   onShowDetail(todo: Todo) {
     this.router.navigate([ todo.id ], { relativeTo: this.route });
@@ -177,7 +179,6 @@ export class TodosComponent extends Unsub implements OnInit {
   }
   private processTodos(activeTab: string, projectsWithTodos: ProjectWithTodos[]) {
     const tomorrowEnd = endofTomorrow();
-    const weekEnd = endOfThisWeek();
     let filteredActive: ProjectWithTodos[];
     let activeFilterFunction: (a: Todo) => boolean;
     if (activeTab === this.OVERDUE) {
@@ -186,10 +187,8 @@ export class TodosComponent extends Unsub implements OnInit {
       activeFilterFunction = a => isToday(a.happenDate);
     } else if (activeTab === this.TOMORROW) {
       activeFilterFunction = a => isTomorrow(a.happenDate);
-    } else if (activeTab === this.THISWEEK) {
-      activeFilterFunction = a => a.happenDate > tomorrowEnd && a.happenDate <= weekEnd;
     } else {
-      activeFilterFunction = a => a.happenDate > weekEnd;
+      activeFilterFunction = a => a.happenDate > tomorrowEnd;
     }
     filteredActive = projectsWithTodos.map(pt => {
       const tds = pt.todos.filter(activeFilterFunction);
@@ -211,7 +210,6 @@ export class TodosComponent extends Unsub implements OnInit {
   private calcTotal(activeTab: string, todos: Todo[]) {
     const todayEnd = endOfToday();
     const tomorrowEnd = endofTomorrow();
-    const weekEnd = endOfThisWeek();
     let filtered: Todo[];
     if (activeTab === this.OVERDUE) {
       filtered = todos.filter(a => isBeforeToday(a.happenDate));
@@ -219,13 +217,12 @@ export class TodosComponent extends Unsub implements OnInit {
       filtered = todos.filter(a => isToday(a.happenDate));
     } else if (activeTab === this.TOMORROW) {
       filtered = todos.filter(a => isTomorrow(a.happenDate));
-    } else if (activeTab === this.THISWEEK) {
-      filtered = todos.filter(a => a.happenDate > tomorrowEnd && a.happenDate <= weekEnd);
     } else {
-      filtered = todos.filter(a => a.happenDate > weekEnd);
+      filtered = todos.filter(a => a.happenDate > tomorrowEnd);
     }
 
     this.activeTodos = filtered.filter(a => a.status === TodoStatus.InProgress);
+    this.appHeaderService.sendData(this.activeTodos);
   }
   private isDoneOnToday(todo: Todo): boolean {
     return isFinished(todo) && isWithinDay(todo.finishAt, now());

@@ -1,29 +1,21 @@
-<div fxLayout="row" fxLayoutAlign="space-between">
-  <div
-    fxLayout="row" fxLayoutAlign="center center"
-    [mstPadding]="'0 0.5rem'"
-    [mstBorder]="isStartTodayEnabled() ? Color.Accent : null"
-    [mstColor]="isStartTodayEnabled() ? null : 'grey'"
-    (click)="onStartToday()">start today</div>
-  <div fxLayout="row" fxLayoutAlign="center center" [mstPadding]="'0 1rem'">{{ activeTodos | expectedTime | minuteFormatter }}</div>
-  <mst-icon name="search" [color]="showSearch ? 'accent' : null" (click)="onToggleSearch()"></mst-icon>
-</div>
-<div [mstPadding]="'1rem 0 0'" *ngIf="showSearch">
+<div [mstPadding]="'0 0 1rem'" *ngIf="showSearch">
   <mst-search-todos [todos]="todos"></mst-search-todos>
 </div>
 
 
-<div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'1rem 0'">
+<div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'0 0 1rem'">
   <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === OVERDUE" [mstColor]="'error'" (click)="onChangeTab(OVERDUE)">overdue</div>
-  <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === TODAY" (click)="onChangeTab(TODAY)">today</div>
+  <div class="mst-todos-tab mst-todos-tab-today" [class.mst-todos-tab--active]="activeTab === TODAY" (click)="onChangeTab(TODAY)">
+    <div>today</div>
+    <div class="mst-start-today" *ngIf="isStartTodayEnabled()" (click)="onStartToday()">start</div>
+  </div>
   <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === TOMORROW" (click)="onChangeTab(TOMORROW)">tomorrow</div>
-  <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === THISWEEK" (click)="onChangeTab(THISWEEK)">this week</div>
-  <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === NEXTWEEK" (click)="onChangeTab(NEXTWEEK)">next week</div>
+  <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === THISWEEK" (click)="onChangeTab(THISWEEK)">week</div>
 </div>
 
 <ng-container *ngIf="activeTab === TODAY && habits && habits.length > 0">
   <div>Habits</div>
-  <div [mstPadding]="'0.5rem 0 0.5rem 1rem'">
+  <div [mstPadding]="'0 0 0.5rem 1rem'">
     <mst-habit-item *ngFor="let habit of habits"
       [habit]="habit"
       (click)="onShowHabitDetail(habit)">
@@ -33,7 +25,7 @@
 
 <ng-container *ngIf="activeProjectsWithTodos && activeProjectsWithTodos.length > 0">
   <div *ngFor="let pwts of activeProjectsWithTodos">
-    <div [mstPadding]="'0.5rem 0 0'" *ngIf="pwts.todos.length > 0">
+    <div *ngIf="pwts.todos.length > 0">
       {{pwts.project.title}} {{ pwts.todos | expectedTime | minuteFormatter }}
     </div>
     <div [mstPadding]="'0.5rem 0 0.5rem 1rem'" *ngIf="pwts.todos.length > 0">
@@ -66,5 +58,3 @@
     </div>
   </div>
 </ng-container>
-
-<mst-todo-create (created)="onCreated()" [useActionButton]="true"></mst-todo-create>

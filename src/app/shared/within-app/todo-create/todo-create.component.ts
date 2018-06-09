@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { TodoService } from '@app/core';
 import {
   isTodayStarted,
   isWithin,
@@ -14,6 +13,7 @@ import { Unsub } from '@app/static';
 import { addDays } from 'date-fns';
 import { debounceTime, filter } from 'rxjs/operators';
 
+import { TodoService } from '../../../core/services/todo.service';
 import { DatepickerResult } from '../../datepicker/model';
 import { InputControl } from '../../input/input-control';
 
@@ -25,6 +25,7 @@ import { InputControl } from '../../input/input-control';
 export class TodoCreateComponent extends Unsub implements OnInit {
   @Input() subproject: Subproject;
   @Input() useActionButton = false;
+  @Input() plusColor = 'primary';
   @Output() created = new EventEmitter<boolean>();
   isShow = false;
 
