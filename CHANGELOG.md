@@ -1,3 +1,11 @@
+## v1.16.6
+
+bug fix:
+
+- show less report
+- show headphone correctly
+- not show nav and up down arrow when typing on mobile
+
 ## v1.16.5
 
 bug fix:
