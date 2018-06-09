@@ -1,7 +1,8 @@
 <mst-timeline-item *ngIf="activity && data"
   [time]="activity.createdAt"
   [timeNext]="nextActivity ? nextActivity.createdAt : null"
-  [reverse]="reverse">
+  [reverse]="reverse"
+  [id]="activity.id">
   <div *ngIf="activity.type === EventType.Todo">
     <mst-activity-item-todo [activity]="activity" [data]="data"></mst-activity-item-todo>
   </div>
