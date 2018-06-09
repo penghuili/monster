@@ -11,6 +11,7 @@ export class TimelineItemComponent implements OnChanges {
   @Input() time: number;
   @Input() timeNext: number;
   @Input() reverse = false;
+  @Input() id: number;
 
   MAX_PADDING_BOTTOM = 200;
 
