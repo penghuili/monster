@@ -1,3 +1,20 @@
+## v1.16.1
+
+bug fix:
+
+- set theme color to black correctly
+
+## v1.16.0
+
+feature:
+
+- rename navigation
+- add app header
+
+bug fix:
+
+- fix today's expected time
+
 ## v1.15.19
 
 bug fix:
