@@ -28,18 +28,19 @@ export function createReport(date: number, type: TimeRangeType, todos: Todo[], u
     return null;
   }
   const [start, end] = getStartEnd(date, type);
+  const todosWithinRange = todos.filter(a => isWithin(a.happenDate, start, end));
 
   return {
     date: date,
     type: type,
-    planned: todos.length,
+    planned: todosWithinRange.length,
     done: todos.filter(a => isWithin(a.finishAt, start, end) && a.status === TodoStatus.Done).length,
     wontDo: todos.filter(a => isWithin(a.finishAt, start, end) && a.status === TodoStatus.WontDo).length,
     finishTooLate: todos.filter(a => isWithin(a.finishAt, start, end) && isFinishTooLate(a)).length,
     finishTooEarly: todos.filter(a => isWithin(a.finishAt, start, end) && isFinishTooEarly(a)).length,
-    addedLater: todos.filter(a => a.addedLater).length,
+    addedLater: todosWithinRange.filter(a => a.addedLater).length,
     beforeToday: todos.filter(a => isBeforeToday(a.happenDate)).length,
-    plannedTime: todos.reduce((total, curr) => total + curr.expectedTime, 0),
+    plannedTime: todosWithinRange.reduce((total, curr) => total + curr.expectedTime, 0),
     usedTimeOfTimeRange
   };
 }
