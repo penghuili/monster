@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HabitService, NotificationService, ProjectService, TodoService } from '@app/core';
+import { HabitService, NotificationService, ProjectService, TodoService, AppHeaderService } from '@app/core';
 import {
   calcExpectedTime,
   Color,
@@ -36,7 +36,6 @@ import { Subject } from 'rxjs/Subject';
 })
 export class TodosComponent extends Unsub implements OnInit {
   todos: Todo[];
-  activeTodos: Todo[];
   activeProjectsWithTodos: ProjectWithTodos[];
   doneProjectsWithTodos: ProjectWithTodos[];
 
@@ -57,11 +56,13 @@ export class TodosComponent extends Unsub implements OnInit {
 
   Color = Color;
 
+  private activeTodos: Todo[];
   private projectsWithTodos: ProjectWithTodos[];
   private drapProjectId: number;
   private shouldReload = new Subject<boolean>();
 
   constructor(
+    private appHeaderService: AppHeaderService,
     private habitService: HabitService,
     private notificationService: NotificationService,
     private route: ActivatedRoute,
@@ -217,6 +218,7 @@ export class TodosComponent extends Unsub implements OnInit {
     }
 
     this.activeTodos = filtered.filter(a => a.status === TodoStatus.InProgress || a.status === TodoStatus.Waiting);
+    this.appHeaderService.sendData(this.activeTodos);
   }
   private isDoneOnToday(todo: Todo): boolean {
     return isFinished(todo) && isWithinDay(todo.finishAt, now());

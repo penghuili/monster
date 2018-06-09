@@ -1,6 +1,3 @@
-
-
-
 <div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'0 0 1rem'">
   <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === OVERDUE" [mstColor]="'error'" (click)="onChangeTab(OVERDUE)">overdue</div>
   <div class="mst-todos-tab mst-todos-tab-today" [class.mst-todos-tab--active]="activeTab === TODAY" (click)="onChangeTab(TODAY)">
@@ -12,8 +9,6 @@
 </div>
 
 <div fxLayout="row" fxLayoutAlign="space-between">
-  <!-- <div class="mst-start-today" *ngIf="isStartTodayEnabled()"
-    (click)="onStartToday()">start today</div> -->
   <!-- <div fxLayout="row" fxLayoutAlign="center center" [mstPadding]="'0 1rem'">{{ activeTodos | expectedTime | minuteFormatter }}</div> -->
   <!-- <mst-icon name="search" [color]="showSearch ? 'accent' : null" (click)="onToggleSearch()"></mst-icon> -->
 </div>

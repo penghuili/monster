@@ -9,5 +9,6 @@ export * from './services/event.service';
 export * from './services/report.service';
 export * from './services/record.service';
 export * from './services/habit.service';
+export * from './services/app-header.service';
 
 export * from './core.module';

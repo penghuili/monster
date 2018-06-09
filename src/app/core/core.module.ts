@@ -5,11 +5,13 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MonsterCommonModule } from '../shared/common/common.module';
 import { IconModule } from '../shared/icon/icon.module';
+import { PipesModule } from '../shared/pipes/pipes.module';
 import { StylingModule } from '../shared/styling/styling.module';
 import { WithinAppModule } from '../shared/within-app/within-app.module';
 import { AppHeaderComponent } from './components/app-header/app-header.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
+import { AppHeaderService } from './services/app-header.service';
 import { DbService } from './services/db.service';
 import { EventService } from './services/event.service';
 import { HabitService } from './services/habit.service';
@@ -30,9 +32,11 @@ import { TodoService } from './services/todo.service';
     IconModule,
     MonsterCommonModule,
     StylingModule,
-    WithinAppModule
+    WithinAppModule,
+    PipesModule
   ],
   providers: [
+    AppHeaderService,
     IconsService,
     ProjectService,
     TodoService,
