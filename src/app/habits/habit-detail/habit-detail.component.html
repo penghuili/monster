@@ -1,7 +1,7 @@
 <div fxLayout="row" fxLayoutAlign="space-between">
   <mst-go-back></mst-go-back>
   <div *ngIf="habit && !habit.doneForToday" (click)="onDone()">
-    <span *ngIf="needToDo">do</span>
+    <span *ngIf="needToDo">done?</span>
     <span *ngIf="!needToDo">don't need to do today</span>
   </div>
   <div *ngIf="habit && habit.doneForToday" (click)="onDone()">done for today</div>
