@@ -4,6 +4,12 @@ bug fix:
 
 - set theme color to black correctly
 
+## v1.16.1
+
+bug fix:
+
+- try to set theme color to black correctly(failed)
+
 ## v1.16.0
 
 feature:
