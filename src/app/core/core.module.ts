@@ -16,11 +16,13 @@ import { DbService } from './services/db.service';
 import { EventService } from './services/event.service';
 import { HabitService } from './services/habit.service';
 import { IconsService } from './services/icons.service';
+import { InputService } from './services/input.service';
 import { LoadingService } from './services/loading.service';
 import { NotificationService } from './services/notification.service';
 import { ProjectService } from './services/project.service';
 import { RecordService } from './services/record.service';
 import { ReportService } from './services/report.service';
+import { RouterService } from './services/router.service';
 import { SubprojectService } from './services/subproject.service';
 import { TodoService } from './services/todo.service';
 
@@ -47,7 +49,9 @@ import { TodoService } from './services/todo.service';
     ReportService,
     RecordService,
     SubprojectService,
-    HabitService
+    HabitService,
+    RouterService,
+    InputService
   ],
   declarations: [NavigationComponent, LoadingComponent, AppHeaderComponent],
   exports: [

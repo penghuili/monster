@@ -1,9 +1,8 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { ROUTES, Unsub } from '@app/static';
-import { filter, map, startWith } from 'rxjs/operators';
 
 import { AppHeaderService } from '../../services/app-header.service';
+import { RouterService } from '../../services/router.service';
 
 @Component({
   selector: 'mst-app-header',
@@ -18,17 +17,13 @@ export class AppHeaderComponent extends Unsub implements OnInit {
 
   constructor(
     private appHeaderService: AppHeaderService,
-    private router: Router) {
+    private routerService: RouterService) {
     super();
   }
 
   ngOnInit() {
     this.addSubscription(
-      this.router.events.pipe(
-        startWith(new NavigationEnd(111, this.router.url, this.router.url)),
-        filter(e => e instanceof NavigationEnd),
-        map(e => e.urlAfterRedirects)
-      ).subscribe(url => {
+      this.routerService.getCurrentFullRoute().subscribe(url => {
         this.isTodos = url === `/${ROUTES.TODOS}`;
       })
     );

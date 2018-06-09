@@ -1,3 +1,5 @@
+@import '../../static/variables';
+
 .mst-todo-detail-title-wrapper {
   position: relative;
   height: 4rem;
@@ -11,4 +13,9 @@
   position: absolute;
   right: 0.5rem;
   top: 0.5rem;
+}
+@media screen and (max-width: $break-point - 1) {
+  .mst-hide-top-bottom {
+    display: none;
+  }
 }

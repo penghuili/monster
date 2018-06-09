@@ -1,5 +1,7 @@
 <div [mstBorder]="control && !control.valid ? Color.Error : null" [mstPadding]="padding">
   <div #input contenteditable="true" class="mst-input"
     [style.min-height]="minHeight"
+    (focus)="onFocus()"
+    (blur)="onBlur()"
     (keyup)="onKeyup($event)"></div>
 </div>
