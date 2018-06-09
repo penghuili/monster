@@ -5,6 +5,9 @@ export interface InputControlOptions {
   required?: boolean;
   value?: string;
 }
+export interface InputControlSetOptions {
+  emitEvent?: boolean;
+}
 
 export class InputControl {
   value$: Observable<string>;
@@ -28,11 +31,13 @@ export class InputControl {
   getValue(): string {
     return this._value$.getValue();
   }
-  setValue(value: string) {
+  setValue(value: string, options: InputControlSetOptions = {emitEvent: true}) {
     this.valid = this.isValid(value);
     if (this.valid) {
-      this._value$.next(value);
       this._setValue$.next(value);
+      if (options && options.emitEvent) {
+        this._value$.next(value);
+      }
     }
   }
   receiveValue(value: string) {

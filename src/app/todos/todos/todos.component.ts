@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HabitService, NotificationService, ProjectService, TodoService, AppHeaderService } from '@app/core';
+import { AppHeaderService, HabitService, NotificationService, ProjectService, TodoService } from '@app/core';
 import {
   calcExpectedTime,
   Color,
-  endOfThisWeek,
   endOfToday,
   endofTomorrow,
   Habit,
@@ -209,15 +208,17 @@ export class TodosComponent extends Unsub implements OnInit {
     const todayEnd = endOfToday();
     const tomorrowEnd = endofTomorrow();
     let filtered: Todo[];
-    if (activeTab === this.TODAY) {
-      filtered = todos.filter(a => a.happenDate - todayEnd <= 0);
+    if (activeTab === this.OVERDUE) {
+      filtered = todos.filter(a => isBeforeToday(a.happenDate));
+    } else if (activeTab === this.TODAY) {
+      filtered = todos.filter(a => isToday(a.happenDate));
     } else if (activeTab === this.TOMORROW) {
-      filtered = todos.filter(a => a.happenDate > todayEnd && a.happenDate <= tomorrowEnd);
+      filtered = todos.filter(a => isTomorrow(a.happenDate));
     } else {
       filtered = todos.filter(a => a.happenDate > tomorrowEnd);
     }
 
-    this.activeTodos = filtered.filter(a => a.status === TodoStatus.InProgress || a.status === TodoStatus.Waiting);
+    this.activeTodos = filtered.filter(a => a.status === TodoStatus.InProgress);
     this.appHeaderService.sendData(this.activeTodos);
   }
   private isDoneOnToday(todo: Todo): boolean {
