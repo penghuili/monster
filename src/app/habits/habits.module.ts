@@ -12,7 +12,6 @@ import {
   PipesModule,
   StylingModule,
   WeekDayPickerModule,
-  WithinAppModule,
 } from '@app/shared';
 
 import { HabitCreateComponent } from './habit-create/habit-create.component';
@@ -31,14 +30,13 @@ import { HabitsComponent } from './habits/habits.component';
     MonsterCommonModule,
     WeekDayPickerModule,
     FlexLayoutModule,
-    WithinAppModule,
     DragDropModule,
     PipesModule
   ],
   declarations: [
     HabitsComponent,
     HabitCreateComponent,
-    HabitDetailComponent
+    HabitDetailComponent,
   ],
   exports: [
     HabitsComponent,

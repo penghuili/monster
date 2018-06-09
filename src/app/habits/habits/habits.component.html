@@ -5,29 +5,26 @@
     [item]="habit"
     [index]="i"
     (start)="onDragStart($event)">
-    <mst-project-item
-      [project]="habit"
-      (click)="onShowDetail(habit)">
-    </mst-project-item>
+    <div class="mst-habit-item" (click)="onShowDetail(habit)">
+      {{ habit.title }}
+    </div>
   </mst-drag-item>
 </mst-drop-zone>
 
 
 <ng-container *ngIf="somedayHabits && somedayHabits.length > 0">
   <div [mstTextAlign]="'center'" [mstPadding]="'2rem 0 0'">Someday</div>
-  <mst-project-item *ngFor="let habit of somedayHabits"
-    [project]="habit"
-    (click)="onShowDetail(habit)">
-  </mst-project-item>
+  <div class="mst-habit-item" *ngFor="let habit of somedayHabits" (click)="onShowDetail(habit)">
+    {{ habit.title }}
+  </div>
 </ng-container>
 
 
 <ng-container *ngIf="doneHabits && doneHabits.length > 0">
   <div [mstTextAlign]="'center'" [mstPadding]="'2rem 0 0'">Done</div>
-  <mst-project-item *ngFor="let habit of doneHabits"
-    [project]="habit"
-    (click)="onShowDetail(habit)">
-  </mst-project-item>
+  <div class="mst-habit-item" *ngFor="let habit of doneHabits" (click)="onShowDetail(habit)">
+    {{ habit.title }}
+  </div>
 </ng-container>
 
 <mst-habit-create (created)="onCreated()"></mst-habit-create>
