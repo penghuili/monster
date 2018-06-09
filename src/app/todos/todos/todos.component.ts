@@ -25,6 +25,7 @@ import {
 import { ROUTES, Unsub } from '@app/static';
 import { isToday, isTomorrow } from 'date-fns';
 import { merge } from 'ramda';
+import { merge as mergeO } from 'rxjs/observable/merge';
 import { startWith, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 
@@ -77,8 +78,10 @@ export class TodosComponent extends Unsub implements OnInit {
     this.activeTab = MonsterStorage.get('activeTab') || this.TODAY;
 
     this.addSubscription(
-      this.shouldReload.asObservable().pipe(
-        startWith(true),
+      mergeO(
+        this.shouldReload.asObservable().pipe(startWith(true)),
+        this.todoService.onCreatedTodo()
+      ).pipe(
         switchMap(() => this.todoService.get2Weeks()),
         switchMap(todos => {
           this.todos = todos || [];
@@ -126,9 +129,6 @@ export class TodosComponent extends Unsub implements OnInit {
     this.activeTab = tab;
 
     this.process(this.activeTab, this.projectsWithTodos, this.todos);
-  }
-  onCreated() {
-    this.shouldReload.next(true);
   }
   onShowDetail(todo: Todo) {
     this.router.navigate([ todo.id ], { relativeTo: this.route });

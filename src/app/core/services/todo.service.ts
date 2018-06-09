@@ -18,6 +18,7 @@ import { Observable } from 'rxjs/Observable';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 
 import { DbService } from './db.service';
 import { EventService } from './event.service';
@@ -26,6 +27,8 @@ import { NotificationService } from './notification.service';
 
 @Injectable()
 export class TodoService {
+
+  private createdTodo = new Subject<boolean>();
 
   constructor(
     private eventService: EventService,
@@ -127,6 +130,9 @@ export class TodoService {
       })
     );
   }
+  onCreatedTodo() {
+    return this.createdTodo.asObservable();
+  }
   add(data: any): Observable<any> {
     this.loadingService.isLoading();
     const todo = createTodo(data);
@@ -145,6 +151,9 @@ export class TodoService {
       catchError(error => this.handleError('create fails')),
       tap(success => {
         this.loadingService.stopLoading();
+        if (success) {
+          this.createdTodo.next(true);
+        }
       })
     );
   }

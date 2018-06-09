@@ -1,10 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
-import { ProjectService, SubprojectService } from '@app/core';
 import { Project, ProjectStatus, ProjectWithSubproject, sortByPosition, Subproject } from '@app/model';
 import { Unsub } from '@app/static';
 import { switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
+
+import { ProjectService } from '../../../core/services/project.service';
+import { SubprojectService } from '../../../core/services/subproject.service';
 
 @Component({
   selector: 'mst-project-list',
