@@ -127,7 +127,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     );
 
     this.addSubscription(
-      this.inputService.getFocusStatus().pipe(debounceTime(300)).subscribe(focus => {
+      this.inputService.getFocusStatus().subscribe(focus => {
         this.hideUpDownArrow = focus;
       })
     );
