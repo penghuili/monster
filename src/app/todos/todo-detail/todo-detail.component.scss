@@ -2,7 +2,7 @@
 
 .mst-todo-detail-title-wrapper {
   position: relative;
-  height: 4rem;
+  padding-bottom: 1.5rem;
 }
 .mst-todo-detail-index {
   position: absolute;
@@ -13,6 +13,11 @@
   position: absolute;
   right: 0.5rem;
   top: 0.5rem;
+}
+.mst-stay-focus {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0;
 }
 @media screen and (max-width: $break-point - 1) {
   .mst-hide-top-bottom {

@@ -13,7 +13,7 @@
       <mst-icon name="play_circle_filled" (click)="onStart()" *ngIf="!isDoing"></mst-icon>
       <mst-icon name="pause_circle_filled" (click)="onStop()" *ngIf="isDoing"></mst-icon>
     </div>
-    <div *ngIf="isDoing" [mstTextAlign]="'right'" [mstColor]="'accent'">stay focus, wear headphone :)</div>
+    <div class="mst-stay-focus" *ngIf="isDoing" [mstTextAlign]="'right'" [mstColor]="'accent'">stay focus, wear headphone :)</div>
   </div>
 
   <div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'0 0 1rem'">
