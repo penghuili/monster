@@ -46,7 +46,6 @@ export class TodosComponent extends Unsub implements OnInit {
   TODAY = 'today';
   TOMORROW = 'tomorrow';
   THISWEEK = 'this week';
-  NEXTWEEK = 'next week';
   activeTab: string;
 
   todayStarted = false;
@@ -82,7 +81,7 @@ export class TodosComponent extends Unsub implements OnInit {
         this.shouldReload.asObservable().pipe(startWith(true)),
         this.todoService.onCreatedTodo()
       ).pipe(
-        switchMap(() => this.todoService.get2Weeks()),
+        switchMap(() => this.todoService.getForTodoPage()),
         switchMap(todos => {
           this.todos = todos || [];
           return this.projectService.getProjectsWithTodos(todos);
@@ -177,7 +176,6 @@ export class TodosComponent extends Unsub implements OnInit {
   }
   private processTodos(activeTab: string, projectsWithTodos: ProjectWithTodos[]) {
     const tomorrowEnd = endofTomorrow();
-    const weekEnd = endOfThisWeek();
     let filteredActive: ProjectWithTodos[];
     let activeFilterFunction: (a: Todo) => boolean;
     if (activeTab === this.OVERDUE) {
@@ -186,10 +184,8 @@ export class TodosComponent extends Unsub implements OnInit {
       activeFilterFunction = a => isToday(a.happenDate);
     } else if (activeTab === this.TOMORROW) {
       activeFilterFunction = a => isTomorrow(a.happenDate);
-    } else if (activeTab === this.THISWEEK) {
-      activeFilterFunction = a => a.happenDate > tomorrowEnd && a.happenDate <= weekEnd;
     } else {
-      activeFilterFunction = a => a.happenDate > weekEnd;
+      activeFilterFunction = a => a.happenDate > tomorrowEnd;
     }
     filteredActive = projectsWithTodos.map(pt => {
       const tds = pt.todos.filter(activeFilterFunction);
@@ -211,16 +207,13 @@ export class TodosComponent extends Unsub implements OnInit {
   private calcTotal(activeTab: string, todos: Todo[]) {
     const todayEnd = endOfToday();
     const tomorrowEnd = endofTomorrow();
-    const weekEnd = endOfThisWeek();
     let filtered: Todo[];
     if (activeTab === this.TODAY) {
       filtered = todos.filter(a => a.happenDate - todayEnd <= 0);
     } else if (activeTab === this.TOMORROW) {
       filtered = todos.filter(a => a.happenDate > todayEnd && a.happenDate <= tomorrowEnd);
-    } else if (activeTab === this.THISWEEK) {
-      filtered = todos.filter(a => a.happenDate > tomorrowEnd && a.happenDate <= weekEnd);
     } else {
-      filtered = todos.filter(a => a.happenDate > weekEnd);
+      filtered = todos.filter(a => a.happenDate > tomorrowEnd);
     }
 
     this.activeTodos = filtered.filter(a => a.status === TodoStatus.InProgress || a.status === TodoStatus.Waiting);

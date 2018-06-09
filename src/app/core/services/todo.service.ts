@@ -37,10 +37,10 @@ export class TodoService {
     private notificationService: NotificationService) {
   }
 
-  get2Weeks(): Observable<Todo[]> {
+  getForTodoPage(): Observable<Todo[]> {
     this.loadingService.isLoading();
     const start = startOfWeek(now());
-    const end = endOfWeek(addDays(now(), 7).getTime());
+    const end = endOfWeek(now());
 
     return fromPromise(this.dbService.getDB()
       .todos
