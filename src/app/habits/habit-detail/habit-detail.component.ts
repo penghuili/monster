@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EventService, HabitService } from '@app/core';
-import { EventType, Habit, mapWeekDay, MonsterEvents, now, WeekDays } from '@app/model';
+import { EventType, Habit, isBeforeToday, mapWeekDay, MonsterEvents, now, WeekDays } from '@app/model';
 import { InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
 import { addDays } from 'date-fns';
-import { startWith, switchMap } from 'rxjs/operators';
+import { merge } from 'ramda';
+import { debounceTime, startWith, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 
 @Component({
@@ -46,8 +47,8 @@ export class HabitDetailComponent extends Unsub implements OnInit {
         if (value && value.habit) {
           this.habit = value.habit;
           this.progress = value.progress;
-          this.titleControl.setValue(this.habit.title);
-          this.resultControl.setValue(this.habit.result);
+          this.titleControl.setValue(this.habit.title, {emitEvent: false});
+          this.resultControl.setValue(this.habit.result, {emitEvent: false});
           this.startDate = this.habit.startDate;
           this.endDateStartDate = addDays(this.startDate, 1).getTime();
           this.endDate = this.habit.endDate;
@@ -64,6 +65,22 @@ export class HabitDetailComponent extends Unsub implements OnInit {
         }
       })
     );
+
+    this.addSubscription(
+      this.titleControl.value$.pipe(
+        debounceTime(300)
+      ).subscribe(title => {
+        this.update({ title });
+      })
+    );
+
+    this.addSubscription(
+      this.resultControl.value$.pipe(
+        debounceTime(300)
+      ).subscribe(result => {
+        this.update({ result });
+      })
+    );
   }
 
   onDone() {
@@ -78,5 +95,12 @@ export class HabitDetailComponent extends Unsub implements OnInit {
         this.loadHabit.next(true);
       }
     });
+  }
+  isDone() {
+    return isBeforeToday(this.endDate);
+  }
+
+  private update(data: any) {
+    this.habitService.update(merge(this.habit, data)).subscribe();
   }
 }
