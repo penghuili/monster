@@ -98,13 +98,16 @@ export class TodosComponent extends Unsub implements OnInit {
         this.habits = habits;
       })
     );
+
+    this.addSubscription(
+      this.appHeaderService.getSearchStatus().subscribe(isSearching => {
+        this.showSearch = isSearching;
+      })
+    );
   }
 
   isStartTodayEnabled() {
     return !this.todayStarted && this.activeTab === this.TODAY;
-  }
-  onToggleSearch() {
-    this.showSearch = !this.showSearch;
   }
   onStartToday() {
     if (this.activeTab === this.TODAY) {

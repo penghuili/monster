@@ -11,10 +11,10 @@ import { AppHeaderService } from '../../services/app-header.service';
   styleUrls: ['./app-header.component.scss']
 })
 export class AppHeaderComponent extends Unsub implements OnInit {
-  @Output() addTodo = new EventEmitter<boolean>();
   titleData: any;
-
   isTodos: boolean;
+
+  isSearching: boolean;
 
   constructor(
     private appHeaderService: AppHeaderService,
@@ -40,7 +40,15 @@ export class AppHeaderComponent extends Unsub implements OnInit {
     );
   }
 
-  onAddTodo() {
-    this.addTodo.emit(true);
+  onToggleSearch() {
+    if (this.isSearching) {
+      this.appHeaderService.hideSearch();
+    } else {
+      this.appHeaderService.showSearch();
+    }
+    this.isSearching = !this.isSearching;
+  }
+  showSearch() {
+    return this.isTodos;
   }
 }
