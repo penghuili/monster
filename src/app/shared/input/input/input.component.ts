@@ -2,6 +2,7 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild }
 import { Color } from '@app/model';
 import { Unsub } from '@app/static';
 
+import { InputService } from '../../../core/services/input.service';
 import { InputControl } from '../input-control';
 
 @Component({
@@ -20,6 +21,10 @@ export class InputComponent extends Unsub implements OnInit {
 
   Color = Color;
 
+  constructor(private inputService: InputService) {
+    super();
+  }
+
   ngOnInit() {
     if (this.autoFocus) {
       this.inputEl.nativeElement.focus();
@@ -31,6 +36,12 @@ export class InputComponent extends Unsub implements OnInit {
     );
   }
 
+  onFocus() {
+    this.inputService.isFocusing();
+  }
+  onBlur() {
+    this.inputService.isBlurred();
+  }
   onKeyup(e: KeyboardEvent) {
     this.control.receiveValue(this.getText());
     if (e.keyCode === 13) {

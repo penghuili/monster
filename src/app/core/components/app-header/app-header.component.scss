@@ -26,9 +26,9 @@
   height: 3rem;
 }
 
-@media screen and (min-width: $max-width) {
+@media screen and (min-width: $break-point) {
   .mst-app-header-content {
-    width: $max-width;
+    width: $content-width;
     height: 3rem;
     margin: 0 auto;
   }

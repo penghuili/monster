@@ -5,7 +5,7 @@
   right: 3rem;
   bottom: 4rem;
 }
-@media screen and (min-width: $max-width + 1) {
+@media screen and (min-width: $break-point) {
   .mst-top-bottom-button {
     right: calc(50% - 230px);
   }

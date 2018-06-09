@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EventService, ProjectService, SubprojectService, TodoService } from '@app/core';
+import { EventService, InputService, ProjectService, SubprojectService, TodoService } from '@app/core';
 import {
   Event,
   EventType,
@@ -55,11 +55,15 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   finished = true;
 
   activities: Event[];
+
+  hideUpDownArrow = false;
+
   private laodEvents = new Subject<boolean>();
   private currentProject: Project;
 
   constructor(
     private eventService: EventService,
+    private inputService: InputService,
     private projectService: ProjectService,
     private route: ActivatedRoute,
     private router: Router,
@@ -119,6 +123,12 @@ export class TodoDetailComponent extends Unsub implements OnInit {
         debounceTime(300)
       ).subscribe(note => {
         this.update({ note });
+      })
+    );
+
+    this.addSubscription(
+      this.inputService.getFocusStatus().pipe(debounceTime(300)).subscribe(focus => {
+        this.hideUpDownArrow = focus;
       })
     );
   }
