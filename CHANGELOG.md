@@ -1,4 +1,10 @@
-## v1.16.1
+## v1.16.3
+
+bug fix:
+
+- set theme color to black correctly
+
+## v1.16.2
 
 bug fix:
 
