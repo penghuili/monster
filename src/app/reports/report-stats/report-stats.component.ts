@@ -22,7 +22,6 @@ export class ReportStatsComponent extends Unsub implements OnChanges {
   @Input() date: number;
   @Input() mode: TimeRangeType;
   report: Report;
-  todos: Todo[] = [];
   notFinished: Todo[] = [];
   finishTooLate: Todo[] = [];
   finishTooEarly: Todo[] = [];
@@ -32,6 +31,8 @@ export class ReportStatsComponent extends Unsub implements OnChanges {
 
   isLoading = true;
 
+  private todos: Todo[] = [];
+  private todosWithinRange: Todo[] = [];
   private _date: number;
 
   constructor(
@@ -45,6 +46,7 @@ export class ReportStatsComponent extends Unsub implements OnChanges {
       if (this.date && this.mode !== undefined) {
         this.report = null;
         this.todos = [];
+        this.todosWithinRange = [];
         this.notFinished = [];
         this.finishTooLate = [];
         this.finishTooEarly = [];
@@ -65,7 +67,7 @@ export class ReportStatsComponent extends Unsub implements OnChanges {
     return this.report.plannedTime ? this.report.usedTimeOfTimeRange / this.report.plannedTime : 0;
   }
   getTodosRatio(todos: Todo[]): number {
-    return this.todos.length ? todos.length / this.todos.length : 0;
+    return this.todosWithinRange.length ? todos.length / this.todosWithinRange.length : 0;
   }
   onGotoTodo(id: number) {
     this.router.navigateByUrl(`/${ROUTES.TODOS}/${id}`);
@@ -80,16 +82,17 @@ export class ReportStatsComponent extends Unsub implements OnChanges {
       this.reportService.getReportWithTodos(date, mode).subscribe(reportWithTodos => {
         this.isLoading = false;
         this.todos = reportWithTodos.todos;
+        this.todosWithinRange = this.todos ? this.todos.filter(a => isWithin(a.happenDate, start, end)) : [];
         this.report = reportWithTodos.report;
         if (this.todos) {
-          this.notFinished = this.todos.filter(a => !(
+          this.notFinished = this.todosWithinRange.filter(a => !(
             isWithin(a.finishAt, start, end) &&
             (a.status === TodoStatus.Done || a.status === TodoStatus.WontDo)
           ));
           this.finishTooLate = this.todos.filter(a => isWithin(a.finishAt, start, end) && isFinishTooLate(a));
           this.finishTooEarly = this.todos.filter(a => isWithin(a.finishAt, start, end) && isFinishTooEarly(a));
           this.addedLater = this.todos.filter(a => a.addedLater);
-          this.wontDo = this.todos.filter(a => isWithin(a.finishAt, start, end) && a.status === TodoStatus.WontDo);
+          this.wontDo = this.todosWithinRange.filter(a => isWithin(a.finishAt, start, end) && a.status === TodoStatus.WontDo);
           this.done = this.todos.filter(a => isWithin(a.finishAt, start, end) && a.status === TodoStatus.Done);
         }
       })
