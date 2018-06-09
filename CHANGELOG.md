@@ -1,3 +1,9 @@
+## v1.16.4
+
+bug fix:
+
+- make theme color the same as primary color
+
 ## v1.16.3
 
 bug fix:
