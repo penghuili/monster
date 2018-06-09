@@ -61,7 +61,7 @@ $order-button-width: 19rem;
   transform: skewX(0);
 }
 
-@media screen and (min-width: $max-width + 1) {
+@media screen and (min-width: $break-point) {
   .gm-action-button-plus {
     right: calc(50% - 230px);
   }

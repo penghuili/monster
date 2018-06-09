@@ -16,7 +16,7 @@
   background-color: $white;
   border-top: 1px solid $grey;
 }
-@media screen and (min-width: $max-width + 197) {
+@media screen and (min-width: $break-point) {
   .mst-navigation {
     width: 7rem;
     height: auto;
@@ -33,4 +33,10 @@
   mst-link {
     height: 2rem;
   }
+}
+@media screen and (max-width: $break-point - 1) {
+  .mst-navigation--hide {
+    display: none;
+  }
+
 }

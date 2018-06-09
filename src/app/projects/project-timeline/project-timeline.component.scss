@@ -14,7 +14,7 @@
   background-color: $yellow;
 }
 
-@media screen and (min-width: $max-width + 1) {
+@media screen and (min-width: $break-point) {
   .mst-timeline-wrapper {
     max-width: calc(536px - 2rem);
   }

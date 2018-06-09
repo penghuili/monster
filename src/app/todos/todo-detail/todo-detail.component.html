@@ -49,5 +49,5 @@
     [activity]="activity" [nextActivity]="activities[i+1]" [data]="todo" [reverse]="true"></mst-activity-item>
   </div>
 
-  <mst-page-top-bottom-button></mst-page-top-bottom-button>
+  <mst-page-top-bottom-button [class.mst-hide-top-bottom]="hideUpDownArrow"></mst-page-top-bottom-button>
 </ng-container>
