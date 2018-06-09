@@ -213,17 +213,19 @@ export class TodosComponent extends Unsub implements OnInit {
     const tomorrowEnd = endofTomorrow();
     const weekEnd = endOfThisWeek();
     let filtered: Todo[];
-    if (activeTab === this.TODAY) {
-      filtered = todos.filter(a => a.happenDate - todayEnd <= 0);
+    if (activeTab === this.OVERDUE) {
+      filtered = todos.filter(a => isBeforeToday(a.happenDate));
+    } else if (activeTab === this.TODAY) {
+      filtered = todos.filter(a => isToday(a.happenDate));
     } else if (activeTab === this.TOMORROW) {
-      filtered = todos.filter(a => a.happenDate > todayEnd && a.happenDate <= tomorrowEnd);
+      filtered = todos.filter(a => isTomorrow(a.happenDate));
     } else if (activeTab === this.THISWEEK) {
       filtered = todos.filter(a => a.happenDate > tomorrowEnd && a.happenDate <= weekEnd);
     } else {
       filtered = todos.filter(a => a.happenDate > weekEnd);
     }
 
-    this.activeTodos = filtered.filter(a => a.status === TodoStatus.InProgress || a.status === TodoStatus.Waiting);
+    this.activeTodos = filtered.filter(a => a.status === TodoStatus.InProgress);
   }
   private isDoneOnToday(todo: Todo): boolean {
     return isFinished(todo) && isWithinDay(todo.finishAt, now());
