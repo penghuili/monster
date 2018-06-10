@@ -40,7 +40,7 @@ export class StorageApiService {
   }
   getEstimatedStorageUsage(): Observable<EstimatedStorageUsage> {
     return fromPromise((<any>window.navigator).storage.estimate()).pipe(
-      map((data: any) => ({quota: data.quota, data: data.usage})),
+      map((data: any) => ({quota: data.quota, usage: data.usage})),
       catchError(e => of(null))
     );
   }
