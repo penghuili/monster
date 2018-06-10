@@ -6,6 +6,8 @@ import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
 import { catchError, map } from 'rxjs/operators';
 
+import { StorageApiService } from './storage-api.service';
+
 class MonsterDB extends Dexie {
   todos: Dexie.Table<Todo, number>;
   projects: Dexie.Table<Project, number>;
@@ -52,11 +54,13 @@ class MonsterDB extends Dexie {
 @Injectable()
 export class DbService {
   private db: MonsterDB;
-  constructor() {
-    this.db = new MonsterDB();
-    this.db.open().catch(function (e) {
-      alert('open db error');
-    });
+  constructor(private storageApiService: StorageApiService) {
+    if (this.storageApiService.isDBSupported() && !this.storageApiService.isPrivateMode()) {
+      this.db = new MonsterDB();
+      this.db.open().catch(function (e) {
+        alert('open db error');
+      });
+    }
   }
 
   getDB(): MonsterDB {
