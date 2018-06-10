@@ -8,6 +8,7 @@ export const ROUTES = {
   REPORTS: 'reports',
   CREATE: 'create',
   SETTINGS: 'settings',
+  STORAGE: 'storage',
   PROCESS: 'process',
   NOT_SUPPORT: 'browser-not-support'
 };

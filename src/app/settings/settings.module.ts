@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { IconModule, InputModule, MonsterCommonModule, StylingModule } from '@app/shared';
+import { ButtonModule, IconModule, InputModule, MonsterCommonModule, PipesModule, StylingModule } from '@app/shared';
 
 import { SettingsRoutingModule } from './settings-routing.module';
+import { SettingsStorageComponent } from './settings-storage/settings-storage.component';
 import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
@@ -14,10 +15,13 @@ import { SettingsComponent } from './settings/settings.component';
     IconModule,
     MonsterCommonModule,
     StylingModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    PipesModule,
+    ButtonModule
   ],
   declarations: [
-    SettingsComponent
+    SettingsComponent,
+    SettingsStorageComponent
   ]
 })
 export class SettingsModule { }

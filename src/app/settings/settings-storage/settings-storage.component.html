@@ -1,0 +1,12 @@
+<mst-go-back></mst-go-back>
+
+<div *ngIf="quota">
+  <div mstColor [mstColor.bg]="'green'" *ngIf="allowedPersist">your data will be persisted.</div>
+  <span [mstBorder]="Color.Accent" [mstPadding]="'0.5rem'" *ngIf="!isPersisted" (click)="onPersist()">persist data</span>
+
+  <div [mstPadding]="'2rem 0 0'">
+    estimated storage usage: {{ getRatio() | percent }}
+  </div>
+  <div [mstPadding]="'0 0 0 1rem'">used: {{ usage | byteFormatter }}</div>
+  <div [mstPadding]="'0 0 0 1rem'">available: {{ quota | byteFormatter }}</div>
+</div>

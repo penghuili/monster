@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { Add0Pipe } from './add0.pipe';
+import { ByteFormatterPipe } from './byte-formatter.pipe';
 import { DaysDiffPipe } from './days-diff.pipe';
 import { MinuteFormatterPipe } from './minute-formatter.pipe';
 import { MstDatePipe } from './mst-date.pipe';
@@ -22,7 +23,8 @@ import { WeekPipe } from './week.pipe';
     ShortTextPipe,
     WeekPipe,
     TimeRangeTypePipe,
-    DaysDiffPipe
+    DaysDiffPipe,
+    ByteFormatterPipe
   ],
   exports: [
     Add0Pipe,
@@ -32,7 +34,8 @@ import { WeekPipe } from './week.pipe';
     ShortTextPipe,
     WeekPipe,
     TimeRangeTypePipe,
-    DaysDiffPipe
+    DaysDiffPipe,
+    ByteFormatterPipe
   ]
 })
 export class PipesModule { }
