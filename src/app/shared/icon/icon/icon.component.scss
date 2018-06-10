@@ -4,9 +4,12 @@
   width: 24px;
   height: 24px;
 }
-.mst-icon-default {
+.mst-icon {
   color: $primary;
   cursor: pointer;
+}
+.mst-icon:focus {
+  outline: 0;
 }
 .mst-icon-grey {
   color: $grey;
