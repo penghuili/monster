@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ReportService } from '@app/core';
-import { now, TimeRangeType } from '@app/model';
+import { MonsterStorage, now, TimeRangeType } from '@app/model';
 import { DatepickerResult } from '@app/shared';
 import { Unsub } from '@app/static';
 
@@ -25,7 +25,9 @@ export class ReportsComponent extends Unsub implements OnInit {
     { key: this.THOUGHTS, value: this.THOUGHTS },
     { key: this.SUMMARY, value: this.SUMMARY },
   ];
-  activeTab = this.STATS;
+  defaultTabKey = MonsterStorage.get('report-tab') || this.STATS;
+  activeTabKey = this.defaultTabKey;
+
 
   constructor(private reportService: ReportService) {
     super();
@@ -40,7 +42,8 @@ export class ReportsComponent extends Unsub implements OnInit {
   }
 
   onChangeTab(tabKey: string) {
-    this.activeTab = tabKey;
+    this.activeTabKey = tabKey;
+    MonsterStorage.set('report-tab', tabKey);
   }
   onPickDate(result: DatepickerResult) {
     this.date = result.date;

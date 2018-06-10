@@ -10,16 +10,16 @@
 
 <ng-container *ngIf="!showChart">
   <div [mstPadding]="'0 0 1rem'">
-    <mst-tab [tabs]="tabs" [defaultTabKey]="STATS" (change)="onChangeTab($event)"></mst-tab>
+    <mst-tab [tabs]="tabs" [defaultTabKey]="defaultTabKey" (change)="onChangeTab($event)"></mst-tab>
   </div>
   
-  <mst-report-stats *ngIf="activeTab === STATS" [date]="date" [mode]="mode"></mst-report-stats>
+  <mst-report-stats *ngIf="activeTabKey === STATS" [date]="date" [mode]="mode"></mst-report-stats>
   
-  <mst-activities *ngIf="activeTab === ACTIVITIES" [date]="date" [mode]="mode"></mst-activities>
+  <mst-activities *ngIf="activeTabKey === ACTIVITIES" [date]="date" [mode]="mode"></mst-activities>
 
-  <mst-thoughts *ngIf="activeTab === THOUGHTS" [date]="date" [mode]="mode"></mst-thoughts>
+  <mst-thoughts *ngIf="activeTabKey === THOUGHTS" [date]="date" [mode]="mode"></mst-thoughts>
   
-  <mst-report-summary *ngIf="activeTab === SUMMARY" [date]="date" [mode]="mode"></mst-report-summary>
+  <mst-report-summary *ngIf="activeTabKey === SUMMARY" [date]="date" [mode]="mode"></mst-report-summary>
 </ng-container>
 
 <ng-container *ngIf="showChart">
