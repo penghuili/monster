@@ -7,7 +7,7 @@
   <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === OVERDUE" [mstColor]="'error'" (click)="onChangeTab(OVERDUE)">overdue</div>
   <div class="mst-todos-tab mst-todos-tab-today" [class.mst-todos-tab--active]="activeTab === TODAY" (click)="onChangeTab(TODAY)">
     <div>today</div>
-    <div class="mst-start-today" *ngIf="isStartTodayEnabled()" (click)="onStartToday()">start</div>
+    <div class="mst-start-today" *ngIf="hasActive && isStartTodayEnabled()" (click)="onStartToday()">start</div>
   </div>
   <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === TOMORROW" (click)="onChangeTab(TOMORROW)">tomorrow</div>
   <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === THISWEEK" (click)="onChangeTab(THISWEEK)">week</div>
@@ -44,7 +44,7 @@
   </div>
 </ng-container>
 
-<ng-container *ngIf="activeTab === TODAY && doneProjectsWithTodos && doneProjectsWithTodos.length > 0">
+<ng-container *ngIf="hasDone && activeTab === TODAY">
   <div [mstTextAlign]="'center'" [mstPadding]="'2rem 0 0'">Done</div>
   <div *ngFor="let pwts of doneProjectsWithTodos">
     <div [mstPadding]="'0.5rem 0 0'" *ngIf="pwts.todos.length > 0">
