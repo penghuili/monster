@@ -8,6 +8,7 @@ import { NotificationModule } from '@app/shared';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { BrowserNotSupportModule } from './browser-not-support/browser-not-support.module';
 import { PlansModule } from './plans/plans.module';
 import { ReportsModule } from './reports/reports.module';
 import { SettingsModule } from './settings/settings.module';
@@ -30,6 +31,7 @@ import { TodosModule } from './todos/todos.module';
     PlansModule,
     ReportsModule,
     SettingsModule,
+    BrowserNotSupportModule,
 
     AppRoutingModule
   ],
