@@ -1,3 +1,14 @@
+## v1.16.7
+
+bug fix:
+
+- remove the outline of icon
+- get one 1 week + 1day's todos
+- move done to bottom of todo status picker
+- show current thought only when todo is doing
+- add a tab to only show thoughts of a todo
+- add thoughts back, to top bar
+
 ## v1.16.6
 
 bug fix:
