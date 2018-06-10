@@ -1,6 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ReportService } from '@app/core';
-import { ChartDataItem, Report, TimeRangeType, yesterday } from '@app/model';
+import {
+  ChartDataItem,
+  getFinishedCount,
+  getFinishedOfSelectedRangeCount,
+  getFinishedOfSelectedRangePlannedRatio,
+  getFinishedPlannedRatio,
+  Report,
+  TimeRangeType,
+  yesterday,
+} from '@app/model';
 import { Unsub } from '@app/static';
 
 @Component({
@@ -35,7 +44,7 @@ export class ReportChartComponent extends Unsub implements OnInit {
         this.active = this.RATIO;
         this.data = [{
           name: 'finished ratio',
-          series: this.reports.map(a => ({ name: new Date(a.date), value: (a.done + a.wontDo) / a.planned }))
+          series: this.reports.map(a => ({ name: new Date(a.date), value: getFinishedPlannedRatio(a) }))
         }];
       })
     );
@@ -43,10 +52,16 @@ export class ReportChartComponent extends Unsub implements OnInit {
 
   onRatio() {
     this.active = this.RATIO;
-    this.data = [{
-      name: 'finished ratio',
-      series: this.reports.map(a => ({ name: new Date(a.date), value: (a.done + a.wontDo) / a.planned }))
-    }];
+    this.data = [
+      {
+        name: 'finished ratio',
+        series: this.reports.map(a => ({ name: new Date(a.date), value: getFinishedPlannedRatio(a) }))
+      },
+      {
+        name: 'finished of selected range ratio',
+        series: this.reports.map(a => ({ name: new Date(a.date), value: getFinishedOfSelectedRangePlannedRatio(a) }))
+      }
+    ];
   }
   onPlannedFinished() {
     this.active = this.PLANNEDFINISHED;
@@ -57,7 +72,11 @@ export class ReportChartComponent extends Unsub implements OnInit {
       },
       {
         name: 'finished',
-        series: this.reports.map(a => ({ name: new Date(a.date), value: a.done + a.wontDo }))
+        series: this.reports.map(a => ({ name: new Date(a.date), value: getFinishedCount(a) }))
+      },
+      {
+        name: 'finished of selected range',
+        series: this.reports.map(a => ({ name: new Date(a.date), value: getFinishedOfSelectedRangeCount(a) }))
       }
     ];
   }
