@@ -1,3 +1,18 @@
+## v1.17.0
+
+feature:
+
+- add storage setting
+- add finished of selected range to report
+- add browser support page
+
+bug fix:
+
+- save current tab of report
+- fix datepicker on iphone 5
+- not show start if there are no todos
+- not show done if there are no done todos
+
 ## v1.16.7
 
 bug fix:
