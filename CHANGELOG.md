@@ -1,3 +1,15 @@
+## v1.17.2
+
+bug fix:
+
+- fix storage usage typo
+
+## v1.17.1
+
+bug fix:
+
+- fix finished ratio typo
+
 ## v1.17.0
 
 feature:
