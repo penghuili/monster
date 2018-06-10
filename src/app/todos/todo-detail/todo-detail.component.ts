@@ -54,9 +54,18 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   isDoing = false;
   finished = true;
 
-  activities: Event[];
 
   hideUpDownArrow = false;
+
+  activities: Event[];
+  allActivities: Event[];
+  thoughts: Event[];
+  activityTabs = [
+    {key: 'activities', value: 'activities'},
+    {key: 'thoughts', value: 'thoughts'}
+  ];
+  defaultActivityTab = 'activities';
+  private currentActivityTab = this.defaultActivityTab;
 
   private laodEvents = new Subject<boolean>();
   private currentProject: Project;
@@ -106,7 +115,9 @@ export class TodoDetailComponent extends Unsub implements OnInit {
         startWith(true),
         switchMap(() => this.eventService.getEventsByTodoId(id))
       ).subscribe(activities => {
-        this.activities = activities ? activities : [];
+        this.allActivities = activities ? activities : [];
+        this.thoughts = this.allActivities.filter(a => a.action === MonsterEvents.CurrentThougntTodo);
+        this.onChangeActivityTab(this.currentActivityTab);
       })
     );
 
@@ -220,6 +231,14 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     const thought = this.currentThoughtControl.getValue();
     if (thought) {
       this.emitEvent({ action: MonsterEvents.CurrentThougntTodo, newValue: thought });
+    }
+  }
+  onChangeActivityTab(key: string) {
+    this.currentActivityTab = key;
+    if (key === 'activities') {
+      this.activities = this.allActivities;
+    } else {
+      this.activities = this.thoughts;
     }
   }
 
