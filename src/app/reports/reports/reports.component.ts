@@ -17,10 +17,12 @@ export class ReportsComponent extends Unsub implements OnInit {
 
   STATS = 'stats';
   ACTIVITIES = 'activities';
+  THOUGHTS = 'thoughts';
   SUMMARY = 'summary';
   tabs = [
     { key: this.STATS, value: this.STATS },
     { key: this.ACTIVITIES, value: this.ACTIVITIES },
+    { key: this.THOUGHTS, value: this.THOUGHTS },
     { key: this.SUMMARY, value: this.SUMMARY },
   ];
   activeTab = this.STATS;

@@ -19,6 +19,8 @@ import { ReportStatsComponent } from './report-stats/report-stats.component';
 import { ReportSummaryComponent } from './report-summary/report-summary.component';
 import { ReportsRoutingModule } from './reports-routing.module';
 import { ReportsComponent } from './reports/reports.component';
+import { ThoughtItemComponent } from './thoughts/thought-item/thought-item.component';
+import { ThoughtsComponent } from './thoughts/thoughts.component';
 
 @NgModule({
   imports: [
@@ -40,8 +42,9 @@ import { ReportsComponent } from './reports/reports.component';
     ReportStatsComponent,
     ActivitiesComponent,
     ReportSummaryComponent,
-
     ReportChartComponent,
+    ThoughtItemComponent,
+    ThoughtsComponent,
   ]
 })
 export class ReportsModule { }

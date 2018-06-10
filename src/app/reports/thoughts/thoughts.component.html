@@ -1,0 +1,6 @@
+<mst-thought-item *ngFor="let thought of thoughts; let i = index"
+  [thought]="thought" [thoughtNext]="thoughts[i+1]"></mst-thought-item>
+
+<div *ngIf="thoughts && thoughts.length === 0">
+  no thoughts.
+</div>

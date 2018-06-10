@@ -16,6 +16,8 @@
   <mst-report-stats *ngIf="activeTab === STATS" [date]="date" [mode]="mode"></mst-report-stats>
   
   <mst-activities *ngIf="activeTab === ACTIVITIES" [date]="date" [mode]="mode"></mst-activities>
+
+  <mst-thoughts *ngIf="activeTab === THOUGHTS" [date]="date" [mode]="mode"></mst-thoughts>
   
   <mst-report-summary *ngIf="activeTab === SUMMARY" [date]="date" [mode]="mode"></mst-report-summary>
 </ng-container>
