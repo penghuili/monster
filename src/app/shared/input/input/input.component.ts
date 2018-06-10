@@ -13,6 +13,7 @@ import { InputControl } from '../input-control';
 export class InputComponent extends Unsub implements OnInit {
   @Input() control: InputControl;
   @Input() autoFocus = false;
+  @Input() width = 'auto';
   @Input() padding = '0.25rem';
   @Input() minHeight = '1.5rem';
   @Output() enter = new EventEmitter<boolean>();

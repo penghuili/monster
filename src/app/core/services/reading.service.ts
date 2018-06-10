@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Book, EventType, MonsterEvents } from '@app/model';
+import { Book, createBook, EventType, MonsterEvents } from '@app/model';
 import { Observable } from 'rxjs/Observable';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
@@ -30,8 +30,9 @@ export class ReadingService {
       })
     );
   }
-  add(book: Book): Observable<any> {
+  add(data: any): Observable<any> {
     this.loadingService.isLoading();
+    const book = createBook(data);
     return fromPromise(
       this.dbService.getDB().books.add(book)
     ).pipe(

@@ -15,5 +15,6 @@ export * from './services/app-header.service';
 export * from './services/input.service';
 export * from './services/router.service';
 export * from './services/storage-api.service';
+export * from './services/reading.service';
 
 export * from './core.module';
