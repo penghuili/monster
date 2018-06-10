@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Event, MonsterEvents, Record } from '@app/model';
+import { Event, MonsterEvents, Thought } from '@app/model';
 import { ROUTES } from '@app/static';
 
 @Component({
@@ -9,7 +9,7 @@ import { ROUTES } from '@app/static';
 })
 export class ActivityItemRecordComponent {
   @Input() activity: Event;
-  @Input() data: Record;
+  @Input() data: Thought;
 
   MonsterEvents = MonsterEvents;
   ROUTES = ROUTES;

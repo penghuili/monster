@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { RecordService } from '@app/core';
-import { Record, TimeRangeType } from '@app/model';
+import { ThoughtService } from '@app/core';
+import { Thought, TimeRangeType } from '@app/model';
 import { Unsub } from '@app/static';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { filter, switchMap } from 'rxjs/operators';
@@ -13,11 +13,11 @@ import { filter, switchMap } from 'rxjs/operators';
 export class ThoughtsComponent extends Unsub implements OnInit, OnChanges {
   @Input() date: number;
   @Input() mode: TimeRangeType;
-  thoughts: Record[];
+  thoughts: Thought[];
 
   private shouldLoad = new BehaviorSubject<boolean>(false);
 
-  constructor(private recordService: RecordService) {
+  constructor(private thoughtService: ThoughtService) {
     super();
   }
 
@@ -25,7 +25,7 @@ export class ThoughtsComponent extends Unsub implements OnInit, OnChanges {
     this.addSubscription(
       this.shouldLoad.asObservable().pipe(
         filter(a => a),
-        switchMap(() => this.recordService.getRecords(this.date, this.mode))
+        switchMap(() => this.thoughtService.getRecords(this.date, this.mode))
       ).subscribe(thoughts => {
         this.thoughts = thoughts || [];
       })

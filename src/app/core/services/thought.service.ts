@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EventType, getStartEnd, isWithin, MonsterEvents, now, Record, TimeRangeType } from '@app/model';
+import { EventType, getStartEnd, isWithin, MonsterEvents, now, Thought, TimeRangeType } from '@app/model';
 import { Observable } from 'rxjs/Observable';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
@@ -11,14 +11,14 @@ import { LoadingService } from './loading.service';
 import { NotificationService } from './notification.service';
 
 @Injectable()
-export class RecordService {
+export class ThoughtService {
   constructor(
     private dbService: DbService,
     private eventService: EventService,
     private loadingService: LoadingService,
     private notificationService: NotificationService) {}
 
-  getRecords(date: number, mode: TimeRangeType): Observable<Record[]> {
+  getRecords(date: number, mode: TimeRangeType): Observable<Thought[]> {
     this.loadingService.isLoading();
     const [start, end] = getStartEnd(date, mode);
 
@@ -34,7 +34,7 @@ export class RecordService {
       })
     );
   }
-  getRecordsByIds(ids: number[]): Observable<Record[]> {
+  getRecordsByIds(ids: number[]): Observable<Thought[]> {
     this.loadingService.isLoading();
     return fromPromise(
       this.dbService.getDB().records
@@ -63,7 +63,7 @@ export class RecordService {
       })
     );
   }
-  add(record: Record): Observable<any> {
+  add(record: Thought): Observable<any> {
     this.loadingService.isLoading();
     return fromPromise(
       this.dbService.getDB().records.add(record)
@@ -74,7 +74,7 @@ export class RecordService {
         if (id) {
           this.eventService.add({
             refId: id,
-            type: EventType.Record,
+            type: EventType.Thought,
             action: MonsterEvents.CreateRecord
           }).subscribe();
         }

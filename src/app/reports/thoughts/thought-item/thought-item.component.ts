@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { now, Record } from '@app/model';
+import { now, Thought } from '@app/model';
 
 @Component({
   selector: 'mst-thought-item',
@@ -7,6 +7,6 @@ import { now, Record } from '@app/model';
   styleUrls: ['./thought-item.component.scss']
 })
 export class ThoughtItemComponent {
-  @Input() thought: Record;
-  @Input() thoughtNext: Record;
+  @Input() thought: Thought;
+  @Input() thoughtNext: Thought;
 }

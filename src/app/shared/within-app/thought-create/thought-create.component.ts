@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { createRecord, now } from '@app/model';
+import { createThought, now } from '@app/model';
 import { Unsub } from '@app/static';
 import { debounceTime } from 'rxjs/operators';
 
-import { RecordService } from '../../../core/services/record.service';
+import { ThoughtService } from '../../../core/services/thought.service';
 import { InputControl } from '../../input/input-control';
 
 @Component({
@@ -14,17 +14,17 @@ import { InputControl } from '../../input/input-control';
 export class ThoughtCreateComponent extends Unsub implements OnInit {
   @Input() iconColor = 'white';
   @Output() created = new EventEmitter<boolean>();
-  recordControl = new InputControl({ required: true });
+  thoughtControl = new InputControl({ required: true });
   date = now();
   isShow = false;
 
-  constructor(private recordService: RecordService) {
+  constructor(private thoughtService: ThoughtService) {
     super();
   }
 
   ngOnInit() {
     this.addSubscription(
-      this.recordControl.value$.pipe(debounceTime(1000)).subscribe(() => {
+      this.thoughtControl.value$.pipe(debounceTime(1000)).subscribe(() => {
         this.date = now();
       })
     );
@@ -34,10 +34,10 @@ export class ThoughtCreateComponent extends Unsub implements OnInit {
     this.isShow = true;
   }
   onCreate() {
-    if (this.recordControl.valid) {
-      const record = createRecord({ title: this.recordControl.getValue() });
+    if (this.thoughtControl.valid) {
+      const thought = createThought({ title: this.thoughtControl.getValue() });
       this.addSubscription(
-        this.recordService.add(record).subscribe(success => {
+        this.thoughtService.add(thought).subscribe(success => {
           this.isShow = false;
           this.created.emit(true);
           this.reset();
@@ -51,6 +51,6 @@ export class ThoughtCreateComponent extends Unsub implements OnInit {
   }
 
   private reset() {
-    this.recordControl.reset();
+    this.thoughtControl.reset();
   }
 }

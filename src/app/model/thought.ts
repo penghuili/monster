@@ -1,11 +1,11 @@
 import { now } from './time';
 
-export interface Record {
+export interface Thought {
   id?: number;
   title: string;
   createdAt: number;
 }
-export function createRecord(data: any): Record {
+export function createThought(data: any): Thought {
   return {
     title: data.title,
     createdAt: now()

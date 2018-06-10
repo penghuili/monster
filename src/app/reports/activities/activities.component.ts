@@ -1,9 +1,7 @@
 import { Component, ElementRef, Input, OnChanges, ViewChild } from '@angular/core';
 import { ReportService } from '@app/core';
-import { Event, EventType, now, Project, Record, Subproject, TimeRangeType, Todo } from '@app/model';
-import { FONT_SIZE, Unsub } from '@app/static';
-import { fromEvent } from 'rxjs/observable/fromEvent';
-import { debounceTime } from 'rxjs/operators';
+import { Event, EventType, now, Project, Subproject, Thought, TimeRangeType, Todo } from '@app/model';
+import { Unsub } from '@app/static';
 
 @Component({
   selector: 'mst-activities',
@@ -15,7 +13,7 @@ export class ActivitiesComponent extends Unsub implements OnChanges {
   @Input() mode: TimeRangeType;
   @ViewChild('activityWrapper') wrapper: ElementRef;
   activities: Event[] = [];
-  data: (Project | Subproject | Todo | Record)[];
+  data: (Project | Subproject | Todo | Thought)[];
   isLoading: boolean;
 
   private _date = now();
@@ -42,14 +40,14 @@ export class ActivitiesComponent extends Unsub implements OnChanges {
           const projects = value.projects;
           const subprojects = value.subprojects;
           const todos = value.todos;
-          const records = value.records;
+          const thoughts = value.thoughts;
           this.data = this.activities.map(a => {
             if (a.type === EventType.Project) {
               return projects.find(b => b.id === a.refId);
             } else if (a.type === EventType.Subproject) {
               return subprojects.find(b => b.id === a.refId);
-            } else if (a.type === EventType.Record) {
-              return records.find(b => b.id === a.refId);
+            } else if (a.type === EventType.Thought) {
+              return thoughts.find(b => b.id === a.refId);
             } else {
               return todos.find(b => b.id === a.refId);
             }
