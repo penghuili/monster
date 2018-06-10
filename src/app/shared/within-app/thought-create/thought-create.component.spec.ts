@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RecordItemComponent } from './record-item.component';
+import { ThoughtCreateComponent } from './thought-create.component';
 
-describe('RecordItemComponent', () => {
-  let component: RecordItemComponent;
-  let fixture: ComponentFixture<RecordItemComponent>;
+describe('ThoughtCreateComponent', () => {
+  let component: ThoughtCreateComponent;
+  let fixture: ComponentFixture<ThoughtCreateComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RecordItemComponent ]
+      declarations: [ ThoughtCreateComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RecordItemComponent);
+    fixture = TestBed.createComponent(ThoughtCreateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -16,7 +16,7 @@ export enum EventType {
   Todo,
   Project,
   Subproject,
-  Record,
+  Thought,
   Habit
 }
 export const MonsterEvents = {

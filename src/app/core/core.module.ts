@@ -20,10 +20,10 @@ import { InputService } from './services/input.service';
 import { LoadingService } from './services/loading.service';
 import { NotificationService } from './services/notification.service';
 import { ProjectService } from './services/project.service';
-import { RecordService } from './services/record.service';
 import { ReportService } from './services/report.service';
 import { RouterService } from './services/router.service';
 import { SubprojectService } from './services/subproject.service';
+import { ThoughtService } from './services/thought.service';
 import { TodoService } from './services/todo.service';
 
 @NgModule({
@@ -47,7 +47,7 @@ import { TodoService } from './services/todo.service';
     LoadingService,
     EventService,
     ReportService,
-    RecordService,
+    ThoughtService,
     SubprojectService,
     HabitService,
     RouterService,

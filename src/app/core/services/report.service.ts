@@ -25,8 +25,8 @@ import { DbService } from './db.service';
 import { LoadingService } from './loading.service';
 import { NotificationService } from './notification.service';
 import { ProjectService } from './project.service';
-import { RecordService } from './record.service';
 import { SubprojectService } from './subproject.service';
+import { ThoughtService } from './thought.service';
 import { TodoService } from './todo.service';
 
 @Injectable()
@@ -37,7 +37,7 @@ export class ReportService {
     private loadingService: LoadingService,
     private notificationService: NotificationService,
     private projectService: ProjectService,
-    private recordService: RecordService,
+    private thoughtService: ThoughtService,
     private subprojectService: SubprojectService,
     private todoService: TodoService) { }
 
@@ -117,15 +117,15 @@ export class ReportService {
           const projectIds = uniq(activities.filter(a => a.type === EventType.Project).map(a => a.refId));
           const subprojectIds = uniq(activities.filter(a => a.type === EventType.Subproject).map(a => a.refId));
           const todoIds = uniq(activities.filter(a => a.type === EventType.Todo).map(a => a.refId));
-          const recordIds = uniq(activities.filter(a => a.type === EventType.Record).map(a => a.refId));
+          const thoughtIds = uniq(activities.filter(a => a.type === EventType.Thought).map(a => a.refId));
           return combineLatest(
             this.projectService.getProjectsByIds(projectIds),
             this.subprojectService.getSubprojectsByIds(subprojectIds),
             this.todoService.getTodosByIds(todoIds),
-            this.recordService.getRecordsByIds(recordIds)
+            this.thoughtService.getRecordsByIds(thoughtIds)
           ).pipe(
-            map(([projects, subprojects, todos, records]) => {
-              return { activities, projects, subprojects, todos, records };
+            map(([projects, subprojects, todos, thoughts]) => {
+              return { activities, projects, subprojects, todos, thoughts };
             })
           );
         } else {
