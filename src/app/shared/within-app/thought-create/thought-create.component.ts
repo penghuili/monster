@@ -1,16 +1,18 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { RecordService } from '@app/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { createRecord, now } from '@app/model';
-import { InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
 import { debounceTime } from 'rxjs/operators';
 
+import { RecordService } from '../../../core/services/record.service';
+import { InputControl } from '../../input/input-control';
+
 @Component({
-  selector: 'mst-record-create',
-  templateUrl: './record-create.component.html',
-  styleUrls: ['./record-create.component.scss']
+  selector: 'mst-thought-create',
+  templateUrl: './thought-create.component.html',
+  styleUrls: ['./thought-create.component.scss']
 })
-export class RecordCreateComponent extends Unsub implements OnInit {
+export class ThoughtCreateComponent extends Unsub implements OnInit {
+  @Input() iconColor = 'white';
   @Output() created = new EventEmitter<boolean>();
   recordControl = new InputControl({ required: true });
   date = now();
@@ -51,5 +53,4 @@ export class RecordCreateComponent extends Unsub implements OnInit {
   private reset() {
     this.recordControl.reset();
   }
-
 }

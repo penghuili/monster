@@ -4,6 +4,7 @@
     <div class="mst-brand" *ngIf="isTodos && titleData">{{ titleData | expectedTime | minuteFormatter }}</div>
     <div>
       <mst-icon name="search" *ngIf="showSearch()" [color]="isSearching ? 'accent' : 'white'" (click)="onToggleSearch()"></mst-icon>
+      <mst-thought-create></mst-thought-create>
       <mst-todo-create [plusColor]="'white'"></mst-todo-create>
     </div>
   </div>

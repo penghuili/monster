@@ -11,7 +11,6 @@ import {
   TimelineModule,
 } from '@app/shared';
 
-import { RecordCreateComponent } from './record-create/record-create.component';
 import { RecordItemComponent } from './record-item/record-item.component';
 import { RecordsRoutingModule } from './records-routing.module';
 import { RecordsComponent } from './records/records.component';
@@ -29,6 +28,6 @@ import { RecordsComponent } from './records/records.component';
     InputModule,
     MonsterCommonModule
   ],
-  declarations: [RecordsComponent, RecordCreateComponent, RecordItemComponent]
+  declarations: [RecordsComponent, RecordItemComponent]
 })
 export class RecordsModule { }
