@@ -2,6 +2,9 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReportService } from '@app/core';
 import {
+  getFinishedCount,
+  getFinishedOfSelectedRangeCount,
+  getFinishedPlannedRatio,
   getStartEnd,
   isFinishTooEarly,
   isFinishTooLate,
@@ -58,10 +61,16 @@ export class ReportStatsComponent extends Unsub implements OnChanges {
     }
   }
   finishedCount() {
-    return this.report.done !== undefined && this.report.wontDo !== undefined ? this.report.done + this.report.wontDo : 0;
+    return getFinishedCount(this.report);
+  }
+  finishedOfSelectedRangeCount() {
+    return getFinishedOfSelectedRangeCount(this.report);
   }
   finishedPlanned() {
-    return this.report.planned ? this.finishedCount() / this.report.planned : 0;
+    return getFinishedPlannedRatio(this.report);
+  }
+  finishedOfSelectedRangePlanned() {
+    return getFinishedOfSelectedRangeCount(this.report);
   }
   usedTimePlannedTime() {
     return this.report.plannedTime ? this.report.usedTimeOfTimeRange / this.report.plannedTime : 0;

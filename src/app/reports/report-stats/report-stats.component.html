@@ -1,7 +1,11 @@
 <div *ngIf="report">
   <div [mstPadding]="'0 0 1rem'">
-    finished / planed: <br>
+    all finished / planed: <br>
     {{ finishedCount() }} / {{ report.planned }} = {{ finishedPlanned() | percent }}
+  </div>
+  <div [mstPadding]="'0 0 1rem'">
+    finished of selected date(s) / planed: <br>
+    {{ finishedOfSelectedRangeCount() }} / {{ report.planned }} = {{ finishedOfSelectedRangePlanned() | percent }}
   </div>
   <div [mstPadding]="'0 0 1rem'">
     used time / planned time: <br>
