@@ -36,7 +36,9 @@ import { Subject } from 'rxjs/Subject';
 export class TodosComponent extends Unsub implements OnInit {
   todos: Todo[];
   activeProjectsWithTodos: ProjectWithTodos[];
+  hasActive: boolean;
   doneProjectsWithTodos: ProjectWithTodos[];
+  hasDone: boolean;
 
   dragIndex: number;
 
@@ -199,6 +201,7 @@ export class TodosComponent extends Unsub implements OnInit {
       const sorted = sortTodos(tds);
       return merge(pt, { todos: sorted });
     });
+    this.hasActive = this.hasTodos(this.activeProjectsWithTodos);
 
     this.doneProjectsWithTodos = projectsWithTodos.map(pt => {
       const tds = pt.todos
@@ -206,6 +209,7 @@ export class TodosComponent extends Unsub implements OnInit {
         .sort((a, b) => b.finishAt - a.finishAt);
       return merge(pt, { todos: tds });
     });
+    this.hasDone = this.hasTodos(this.doneProjectsWithTodos);
   }
   private calcTotal(activeTab: string, todos: Todo[]) {
     const todayEnd = endOfToday();
@@ -223,6 +227,9 @@ export class TodosComponent extends Unsub implements OnInit {
 
     this.activeTodos = filtered.filter(a => a.status === TodoStatus.InProgress);
     this.appHeaderService.sendData(this.activeTodos);
+  }
+  private hasTodos(projectsWithTodos: ProjectWithTodos[]): boolean {
+    return projectsWithTodos && projectsWithTodos.length > 0 && !projectsWithTodos.every(a => !a || !a.todos || a.todos.length === 0);
   }
   private isDoneOnToday(todo: Todo): boolean {
     return isFinished(todo) && isWithinDay(todo.finishAt, now());
