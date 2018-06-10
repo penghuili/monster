@@ -4,6 +4,7 @@ import { ReportService } from '@app/core';
 import {
   getFinishedCount,
   getFinishedOfSelectedRangeCount,
+  getFinishedOfSelectedRangePlannedRatio,
   getFinishedPlannedRatio,
   getStartEnd,
   isFinishTooEarly,
@@ -70,7 +71,7 @@ export class ReportStatsComponent extends Unsub implements OnChanges {
     return getFinishedPlannedRatio(this.report);
   }
   finishedOfSelectedRangePlanned() {
-    return getFinishedOfSelectedRangeCount(this.report);
+    return getFinishedOfSelectedRangePlannedRatio(this.report);
   }
   usedTimePlannedTime() {
     return this.report.plannedTime ? this.report.usedTimeOfTimeRange / this.report.plannedTime : 0;
