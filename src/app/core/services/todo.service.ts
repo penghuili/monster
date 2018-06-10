@@ -40,7 +40,7 @@ export class TodoService {
   getForTodoPage(): Observable<Todo[]> {
     this.loadingService.isLoading();
     const start = startOfWeek(now());
-    const end = endOfWeek(now());
+    const end =  addDays(endOfWeek(now()), 1).getTime();
 
     return fromPromise(this.dbService.getDB()
       .todos

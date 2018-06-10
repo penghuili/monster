@@ -19,9 +19,7 @@ export class NavigationComponent extends Unsub implements OnInit {
 
   ngOnInit() {
     this.addSubscription(
-      this.inputService.getFocusStatus().pipe(
-        debounceTime(300)
-      ).subscribe(focus => {
+      this.inputService.getFocusStatus().subscribe(focus => {
         this.hideNavigation = focus;
       })
     );
