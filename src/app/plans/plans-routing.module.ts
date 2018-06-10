@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { BrowserSupportGuard } from '@app/core';
 import { HabitDetailComponent, HabitsComponent } from '@app/habits';
 import { ProjectDetailComponent, ProjectDetailSubComponent, ProjectsComponent } from '@app/projects';
 import { ROUTES } from '@app/static';
@@ -9,6 +10,7 @@ import { PlansComponent } from './plans/plans.component';
 const plansRoutes: Routes = [
   {
     path: ROUTES.PLANS,
+    canActivateChild: [BrowserSupportGuard],
     children: [
       {
         path: ROUTES.PROJECTS,

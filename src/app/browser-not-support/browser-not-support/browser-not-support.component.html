@@ -1,0 +1,6 @@
+<div class="mst-not-support-item" *ngIf="isOldBrowser">
+  it seems your browser is too old, please choose a modern browser, like chrome or firefox.
+</div>
+<div class="mst-not-support-item" *ngIf="!isOldBrowser && isPrivateMode">
+  it seems you are using browser private mode.
+</div>

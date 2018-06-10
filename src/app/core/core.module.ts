@@ -11,6 +11,7 @@ import { WithinAppModule } from '../shared/within-app/within-app.module';
 import { AppHeaderComponent } from './components/app-header/app-header.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
+import { BrowserSupportGuard } from './guards/browser-support.guard';
 import { AppHeaderService } from './services/app-header.service';
 import { DbService } from './services/db.service';
 import { EventService } from './services/event.service';
@@ -22,6 +23,7 @@ import { NotificationService } from './services/notification.service';
 import { ProjectService } from './services/project.service';
 import { ReportService } from './services/report.service';
 import { RouterService } from './services/router.service';
+import { StorageApiService } from './services/storage-api.service';
 import { SubprojectService } from './services/subproject.service';
 import { ThoughtService } from './services/thought.service';
 import { TodoService } from './services/todo.service';
@@ -38,6 +40,8 @@ import { TodoService } from './services/todo.service';
     PipesModule
   ],
   providers: [
+    BrowserSupportGuard,
+
     AppHeaderService,
     IconsService,
     ProjectService,
@@ -51,7 +55,8 @@ import { TodoService } from './services/todo.service';
     SubprojectService,
     HabitService,
     RouterService,
-    InputService
+    InputService,
+    StorageApiService
   ],
   declarations: [NavigationComponent, LoadingComponent, AppHeaderComponent],
   exports: [
