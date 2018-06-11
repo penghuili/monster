@@ -86,7 +86,7 @@ export class BookCreateComponent extends Unsub implements OnInit {
     const chaptersPerDay = +this.chaptersPerDayControl.getValue();
     if (chapters && chaptersPerDay) {
       const days = Math.ceil(chapters / chaptersPerDay);
-      this.endDate = addDays(this.startDate, days).getTime();
+      this.endDate = addDays(this.startDate, days - 1).getTime();
     } else {
       this.endDate = addDays(this.startDate, 1).getTime();
     }

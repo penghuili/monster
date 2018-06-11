@@ -21,6 +21,7 @@ import { InputService } from './services/input.service';
 import { LoadingService } from './services/loading.service';
 import { NotificationService } from './services/notification.service';
 import { ProjectService } from './services/project.service';
+import { ReadingService } from './services/reading.service';
 import { ReportService } from './services/report.service';
 import { RouterService } from './services/router.service';
 import { StorageApiService } from './services/storage-api.service';
@@ -56,7 +57,8 @@ import { TodoService } from './services/todo.service';
     HabitService,
     RouterService,
     InputService,
-    StorageApiService
+    StorageApiService,
+    ReadingService
   ],
   declarations: [NavigationComponent, LoadingComponent, AppHeaderComponent],
   exports: [

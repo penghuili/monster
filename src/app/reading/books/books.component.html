@@ -1,3 +1,23 @@
 <mst-go-back></mst-go-back>
 
+<div class="mst-book-item" *ngFor="let book of activeBooks">{{ book.title }}</div>
+
+<ng-container *ngIf="overdueBooks && overdueBooks.length > 0">
+  <div [mstTextAlign]="'center'">overdue books</div>
+  <div class="mst-book-item" *ngFor="let book of overdueBooks">{{ book.title }}</div>
+</ng-container>
+
+<ng-container *ngIf="somedayBooks && somedayBooks.length > 0">
+  <div [mstTextAlign]="'center'">someday books</div>
+  <div class="mst-book-item" *ngFor="let book of somedayBooks">
+    {{ book.title }}
+    <sub>{{ book.startDate | mstDate:'shortDate' }}</sub>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="finishedBooks && finishedBooks.length > 0">
+  <div [mstTextAlign]="'center'">finished books</div>
+  <div class="mst-book-item" *ngFor="let book of finishedBooks">{{ book.title }}</div>
+</ng-container>
+
 <mst-book-create (created)="onCreated()"></mst-book-create>

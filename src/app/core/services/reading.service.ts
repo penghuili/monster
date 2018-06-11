@@ -1,9 +1,20 @@
 import { Injectable } from '@angular/core';
-import { Book, createBook, EventType, MonsterEvents } from '@app/model';
+import {
+  Book,
+  BookItem,
+  createBook,
+  createBookItems,
+  EventType,
+  getStartEnd,
+  isWithin,
+  MonsterEvents,
+  TimeRangeType,
+} from '@app/model';
+import { merge } from 'ramda';
 import { Observable } from 'rxjs/Observable';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 
 import { DbService } from './db.service';
 import { EventService } from './event.service';
@@ -30,18 +41,71 @@ export class ReadingService {
       })
     );
   }
+  getBookById(id: number): Observable<Book> {
+    this.loadingService.isLoading();
+
+    return fromPromise(
+      this.dbService.getDB().books
+        .where('id')
+        .equals(id)
+        .first()
+    ).pipe(
+      catchError(error => this.handleError('getBookById fails.')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
+    );
+  }
+  getBookItems(date: number, mode: TimeRangeType): Observable<BookItem[]> {
+    this.loadingService.isLoading();
+    const [start, end] = getStartEnd(date, mode);
+
+    return fromPromise(
+      this.dbService.getDB().bookItems
+        .filter(a => isWithin(a.happenDate, start, end))
+        .toArray()
+    ).pipe(
+      catchError(error => this.handleError('getBookItems fails.')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
+    );
+  }
+  getBookItemsByBookId(bookId: number): Observable<BookItem[]> {
+    this.loadingService.isLoading();
+
+    return fromPromise(
+      this.dbService.getDB().bookItems
+        .filter(a => a.bookId === bookId)
+        .toArray()
+    ).pipe(
+      catchError(error => this.handleError('getBookItemsByBookId fails.')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
+    );
+  }
   add(data: any): Observable<any> {
     this.loadingService.isLoading();
     const book = createBook(data);
-    return fromPromise(
-      this.dbService.getDB().books.add(book)
-    ).pipe(
+    const db = this.dbService.getDB();
+    let bookId: number;
+    const transaction = db.transaction('rw', db.books, db.bookItems, () => {
+      return db.books.add(book)
+        .then(id => {
+          bookId = id;
+          const bookWithId = merge(book, {id});
+          const items = createBookItems(bookWithId);
+          return db.bookItems.bulkAdd(items);
+        });
+    });
+    return fromPromise(transaction).pipe(
       catchError(error => this.handleError('add book fails.')),
-      tap(id => {
+      tap(success => {
         this.loadingService.stopLoading();
-        if (id) {
+        if (success) {
           this.eventService.add({
-            refId: id,
+            refId: bookId,
             type: EventType.Book,
             action: MonsterEvents.CreateBook
           }).subscribe();
@@ -56,6 +120,24 @@ export class ReadingService {
       catchError(error => this.handleError('update book fails')),
       tap(success => {
         this.loadingService.stopLoading();
+      })
+    );
+  }
+  updateBookItem(bookItem: BookItem): Observable<any> {
+    this.loadingService.isLoading();
+    return fromPromise(this.dbService.getDB().bookItems.put(bookItem)).pipe(
+      map(success => true),
+      catchError(error => this.handleError('update book fails')),
+      tap(success => {
+        this.loadingService.stopLoading();
+        if (success && bookItem.finished) {
+          this.getBookItemsByBookId(bookItem.bookId).pipe(
+            filter(items => items && items.every(a => a.finished)),
+            switchMap(() => this.getBookById(bookItem.bookId)),
+            filter(book => !!book),
+            switchMap(book => this.update(merge(book, {finished: true})))
+          ).subscribe();
+        }
       })
     );
   }
