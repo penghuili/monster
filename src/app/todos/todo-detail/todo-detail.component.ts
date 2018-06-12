@@ -7,6 +7,7 @@ import {
   isAfterToday,
   isBeforeToday,
   isFinished,
+  isFinishTooLate,
   isTodayStarted,
   isWithin,
   mapTodoStatusEvent,
@@ -40,6 +41,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   todo: Todo;
   titleControl = new InputControl({ required: true });
   noteControl = new InputControl();
+  whyTooLateControl = new InputControl();
   currentThoughtControl = new InputControl();
   currentSubproject: Subproject;
   status: TodoStatus;
@@ -52,7 +54,8 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   showSomedayStatus = true;
   startAt: number;
   isDoing = false;
-  finished = true;
+  finished = false;
+  finishedTooLate = false;
 
   hideUpDownArrow = false;
 
@@ -92,9 +95,11 @@ export class TodoDetailComponent extends Unsub implements OnInit {
           if (todo) {
             this.titleControl.setValue(this.todo.title);
             this.noteControl.setValue(this.todo.note);
+            this.whyTooLateControl.setValue(this.todo.whyTooLate);
             this.status = this.todo.status;
             this.showSomedayStatus = !isTodayStarted() || isAfterToday(this.todo.happenDate);
             this.finished = isFinished(this.todo);
+            this.finishedTooLate = isFinishTooLate(this.todo);
             this.defaultDatepickerDate = this.todo.happenDate;
           }
         }),
@@ -137,6 +142,14 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     );
 
     this.addSubscription(
+      this.whyTooLateControl.value$.pipe(
+        debounceTime(300)
+      ).subscribe(whyTooLate => {
+        this.update({ whyTooLate });
+      })
+    );
+
+    this.addSubscription(
       this.inputService.getFocusStatus().subscribe(focus => {
         this.hideUpDownArrow = focus;
       })
@@ -168,9 +181,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
 
     this.status = status;
     const timestamp = now();
-    this.finished = false;
     if (status === TodoStatus.Done || status === TodoStatus.WontDo) {
-      this.finished = true;
       if (this.isDoing) {
         this.onStop();
       }
@@ -271,6 +282,10 @@ export class TodoDetailComponent extends Unsub implements OnInit {
         ...data,
         updatedAt: now()
       });
+
+      this.finished = isFinished(this.todo);
+      this.finishedTooLate = isFinishTooLate(this.todo);
+
       this.addSubscription(
         this.todoService.update(this.todo).subscribe(success => {
         })

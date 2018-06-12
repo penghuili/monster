@@ -15,6 +15,7 @@ export interface Todo extends SortableItem {
   status: TodoStatus;
   finishAt?: number;
   addedLater?: boolean;
+  whyTooLate?: string;
 }
 export interface TodoActivity {
   startAt: number;
