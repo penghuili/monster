@@ -4,6 +4,7 @@ export const ROUTES = {
   PROJECTS: 'projects',
   SUB_PROJECTS: 'sub-projects',
   HABITS: 'habit',
+  READING: 'reading',
   THOUGHTS: 'thoughts',
   REPORTS: 'reports',
   CREATE: 'create',

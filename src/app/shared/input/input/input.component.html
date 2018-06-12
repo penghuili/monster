@@ -1,4 +1,4 @@
-<div [mstBorder]="control && !control.valid ? Color.Error : null" [mstPadding]="padding">
+<div [mstBorder]="control && !control.valid ? 'error' : 'grey-light'" [mstSize]="width" [mstPadding]="padding">
   <div #input contenteditable="true" class="mst-input"
     [style.min-height]="minHeight"
     (focus)="onFocus()"

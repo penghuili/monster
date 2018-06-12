@@ -1,0 +1,10 @@
+<div *ngIf="bookItem"
+fxLayout="row" fxLayoutAlign="start center"
+[mstLineHeight]="'2rem'"
+[mstColor]="bookItem.finished ? 'grey' : 'primary'"
+[ngStyle]="{
+  'text-decoration': bookItem.finished ? 'line-through' : 'none'
+}">
+  <mst-icon name="done" [color]="bookItem.finished ? 'grey' : 'primary'" (click)="onFinish()"></mst-icon>
+  <div [mstPadding]="'0 0 0 1rem'">{{ bookItem.chapters }}</div>
+</div>

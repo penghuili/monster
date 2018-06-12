@@ -1,5 +1,4 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { Color } from '@app/model';
 import { Unsub } from '@app/static';
 
 import { InputService } from '../../../core/services/input.service';
@@ -13,13 +12,12 @@ import { InputControl } from '../input-control';
 export class InputComponent extends Unsub implements OnInit {
   @Input() control: InputControl;
   @Input() autoFocus = false;
+  @Input() width = 'auto';
   @Input() padding = '0.25rem';
   @Input() minHeight = '1.5rem';
   @Output() enter = new EventEmitter<boolean>();
 
   @ViewChild('input') private inputEl: ElementRef;
-
-  Color = Color;
 
   constructor(private inputService: InputService) {
     super();

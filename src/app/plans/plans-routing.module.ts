@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { BrowserSupportGuard } from '@app/core';
 import { HabitDetailComponent, HabitsComponent } from '@app/habits';
 import { ProjectDetailComponent, ProjectDetailSubComponent, ProjectsComponent } from '@app/projects';
+import { BookDetailComponent, BooksComponent } from '@app/reading';
 import { ROUTES } from '@app/static';
 
 import { PlansComponent } from './plans/plans.component';
@@ -45,6 +46,18 @@ const plansRoutes: Routes = [
           },
           {
             path: '', component: HabitsComponent, pathMatch: 'full'
+          }
+        ]
+      },
+      {
+        path: ROUTES.READING,
+        children: [
+          {
+            path: ':id',
+            component: BookDetailComponent
+          },
+          {
+            path: '', component: BooksComponent, pathMatch: 'full'
           }
         ]
       },

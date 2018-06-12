@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { StorageApiService } from '@app/core';
-import { Color } from '@app/model';
 import { Unsub } from '@app/static';
 
 @Component({
@@ -13,7 +12,6 @@ export class SettingsStorageComponent extends Unsub implements OnInit {
   usage: number;
   isPersisted: boolean;
   allowedPersist: boolean;
-  Color = Color;
 
   constructor(private storageApiService: StorageApiService) {
     super();

@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AppHeaderService, HabitService, NotificationService, ProjectService, TodoService } from '@app/core';
+import { AppHeaderService, HabitService, NotificationService, ProjectService, TodoService, ReadingService } from '@app/core';
 import {
   calcExpectedTime,
-  Color,
   endOfToday,
   endofTomorrow,
   Habit,
@@ -20,6 +19,8 @@ import {
   sortTodos,
   Todo,
   TodoStatus,
+  BookItem,
+  TimeRangeType,
 } from '@app/model';
 import { ROUTES, Unsub } from '@app/static';
 import { isToday, isTomorrow } from 'date-fns';
@@ -55,7 +56,8 @@ export class TodosComponent extends Unsub implements OnInit {
 
   showSearch = false;
 
-  Color = Color;
+  activeBookItems: BookItem[];
+  private bookItems: BookItem[];
 
   private activeTodos: Todo[];
   private projectsWithTodos: ProjectWithTodos[];
@@ -66,6 +68,7 @@ export class TodosComponent extends Unsub implements OnInit {
     private appHeaderService: AppHeaderService,
     private habitService: HabitService,
     private notificationService: NotificationService,
+    private readingService: ReadingService,
     private route: ActivatedRoute,
     private router: Router,
     private projectService: ProjectService,
@@ -106,6 +109,13 @@ export class TodosComponent extends Unsub implements OnInit {
         this.showSearch = isSearching;
       })
     );
+
+    this.addSubscription(
+      this.readingService.getBookItems(now(), TimeRangeType.Day).subscribe(items => {
+        this.bookItems = items;
+        this.getActiveBookItems();
+      })
+    );
   }
 
   isStartTodayEnabled() {
@@ -133,6 +143,7 @@ export class TodosComponent extends Unsub implements OnInit {
     this.activeTab = tab;
 
     this.process(this.activeTab, this.projectsWithTodos, this.todos);
+    this.getActiveBookItems();
   }
   onShowDetail(todo: Todo) {
     this.router.navigate([ todo.id ], { relativeTo: this.route });
@@ -233,5 +244,15 @@ export class TodosComponent extends Unsub implements OnInit {
   }
   private isDoneOnToday(todo: Todo): boolean {
     return isFinished(todo) && isWithinDay(todo.finishAt, now());
+  }
+  private getActiveBookItems() {
+    const items = this.bookItems || [];
+    if (this.activeTab === this.TODAY) {
+      this.activeBookItems = items.filter(a => isToday(a.happenDate));
+    } else if (this.activeTab === this.OVERDUE) {
+      this.activeBookItems = items.filter(a => isBeforeToday(a.happenDate));
+    } else {
+      this.activeBookItems = [];
+    }
   }
 }

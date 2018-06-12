@@ -1,21 +1,21 @@
 /* tslint:disable:no-input-rename */
 import { Directive, ElementRef, Input, OnChanges } from '@angular/core';
-import { COLORS, isColorWrong } from '@app/model';
+import { COLORS, isValidColor } from '@app/model';
 
 @Directive({
   selector: '[mstColor]'
 })
 export class ColorDirective implements OnChanges {
   @Input() mstColor: string;
-  @Input('mstColor.bg') mstColorBg: string;
+  @Input('mstColor.bg') mstColorBg = 'white';
 
   constructor(private elementRef: ElementRef) {}
 
   ngOnChanges() {
-    if (isColorWrong(this.mstColor) || isColorWrong(this.mstColorBg)) {
-      throw new Error('color has typo');
-    } else {
+    if (isValidColor(this.mstColor)) {
       this.setColor();
+    }
+    if (isValidColor(this.mstColorBg)) {
       this.setBgColor();
     }
   }

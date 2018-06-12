@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Event, Habit, Project, Report, Subproject, Thought, Todo } from '@app/model';
+import { Book, BookItem, Event, Habit, Project, Report, Subproject, Thought, Todo } from '@app/model';
 import Dexie from 'dexie';
 import { Observable } from 'rxjs/Observable';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
 import { catchError, map } from 'rxjs/operators';
+
+import { StorageApiService } from './storage-api.service';
 
 class MonsterDB extends Dexie {
   todos: Dexie.Table<Todo, number>;
@@ -14,6 +16,8 @@ class MonsterDB extends Dexie {
   events: Dexie.Table<Event, number>;
   reports: Dexie.Table<Report, number>;
   records: Dexie.Table<Thought, number>;
+  books: Dexie.Table<Book, number>;
+  bookItems: Dexie.Table<BookItem, number>;
 
   constructor() {
     super('monster');
@@ -43,16 +47,24 @@ class MonsterDB extends Dexie {
     this.version(7).stores({
       habits: '++id'
     });
+    this.version(8).stores({
+      books: '++id,startDate,endDate'
+    });
+    this.version(9).stores({
+      bookItems: '++id,bookId,happenDate'
+    });
   }
 }
 @Injectable()
 export class DbService {
   private db: MonsterDB;
-  constructor() {
-    this.db = new MonsterDB();
-    this.db.open().catch(function (e) {
-      alert('open db error');
-    });
+  constructor(private storageApiService: StorageApiService) {
+    if (this.storageApiService.isDBSupported() && !this.storageApiService.isPrivateMode()) {
+      this.db = new MonsterDB();
+      this.db.open().catch(function (e) {
+        alert('open db error');
+      });
+    }
   }
 
   getDB(): MonsterDB {

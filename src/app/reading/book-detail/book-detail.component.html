@@ -1,0 +1,32 @@
+<mst-go-back></mst-go-back>
+
+<ng-container *ngIf="book">
+  <div fxLayout="row" fxLayoutAlign="space-between">
+    <div>{{ book.title }}</div>
+    <div [mstBorder]="'accent'" *ngIf="book.finished">finished</div>
+  </div>
+  
+  <div fxLayout="row" fxLayoutAlign="space-around center" [mstPadding]="'1rem 0 0'">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      chapters: {{ book.chapters }}
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start center">
+      per day: {{ book.chaptersPerDay }}
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="space-around center" [mstPadding]="'1rem 0'">
+    <div>{{ book.startDate | mstDate:'shortDate' }}</div>
+    <mst-icon name="arrow_forward"></mst-icon>
+    <div>{{ book.endDate | mstDate:'shortDate' }}</div>
+  </div>
+  
+  <mst-input
+    [control]="noteControl"
+    minHeight="3rem"></mst-input>
+
+
+  <div [mstPadding]="'2rem 0 0 1rem'">
+    <mst-book-chapter-item [bookItem]="item" *ngFor="let item of bookItems"></mst-book-chapter-item>
+  </div>
+
+</ng-container>

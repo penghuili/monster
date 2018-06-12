@@ -1,5 +1,5 @@
 import { Directive, ElementRef, Input, OnChanges } from '@angular/core';
-import { Color, COLORS } from '@app/model';
+import { COLORS, isValidColor } from '@app/model';
 
 @Directive({
   selector: '[mstBorder]'
@@ -8,7 +8,7 @@ export class BorderDirective implements OnChanges {
   /**
    * border color
    */
-  @Input() mstBorder: Color = Color.LightGrey;
+  @Input() mstBorder: string = COLORS.GREY_LIGHT;
 
   constructor(private elementRef: ElementRef) {}
 
@@ -17,21 +17,20 @@ export class BorderDirective implements OnChanges {
   }
 
   private setColor() {
-    if (this.mstBorder === undefined) {
-      return;
-    }
-    let color: string;
-    switch (this.mstBorder) {
-      case Color.Accent:
-        color = COLORS.ACCENT;
-        break;
-      case Color.Error:
-        color = COLORS.ERROR;
-        break;
+    if (isValidColor(this.mstBorder)) {
+      let color: string;
+      switch (this.mstBorder) {
+        case 'accent':
+          color = COLORS.ACCENT;
+          break;
+        case 'error':
+          color = COLORS.ERROR;
+          break;
 
-      default:
-        color = COLORS.GREY_LIGHT;
-      }
-    this.elementRef.nativeElement.style.border = `1px solid ${color}`;
+        default:
+          color = COLORS.GREY_LIGHT;
+        }
+      this.elementRef.nativeElement.style.border = `1px solid ${color}`;
+    }
   }
 }

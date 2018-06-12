@@ -17,7 +17,8 @@ export enum EventType {
   Project,
   Subproject,
   Thought,
-  Habit
+  Habit,
+  Book
 }
 export const MonsterEvents = {
   CreateProject: 'CreateProject',
@@ -46,7 +47,9 @@ export const MonsterEvents = {
 
   CreateRecord: 'CreateRecord',
 
-  FinishHabit: 'FinishHabit'
+  FinishHabit: 'FinishHabit',
+
+  CreateBook: 'CreateBook'
 };
 
 export function createEvent(data: any): Event {
