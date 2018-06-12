@@ -11,7 +11,7 @@ export class ProgressChartComponent {
   @Input() data: ChartDataItem[];
 
   colorScheme = {
-    domain: [COLORS.PRIMARY, COLORS.ACCENT]
+    domain: [COLORS.PRIMARY, COLORS.ACCENT, COLORS.PURPLE]
   };
 
   hasData() {
