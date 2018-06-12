@@ -1,5 +1,16 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { Unsub } from '@app/static';
+import { filter } from 'rxjs/operators';
 
 import { InputService } from '../../../core/services/input.service';
 import { InputControl } from '../input-control';
@@ -9,9 +20,10 @@ import { InputControl } from '../input-control';
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.scss']
 })
-export class InputComponent extends Unsub implements OnInit {
+export class InputComponent extends Unsub implements OnInit, OnChanges {
   @Input() control: InputControl;
   @Input() autoFocus = false;
+  @Input() disabled: boolean;
   @Input() width = 'auto';
   @Input() padding = '0.25rem';
   @Input() minHeight = '1.5rem';
@@ -28,10 +40,21 @@ export class InputComponent extends Unsub implements OnInit {
       this.inputEl.nativeElement.focus();
     }
     this.addSubscription(
-      this.control.setValue$.subscribe(value => {
+      this.control.setValue$.pipe(
+        filter(() => !this.disabled)
+      ).subscribe(value => {
         this.inputEl.nativeElement.innerText = value;
       })
     );
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['disabled']) {
+      if (this.disabled) {
+        this.disableEditable();
+      } else {
+        this.enableEditable();
+      }
+    }
   }
 
   onFocus() {
@@ -47,6 +70,17 @@ export class InputComponent extends Unsub implements OnInit {
     }
   }
 
+  // can't [contenteditable]="disabled" in template
+  private disableEditable() {
+    if (this.inputEl && this.inputEl.nativeElement) {
+      (<HTMLDivElement>this.inputEl.nativeElement).setAttribute('contenteditable', 'false');
+    }
+  }
+  private enableEditable() {
+    if (this.inputEl && this.inputEl.nativeElement) {
+      (<HTMLDivElement>this.inputEl.nativeElement).setAttribute('contenteditable', 'true');
+    }
+  }
   private getText(): string {
     return this.inputEl.nativeElement.innerText;
   }

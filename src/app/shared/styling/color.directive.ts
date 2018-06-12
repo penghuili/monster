@@ -6,7 +6,7 @@ import { COLORS, isValidColor } from '@app/model';
   selector: '[mstColor]'
 })
 export class ColorDirective implements OnChanges {
-  @Input() mstColor: string;
+  @Input() mstColor = 'primary';
   @Input('mstColor.bg') mstColorBg = 'white';
 
   constructor(private elementRef: ElementRef) {}

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AppHeaderService, HabitService, NotificationService, ProjectService, TodoService, ReadingService } from '@app/core';
+import { AppHeaderService, HabitService, NotificationService, ProjectService, ReadingService, TodoService } from '@app/core';
 import {
+  BookItem,
   calcExpectedTime,
   endOfToday,
   endofTomorrow,
@@ -17,10 +18,9 @@ import {
   ProjectStatus,
   ProjectWithTodos,
   sortTodos,
+  TimeRangeType,
   Todo,
   TodoStatus,
-  BookItem,
-  TimeRangeType,
 } from '@app/model';
 import { ROUTES, Unsub } from '@app/static';
 import { isToday, isTomorrow } from 'date-fns';

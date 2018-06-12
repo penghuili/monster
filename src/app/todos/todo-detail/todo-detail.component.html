@@ -8,6 +8,7 @@
     <span class="mst-todo-detail-index" [style.width.rem]="todo.id < 100 ? 2 : 2.5">{{ todo.id }}: </span>
     <mst-input
       [control]="titleControl"
+      [disabled]="finished"
       [padding]="todo.id < 100 ? '0.5rem 2rem 0.5rem 2rem' : '0.5rem 2rem 0.5rem 2.5rem'"></mst-input>
     <div class="mst-start-todo" *ngIf="todo.expectedTime && !finished">
       <mst-icon name="play_circle_filled" (click)="onStart()" *ngIf="!isDoing"></mst-icon>
@@ -27,12 +28,13 @@
     <mst-duration-picker [defaultValue]="todo.expectedTime" [disabled]="finished" (change)="onDurationChange($event)"></mst-duration-picker>
   </div>
 
-  <div [mstPadding]="'0 1.5rem'">
-    <mst-todo-timer *ngIf="todo.expectedTime" [expectedTime]="todo.expectedTime" [usedTime]="todo.usedTime"></mst-todo-timer>
+  <div [mstPadding]="'0 1.5rem'" *ngIf="todo.expectedTime">
+    <mst-todo-timer [expectedTime]="todo.expectedTime" [usedTime]="todo.usedTime"></mst-todo-timer>
   </div>
 
   <mst-input
     [control]="noteControl"
+    [disabled]="finished"
     minHeight="3rem"></mst-input>
 
   <div [mstPadding]="'2rem 0 0'" *ngIf="isDoing">
