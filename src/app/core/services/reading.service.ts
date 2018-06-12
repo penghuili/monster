@@ -9,6 +9,7 @@ import {
   isWithin,
   MonsterEvents,
   TimeRangeType,
+  isBeforeDay,
 } from '@app/model';
 import { merge } from 'ramda';
 import { Observable } from 'rxjs/Observable';
@@ -62,7 +63,7 @@ export class ReadingService {
 
     return fromPromise(
       this.dbService.getDB().bookItems
-        .filter(a => isWithin(a.happenDate, start, end))
+        .filter(a => isWithin(a.happenDate, start, end) || (isBeforeDay(a.happenDate, start) && !a.finished))
         .toArray()
     ).pipe(
       catchError(error => this.handleError('getBookItems fails.')),

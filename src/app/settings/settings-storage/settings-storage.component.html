@@ -3,7 +3,7 @@
 <div *ngIf="quota">
   <div mstColor [mstColor.bg]="'green'" *ngIf="allowedPersist">your data will be persisted.</div>
   <div [mstPadding]="'0 0 2rem'" *ngIf="!isPersisted">
-    <span [mstBorder]="Color.Accent" [mstPadding]="'0.5rem'" (click)="onPersist()">persist data</span>
+    <span [mstBorder]="'accent'" [mstPadding]="'0.5rem'" (click)="onPersist()">persist data</span>
   </div>
 
   <div>

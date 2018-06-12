@@ -14,12 +14,20 @@
 </div>
 
 <ng-container *ngIf="activeTab === TODAY && habits && habits.length > 0">
-  <div>Habits</div>
+  <div>habits</div>
   <div [mstPadding]="'0 0 0.5rem 1rem'">
     <mst-habit-item *ngFor="let habit of habits"
       [habit]="habit"
       (click)="onShowHabitDetail(habit)">
     </mst-habit-item>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="activeBookItems && activeBookItems.length > 0">
+  <div>reading</div>
+  <div [mstPadding]="'0 0 0.5rem 1rem'">
+    <mst-book-chapter-item *ngFor="let item of activeBookItems" [bookItem]="item">
+    </mst-book-chapter-item>
   </div>
 </ng-container>
 

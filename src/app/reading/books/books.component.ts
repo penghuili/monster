@@ -29,6 +29,7 @@ export class BooksComponent extends Unsub implements OnInit {
         switchMap(() => this.readingService.getBooks())
       ).subscribe(books => {
         this.books = books || [];
+        this.books = this.books.sort((a, b) => a.startDate - b.startDate);
         this.activeBooks = this.books.filter(a => !a.finished && isWithin(now(), a.startDate, a.endDate));
         this.somedayBooks = this.books.filter(a => !a.finished && isAfterToday(a.startDate));
         this.finishedBooks = this.books.filter(a => a.finished);

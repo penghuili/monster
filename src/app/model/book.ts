@@ -47,7 +47,7 @@ export function createBookItems(book: Book): BookItem[] {
 
     return {
       bookId: book.id,
-      chapters: chapters,
+      chapters: `${book.title} ${chapters}`,
       happenDate: happenDate,
       createdAt: timestamp,
       finished: false

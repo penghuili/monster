@@ -1,5 +1,4 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { Color } from '@app/model';
 import { Unsub } from '@app/static';
 
 import { InputService } from '../../../core/services/input.service';
@@ -19,8 +18,6 @@ export class InputComponent extends Unsub implements OnInit {
   @Output() enter = new EventEmitter<boolean>();
 
   @ViewChild('input') private inputEl: ElementRef;
-
-  Color = Color;
 
   constructor(private inputService: InputService) {
     super();

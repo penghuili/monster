@@ -1,13 +1,3 @@
-export enum Color {
-  Primary,
-  Accent,
-  Grey,
-  LightGrey,
-  White,
-  Error,
-  Purple,
-  Yellow
-}
 export const COLORS = {
   PRIMARY: '#000',
   WHITE: 'white',
@@ -20,7 +10,12 @@ export const COLORS = {
   ERROR: 'red'
 };
 
-export function isColorWrong(color: string): boolean {
-  const colors = ['primary', 'accent', 'green', 'purple', 'yellow', 'grey', 'white', 'error'];
-  return color && !colors.find(a => a === color);
+export function isValidColor(color: string): boolean {
+  const colors = ['primary', 'accent', 'green', 'purple', 'yellow', 'grey', 'grey-light', 'white', 'error'];
+  const isValid = color && colors.find(a => a === color);
+  if (isValid) {
+    return true;
+  } else {
+    throw Error(`${color} is not valid color.`);
+  }
 }

@@ -10,10 +10,12 @@ import {
   OverlayModule,
   PipesModule,
   StylingModule,
+  WithinAppModule,
 } from '@app/shared';
 
 import { BookCreateComponent } from './book-create/book-create.component';
 import { BookDetailComponent } from './book-detail/book-detail.component';
+import { BookItemComponent } from './book-item/book-item.component';
 import { BooksComponent } from './books/books.component';
 
 @NgModule({
@@ -28,9 +30,10 @@ import { BooksComponent } from './books/books.component';
     DatepickerModule,
     IconModule,
     MonsterCommonModule,
-    PipesModule
+    PipesModule,
+    WithinAppModule
   ],
-  declarations: [BookCreateComponent, BookDetailComponent, BooksComponent],
+  declarations: [BookCreateComponent, BookDetailComponent, BooksComponent, BookItemComponent],
   exports: [
     BookDetailComponent, BooksComponent
   ]
