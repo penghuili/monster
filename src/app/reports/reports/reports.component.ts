@@ -11,9 +11,9 @@ import { Unsub } from '@app/static';
 })
 export class ReportsComponent extends Unsub implements OnInit {
   showChart = false;
-  date = now();
-  mode = TimeRangeType.Day;
-  datePickerStartDate = now();
+  date = MonsterStorage.get('review-date') || now();
+  mode = MonsterStorage.get('review-mode') || TimeRangeType.Day;
+  datePickerStartDate: number;
 
   STATS = 'stats';
   ACTIVITIES = 'activities';
@@ -25,15 +25,17 @@ export class ReportsComponent extends Unsub implements OnInit {
     { key: this.THOUGHTS, value: this.THOUGHTS },
     { key: this.SUMMARY, value: this.SUMMARY },
   ];
-  defaultTabKey = MonsterStorage.get('report-tab') || this.STATS;
+  defaultTabKey = MonsterStorage.get('review-tab') || this.STATS;
   activeTabKey = this.defaultTabKey;
-
 
   constructor(private reportService: ReportService) {
     super();
   }
 
   ngOnInit() {
+    // TODO: delete this later
+    MonsterStorage.remove('report-tab');
+
     this.addSubscription(
       this.reportService.getReportStartDate().subscribe(startDate => {
         this.datePickerStartDate = startDate;
@@ -43,11 +45,14 @@ export class ReportsComponent extends Unsub implements OnInit {
 
   onChangeTab(tabKey: string) {
     this.activeTabKey = tabKey;
-    MonsterStorage.set('report-tab', tabKey);
+    MonsterStorage.set('review-tab', tabKey);
   }
   onPickDate(result: DatepickerResult) {
     this.date = result.date;
     this.mode = result.mode;
+
+    MonsterStorage.set('review-date', this.date);
+    MonsterStorage.set('review-mode', this.mode);
   }
   onShowChart() {
     this.showChart = true;
