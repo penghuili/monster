@@ -12,7 +12,7 @@ export const COLORS = {
 
 export function isValidColor(color: string): boolean {
   const colors = ['primary', 'accent', 'green', 'purple', 'yellow', 'grey', 'grey-light', 'white', 'error'];
-  const isValid = color && colors.find(a => a === color);
+  const isValid = !color || colors.find(a => a === color);
   if (isValid) {
     return true;
   } else {

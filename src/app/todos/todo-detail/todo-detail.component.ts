@@ -54,7 +54,6 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   isDoing = false;
   finished = true;
 
-
   hideUpDownArrow = false;
 
   activities: Event[];
