@@ -20,7 +20,7 @@ import {
 } from '@app/model';
 import { DatepickerResult, InputControl } from '@app/shared';
 import { ROUTES, Unsub } from '@app/static';
-import { addDays, format, differenceInCalendarDays } from 'date-fns';
+import { addDays, differenceInCalendarDays, format } from 'date-fns';
 import { merge } from 'ramda';
 import { debounceTime, first, startWith, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
@@ -181,7 +181,7 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
 
       const plan = createChartData(items);
       const done = createChartData(doneItems);
-      console.log(done)
+
       this.chartData = [
         { name: 'plan', series: plan },
         { name: 'done', series: done }
