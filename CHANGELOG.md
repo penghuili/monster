@@ -1,3 +1,19 @@
+## v1.18.0
+
+feature:
+
+- add reading feature
+- add why too late input
+
+bug fix:
+
+- disable todo title and note after finished
+- change too late ratio to 1.2
+- save date and mode of review
+- if planned is 0, but finished is not 0, then ratio should be 1
+- add purple color to line chart
+- show full done days in line chart
+
 ## v1.17.2
 
 bug fix:
