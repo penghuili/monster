@@ -20,7 +20,7 @@ import {
 } from '@app/model';
 import { DatepickerResult, InputControl } from '@app/shared';
 import { ROUTES, Unsub } from '@app/static';
-import { addDays, format } from 'date-fns';
+import { addDays, format, differenceInCalendarDays } from 'date-fns';
 import { merge } from 'ramda';
 import { debounceTime, first, startWith, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
@@ -160,13 +160,28 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
       const items = todos
         .sort((a, b) => a.happenDate - b.happenDate)
         .map(a => ({name: format(a.happenDate, 'YYYY-MM-DD'), value: 1}));
-      const doneItems = todos
+
+      const doneTodos = todos
         .filter(a => a.status === TodoStatus.Done || a.status === TodoStatus.WontDo)
-        .sort((a, b) => a.finishAt - b.finishAt)
-        .map(a => ({name: format(a.finishAt, 'YYYY-MM-DD'), value: 1}));
+        .sort((a, b) => a.finishAt - b.finishAt);
+      const lastDoneTodo = doneTodos[doneTodos.length - 1];
+      let lastDoneToNow = [];
+      if (lastDoneTodo) {
+        const diff = differenceInCalendarDays(now(), lastDoneTodo.finishAt);
+        if (diff > 0) {
+          lastDoneToNow = Array(diff).fill(1).map((curr, index) => {
+            const date = addDays(lastDoneTodo.finishAt, index + 1);
+            return {name: format(date, 'YYYY-MM-DD'), value: 0};
+          });
+        }
+      }
+      const doneItems = doneTodos
+        .map(a => ({name: format(a.finishAt, 'YYYY-MM-DD'), value: 1}))
+        .concat(lastDoneToNow);
+
       const plan = createChartData(items);
       const done = createChartData(doneItems);
-
+      console.log(done)
       this.chartData = [
         { name: 'plan', series: plan },
         { name: 'done', series: done }
