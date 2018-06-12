@@ -67,10 +67,10 @@ export function isFinished(todo: Todo): boolean {
   return todo && (todo.status === TodoStatus.Done || todo.status === TodoStatus.WontDo);
 }
 export function isFinishTooLate(todo: Todo): boolean {
-  return todo && isFinished(todo) && todo.expectedTime > 0 && todo.usedTime > 1.05 * todo.expectedTime;
+  return todo && isFinished(todo) && todo.expectedTime > 0 && todo.usedTime > 1.2 * todo.expectedTime;
 }
 export function isFinishTooEarly(todo: Todo): boolean {
-  return todo && isFinished(todo) && todo.expectedTime > 0 && todo.usedTime < 0.95 * todo.expectedTime;
+  return todo && isFinished(todo) && todo.expectedTime > 10 && todo.usedTime < 0.8 * todo.expectedTime;
 }
 /**
  * @todo not pure
