@@ -59,8 +59,20 @@ export function getFinishedOfSelectedRangeCount(report: Report): number {
   return done + wontDo;
 }
 export function getFinishedPlannedRatio(report: Report) {
-  return report && report.planned ? getFinishedCount(report) / report.planned : 0;
+  if (report && report.planned) {
+    return getFinishedCount(report) / report.planned;
+  } else if (report && !report.planned && getFinishedCount(report)) {
+    return 1;
+  } else {
+    return 0;
+  }
 }
 export function getFinishedOfSelectedRangePlannedRatio(report: Report) {
-  return report && report.planned ? getFinishedOfSelectedRangeCount(report) / report.planned : 0;
+  if (report && report.planned) {
+    return getFinishedOfSelectedRangeCount(report) / report.planned;
+  } else if (report && !report.planned && getFinishedOfSelectedRangeCount(report)) {
+    return 1;
+  } else {
+    return 0;
+  }
 }
