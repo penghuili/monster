@@ -40,10 +40,8 @@ export class InputComponent extends Unsub implements OnInit, OnChanges {
       this.inputEl.nativeElement.focus();
     }
     this.addSubscription(
-      this.control.setValue$.pipe(
-        filter(() => !this.disabled)
-      ).subscribe(value => {
-        this.inputEl.nativeElement.innerText = value;
+      this.control.setValue$.subscribe(value => {
+        this.inputEl.nativeElement.innerText = value === undefined || value === null ? '' : value;
       })
     );
   }

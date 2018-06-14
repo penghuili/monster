@@ -37,7 +37,7 @@
     [disabled]="finished"
     minHeight="3rem"></mst-input>
 
-  <div [mstPadding]="'2rem 0 0'" *ngIf="isDoing">
+  <div [mstPadding]="'2rem 0 0'" *ngIf="finished">
     finish too late, lessons learned?
     <mst-input
       [control]="whyTooLateControl"
