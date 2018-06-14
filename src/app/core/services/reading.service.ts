@@ -6,10 +6,10 @@ import {
   createBookItems,
   EventType,
   getStartEnd,
+  isBeforeDay,
   isWithin,
   MonsterEvents,
   TimeRangeType,
-  isBeforeDay,
 } from '@app/model';
 import { merge } from 'ramda';
 import { Observable } from 'rxjs/Observable';

@@ -1,37 +1,37 @@
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 
-export interface InputControlOptions {
+export interface InputControlOptions<T> {
   required?: boolean;
-  value?: string;
+  value?: T;
 }
 export interface InputControlSetOptions {
   emitEvent?: boolean;
 }
 
-export class InputControl {
-  value$: Observable<string>;
-  setValue$: Observable<string>;
+export class InputControl<T> {
+  value$: Observable<T>;
+  setValue$: Observable<T>;
   valid: boolean;
 
-  private _value$: BehaviorSubject<string>;
-  private _setValue$ = new BehaviorSubject<string>('');
+  private _value$: BehaviorSubject<T>;
+  private _setValue$ = new BehaviorSubject<T>(undefined);
   private required: boolean;
 
-  constructor(options?: InputControlOptions) {
-    const value = options && options.value ? options.value : '';
+  constructor(options?: InputControlOptions<T>) {
+    const value = options ? options.value : undefined;
     this.required = options ? !!options.required : false;
     this.valid = this.isValid(value);
 
-    this._value$ = new BehaviorSubject<string>(value);
+    this._value$ = new BehaviorSubject<T>(value);
     this.value$ = this._value$.asObservable();
     this.setValue$ = this._setValue$.asObservable();
   }
 
-  getValue(): string {
+  getValue(): T {
     return this._value$.getValue();
   }
-  setValue(value: string, options: InputControlSetOptions = {emitEvent: true}) {
+  setValue(value: T, options: InputControlSetOptions = {emitEvent: true}) {
     this.valid = this.isValid(value);
     if (this.valid) {
       this._setValue$.next(value);
@@ -40,17 +40,25 @@ export class InputControl {
       }
     }
   }
-  receiveValue(value: string) {
+  receiveValue(value: T) {
     this.valid = this.isValid(value);
     this._value$.next(value);
   }
   reset() {
-    this._setValue$.next('');
-    this._value$.next('');
-    this.valid = this.isValid('');
+    this._setValue$.next(undefined);
+    this._value$.next(undefined);
+    this.valid = this.isValid(undefined);
   }
 
-  private isValid(value: string) {
-    return this.required ? !!value : true;
+  private isValid(value: T) {
+    if (this.required) {
+      if (typeof value === 'string') {
+        return value !== undefined && value !== null && value !== '';
+      } else {
+        return value !== undefined && value !== null;
+      }
+    } else {
+      return true;
+    }
   }
 }

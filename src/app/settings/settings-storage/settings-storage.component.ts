@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StorageApiService } from '@app/core';
+import { now } from '@app/model';
 import { Unsub } from '@app/static';
 
 @Component({
@@ -12,6 +13,7 @@ export class SettingsStorageComponent extends Unsub implements OnInit {
   usage: number;
   isPersisted: boolean;
   allowedPersist: boolean;
+  timestamp: number;
 
   constructor(private storageApiService: StorageApiService) {
     super();
@@ -45,6 +47,7 @@ export class SettingsStorageComponent extends Unsub implements OnInit {
       this.storageApiService.askForPersistStorage().subscribe(success => {
         this.isPersisted = success;
         this.allowedPersist = success;
+        this.timestamp = now();
       })
     );
   }

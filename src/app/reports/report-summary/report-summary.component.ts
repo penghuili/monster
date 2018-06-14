@@ -13,7 +13,7 @@ import { merge } from 'ramda';
 export class ReportSummaryComponent extends Unsub implements OnChanges, OnInit {
   @Input() date: number;
   @Input() mode: TimeRangeType;
-  summaryControl = new InputControl();
+  summaryControl = new InputControl<string>();
   autoFocus = false;
   reports: Report[];
 

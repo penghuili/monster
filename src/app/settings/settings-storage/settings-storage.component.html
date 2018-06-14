@@ -1,9 +1,11 @@
 <mst-go-back></mst-go-back>
 
 <div *ngIf="quota">
-  <div mstColor [mstColor.bg]="'green'" *ngIf="allowedPersist">your data will be persisted.</div>
-  <div [mstPadding]="'0 0 2rem'" *ngIf="!isPersisted">
-    <span [mstBorder]="'accent'" [mstPadding]="'0.5rem'" (click)="onPersist()">persist data</span>
+  <div [mstColor]="'white'" [mstColor.bg]="'green'" [mstPadding]="'0.5rem'" *ngIf="allowedPersist">your data will be persisted.</div>
+  <div [mstColor]="'white'" [mstColor.bg]="'error'" [mstPadding]="'0.5rem'" *ngIf="allowedPersist === false">enable failed.</div>
+  <div [mstPadding]="'1rem 0 2rem'" fxLayout="row" fxLayoutAlign="space-between" *ngIf="!isPersisted">
+    <div>persist data</div>
+    <mst-switch [defaultValue]="isPersisted" [timestamp]="timestamp" (switched)="onPersist()"></mst-switch>
   </div>
 
   <div>

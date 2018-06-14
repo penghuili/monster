@@ -21,7 +21,7 @@ import { InputControl } from '../input-control';
   styleUrls: ['./input.component.scss']
 })
 export class InputComponent extends Unsub implements OnInit, OnChanges {
-  @Input() control: InputControl;
+  @Input() control: InputControl<string>;
   @Input() autoFocus = false;
   @Input() disabled: boolean;
   @Input() width = 'auto';

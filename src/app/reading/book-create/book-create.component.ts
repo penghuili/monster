@@ -15,10 +15,10 @@ export class BookCreateComponent extends Unsub implements OnInit {
   @Output() created = new EventEmitter<boolean>();
   isShow = false;
 
-  titleControl = new InputControl({ required: true });
-  noteControl = new InputControl({ required: false });
-  chaptersControl = new InputControl({ required: true });
-  chaptersPerDayControl = new InputControl({ required: true });
+  titleControl = new InputControl<string>({ required: true });
+  noteControl = new InputControl<string>({ required: false });
+  chaptersControl = new InputControl<number>({ required: true });
+  chaptersPerDayControl = new InputControl<number>({ required: true });
 
   startDate = now();
   endDate = addDays(this.startDate, 1).getTime();
