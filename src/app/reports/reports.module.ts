@@ -7,6 +7,7 @@ import {
   DatepickerModule,
   IconModule,
   InputModule,
+  MonsterCommonModule,
   PipesModule,
   StylingModule,
   TimelineModule,
@@ -35,7 +36,8 @@ import { ThoughtsComponent } from './thoughts/thoughts.component';
     InputModule,
     TimelineModule,
     FlexLayoutModule,
-    ChartModule
+    ChartModule,
+    MonsterCommonModule
   ],
   declarations: [
     ReportsComponent,

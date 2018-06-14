@@ -5,7 +5,6 @@ import { environment } from '../../environments/environment';
 export function getIconUrl(icon: string): string {
   return environment.iconUrl + icon + '.svg';
 }
-
 export const MonsterStorage = {
   get(key: string) {
     return JSON.parse(localStorage.getItem(key));
@@ -23,4 +22,9 @@ export const MonsterStorage = {
 };
 export function getDragImageOffsetFunction(): DndDragImageOffsetFunction {
   return () => ({ x: -150, y: 0 });
+}
+export function paragraphString(text: string): string[] {
+  return !text ? [] : text.split('\n')
+    .map(a => a.trim())
+    .filter(a => !!a);
 }
