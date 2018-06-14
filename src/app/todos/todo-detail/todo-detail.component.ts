@@ -77,7 +77,6 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     private inputService: InputService,
     private projectService: ProjectService,
     private route: ActivatedRoute,
-    private router: Router,
     private subprojectService: SubprojectService,
     private todoService: TodoService) {
       super();
