@@ -9,6 +9,7 @@ import { StylingModule } from '../styling/styling.module';
 import { CancelConfirmComponent } from './cancel-confirm/cancel-confirm.component';
 import { CopyTextComponent } from './copy-text/copy-text.component';
 import { LinkComponent } from './link/link.component';
+import { ParagraphsComponent } from './paragraphs/paragraphs.component';
 
 
 @NgModule({
@@ -24,11 +25,13 @@ import { LinkComponent } from './link/link.component';
     CopyTextComponent,
     LinkComponent,
     CancelConfirmComponent,
+    ParagraphsComponent,
   ],
   exports: [
     CopyTextComponent,
     LinkComponent,
-    CancelConfirmComponent
+    CancelConfirmComponent,
+    ParagraphsComponent
   ]
 })
 export class MonsterCommonModule { }

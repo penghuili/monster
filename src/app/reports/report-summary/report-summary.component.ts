@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { NotificationService, ReportService } from '@app/core';
 import { Report, TimeRangeType } from '@app/model';
 import { InputControl } from '@app/shared';
@@ -33,7 +33,7 @@ export class ReportSummaryComponent extends Unsub implements OnChanges, OnInit {
     );
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     if (this.date && this.mode !== undefined) {
       this.addSubscription(
         this.reportService.getReportWithTodos(this.date, this.mode).subscribe(reportWithTodos => {

@@ -13,6 +13,6 @@ minHeight="3rem"></mst-input>
       <sub>{{ report.date | mstDate:'shortDate' }}</sub>
       <sub>{{ report.type | timeRangeType }}</sub>
     </div>
-    <div>{{ report.summary }}</div>
+    <mst-paragraphs [text]="report.summary"></mst-paragraphs>
   </div>
 </div>
