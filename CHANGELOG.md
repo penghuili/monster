@@ -1,3 +1,12 @@
+## v1.18.1
+
+bug fix:
+
+- set date for review correctly
+- paragraph summary
+- show text for diabled input; show lessons input
+- add switch
+
 ## v1.18.0
 
 feature:
