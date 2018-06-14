@@ -11,8 +11,8 @@ import { Unsub } from '@app/static';
 })
 export class ReportsComponent extends Unsub implements OnInit {
   showChart = false;
-  date = MonsterStorage.get('review-date') || now();
-  mode = MonsterStorage.get('review-mode') || TimeRangeType.Day;
+  date: number;
+  mode: TimeRangeType;
   datePickerStartDate: number;
 
   STATS = 'stats';
@@ -33,8 +33,7 @@ export class ReportsComponent extends Unsub implements OnInit {
   }
 
   ngOnInit() {
-    // TODO: delete this later
-    MonsterStorage.remove('report-tab');
+    this.setDate();
 
     this.addSubscription(
       this.reportService.getReportStartDate().subscribe(startDate => {
@@ -53,12 +52,26 @@ export class ReportsComponent extends Unsub implements OnInit {
 
     MonsterStorage.set('review-date', this.date);
     MonsterStorage.set('review-mode', this.mode);
+    MonsterStorage.set('review-date-updated-at', now());
   }
   onShowChart() {
     this.showChart = true;
   }
   onCloseChart() {
     this.showChart = false;
+  }
+
+  private setDate() {
+    const updatedAt = MonsterStorage.get('review-date-updated-at');
+    const date = MonsterStorage.get('review-date');
+    const mode = MonsterStorage.get('review-mode');
+    if (date && updatedAt && now() - updatedAt < 60 * 60 * 1000) {
+      this.date = date;
+      this.mode = mode;
+    } else {
+      this.date = now();
+      this.mode = TimeRangeType.Day;
+    }
   }
 
 }
