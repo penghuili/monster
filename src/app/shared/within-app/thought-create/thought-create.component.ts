@@ -14,7 +14,7 @@ import { InputControl } from '../../input/input-control';
 export class ThoughtCreateComponent extends Unsub implements OnInit {
   @Input() iconColor = 'white';
   @Output() created = new EventEmitter<boolean>();
-  thoughtControl = new InputControl({ required: true });
+  thoughtControl = new InputControl<string>({ required: true });
   date = now();
   isShow = false;
 

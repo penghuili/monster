@@ -16,8 +16,8 @@ import { Subject } from 'rxjs/Subject';
 })
 export class HabitDetailComponent extends Unsub implements OnInit {
   habit: Habit;
-  titleControl = new InputControl({ required: true });
-  resultControl = new InputControl({ required: true });
+  titleControl = new InputControl<string>({ required: true });
+  resultControl = new InputControl<string>({ required: true });
 
   startDate: number;
   endDateStartDate: number;

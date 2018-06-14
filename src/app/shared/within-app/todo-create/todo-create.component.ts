@@ -29,8 +29,8 @@ export class TodoCreateComponent extends Unsub implements OnInit {
   @Output() created = new EventEmitter<boolean>();
   isShow = false;
 
-  titleControl = new InputControl({ required: true });
-  noteControl = new InputControl();
+  titleControl = new InputControl<string>({ required: true });
+  noteControl = new InputControl<string>();
   status: TodoStatus;
   happenDate: number;
   expectedTime = 0;

@@ -15,7 +15,7 @@ import { debounceTime, filter, switchMap } from 'rxjs/operators';
 export class BookDetailComponent extends Unsub implements OnInit {
   book: Book;
   bookItems: BookItem[];
-  noteControl = new InputControl({ required: false });
+  noteControl = new InputControl<string>({ required: false });
 
   constructor(
     private readingService: ReadingService,

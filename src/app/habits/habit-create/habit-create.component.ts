@@ -14,8 +14,8 @@ export class HabitCreateComponent extends Unsub implements OnInit {
   @Output() created = new EventEmitter<boolean>();
   isShow = false;
 
-  titleControl = new InputControl({ required: true });
-  resultControl = new InputControl({ required: true });
+  titleControl = new InputControl<string>({ required: true });
+  resultControl = new InputControl<string>({ required: true });
 
   startDate = now();
   endDateStartDate = addDays(this.startDate, 1).getTime();

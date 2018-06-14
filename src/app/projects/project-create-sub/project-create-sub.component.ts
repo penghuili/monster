@@ -14,8 +14,8 @@ export class ProjectCreateSubComponent extends Unsub {
   @Output() created = new EventEmitter<boolean>();
   isShow = false;
 
-  titleControl = new InputControl({ required: true });
-  resultControl = new InputControl({ required: true });
+  titleControl = new InputControl<string>({ required: true });
+  resultControl = new InputControl<string>({ required: true });
 
   constructor(private subprojectService: SubprojectService) {
     super();

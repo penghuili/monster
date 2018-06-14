@@ -13,7 +13,7 @@ import { debounceTime, filter, map } from 'rxjs/operators';
 export class SearchTodosComponent extends Unsub implements OnInit {
   @Input() todos: Todo[];
   results: Todo[];
-  searchControl = new InputControl();
+  searchControl = new InputControl<string>();
 
   constructor(private router: Router) {
     super();

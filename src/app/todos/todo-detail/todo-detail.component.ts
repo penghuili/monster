@@ -39,10 +39,10 @@ import { TodoTimerComponent } from './todo-timer/todo-timer.component';
 export class TodoDetailComponent extends Unsub implements OnInit {
   @ViewChild(TodoTimerComponent) timer: TodoTimerComponent;
   todo: Todo;
-  titleControl = new InputControl({ required: true });
-  noteControl = new InputControl();
-  whyTooLateControl = new InputControl();
-  currentThoughtControl = new InputControl();
+  titleControl = new InputControl<string>({ required: true });
+  noteControl = new InputControl<string>();
+  whyTooLateControl = new InputControl<string>();
+  currentThoughtControl = new InputControl<string>();
   currentSubproject: Subproject;
   status: TodoStatus;
 

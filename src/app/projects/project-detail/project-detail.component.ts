@@ -33,8 +33,8 @@ import { Subject } from 'rxjs/Subject';
 export class ProjectDetailComponent extends Unsub implements OnInit {
   project: Project;
   subprojects: Subproject[];
-  titleControl = new InputControl({ required: true });
-  resultControl = new InputControl({ required: true });
+  titleControl = new InputControl<string>({ required: true });
+  resultControl = new InputControl<string>({ required: true });
 
   status: ProjectStatus;
   startDate: number;

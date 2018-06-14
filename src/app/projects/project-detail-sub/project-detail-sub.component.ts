@@ -25,8 +25,8 @@ import { Subject } from 'rxjs/Subject';
 export class ProjectDetailSubComponent extends Unsub implements OnInit {
   subproject: Subproject;
   todos: Todo[];
-  titleControl = new InputControl({ required: true });
-  resultControl = new InputControl({ required: true });
+  titleControl = new InputControl<string>({ required: true });
+  resultControl = new InputControl<string>({ required: true });
   startDate: number;
   endDate: number;
 
