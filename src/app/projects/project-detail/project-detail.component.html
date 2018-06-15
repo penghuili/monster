@@ -23,7 +23,7 @@
     <mst-progress-chart [data]="chartData"></mst-progress-chart>
   </div>
   <div *ngIf="activeTab === TIMELINE" [mstPadding]="'1rem 0 0'">
-    <mst-project-timeline [items]="timelineData" [start]="startDate"></mst-project-timeline>
+    <mst-project-timeline [items]="timelineData"></mst-project-timeline>
   </div>
   
   <mst-project-create-sub (created)="onCreateSub()" [project]="project"></mst-project-create-sub>

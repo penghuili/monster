@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService } from '@app/core';
-import { Project, ProjectStatus, sortByPosition } from '@app/model';
+import { Project, ProjectStatus, ProjectTimelineItem, sortByPosition } from '@app/model';
 import { Unsub } from '@app/static';
 import { startWith, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
@@ -15,6 +15,8 @@ export class ProjectsComponent extends Unsub implements OnInit {
   activeProjects: Project[];
   somedayProjects: Project[];
   doneProjects: Project[];
+
+  timelineItems: ProjectTimelineItem[];
 
   dragIndex: number;
 
@@ -65,6 +67,13 @@ export class ProjectsComponent extends Unsub implements OnInit {
     this.activeProjects = projects.filter(a => a.status === ProjectStatus.InProgress);
     this.somedayProjects = projects.filter(a => a.status === ProjectStatus.Someday);
     this.doneProjects = projects.filter(a => a.status === ProjectStatus.Done).sort((a, b) => b.finishAt - a.finishAt);
+
+    this.timelineItems = this.activeProjects.map(a => ({
+      name: a.title,
+      start: a.startDate,
+      end: a.endDate,
+      finished: a.status === ProjectStatus.Done
+    }));
   }
 
 }

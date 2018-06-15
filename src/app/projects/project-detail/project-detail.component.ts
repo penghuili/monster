@@ -207,20 +207,6 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
       })
       .filter(a => !!a)
       .sort((a, b) => a.start - b.start);
-
-      if (this.timelineData.length > 0) {
-        const beggining = this.timelineData[0].start;
-        this.timelineData = this.timelineData.map(a => {
-          return {
-            name: a.name,
-            start: Math.round((a.start - beggining) / (1000 * 60 * 60)),
-            end: Math.round((a.end - beggining) / (1000 * 60 * 60)),
-            finished: a.finished
-          };
-        });
-      } else {
-        return [];
-      }
     } else {
       this.timelineData = [];
     }
