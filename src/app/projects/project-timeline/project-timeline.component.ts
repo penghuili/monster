@@ -12,27 +12,36 @@ export class ProjectTimelineComponent implements OnChanges {
 
   timelineItems: ProjectTimelineItem[];
 
-  private timelineStart: number;
+  nowTop: number;
+  nowWidth: number;
+  showNowDots: boolean;
 
   ngOnChanges() {
     if (this.items && this.items.length > 0) {
       this.timelineItems = this.items.sort((a, b) => a.start - b.start);
-      this.timelineStart = this.timelineItems[0].start;
+      const timelineStart = this.timelineItems[0].start;
       this.timelineItems = this.timelineItems.map(a => ({
         name: a.name,
-        start: Math.round((a.start - this.timelineStart) / (5 * 60 * 60 * 1000)),
-        end: Math.round((a.end - this.timelineStart) / (5 * 60 * 60 * 1000)),
+        start: Math.round((a.start - timelineStart) / (5 * 60 * 60 * 1000)),
+        end: Math.round((a.end - timelineStart) / (5 * 60 * 60 * 1000)),
         finished: a.finished
       }));
+
+      const maxHeight = Math.max(...this.timelineItems.map(a => a.end - a.start));
+      const top = timelineStart ? Math.round((now() - timelineStart) / (5 * 60 * 60 * 1000)) : 0;
+      if (top > maxHeight * 1.2) {
+        this.showNowDots = true;
+        this.nowTop = maxHeight * 1.2;
+      } else {
+        this.showNowDots = false;
+        this.nowTop = top;
+      }
+      this.nowWidth = this.timelineItems.length * 2;
     } else {
       this.timelineItems = [];
+      this.nowTop = 0;
+      this.nowWidth = 0;
     }
-    console.log(this.timelineItems)
   }
-  getNowTop() {
-    return this.timelineStart ? Math.round((now() - this.timelineStart) / (5 * 60 * 60 * 1000)) : 0;
-  }
-  getNowWidth() {
-    return this.timelineItems ? this.timelineItems.length * 2 : 0;
-  }
+
 }

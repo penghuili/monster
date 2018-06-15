@@ -13,6 +13,14 @@
   height: 1px;
   background-color: $yellow;
 }
+.mst-timeline-now-more {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 2rem;
+  width: 1px;
+  height: 0.5rem;
+  border-left: 2px dotted $yellow;
+}
 
 @media screen and (min-width: $break-point) {
   .mst-timeline-wrapper {

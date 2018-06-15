@@ -1,3 +1,9 @@
+## v1.18.2
+
+feature:
+
+- show timeline for active projects
+
 ## v1.18.1
 
 bug fix:
