@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AppHeaderService, HabitService, ProjectService, ReadingService, TodoService } from '@app/core';
+import { AppHeaderService, ProjectService, ReadingService, TodoService } from '@app/core';
 import {
   BookItem,
   endofTomorrow,
-  Habit,
   hasTodos,
   isBeforeToday,
   isFinished,
@@ -21,7 +20,7 @@ import {
   TodoStatus,
   TOMORROW,
 } from '@app/model';
-import { ROUTES, Unsub } from '@app/static';
+import { Unsub } from '@app/static';
 import { isToday, isTomorrow } from 'date-fns';
 import { merge } from 'ramda';
 import { combineLatest } from 'rxjs/observable/combineLatest';
@@ -45,8 +44,6 @@ export class TodosComponent extends Unsub implements OnInit {
   activeTab: string;
   TODAY = TODAY;
 
-  habits: Habit[];
-
   showSearch = false;
 
   activeBookItems: BookItem[];
@@ -56,7 +53,6 @@ export class TodosComponent extends Unsub implements OnInit {
 
   constructor(
     private appHeaderService: AppHeaderService,
-    private habitService: HabitService,
     private readingService: ReadingService,
     private route: ActivatedRoute,
     private router: Router,
@@ -88,12 +84,6 @@ export class TodosComponent extends Unsub implements OnInit {
     );
 
     this.addSubscription(
-      this.habitService.getTodaysHabits().subscribe(habits => {
-        this.habits = habits;
-      })
-    );
-
-    this.addSubscription(
       this.appHeaderService.getSearchStatus().subscribe(isSearching => {
         this.showSearch = isSearching;
       })
@@ -109,7 +99,6 @@ export class TodosComponent extends Unsub implements OnInit {
 
   // todo: delete this
   onChangeTab(tab: string) {
-    this.process(tab, this.projectsWithTodos, this.todos);
     // this.getActiveBookItems();
   }
   onShowDetail(todo: Todo) {
@@ -138,9 +127,6 @@ export class TodosComponent extends Unsub implements OnInit {
     }
     this.dragIndex = undefined;
     this.drapProjectId = undefined;
-  }
-  onShowHabitDetail(habit: Habit) {
-    this.router.navigateByUrl(`${ROUTES.PLANS}/${ROUTES.HABITS}/${habit.id}`);
   }
 
   private process(activeTab: string, projectsWithTodos: ProjectWithTodos[], todos: Todo[]) {

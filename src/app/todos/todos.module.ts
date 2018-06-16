@@ -23,6 +23,7 @@ import { TodosRoutingModule } from './todos-routing.module';
 import { TodosComponent } from './todos/todos.component';
 import { TodoActivitiesComponent } from './todo-detail/todo-activities/todo-activities.component';
 import { TodosTabComponent } from './todos/todos-tab/todos-tab.component';
+import { TodosHabitsComponent } from './todos/todos-habits/todos-habits.component';
 
 @NgModule({
   imports: [
@@ -50,6 +51,7 @@ import { TodosTabComponent } from './todos/todos-tab/todos-tab.component';
     SearchTodosComponent,
     TodoActivitiesComponent,
     TodosTabComponent,
+    TodosHabitsComponent,
   ]
 })
 export class TodosModule { }
