@@ -5,7 +5,6 @@ import {
   Event,
   Habit,
   HabitItem,
-  MonsterEvents,
   Project,
   Report,
   Subproject,
@@ -14,6 +13,7 @@ import {
   TodoThought,
 } from '@app/model';
 import Dexie from 'dexie';
+import { merge } from 'ramda';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
 import { catchError } from 'rxjs/operators';
@@ -92,5 +92,30 @@ export class DbService {
   }
 
   process() {
+    const db = this.db;
+    const transaction = db.transaction('rw', db.todos, db.reports, () => {
+      return db.todos
+      .toArray()
+      .then(todos => {
+        todos = todos.map(a => merge(a, { expectedTime: a.expectedTime * 60, usedTime: a.usedTime * 60 }));
+        return db.todos.bulkPut(todos);
+      })
+      .then(() => {
+        return db.reports.toArray();
+      })
+      .then(reports => {
+        reports = reports.map(a => merge(a, { plannedTime: a.plannedTime * 60, usedTimeOfTimeRange: a.usedTimeOfTimeRange * 60 }));
+        return db.reports.bulkPut(reports);
+      });
+    });
+    fromPromise(transaction).pipe(
+      catchError(() => of(null))
+    ).subscribe(success => {
+      if (success) {
+        alert('success');
+      } else {
+        alert('failed');
+      }
+    });
   }
 }
