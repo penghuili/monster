@@ -1,3 +1,5 @@
 <div>
-  {{ data.thought }}
+  <a [mstFontWeight]="800" [mstColor]="'accent'"
+    routerLink="/{{ROUTES.TODOS}}/{{data.todo.id}}">{{ data.todo.title }}:</a>
+  {{ data.thought.thought }}
 </div>

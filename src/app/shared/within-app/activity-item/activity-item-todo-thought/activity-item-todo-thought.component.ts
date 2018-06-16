@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Event, TodoThought } from '@app/model';
+import { Event, Todo, TodoThought } from '@app/model';
+import { ROUTES } from '@app/static';
 
 @Component({
   selector: 'mst-activity-item-todo-thought',
@@ -9,5 +10,6 @@ import { Event, TodoThought } from '@app/model';
 })
 export class ActivityItemTodoThoughtComponent {
   @Input() activity: Event;
-  @Input() data: TodoThought;
+  @Input() data: {todo: Todo, thought: TodoThought};
+  ROUTES = ROUTES;
 }

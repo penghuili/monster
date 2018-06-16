@@ -4,6 +4,7 @@ import {
   endOfWeek,
   EventType,
   getActiveTab as getTab,
+  getStartEnd,
   isValidTodoWithin,
   isWithinDay,
   MonsterEvents,
@@ -11,6 +12,7 @@ import {
   prepareRepostionIds,
   repositionItems,
   startOfWeek,
+  TimeRangeType,
   Todo,
   TodoStatus,
   TodoThought,
@@ -51,7 +53,7 @@ export class TodoService {
       .filter(a => isValidTodoWithin(a, start, end))
       .toArray()
     ).pipe(
-      catchError(error => this.handleError('get2Weeks fails')),
+      catchError(() => this.handleError('getForTodoPage fails')),
       tap(() => {
         this.loadingService.stopLoading();
       })
@@ -147,6 +149,22 @@ export class TodoService {
         this.loadingService.stopLoading();
       }),
       filter(a => !!a)
+    );
+  }
+  getThoughts(date: number, mode: TimeRangeType): Observable<TodoThought[]> {
+    this.loadingService.isLoading();
+    const [start, end] = getStartEnd(date, mode);
+
+    return fromPromise(this.dbService.getDB()
+      .todoThoughts
+      .where('createdAt')
+      .between(start, end)
+      .toArray()
+    ).pipe(
+      catchError(() => this.handleError('getThoughts fails')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
     );
   }
   onCreatedTodo() {
