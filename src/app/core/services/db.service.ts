@@ -5,6 +5,7 @@ import {
   Event,
   Habit,
   HabitItem,
+  MonsterEvents,
   Project,
   Report,
   Subproject,
@@ -13,6 +14,9 @@ import {
   TodoThought,
 } from '@app/model';
 import Dexie from 'dexie';
+import { fromPromise } from 'rxjs/observable/fromPromise';
+import { of } from 'rxjs/observable/of';
+import { catchError } from 'rxjs/operators';
 
 import { StorageApiService } from './storage-api.service';
 
@@ -88,5 +92,30 @@ export class DbService {
   }
 
   process() {
+    const db = this.db;
+    const transaction = db.transaction('rw', db.events, db.todoThoughts, () => {
+      return db.events
+        .filter(a => a.action === MonsterEvents.CurrentThougntTodo)
+        .toArray()
+        .then(events => {
+          const thoughts: TodoThought[] = (events || []).map(a => ({
+            todoId: a.refId,
+            createdAt: a.createdAt,
+            thought: a.newValue
+          }));
+          return db.todoThoughts.bulkAdd(thoughts);
+        });
+      });
+
+    fromPromise(transaction).pipe(
+      catchError(() => of(null))
+    ).subscribe(success => {
+      if (success) {
+        alert('success');
+        this.db.events.filter(a => a.action === MonsterEvents.CurrentThougntTodo).delete();
+      } else {
+        alert('failed');
+      }
+    });
   }
 }
