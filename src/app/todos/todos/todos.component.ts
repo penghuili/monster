@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AppHeaderService, ProjectService, ReadingService, TodoService } from '@app/core';
+import { AppHeaderService, ProjectService, TodoService } from '@app/core';
 import {
-  BookItem,
   endofTomorrow,
   hasTodos,
   isBeforeToday,
@@ -14,7 +13,6 @@ import {
   ProjectStatus,
   ProjectWithTodos,
   sortTodos,
-  TimeRangeType,
   TODAY,
   Todo,
   TodoStatus,
@@ -46,14 +44,11 @@ export class TodosComponent extends Unsub implements OnInit {
 
   showSearch = false;
 
-  activeBookItems: BookItem[];
-  private bookItems: BookItem[];
   private drapProjectId: number;
   private shouldReload = new Subject<boolean>();
 
   constructor(
     private appHeaderService: AppHeaderService,
-    private readingService: ReadingService,
     private route: ActivatedRoute,
     private router: Router,
     private projectService: ProjectService,
@@ -88,19 +83,8 @@ export class TodosComponent extends Unsub implements OnInit {
         this.showSearch = isSearching;
       })
     );
-
-    this.addSubscription(
-      this.readingService.getBookItems(now(), TimeRangeType.Day).subscribe(items => {
-        this.bookItems = items;
-        // this.getActiveBookItems();
-      })
-    );
   }
 
-  // todo: delete this
-  onChangeTab(tab: string) {
-    // this.getActiveBookItems();
-  }
   onShowDetail(todo: Todo) {
     this.router.navigate([ todo.id ], { relativeTo: this.route });
   }
@@ -129,10 +113,6 @@ export class TodosComponent extends Unsub implements OnInit {
     this.drapProjectId = undefined;
   }
 
-  private process(activeTab: string, projectsWithTodos: ProjectWithTodos[], todos: Todo[]) {
-    this.processTodos(activeTab, projectsWithTodos);
-    this.calcTotal(activeTab, todos);
-  }
   private bothAreOverdue(dragged: Todo, dropped: Todo): boolean {
     return dragged && dropped && isOverDue(dragged) && isOverDue(dropped);
   }
@@ -142,6 +122,10 @@ export class TodosComponent extends Unsub implements OnInit {
   }
   private bothAreWaiting(dragged: Todo, dropped: Todo): boolean {
     return dragged && dropped && dragged.status === TodoStatus.Someday && dropped.status === TodoStatus.Someday;
+  }
+  private process(activeTab: string, projectsWithTodos: ProjectWithTodos[], todos: Todo[]) {
+    this.processTodos(activeTab, projectsWithTodos);
+    this.calcTotal(activeTab, todos);
   }
   private processTodos(activeTab: string, projectsWithTodos: ProjectWithTodos[]) {
     const tomorrowEnd = endofTomorrow();
@@ -193,14 +177,4 @@ export class TodosComponent extends Unsub implements OnInit {
   private isDoneOnToday(todo: Todo): boolean {
     return isFinished(todo) && isWithinDay(todo.finishAt, now());
   }
-  // private getActiveBookItems() {
-  //   const items = this.bookItems || [];
-  //   if (this.activeTab === TODAY) {
-  //     this.activeBookItems = items.filter(a => isToday(a.happenDate));
-  //   } else if (this.activeTab === OVERDUE) {
-  //     this.activeBookItems = items.filter(a => isBeforeToday(a.happenDate));
-  //   } else {
-  //     this.activeBookItems = [];
-  //   }
-  // }
 }

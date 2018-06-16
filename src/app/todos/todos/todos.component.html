@@ -1,18 +1,12 @@
 <div [mstPadding]="'0 0 1rem'" *ngIf="showSearch">
-  <mst-search-todos [todos]="todos"></mst-search-todos>
+  <mst-todos-search [todos]="todos"></mst-todos-search>
 </div>
 
 <mst-todos-tab [projectsWithTodos]="projectsWithTodos"></mst-todos-tab>
 
 <mst-todos-habits></mst-todos-habits>
 
-<ng-container *ngIf="activeBookItems && activeBookItems.length > 0">
-  <div>reading</div>
-  <div [mstPadding]="'0 0 0.5rem 1rem'">
-    <mst-book-chapter-item *ngFor="let item of activeBookItems" [bookItem]="item">
-    </mst-book-chapter-item>
-  </div>
-</ng-container>
+<mst-todos-books></mst-todos-books>
 
 <ng-container *ngIf="activeProjectsWithTodos && activeProjectsWithTodos.length > 0">
   <div *ngFor="let pwts of activeProjectsWithTodos">
