@@ -3,6 +3,7 @@ import {
   createTodo,
   endOfWeek,
   EventType,
+  getActiveTab as getTab,
   isValidTodoWithin,
   isWithinDay,
   MonsterEvents,
@@ -15,6 +16,7 @@ import {
   TodoThought,
 } from '@app/model';
 import { addDays } from 'date-fns';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
@@ -30,6 +32,7 @@ import { NotificationService } from './notification.service';
 export class TodoService {
 
   private createdTodo = new Subject<boolean>();
+  private activeTab = new BehaviorSubject<string>(getTab());
 
   constructor(
     private eventService: EventService,
@@ -221,6 +224,12 @@ export class TodoService {
         }
       })
     );
+  }
+  getActiveTab(): Observable<string> {
+    return this.activeTab.asObservable();
+  }
+  setActiveTab(tab: string) {
+    this.activeTab.next(tab);
   }
 
   private handleError(message: string): Observable<any> {

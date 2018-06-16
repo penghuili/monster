@@ -1,32 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AppHeaderService, HabitService, NotificationService, ProjectService, ReadingService, TodoService } from '@app/core';
+import { AppHeaderService, HabitService, ProjectService, ReadingService, TodoService } from '@app/core';
 import {
   BookItem,
-  calcExpectedTime,
   endofTomorrow,
   Habit,
+  hasTodos,
   isBeforeToday,
   isFinished,
   isOverDue,
-  isTodayEnded,
-  isTodayStarted,
   isWithinDay,
-  MonsterStorage,
   now,
+  OVERDUE,
   ProjectStatus,
   ProjectWithTodos,
-  redoneOverdueForToday,
   sortTodos,
   TimeRangeType,
+  TODAY,
   Todo,
   TodoStatus,
+  TOMORROW,
 } from '@app/model';
 import { ROUTES, Unsub } from '@app/static';
 import { isToday, isTomorrow } from 'date-fns';
 import { merge } from 'ramda';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 import { merge as mergeO } from 'rxjs/observable/merge';
-import { startWith, switchMap } from 'rxjs/operators';
+import { filter, startWith, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 
 @Component({
@@ -36,21 +36,14 @@ import { Subject } from 'rxjs/Subject';
 })
 export class TodosComponent extends Unsub implements OnInit {
   todos: Todo[];
+  projectsWithTodos: ProjectWithTodos[];
   activeProjectsWithTodos: ProjectWithTodos[];
-  hasActive: boolean;
   doneProjectsWithTodos: ProjectWithTodos[];
   hasDone: boolean;
 
   dragIndex: number;
-
-  OVERDUE = 'overdue';
-  TODAY = 'today';
-  TOMORROW = 'tomorrow';
-  THISWEEK = 'this week';
   activeTab: string;
-
-  todayStarted = false;
-  todayEnded = false;
+  TODAY = TODAY;
 
   habits: Habit[];
 
@@ -58,16 +51,12 @@ export class TodosComponent extends Unsub implements OnInit {
 
   activeBookItems: BookItem[];
   private bookItems: BookItem[];
-
-  private activeTodos: Todo[];
-  private projectsWithTodos: ProjectWithTodos[];
   private drapProjectId: number;
   private shouldReload = new Subject<boolean>();
 
   constructor(
     private appHeaderService: AppHeaderService,
     private habitService: HabitService,
-    private notificationService: NotificationService,
     private readingService: ReadingService,
     private route: ActivatedRoute,
     private router: Router,
@@ -77,24 +66,24 @@ export class TodosComponent extends Unsub implements OnInit {
   }
 
   ngOnInit() {
-    this.todayStarted = isTodayStarted();
-    this.todayEnded = isTodayEnded();
-    this.activeTab = MonsterStorage.get('activeTab') || this.TODAY;
-
+    const todos$ = mergeO(
+      this.shouldReload.asObservable().pipe(startWith(true)),
+      this.todoService.onCreatedTodo()
+    ).pipe(
+      switchMap(() => this.todoService.getForTodoPage()),
+      switchMap(todos => {
+        this.todos = todos || [];
+        return this.projectService.getProjectsWithTodos(todos);
+      })
+    );
+    const tab$ = this.todoService.getActiveTab();
     this.addSubscription(
-      mergeO(
-        this.shouldReload.asObservable().pipe(startWith(true)),
-        this.todoService.onCreatedTodo()
-      ).pipe(
-        switchMap(() => this.todoService.getForTodoPage()),
-        switchMap(todos => {
-          this.todos = todos || [];
-          return this.projectService.getProjectsWithTodos(todos);
-        })
-      ).subscribe(projectsWithTodos => {
-        this.projectsWithTodos = (projectsWithTodos || [])
-          .filter(a => a.project.status !== ProjectStatus.Done);
-        this.process(this.activeTab, this.projectsWithTodos, this.todos);
+      combineLatest(todos$, tab$).pipe(
+        filter(([projectsWithTodos, tab]) => !!projectsWithTodos && !!tab)
+      ).subscribe(([projectsWithTodos, tab]) => {
+        this.activeTab = tab;
+        this.projectsWithTodos = projectsWithTodos.filter(a => a.project.status !== ProjectStatus.Done);
+        this.process(tab, this.projectsWithTodos, this.todos);
       })
     );
 
@@ -113,43 +102,15 @@ export class TodosComponent extends Unsub implements OnInit {
     this.addSubscription(
       this.readingService.getBookItems(now(), TimeRangeType.Day).subscribe(items => {
         this.bookItems = items;
-        this.getActiveBookItems();
+        // this.getActiveBookItems();
       })
     );
   }
 
-  isStartTodayEnabled() {
-    return !this.todayStarted && this.activeTab === this.TODAY;
-  }
-  showRedoOverdue() {
-    return !redoneOverdueForToday();
-  }
-  onRedoOverdue() {
-    MonsterStorage.set('redo-overdue-at', now());
-  }
-  onStartToday() {
-    if (this.activeTab === this.TODAY) {
-      const todaysTodos = this.activeTodos.filter(a => isToday(a.happenDate) && a.status === TodoStatus.InProgress);
-      const canStart = calcExpectedTime(todaysTodos) <= 7 * 60;
-      if (canStart) {
-        const want = confirm('are you sure to start today now?');
-        if (want) {
-          if (!this.todayStarted) {
-            this.todayStarted = true;
-            MonsterStorage.set('start-today', now());
-          }
-        }
-      } else {
-        this.notificationService.sendMessage(`there will be more than 7 hours on this day, you can't start today.`);
-      }
-    }
-  }
+  // todo: delete this
   onChangeTab(tab: string) {
-    MonsterStorage.set('activeTab', tab);
-    this.activeTab = tab;
-
-    this.process(this.activeTab, this.projectsWithTodos, this.todos);
-    this.getActiveBookItems();
+    this.process(tab, this.projectsWithTodos, this.todos);
+    // this.getActiveBookItems();
   }
   onShowDetail(todo: Todo) {
     this.router.navigate([ todo.id ], { relativeTo: this.route });
@@ -200,11 +161,11 @@ export class TodosComponent extends Unsub implements OnInit {
     const tomorrowEnd = endofTomorrow();
     let filteredActive: ProjectWithTodos[];
     let activeFilterFunction: (a: Todo) => boolean;
-    if (activeTab === this.OVERDUE) {
+    if (activeTab === OVERDUE) {
       activeFilterFunction = a => isBeforeToday(a.happenDate);
-    } else if (activeTab === this.TODAY) {
+    } else if (activeTab === TODAY) {
       activeFilterFunction = a => isToday(a.happenDate);
-    } else if (activeTab === this.TOMORROW) {
+    } else if (activeTab === TOMORROW) {
       activeFilterFunction = a => isTomorrow(a.happenDate);
     } else {
       activeFilterFunction = a => a.happenDate > tomorrowEnd;
@@ -218,7 +179,6 @@ export class TodosComponent extends Unsub implements OnInit {
       const sorted = sortTodos(tds);
       return merge(pt, { todos: sorted });
     });
-    this.hasActive = this.hasTodos(this.activeProjectsWithTodos);
 
     this.doneProjectsWithTodos = projectsWithTodos.map(pt => {
       const tds = pt.todos
@@ -226,38 +186,35 @@ export class TodosComponent extends Unsub implements OnInit {
         .sort((a, b) => b.finishAt - a.finishAt);
       return merge(pt, { todos: tds });
     });
-    this.hasDone = this.hasTodos(this.doneProjectsWithTodos);
+    this.hasDone = hasTodos(this.doneProjectsWithTodos);
   }
   private calcTotal(activeTab: string, todos: Todo[]) {
     const tomorrowEnd = endofTomorrow();
     let filtered: Todo[];
-    if (activeTab === this.OVERDUE) {
+    if (activeTab === OVERDUE) {
       filtered = todos.filter(a => isBeforeToday(a.happenDate));
-    } else if (activeTab === this.TODAY) {
+    } else if (activeTab === TODAY) {
       filtered = todos.filter(a => isToday(a.happenDate));
-    } else if (activeTab === this.TOMORROW) {
+    } else if (activeTab === TOMORROW) {
       filtered = todos.filter(a => isTomorrow(a.happenDate));
     } else {
       filtered = todos.filter(a => a.happenDate > tomorrowEnd);
     }
 
-    this.activeTodos = filtered.filter(a => a.status === TodoStatus.InProgress);
-    this.appHeaderService.sendData(this.activeTodos);
-  }
-  private hasTodos(projectsWithTodos: ProjectWithTodos[]): boolean {
-    return projectsWithTodos && projectsWithTodos.length > 0 && !projectsWithTodos.every(a => !a || !a.todos || a.todos.length === 0);
+    const activeTodos = filtered.filter(a => a.status === TodoStatus.InProgress);
+    this.appHeaderService.sendData(activeTodos);
   }
   private isDoneOnToday(todo: Todo): boolean {
     return isFinished(todo) && isWithinDay(todo.finishAt, now());
   }
-  private getActiveBookItems() {
-    const items = this.bookItems || [];
-    if (this.activeTab === this.TODAY) {
-      this.activeBookItems = items.filter(a => isToday(a.happenDate));
-    } else if (this.activeTab === this.OVERDUE) {
-      this.activeBookItems = items.filter(a => isBeforeToday(a.happenDate));
-    } else {
-      this.activeBookItems = [];
-    }
-  }
+  // private getActiveBookItems() {
+  //   const items = this.bookItems || [];
+  //   if (this.activeTab === TODAY) {
+  //     this.activeBookItems = items.filter(a => isToday(a.happenDate));
+  //   } else if (this.activeTab === OVERDUE) {
+  //     this.activeBookItems = items.filter(a => isBeforeToday(a.happenDate));
+  //   } else {
+  //     this.activeBookItems = [];
+  //   }
+  // }
 }

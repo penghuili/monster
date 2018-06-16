@@ -1,0 +1,12 @@
+<div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'0 0 1rem'">
+  <div class="mst-todos-tab mst-todos-tab-action-wrapper" [class.mst-todos-tab--active]="activeTab === OVERDUE" [mstColor]="'error'" (click)="onChangeTab(OVERDUE)">
+    <div>overdue</div>
+    <div class="mst-start-action" *ngIf="hasTodos() && activeTab === OVERDUE && showRedoOverdue()" (click)="onRedoOverdue()">redo</div>
+  </div>
+  <div class="mst-todos-tab mst-todos-tab-action-wrapper" [class.mst-todos-tab--active]="activeTab === TODAY" (click)="onChangeTab(TODAY)">
+    <div>today</div>
+    <div class="mst-start-action" *ngIf="hasTodos() && showStartToday()" (click)="onStartToday()">start</div>
+  </div>
+  <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === TOMORROW" (click)="onChangeTab(TOMORROW)">tomorrow</div>
+  <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === THISWEEK" (click)="onChangeTab(THISWEEK)">week</div>
+</div>
