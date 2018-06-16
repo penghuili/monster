@@ -5,23 +5,20 @@ import {
   Event,
   Habit,
   HabitItem,
-  HabitStatus,
-  MonsterEvents,
   Project,
   Report,
   Subproject,
   Thought,
   Todo,
+  TodoThought,
 } from '@app/model';
 import Dexie from 'dexie';
-import { fromPromise } from 'rxjs/observable/fromPromise';
-import { of } from 'rxjs/observable/of';
-import { catchError } from 'rxjs/operators';
 
 import { StorageApiService } from './storage-api.service';
 
 class MonsterDB extends Dexie {
   todos: Dexie.Table<Todo, number>;
+  todoThoughts: Dexie.Table<TodoThought, number>;
   projects: Dexie.Table<Project, number>;
   subprojects: Dexie.Table<Subproject, number>;
   habits: Dexie.Table<Habit, number>;
@@ -68,6 +65,9 @@ class MonsterDB extends Dexie {
     });
     this.version(10).stores({
       habitItems: '++id,habitId,happenDate,status'
+    });
+    this.version(11).stores({
+      todoThoughts: '++id,todoId,createdAt'
     });
   }
 }

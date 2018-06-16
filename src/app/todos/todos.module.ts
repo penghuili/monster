@@ -21,6 +21,7 @@ import { TodoDetailComponent } from './todo-detail/todo-detail.component';
 import { TodoTimerComponent } from './todo-detail/todo-timer/todo-timer.component';
 import { TodosRoutingModule } from './todos-routing.module';
 import { TodosComponent } from './todos/todos.component';
+import { TodoActivitiesComponent } from './todo-detail/todo-activities/todo-activities.component';
 
 @NgModule({
   imports: [
@@ -46,6 +47,7 @@ import { TodosComponent } from './todos/todos.component';
     TodoDetailComponent,
     TodoTimerComponent,
     SearchTodosComponent,
+    TodoActivitiesComponent,
   ]
 })
 export class TodosModule { }

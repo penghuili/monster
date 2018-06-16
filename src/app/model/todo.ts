@@ -17,9 +17,11 @@ export interface Todo extends SortableItem {
   addedLater?: boolean;
   whyTooLate?: string;
 }
-export interface TodoActivity {
-  startAt: number;
-  endAt: number;
+export interface TodoThought {
+  id?: number;
+  todoId: number;
+  createdAt: number;
+  thought: string;
 }
 export enum TodoStatus {
   InProgress,

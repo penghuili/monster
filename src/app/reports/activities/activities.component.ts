@@ -1,7 +1,8 @@
 import { Component, ElementRef, Input, OnChanges, ViewChild } from '@angular/core';
 import { ReportService } from '@app/core';
-import { Event, EventType, now, Project, Subproject, Thought, TimeRangeType, Todo } from '@app/model';
+import { Event, EventType, TimeRangeType } from '@app/model';
 import { Unsub } from '@app/static';
+import { merge} from 'ramda';
 
 @Component({
   selector: 'mst-activities',
@@ -13,10 +14,7 @@ export class ActivitiesComponent extends Unsub implements OnChanges {
   @Input() mode: TimeRangeType;
   @ViewChild('activityWrapper') wrapper: ElementRef;
   activities: Event[] = [];
-  data: (Project | Subproject | Todo | Thought)[];
   isLoading: boolean;
-
-  private _date = now();
 
   constructor(private reportService: ReportService) {
     super();
@@ -31,26 +29,26 @@ export class ActivitiesComponent extends Unsub implements OnChanges {
   private getActivities(date: number, mode: TimeRangeType) {
     this.isLoading = true;
     this.activities = [];
-    this.data = [];
     this.addSubscription(
       this.reportService.getActivities(date, mode).subscribe(value => {
         this.isLoading = false;
         if (value) {
-          this.activities = value.activities;
           const projects = value.projects;
           const subprojects = value.subprojects;
           const todos = value.todos;
           const thoughts = value.thoughts;
-          this.data = this.activities.map(a => {
+          this.activities = (<Event[]>value.activities).map(a => {
+            let data: any;
             if (a.type === EventType.Project) {
-              return projects.find(b => b.id === a.refId);
+              data = projects.find(b => b.id === a.refId);
             } else if (a.type === EventType.Subproject) {
-              return subprojects.find(b => b.id === a.refId);
+              data = subprojects.find(b => b.id === a.refId);
             } else if (a.type === EventType.Thought) {
-              return thoughts.find(b => b.id === a.refId);
+              data = thoughts.find(b => b.id === a.refId);
             } else {
-              return todos.find(b => b.id === a.refId);
+              data = todos.find(b => b.id === a.refId);
             }
+            return merge(a, {data});
           });
         }
       })

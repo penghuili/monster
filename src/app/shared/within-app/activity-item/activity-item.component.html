@@ -1,21 +1,24 @@
-<mst-timeline-item *ngIf="activity && data"
+<mst-timeline-item *ngIf="activity && activity.data"
   [time]="activity.createdAt"
   [timeNext]="nextActivity ? nextActivity.createdAt : null"
   [reverse]="reverse"
   [id]="activity.id">
   <div *ngIf="activity.type === EventType.Todo">
-    <mst-activity-item-todo [activity]="activity" [data]="data"></mst-activity-item-todo>
+    <mst-activity-item-todo [activity]="activity" [data]="activity.data"></mst-activity-item-todo>
+  </div>
+  <div *ngIf="activity.type === EventType.TodoThought">
+    <mst-activity-item-todo-thought [activity]="activity" [data]="activity.data"></mst-activity-item-todo-thought>
   </div>
   
   <div *ngIf="activity.type === EventType.Project">
-    <mst-activity-item-project [activity]="activity" [data]="data"></mst-activity-item-project>
+    <mst-activity-item-project [activity]="activity" [data]="activity.data"></mst-activity-item-project>
   </div>
 
   <div *ngIf="activity.type === EventType.Subproject">
-    <mst-activity-item-subproject [activity]="activity" [data]="data"></mst-activity-item-subproject>
+    <mst-activity-item-subproject [activity]="activity" [data]="activity.data"></mst-activity-item-subproject>
   </div>
 
-  <div *ngIf="activity.type === EventType.Record">
-    <mst-activity-item-record [activity]="activity" [data]="data"></mst-activity-item-record>
+  <div *ngIf="activity.type === EventType.Thought">
+    <mst-activity-item-record [activity]="activity" [data]="activity.data"></mst-activity-item-record>
   </div>
 </mst-timeline-item>
