@@ -43,7 +43,6 @@ export const MonsterEvents = {
   WontDoTodo: 'WontDoTodo',
   StartTodo: 'StartTodo',
   StopTodo: 'StopTodo',
-  CurrentThougntTodo: 'CurrentThougntTodo',
 
   CreateRecord: 'CreateRecord',
 

@@ -67,9 +67,3 @@
   <span [mstFontWeight]="800">{{ activity.oldValue | todoStatus }}</span> to
   <span [mstFontWeight]="800">{{ activity.newValue | todoStatus }}</span>
 </div>
-<div *ngIf="activity.action === MonsterEvents.CurrentThougntTodo">
-  add thought to
-  <a [mstFontWeight]="800" [mstColor]="'accent'"
-    routerLink="/{{ROUTES.TODOS}}/{{data.id}}">{{ data.title }}:</a>
-  <span>{{ activity.newValue }}.</span>
-</div>
