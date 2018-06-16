@@ -26,7 +26,8 @@ export interface ReportWithTodos {
   todos: Todo[];
 }
 
-export function createReport(date: number, type: TimeRangeType, todos: Todo[]): Report {
+
+export function createReport(date: number, type: TimeRangeType, todos: Todo[], usedTimeOfTimeRange: number): Report {
   if (!todos || todos.length === 0) {
     return null;
   }
@@ -46,7 +47,7 @@ export function createReport(date: number, type: TimeRangeType, todos: Todo[]): 
     addedLater: todosWithinRange.filter(a => a.addedLater).length,
     beforeToday: todos.filter(a => isBeforeToday(a.happenDate)).length,
     plannedTime: todosWithinRange.reduce((total, curr) => total + curr.expectedTime, 0),
-    usedTimeOfTimeRange: todosWithinRange.reduce((total, curr) => total + curr.usedTime, 0)
+    usedTimeOfTimeRange
   };
 }
 export function getFinishedCount(report: Report): number {

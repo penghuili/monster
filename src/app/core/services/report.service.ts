@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import {
+  calcUsedTime,
   createReport,
   EventType,
   getStartEnd,
   isDayOrBefore,
   isValidTodoWithin,
+  MonsterEvents,
   now,
   Report,
   ReportWithTodos,
@@ -48,10 +50,11 @@ export class ReportService {
     let reportWithTodos: ReportWithTodos;
     const todos$ = this.getTodosForReport(date, mode);
     const report$ = this.getReport(date, mode);
+    const usedTimeOfSelectedTimeRange$ = this.getUsedTimeOfTimeRange(date, mode);
 
-    return combineLatest(todos$, report$).pipe(
-      switchMap(([todos, oldReport]) => {
-        const newReport = merge(oldReport, createReport(date, mode, todos));
+    return combineLatest(todos$, report$, usedTimeOfSelectedTimeRange$).pipe(
+      switchMap(([todos, oldReport, usedTimeOfTimeRange]) => {
+        const newReport = merge(oldReport, createReport(date, mode, todos, usedTimeOfTimeRange));
         reportWithTodos = { report: newReport, todos };
 
         if (newReport && oldReport) {
@@ -129,7 +132,7 @@ export class ReportService {
           return of(null);
         }
       }),
-      catchError(() => this.handleError('getActivities fails.')),
+      catchError(error => this.handleError('getActivities fails.')),
       tap(() => {
         this.loadingService.stopLoading();
       })
@@ -190,6 +193,31 @@ export class ReportService {
         .toArray()
     ).pipe(
       catchError(error => this.handleError('getTodosForDailyReport fails.')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
+    );
+  }
+  private getUsedTimeOfTimeRange(date: number, mode: TimeRangeType, todoId?: number): Observable<number> {
+    this.loadingService.isLoading();
+    let start: number;
+    let end: number;
+    [start, end] = getStartEnd(date, mode);
+    const endPlus6Hours = end + 6 * 60 * 60 * 1000;
+
+    return fromPromise(
+      this.dbService.getDB().events
+        .filter(x => x.createdAt > start && x.createdAt < endPlus6Hours &&
+          (x.action === MonsterEvents.StartTodo || x.action === MonsterEvents.StopTodo) &&
+          (todoId ? x.refId === todoId : true)
+        )
+        .toArray()
+    ).pipe(
+      map(events => calcUsedTime(events, end, todoId)),
+      catchError(error => {
+        this.notificationService.sendMessage('getUsedTime failed');
+        return of(0);
+      }),
       tap(() => {
         this.loadingService.stopLoading();
       })
