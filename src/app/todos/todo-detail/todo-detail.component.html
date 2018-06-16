@@ -38,14 +38,14 @@
     minHeight="3rem"></mst-input>
 
   <div [mstPadding]="'2rem 0 0'" *ngIf="finished">
-    finish too late, lessons learned?
+    lessons learned?
     <mst-input
       [control]="whyTooLateControl"
       minHeight="3rem"></mst-input>
   </div>
 
   <div [mstPadding]="'2rem 0 0'" *ngIf="isDoing">
-    current thought(useful when you review this todo):
+    what are you doing?
     <mst-input
       [control]="currentThoughtControl"
       minHeight="3rem"></mst-input>
