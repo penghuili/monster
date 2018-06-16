@@ -12,6 +12,7 @@ import {
   startOfWeek,
   Todo,
   TodoStatus,
+  TodoThought,
 } from '@app/model';
 import { addDays } from 'date-fns';
 import { Observable } from 'rxjs/Observable';
@@ -130,6 +131,21 @@ export class TodoService {
       })
     );
   }
+  getTodoThoughts(id: number): Observable<TodoThought[]> {
+    this.loadingService.isLoading();
+    return fromPromise(this.dbService.getDB()
+      .todoThoughts
+      .filter(a => a.todoId === id)
+      .reverse()
+      .toArray()
+    ).pipe(
+      catchError(() => this.handleError('getTodoThoughts fails.')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      }),
+      filter(a => !!a)
+    );
+  }
   onCreatedTodo() {
     return this.createdTodo.asObservable();
   }
@@ -154,6 +170,18 @@ export class TodoService {
         if (success) {
           this.createdTodo.next(true);
         }
+      })
+    );
+  }
+  addTodoThought(todoThoudht: TodoThought): Observable<any> {
+    this.loadingService.isLoading();
+    return fromPromise(this.dbService.getDB()
+      .todoThoughts
+      .add(todoThoudht)
+    ).pipe(
+      catchError(() => this.handleError('addTodoThought fails')),
+      tap(() => {
+        this.loadingService.stopLoading();
       })
     );
   }

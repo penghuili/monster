@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
-import { Event, EventType, MonsterEvents, Project, Subproject, Todo } from '@app/model';
-import { FONT_SIZE, ROUTES } from '@app/static';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Event, EventType } from '@app/model';
 
 @Component({
   selector: 'mst-activity-item',
@@ -11,9 +10,6 @@ import { FONT_SIZE, ROUTES } from '@app/static';
 export class ActivityItemComponent {
   @Input() activity: Event;
   @Input() nextActivity: Event;
-  @Input() data: Project | Subproject | Todo;
   @Input() reverse = false;
   EventType = EventType;
-  MonsterEvents = MonsterEvents;
-  ROUTES = ROUTES;
 }

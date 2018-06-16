@@ -57,15 +57,6 @@ export function createHabit(data: any): Habit {
     position: `${timestamp}3`
   };
 }
-export function createHabitItem(data: any): HabitItem {
-  const timestamp = now();
-  return {
-    habitId: data.habitId,
-    happenDate: data.happenDate,
-    status: data.status,
-    updatedAt: timestamp
-  };
-}
 export function calcHabitProgress(items: HabitItem[], habit: Habit): WeekDays[] {
   const startWeek = startOfWeek(habit.startDate);
   const endWeek = startOfWeek(habit.endDate);

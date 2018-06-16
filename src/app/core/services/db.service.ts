@@ -5,13 +5,13 @@ import {
   Event,
   Habit,
   HabitItem,
-  HabitStatus,
   MonsterEvents,
   Project,
   Report,
   Subproject,
   Thought,
   Todo,
+  TodoThought,
 } from '@app/model';
 import Dexie from 'dexie';
 import { fromPromise } from 'rxjs/observable/fromPromise';
@@ -22,6 +22,7 @@ import { StorageApiService } from './storage-api.service';
 
 class MonsterDB extends Dexie {
   todos: Dexie.Table<Todo, number>;
+  todoThoughts: Dexie.Table<TodoThought, number>;
   projects: Dexie.Table<Project, number>;
   subprojects: Dexie.Table<Subproject, number>;
   habits: Dexie.Table<Habit, number>;
@@ -69,6 +70,9 @@ class MonsterDB extends Dexie {
     this.version(10).stores({
       habitItems: '++id,habitId,happenDate,status'
     });
+    this.version(11).stores({
+      todoThoughts: '++id,todoId,createdAt'
+    });
   }
 }
 @Injectable()
@@ -87,34 +91,31 @@ export class DbService {
     return this.db;
   }
 
-  moveHabitsToItsTable() {
+  process() {
     const db = this.db;
-    const transaction = db.transaction('rw', db.events, db.habitItems, () => {
+    const transaction = db.transaction('rw', db.events, db.todoThoughts, () => {
       return db.events
-        .filter(a => a.action === MonsterEvents.FinishHabit)
+        .filter(a => a.action === MonsterEvents.CurrentThougntTodo)
         .toArray()
-        .then(es => {
-          const habitItems: HabitItem[] = es.map(a => ({
-            habitId: a.refId,
-            happenDate: a.createdAt,
-            status: HabitStatus.Done,
-            updatedAt: a.createdAt
+        .then(events => {
+          const thoughts: TodoThought[] = (events || []).map(a => ({
+            todoId: a.refId,
+            createdAt: a.createdAt,
+            thought: a.newValue
           }));
-          return db.habitItems.bulkAdd(habitItems);
+          return db.todoThoughts.bulkAdd(thoughts);
         });
-    });
+      });
 
     fromPromise(transaction).pipe(
       catchError(() => of(null))
     ).subscribe(success => {
       if (success) {
         alert('success');
+        this.db.events.filter(a => a.action === MonsterEvents.CurrentThougntTodo).delete();
       } else {
         alert('failed');
       }
     });
-  }
-  deleteHabitEvents() {
-    this.db.events.filter(a => a.action === MonsterEvents.FinishHabit).delete();
   }
 }

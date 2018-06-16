@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { EventService, InputService, ProjectService, SubprojectService, TodoService } from '@app/core';
 import {
-  Event,
   EventType,
   isAfterToday,
   isBeforeToday,
@@ -26,9 +25,9 @@ import { Unsub } from '@app/static';
 import { addDays, isToday } from 'date-fns';
 import { merge } from 'ramda';
 import { of } from 'rxjs/observable/of';
-import { debounceTime, startWith, switchMap, tap } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
+import { debounceTime, switchMap, tap } from 'rxjs/operators';
 
+import { TodoActivitiesComponent } from './todo-activities/todo-activities.component';
 import { TodoTimerComponent } from './todo-timer/todo-timer.component';
 
 @Component({
@@ -38,6 +37,7 @@ import { TodoTimerComponent } from './todo-timer/todo-timer.component';
 })
 export class TodoDetailComponent extends Unsub implements OnInit {
   @ViewChild(TodoTimerComponent) timer: TodoTimerComponent;
+  @ViewChild(TodoActivitiesComponent) activities: TodoActivitiesComponent;
   todo: Todo;
   titleControl = new InputControl<string>({ required: true });
   noteControl = new InputControl<string>();
@@ -59,17 +59,6 @@ export class TodoDetailComponent extends Unsub implements OnInit {
 
   hideUpDownArrow = false;
 
-  activities: Event[];
-  allActivities: Event[];
-  thoughts: Event[];
-  activityTabs = [
-    {key: 'activities', value: 'activities'},
-    {key: 'thoughts', value: 'thoughts'}
-  ];
-  defaultActivityTab = 'activities';
-  private currentActivityTab = this.defaultActivityTab;
-
-  private laodEvents = new Subject<boolean>();
   private currentProject: Project;
 
   constructor(
@@ -110,17 +99,6 @@ export class TodoDetailComponent extends Unsub implements OnInit {
       ).subscribe((project: Project) => {
         this.currentProject = project;
         this.setDatepickerRange(project);
-      })
-    );
-
-    this.addSubscription(
-      this.laodEvents.asObservable().pipe(
-        startWith(true),
-        switchMap(() => this.eventService.getEventsByTodoId(id))
-      ).subscribe(activities => {
-        this.allActivities = activities ? activities : [];
-        this.thoughts = this.allActivities.filter(a => a.action === MonsterEvents.CurrentThougntTodo);
-        this.onChangeActivityTab(this.currentActivityTab);
       })
     );
 
@@ -239,17 +217,20 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   onAddCurrentThought() {
     const thought = this.currentThoughtControl.getValue();
     if (thought) {
-      this.emitEvent({ action: MonsterEvents.CurrentThougntTodo, newValue: thought });
+      this.addSubscription(
+        this.todoService.addTodoThought({
+          todoId: this.todo.id,
+          createdAt: now(),
+          thought
+        }).subscribe(success => {
+          if (success) {
+            this.activities.loadThoughts();
+          }
+        })
+      );
     }
   }
-  onChangeActivityTab(key: string) {
-    this.currentActivityTab = key;
-    if (key === 'activities') {
-      this.activities = this.allActivities;
-    } else {
-      this.activities = this.thoughts;
-    }
-  }
+
 
   private setDatepickerRange(project: Project) {
     this.datePickerStartDate = project && project.startDate > this.datePickerStartDate ? project.startDate : this.datePickerStartDate;
@@ -270,7 +251,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     };
     this.eventService.add(event).subscribe(success => {
       if (success) {
-        this.laodEvents.next(true);
+        this.activities.loadActivities();
         this.currentThoughtControl.reset();
       }
     });

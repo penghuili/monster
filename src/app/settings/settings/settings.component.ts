@@ -19,10 +19,7 @@ export class SettingsComponent {
     this.appVersion = appVersion;
   }
 
-  onMoveHabit() {
-    this.dbService.moveHabitsToItsTable();
-  }
-  onDeleteHabitEvents() {
-    this.dbService.deleteHabitEvents();
+  process() {
+    this.dbService.process();
   }
 }

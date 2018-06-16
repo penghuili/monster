@@ -1,6 +1,4 @@
-import { ProjectStatus } from './project';
 import { now } from './time';
-import { TodoStatus } from './todo';
 
 export interface Event {
   id?: number;
@@ -8,6 +6,7 @@ export interface Event {
   createdAt: number;
   type: EventType;
   action: string;
+  data?: any;
   oldValue?: any;
   newValue?: any;
   description?: string;
@@ -18,7 +17,8 @@ export enum EventType {
   Subproject,
   Thought,
   Habit,
-  Book
+  Book,
+  TodoThought
 }
 export const MonsterEvents = {
   CreateProject: 'CreateProject',

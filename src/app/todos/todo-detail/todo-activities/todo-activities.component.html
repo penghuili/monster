@@ -1,0 +1,7 @@
+<div [mstPadding]="'2rem 0 0'" *ngIf="todo">
+  <mst-tab [tabs]="activityTabs" [defaultTabKey]="defaultTab" (change)="onChangeTab($event)"></mst-tab>
+  <div [mstPadding]="'1rem'">
+    <mst-activity-item *ngFor="let activity of activities; let i = index"
+    [activity]="activity" [nextActivity]="activities[i+1]" [reverse]="true"></mst-activity-item>
+  </div>
+</div>

@@ -52,13 +52,7 @@
     <mst-icon name="done" (click)="onAddCurrentThought()"></mst-icon>
   </div>
 
-  <div [mstPadding]="'2rem 0 0'">
-    <mst-tab [tabs]="activityTabs" [defaultTabKey]="defaultActivityTab" (change)="onChangeActivityTab($event)"></mst-tab>
-    <div [mstPadding]="'1rem'">
-      <mst-activity-item *ngFor="let activity of activities; let i = index"
-      [activity]="activity" [nextActivity]="activities[i+1]" [data]="todo" [reverse]="true"></mst-activity-item>
-    </div>
-  </div>
+  <mst-todo-activities [todo]="todo"></mst-todo-activities>
 
   <mst-page-top-bottom-button [class.mst-hide-top-bottom]="hideUpDownArrow"></mst-page-top-bottom-button>
 </ng-container>
