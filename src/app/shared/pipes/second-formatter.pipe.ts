@@ -17,7 +17,7 @@ export class SecondFormatterPipe implements PipeTransform {
     return duration === undefined ? 0 : Math.floor((duration - this.getHours(duration) * 3600) / 60);
   }
   private getSeconds(duration: number): number {
-    return duration === undefined ? 0 : duration - this.getHours(duration) * 3600 - this.getMinutes(duration);
+    return duration === undefined ? 0 : duration - this.getHours(duration) * 3600 - this.getMinutes(duration) * 60;
   }
 
 }
