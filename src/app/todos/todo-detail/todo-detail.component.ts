@@ -7,6 +7,7 @@ import {
   isBeforeToday,
   isFinished,
   isFinishTooLate,
+  isRedoingOverdue,
   isTodayStarted,
   isWithin,
   mapTodoStatusEvent,
@@ -185,7 +186,10 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     this.setDatepickerRange(this.currentProject);
   }
   disableDatePicker() {
-    return this.finished || isBeforeToday(this.todo.happenDate) || (isToday(this.todo.happenDate) && isTodayStarted());
+    return this.finished ||
+    (!isRedoingOverdue() &&
+      (isBeforeToday(this.todo.happenDate) || (isToday(this.todo.happenDate) && isTodayStarted()))
+    );
   }
   onFinishPickDate(result: DatepickerResult) {
     this.emitEvent({
@@ -230,7 +234,6 @@ export class TodoDetailComponent extends Unsub implements OnInit {
       );
     }
   }
-
 
   private setDatepickerRange(project: Project) {
     this.datePickerStartDate = project && project.startDate > this.datePickerStartDate ? project.startDate : this.datePickerStartDate;

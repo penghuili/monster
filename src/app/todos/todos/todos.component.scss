@@ -7,14 +7,14 @@
   color: $accent;
   font-weight: 800;
 }
-.mst-todos-tab-today {
+.mst-todos-tab-action-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   min-width: 4.5rem;
 }
-.mst-start-today {
+.mst-start-action {
   margin-top: 0.5rem;
   padding: 0 0.5rem;
 

@@ -4,7 +4,6 @@ import { AppHeaderService, HabitService, NotificationService, ProjectService, Re
 import {
   BookItem,
   calcExpectedTime,
-  endOfToday,
   endofTomorrow,
   Habit,
   isBeforeToday,
@@ -17,6 +16,7 @@ import {
   now,
   ProjectStatus,
   ProjectWithTodos,
+  redoneOverdueForToday,
   sortTodos,
   TimeRangeType,
   Todo,
@@ -121,6 +121,12 @@ export class TodosComponent extends Unsub implements OnInit {
   isStartTodayEnabled() {
     return !this.todayStarted && this.activeTab === this.TODAY;
   }
+  showRedoOverdue() {
+    return !redoneOverdueForToday();
+  }
+  onRedoOverdue() {
+    MonsterStorage.set('redo-overdue-at', now());
+  }
   onStartToday() {
     if (this.activeTab === this.TODAY) {
       const todaysTodos = this.activeTodos.filter(a => isToday(a.happenDate) && a.status === TodoStatus.InProgress);
@@ -223,7 +229,6 @@ export class TodosComponent extends Unsub implements OnInit {
     this.hasDone = this.hasTodos(this.doneProjectsWithTodos);
   }
   private calcTotal(activeTab: string, todos: Todo[]) {
-    const todayEnd = endOfToday();
     const tomorrowEnd = endofTomorrow();
     let filtered: Todo[];
     if (activeTab === this.OVERDUE) {

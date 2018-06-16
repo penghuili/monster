@@ -1,3 +1,4 @@
+import { isToday } from 'date-fns';
 import { last } from 'ramda';
 
 import { Event, MonsterEvents } from './event';
@@ -178,4 +179,12 @@ export function isValidTodoWithin(todo: Todo, start: number, end: number): boole
   return isWithin(todo.happenDate, start, end) ||
   (isBeforeDay(todo.happenDate, start) && (!todo.finishAt || isDayOrAfter(todo.finishAt, start))) ||
   (isAfterDay(todo.happenDate, end) && isWithin(todo.finishAt, start, end));
+}
+export function isRedoingOverdue(): boolean {
+  const start = MonsterStorage.get('redo-overdue-at');
+  return start && now() - start < 5 * 60 * 1000;
+}
+export function redoneOverdueForToday(): boolean {
+  const start = MonsterStorage.get('redo-overdue-at');
+  return start && isToday(start);
 }
