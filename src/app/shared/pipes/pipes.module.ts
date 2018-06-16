@@ -7,6 +7,7 @@ import { DaysDiffPipe } from './days-diff.pipe';
 import { MinuteFormatterPipe } from './minute-formatter.pipe';
 import { MstDatePipe } from './mst-date.pipe';
 import { OverduePipe } from './overdue.pipe';
+import { SecondFormatterPipe } from './second-formatter.pipe';
 import { ShortTextPipe } from './short-text.pipe';
 import { TimeRangeTypePipe } from './time-range-type.pipe';
 import { WeekPipe } from './week.pipe';
@@ -24,7 +25,8 @@ import { WeekPipe } from './week.pipe';
     WeekPipe,
     TimeRangeTypePipe,
     DaysDiffPipe,
-    ByteFormatterPipe
+    ByteFormatterPipe,
+    SecondFormatterPipe
   ],
   exports: [
     Add0Pipe,
@@ -35,7 +37,8 @@ import { WeekPipe } from './week.pipe';
     WeekPipe,
     TimeRangeTypePipe,
     DaysDiffPipe,
-    ByteFormatterPipe
+    ByteFormatterPipe,
+    SecondFormatterPipe
   ]
 })
 export class PipesModule { }

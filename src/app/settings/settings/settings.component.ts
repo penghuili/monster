@@ -13,7 +13,7 @@ export class SettingsComponent {
   routes = ROUTES;
   appVersion: string;
 
-  processDB = false;
+  processDB = true;
 
   constructor(private dbService: DbService) {
     this.appVersion = appVersion;

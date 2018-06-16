@@ -11,7 +11,7 @@
 <ng-container *ngIf="activeProjectsWithTodos && activeProjectsWithTodos.length > 0">
   <div *ngFor="let pwts of activeProjectsWithTodos">
     <div *ngIf="pwts.todos.length > 0">
-      {{pwts.project.title}} {{ pwts.todos | expectedTime | minuteFormatter }}
+      {{pwts.project.title}} {{ pwts.todos | expectedTime | secondFormatter }}
     </div>
     <div [mstPadding]="'0.5rem 0 0.5rem 1rem'" *ngIf="pwts.todos.length > 0">
       <mst-drop-zone [dragIndex]="dragIndex" (drop)="onDrop($event, pwts.project.id)">

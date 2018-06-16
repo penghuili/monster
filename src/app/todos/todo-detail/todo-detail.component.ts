@@ -11,7 +11,6 @@ import {
   isTodayStarted,
   isWithin,
   mapTodoStatusEvent,
-  milisecondToMinute,
   MonsterEvents,
   now,
   Project,
@@ -138,10 +137,10 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     this.emitEvent({
       action: MonsterEvents.ChangeTodoExpectedTime,
       oldValue: this.todo.expectedTime,
-      newValue: duration
+      newValue: duration * 60
     });
 
-    this.update({ expectedTime: duration });
+    this.update({ expectedTime: duration * 60 });
   }
   onSelectSubproject(selected: ProjectWithSubproject) {
     this.currentProject = selected.project;
@@ -213,7 +212,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     this.emitEvent({ action: MonsterEvents.StopTodo });
 
     const data = {
-      usedTime: this.todo.usedTime + Math.round(milisecondToMinute(now() - this.startAt))
+      usedTime: this.todo.usedTime + Math.round((now() - this.startAt) / 1000)
     };
     this.update(data);
     this.startAt = undefined;

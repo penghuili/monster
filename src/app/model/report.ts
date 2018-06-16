@@ -15,8 +15,9 @@ export interface Report {
   finishTooEarly: number;
   addedLater: number;
   beforeToday: number;
-  // time in minute
+  // in seconds
   plannedTime: number;
+  // in seconds
   usedTimeOfTimeRange: number;
   summary?: string;
 }
@@ -25,7 +26,7 @@ export interface ReportWithTodos {
   todos: Todo[];
 }
 
-export function createReport(date: number, type: TimeRangeType, todos: Todo[], usedTimeOfTimeRange: number): Report {
+export function createReport(date: number, type: TimeRangeType, todos: Todo[]): Report {
   if (!todos || todos.length === 0) {
     return null;
   }
@@ -45,7 +46,7 @@ export function createReport(date: number, type: TimeRangeType, todos: Todo[], u
     addedLater: todosWithinRange.filter(a => a.addedLater).length,
     beforeToday: todos.filter(a => isBeforeToday(a.happenDate)).length,
     plannedTime: todosWithinRange.reduce((total, curr) => total + curr.expectedTime, 0),
-    usedTimeOfTimeRange
+    usedTimeOfTimeRange: todosWithinRange.reduce((total, curr) => total + curr.usedTime, 0)
   };
 }
 export function getFinishedCount(report: Report): number {
