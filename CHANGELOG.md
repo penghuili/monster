@@ -1,3 +1,11 @@
+## v1.18.5
+
+feature:
+
+- redo overdue once per day
+- show todo thoughts to review
+- expected time is in seconds
+
 ## v1.18.2
 
 feature:
