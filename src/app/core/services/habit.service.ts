@@ -1,5 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Habit, HabitWithItems, isWithin, mapWeekDay, now, prepareRepostionIds, repositionItems } from '@app/model';
+import {
+  Habit,
+  HabitItem,
+  HabitWithItems,
+  isWithin,
+  mapWeekDay,
+  now,
+  prepareRepostionIds,
+  repositionItems,
+} from '@app/model';
 import { isToday } from 'date-fns';
 import { find } from 'ramda';
 import { Observable } from 'rxjs/Observable';
@@ -89,6 +98,17 @@ export class HabitService {
       this.dbService.getDB().habits.add(habit)
     ).pipe(
       catchError(error => this.handleError('add habit fails')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
+    );
+  }
+  finishHabitItem(habitItem: HabitItem): Observable<any> {
+    this.loadingService.isLoading();
+    return fromPromise(
+      this.dbService.getDB().habitItems.add(habitItem)
+    ).pipe(
+      catchError(error => this.handleError('finishHabitItem fails')),
       tap(() => {
         this.loadingService.stopLoading();
       })
