@@ -24,8 +24,8 @@
   <a [mstFontWeight]="800" [mstColor]="'accent'"
     routerLink="/{{ROUTES.TODOS}}/{{data.id}}">{{ data.title }}</a>
   <span [mstFontWeight]="800">expected time</span> from
-  <span [mstFontWeight]="800">{{ activity.oldValue | minuteFormatter }}</span> to
-  <span [mstFontWeight]="800">{{ activity.newValue | minuteFormatter }}</span>
+  <span [mstFontWeight]="800">{{ activity.oldValue | secondFormatter }}</span> to
+  <span [mstFontWeight]="800">{{ activity.newValue | secondFormatter }}</span>
 </div>
 <div *ngIf="activity.action === MonsterEvents.InProgressTodo">
   change todo

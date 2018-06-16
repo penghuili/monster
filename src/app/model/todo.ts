@@ -16,8 +16,9 @@ export interface Todo extends SortableItem {
   subprojectId: number;
   note?: string;
   happenDate: number;
-  // In minutes
+  // in seconds
   expectedTime?: number;
+  // in seconds
   usedTime?: number;
   status: TodoStatus;
   finishAt?: number;
@@ -80,7 +81,7 @@ export function isFinishTooLate(todo: Todo): boolean {
   return todo && isFinished(todo) && todo.expectedTime > 0 && todo.usedTime > 1.2 * todo.expectedTime;
 }
 export function isFinishTooEarly(todo: Todo): boolean {
-  return todo && isFinished(todo) && todo.expectedTime > 10 && todo.usedTime < 0.8 * todo.expectedTime;
+  return todo && isFinished(todo) && todo.expectedTime > 10 * 60 && todo.usedTime < 0.8 * todo.expectedTime;
 }
 /**
  * @todo not pure

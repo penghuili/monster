@@ -88,7 +88,7 @@ export class TodoCreateComponent extends Unsub implements OnInit {
     this.happenDate = result.date;
   }
   onDurationChange(duration: number) {
-    this.expectedTime = duration;
+    this.expectedTime = duration * 60;
   }
   onCreate() {
     const note = this.noteControl.getValue();

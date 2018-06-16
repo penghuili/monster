@@ -9,7 +9,7 @@
   </div>
   <div [mstPadding]="'0 0 1rem'">
     used time / planned time: <br>
-    {{ report.usedTimeOfTimeRange | minuteFormatter }} / {{ report.plannedTime | minuteFormatter }} = {{ usedTimePlannedTime() | percent }}
+    {{ report.usedTimeOfTimeRange | secondFormatter }} / {{ report.plannedTime | secondFormatter }} = {{ usedTimePlannedTime() | percent }}
   </div>
 
 

@@ -15,8 +15,9 @@ export interface Report {
   finishTooEarly: number;
   addedLater: number;
   beforeToday: number;
-  // time in minute
+  // in seconds
   plannedTime: number;
+  // in seconds
   usedTimeOfTimeRange: number;
   summary?: string;
 }

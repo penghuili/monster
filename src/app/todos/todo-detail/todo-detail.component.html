@@ -25,7 +25,7 @@
     </mst-project-list>
     <mst-todo-status-picker [status]="status" [showSomeday]="showSomedayStatus" (select)="onSelectStatus($event)"></mst-todo-status-picker>
     <mst-datepicker [mode]="TimeRangeType.Day" [startDate]="datePickerStartDate" [endDate]="datePickerEndDate" [disabled]="disableDatePicker()" [defaultDate]="defaultDatepickerDate" (finish)="onFinishPickDate($event)"></mst-datepicker>
-    <mst-duration-picker [defaultValue]="todo.expectedTime" [disabled]="finished" (change)="onDurationChange($event)"></mst-duration-picker>
+    <mst-duration-picker [defaultValue]="todo.expectedTime / 60" [disabled]="finished" (change)="onDurationChange($event)"></mst-duration-picker>
   </div>
 
   <div [mstPadding]="'0 1.5rem'" *ngIf="todo.expectedTime">
