@@ -65,7 +65,7 @@ export class TodoActivitiesComponent extends Unsub implements OnInit {
           action: undefined,
           createdAt: a.createdAt,
           type: EventType.TodoThought,
-          data: a
+          data: {todo: this.todo, thought: a}
         }));
 
         this.onChangeTab(this.currentTab);

@@ -132,7 +132,7 @@ export class ReportService {
           return of(null);
         }
       }),
-      catchError(error => this.handleError('getActivities fails.')),
+      catchError(() => this.handleError('getActivities fails.')),
       tap(() => {
         this.loadingService.stopLoading();
       })

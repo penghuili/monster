@@ -1,8 +1,9 @@
 import { Component, ElementRef, Input, OnChanges, ViewChild } from '@angular/core';
-import { ReportService } from '@app/core';
+import { ReportService, TodoService } from '@app/core';
 import { Event, EventType, TimeRangeType } from '@app/model';
 import { Unsub } from '@app/static';
 import { merge} from 'ramda';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 
 @Component({
   selector: 'mst-activities',
@@ -16,8 +17,10 @@ export class ActivitiesComponent extends Unsub implements OnChanges {
   activities: Event[] = [];
   isLoading: boolean;
 
-  constructor(private reportService: ReportService) {
-    super();
+  constructor(
+    private reportService: ReportService,
+    private todoService: TodoService) {
+      super();
   }
 
   ngOnChanges() {
@@ -30,14 +33,31 @@ export class ActivitiesComponent extends Unsub implements OnChanges {
     this.isLoading = true;
     this.activities = [];
     this.addSubscription(
-      this.reportService.getActivities(date, mode).subscribe(value => {
+      combineLatest(
+        this.reportService.getActivities(date, mode),
+        this.todoService.getThoughts(date, mode)
+      )
+      .subscribe(([events, todoThoughts]) => {
         this.isLoading = false;
-        if (value) {
-          const projects = value.projects;
-          const subprojects = value.subprojects;
-          const todos = value.todos;
-          const thoughts = value.thoughts;
-          this.activities = (<Event[]>value.activities).map(a => {
+        if (events && todoThoughts) {
+          const projects = events.projects;
+          const subprojects = events.subprojects;
+          const todos = events.todos;
+          const thoughts = events.thoughts;
+          const todoThoughtsActivities = todoThoughts.map(thought => {
+            const todo = todos.find(b => b.id === thought.todoId);
+            return {
+              id: thought.id,
+              refId: thought.todoId,
+              action: undefined,
+              createdAt: thought.createdAt,
+              type: EventType.TodoThought,
+              data: {todo, thought}
+            };
+          });
+
+          this.activities = (<Event[]>events.activities)
+          .map(a => {
             let data: any;
             if (a.type === EventType.Project) {
               data = projects.find(b => b.id === a.refId);
@@ -49,7 +69,9 @@ export class ActivitiesComponent extends Unsub implements OnChanges {
               data = todos.find(b => b.id === a.refId);
             }
             return merge(a, {data});
-          });
+          })
+          .concat(todoThoughtsActivities)
+          .sort((a, b) => a.createdAt - b.createdAt);
         }
       })
     );
