@@ -1,10 +1,22 @@
 import { Injectable } from '@angular/core';
-import { Book, BookItem, Event, Habit, Project, Report, Subproject, Thought, Todo } from '@app/model';
+import {
+  Book,
+  BookItem,
+  Event,
+  Habit,
+  HabitItem,
+  HabitStatus,
+  MonsterEvents,
+  Project,
+  Report,
+  Subproject,
+  Thought,
+  Todo,
+} from '@app/model';
 import Dexie from 'dexie';
-import { Observable } from 'rxjs/Observable';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
-import { catchError, map } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 
 import { StorageApiService } from './storage-api.service';
 
@@ -13,6 +25,7 @@ class MonsterDB extends Dexie {
   projects: Dexie.Table<Project, number>;
   subprojects: Dexie.Table<Subproject, number>;
   habits: Dexie.Table<Habit, number>;
+  habitItems: Dexie.Table<HabitItem, number>;
   events: Dexie.Table<Event, number>;
   reports: Dexie.Table<Report, number>;
   records: Dexie.Table<Thought, number>;
@@ -53,6 +66,9 @@ class MonsterDB extends Dexie {
     this.version(9).stores({
       bookItems: '++id,bookId,happenDate'
     });
+    this.version(10).stores({
+      habitItems: '++id,habitId,happenDate,status'
+    });
   }
 }
 @Injectable()
@@ -70,32 +86,35 @@ export class DbService {
   getDB(): MonsterDB {
     return this.db;
   }
-  addTodos(todos: Todo[]): Observable<boolean> {
-    return fromPromise(this.db.todos.bulkAdd(todos)).pipe(
-      map(() => true),
-      catchError(() => of(false))
-    );
-  }
 
-  addProjects(projects: Project[]): Observable<boolean> {
-    return fromPromise(this.db.projects.bulkAdd(projects)).pipe(
-      map(() => true),
-      catchError(() => of(false))
-    );
-  }
+  moveHabitsToItsTable() {
+    const db = this.db;
+    const transaction = db.transaction('rw', db.events, db.habitItems, () => {
+      return db.events
+        .filter(a => a.action === MonsterEvents.FinishHabit)
+        .toArray()
+        .then(es => {
+          const habitItems: HabitItem[] = es.map(a => ({
+            habitId: a.refId,
+            happenDate: a.createdAt,
+            status: HabitStatus.Done,
+            updatedAt: a.createdAt
+          }));
+          return db.habitItems.bulkAdd(habitItems);
+        });
+    });
 
-  addSubprojects(subprojects: Subproject[]): Observable<boolean> {
-    return fromPromise(this.db.subprojects.bulkAdd(subprojects)).pipe(
-      map(() => true),
-      catchError(() => of(false))
-    );
+    fromPromise(transaction).pipe(
+      catchError(() => of(null))
+    ).subscribe(success => {
+      if (success) {
+        alert('success');
+      } else {
+        alert('failed');
+      }
+    });
   }
-
-  addEvents(events: Event[]): Observable<boolean> {
-    return fromPromise(this.db.events.bulkAdd(events)).pipe(
-      map(() => true),
-      catchError(() => of(false))
-    );
+  deleteHabitEvents() {
+    this.db.events.filter(a => a.action === MonsterEvents.FinishHabit).delete();
   }
-
 }

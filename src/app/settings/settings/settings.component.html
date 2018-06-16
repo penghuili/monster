@@ -2,4 +2,9 @@
   <mst-link [route]="routes.STORAGE">storage</mst-link>
 </div>
 
+<div *ngIf="processDB">
+  <button (click)="onMoveHabit()">move habit to its table</button>
+  <button (click)="onDeleteHabitEvents()">delete habit events</button>
+</div>
+
 <div>{{ appVersion }}</div>

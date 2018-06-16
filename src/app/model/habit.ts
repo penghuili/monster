@@ -15,9 +15,20 @@ export interface Habit extends SortableItem {
   saturday: boolean;
   sunday: boolean;
 }
+export interface HabitItem {
+  id?: number;
+  habitId: number;
+  happenDate: number;
+  status: HabitStatus;
+  updatedAt: number;
+}
 export interface HabitWithProgress {
   habit: Habit;
   progress: WeekDays[];
+}
+export enum HabitStatus {
+  InProgress,
+  Done
 }
 
 export function createHabit(data: any): Habit {
@@ -37,5 +48,14 @@ export function createHabit(data: any): Habit {
     createdAt: timestamp,
     updatedAt: timestamp,
     position: `${timestamp}3`
+  };
+}
+export function createHabitItem(data: any): HabitItem {
+  const timestamp = now();
+  return {
+    habitId: data.habitId,
+    happenDate: data.happenDate,
+    status: data.status,
+    updatedAt: timestamp
   };
 }
