@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { EventService, HabitService } from '@app/core';
+import { HabitService } from '@app/core';
 import { calcHabitProgress, Habit, HabitItem, HabitStatus, isBeforeToday, mapWeekDay, now, WeekDays } from '@app/model';
 import { InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
 import { addDays } from 'date-fns';
 import { merge } from 'ramda';
-import { debounceTime, startWith, switchMap } from 'rxjs/operators';
+import { debounceTime, filter, startWith, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 
 @Component({
@@ -23,13 +23,12 @@ export class HabitDetailComponent extends Unsub implements OnInit {
   endDateStartDate: number;
   endDate: number;
   weekDays: WeekDays;
-  needToDo: boolean;
   progress: WeekDays[];
+  needToDo: boolean;
 
   private loadHabit = new Subject<boolean>();
 
   constructor(
-    private eventService: EventService,
     private habitService: HabitService,
     private route: ActivatedRoute) {
       super();
@@ -69,7 +68,8 @@ export class HabitDetailComponent extends Unsub implements OnInit {
 
     this.addSubscription(
       this.titleControl.value$.pipe(
-        debounceTime(300)
+        debounceTime(300),
+        filter(text => !!text && this.habit && this.habit.title !== text)
       ).subscribe(title => {
         this.update({ title });
       })
@@ -77,7 +77,8 @@ export class HabitDetailComponent extends Unsub implements OnInit {
 
     this.addSubscription(
       this.resultControl.value$.pipe(
-        debounceTime(300)
+        debounceTime(300),
+        filter(text => !!text && this.habit && this.habit.result !== text)
       ).subscribe(result => {
         this.update({ result });
       })

@@ -3,7 +3,7 @@
   <ng-container *ngIf="!isDone()">
     <div *ngIf="habit && !habit.doneForToday" (click)="onDone()">
       <span *ngIf="needToDo">done?</span>
-      <span *ngIf="!needToDo">don't need to do today</span>
+      <span *ngIf="!needToDo">still did?</span>
     </div>
     <div *ngIf="habit && habit.doneForToday" (click)="onDone()">done for today</div>
   </ng-container>

@@ -10,7 +10,7 @@ import {
   repositionItems,
 } from '@app/model';
 import { isToday } from 'date-fns';
-import { find } from 'ramda';
+import { find, merge } from 'ramda';
 import { Observable } from 'rxjs/Observable';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
@@ -85,7 +85,11 @@ export class HabitService {
       return Promise.all([habitP, itemsP]);
     });
     return fromPromise(transaction).pipe(
-      map(([habit, items]) => ({ habit, items })),
+      map(([habit, items]) => {
+        const last = items[items.length - 1];
+        habit = merge(habit, {doneForToday: last ? isToday(last.happenDate) : false});
+        return { habit, items };
+      }),
       catchError(() => this.handleError('getHabitWithItems fails')),
       tap(() => {
         this.loadingService.stopLoading();
