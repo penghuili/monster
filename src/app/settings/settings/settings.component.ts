@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { DbService } from '@app/core';
 import { ROUTES } from '@app/static';
 
 const { version: appVersion } = require('../../../../package.json');
@@ -12,7 +13,16 @@ export class SettingsComponent {
   routes = ROUTES;
   appVersion: string;
 
-  constructor() {
+  processDB = true;
+
+  constructor(private dbService: DbService) {
     this.appVersion = appVersion;
+  }
+
+  onMoveHabit() {
+    this.dbService.moveHabitsToItsTable();
+  }
+  onDeleteHabitEvents() {
+    this.dbService.deleteHabitEvents();
   }
 }

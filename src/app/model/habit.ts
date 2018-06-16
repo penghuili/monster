@@ -1,5 +1,8 @@
+import { addDays, addWeeks, differenceInCalendarWeeks } from 'date-fns';
+import { find, merge } from 'ramda';
+
 import { SortableItem } from './item';
-import { now, WeekDays } from './time';
+import { isBeforeDay, isWithin, isWithinDay, mapWeekDay, now, startOfWeek, WeekDays } from './time';
 
 export interface Habit extends SortableItem {
   result: string;
@@ -15,9 +18,24 @@ export interface Habit extends SortableItem {
   saturday: boolean;
   sunday: boolean;
 }
-export interface HabitWithProgress {
+export interface HabitItem {
+  id?: number;
+  habitId: number;
+  happenDate: number;
+  status: HabitStatus;
+  updatedAt: number;
+}
+export interface HabitWithWeekDays {
   habit: Habit;
   progress: WeekDays[];
+}
+export interface HabitWithItems {
+  habit: Habit;
+  items: HabitItem[];
+}
+export enum HabitStatus {
+  InProgress,
+  Done
 }
 
 export function createHabit(data: any): Habit {
@@ -38,4 +56,32 @@ export function createHabit(data: any): Habit {
     updatedAt: timestamp,
     position: `${timestamp}3`
   };
+}
+export function createHabitItem(data: any): HabitItem {
+  const timestamp = now();
+  return {
+    habitId: data.habitId,
+    happenDate: data.happenDate,
+    status: data.status,
+    updatedAt: timestamp
+  };
+}
+export function calcHabitProgress(items: HabitItem[], habit: Habit): WeekDays[] {
+  const startWeek = startOfWeek(habit.startDate);
+  const endWeek = startOfWeek(habit.endDate);
+  const weeks = differenceInCalendarWeeks(endWeek, startWeek, {weekStartsOn: 1}) + 1;
+
+  return Array(weeks).fill(1).map((_, i) => {
+    const start = addWeeks(startWeek, i).getTime();
+    return Array(7).fill(1).reduce((total, curr, index) => {
+      const day = addDays(start, index).getTime();
+      const weekDay = mapWeekDay(day);
+      const doneItem = find(b => isWithinDay(b.happenDate, day), items);
+      const shouldDo = habit[weekDay];
+      const done = doneItem ? true :
+        shouldDo && isBeforeDay(day, now()) && isWithin(day, habit.startDate, habit.endDate) ? false :
+        undefined;
+      return merge(total, { [weekDay]: done });
+    }, {});
+  });
 }

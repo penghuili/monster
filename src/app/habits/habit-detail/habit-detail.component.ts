@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EventService, HabitService } from '@app/core';
-import { EventType, Habit, isBeforeToday, mapWeekDay, MonsterEvents, now, WeekDays } from '@app/model';
+import { calcHabitProgress, Habit, HabitItem, HabitStatus, isBeforeToday, mapWeekDay, now, WeekDays } from '@app/model';
 import { InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
 import { addDays } from 'date-fns';
@@ -41,12 +41,13 @@ export class HabitDetailComponent extends Unsub implements OnInit {
     this.addSubscription(
       this.loadHabit.asObservable().pipe(
         startWith(true),
-        switchMap(() => this.habitService.getById(id))
+        switchMap(() => this.habitService.getHabitWithItems(id))
       )
       .subscribe(value => {
         if (value && value.habit) {
           this.habit = value.habit;
-          this.progress = value.progress;
+          this.progress = calcHabitProgress(value.items, value.habit);
+
           this.titleControl.setValue(this.habit.title, {emitEvent: false});
           this.resultControl.setValue(this.habit.result, {emitEvent: false});
           this.startDate = this.habit.startDate;
@@ -84,17 +85,20 @@ export class HabitDetailComponent extends Unsub implements OnInit {
   }
 
   onDone() {
-    const event = {
-      action: MonsterEvents.FinishHabit,
-      createdAt: now(),
-      refId: this.habit.id,
-      type: EventType.Habit
+    const timestamp = now();
+    const item: HabitItem = {
+      habitId: this.habit.id,
+      happenDate: timestamp,
+      status: HabitStatus.Done,
+      updatedAt: timestamp
     };
-    this.eventService.add(event).subscribe(success => {
-      if (success) {
-        this.loadHabit.next(true);
-      }
-    });
+    this.addSubscription(
+      this.habitService.finishHabitItem(item).subscribe(success => {
+        if (success) {
+          this.loadHabit.next(true);
+        }
+      })
+    );
   }
   isDone() {
     return isBeforeToday(this.endDate);
