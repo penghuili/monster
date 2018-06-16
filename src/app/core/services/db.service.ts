@@ -87,34 +87,6 @@ export class DbService {
     return this.db;
   }
 
-  moveHabitsToItsTable() {
-    const db = this.db;
-    const transaction = db.transaction('rw', db.events, db.habitItems, () => {
-      return db.events
-        .filter(a => a.action === MonsterEvents.FinishHabit)
-        .toArray()
-        .then(es => {
-          const habitItems: HabitItem[] = es.map(a => ({
-            habitId: a.refId,
-            happenDate: a.createdAt,
-            status: HabitStatus.Done,
-            updatedAt: a.createdAt
-          }));
-          return db.habitItems.bulkAdd(habitItems);
-        });
-    });
-
-    fromPromise(transaction).pipe(
-      catchError(() => of(null))
-    ).subscribe(success => {
-      if (success) {
-        alert('success');
-      } else {
-        alert('failed');
-      }
-    });
-  }
-  deleteHabitEvents() {
-    this.db.events.filter(a => a.action === MonsterEvents.FinishHabit).delete();
+  process() {
   }
 }
