@@ -3,14 +3,14 @@ import { Router } from '@angular/router';
 import { Todo } from '@app/model';
 import { InputControl } from '@app/shared';
 import { ROUTES, Unsub } from '@app/static';
-import { debounceTime, filter, map } from 'rxjs/operators';
+import { debounceTime, map } from 'rxjs/operators';
 
 @Component({
-  selector: 'mst-search-todos',
-  templateUrl: './search-todos.component.html',
-  styleUrls: ['./search-todos.component.scss']
+  selector: 'mst-todos-search',
+  templateUrl: './todos-search.component.html',
+  styleUrls: ['./todos-search.component.scss']
 })
-export class SearchTodosComponent extends Unsub implements OnInit {
+export class TodosSearchComponent extends Unsub implements OnInit {
   @Input() todos: Todo[];
   results: Todo[];
   searchControl = new InputControl<string>();
@@ -23,7 +23,7 @@ export class SearchTodosComponent extends Unsub implements OnInit {
     this.addSubscription(
       this.searchControl.value$.pipe(
         debounceTime(300),
-        map(text => text.trim())
+        map(text => text ? text.trim() : '')
       ).subscribe(text => {
         if (text) {
           const todos = this.todos || [];

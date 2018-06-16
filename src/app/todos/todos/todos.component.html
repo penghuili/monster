@@ -1,38 +1,12 @@
 <div [mstPadding]="'0 0 1rem'" *ngIf="showSearch">
-  <mst-search-todos [todos]="todos"></mst-search-todos>
+  <mst-todos-search [todos]="todos"></mst-todos-search>
 </div>
 
+<mst-todos-tab [projectsWithTodos]="projectsWithTodos"></mst-todos-tab>
 
-<div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'0 0 1rem'">
-  <div class="mst-todos-tab mst-todos-tab-action-wrapper" [class.mst-todos-tab--active]="activeTab === OVERDUE" [mstColor]="'error'" (click)="onChangeTab(OVERDUE)">
-    <div>overdue</div>
-    <div class="mst-start-action" *ngIf="hasActive && activeTab === OVERDUE && showRedoOverdue()" (click)="onRedoOverdue()">redo</div>
-  </div>
-  <div class="mst-todos-tab mst-todos-tab-action-wrapper" [class.mst-todos-tab--active]="activeTab === TODAY" (click)="onChangeTab(TODAY)">
-    <div>today</div>
-    <div class="mst-start-action" *ngIf="hasActive && isStartTodayEnabled()" (click)="onStartToday()">start</div>
-  </div>
-  <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === TOMORROW" (click)="onChangeTab(TOMORROW)">tomorrow</div>
-  <div class="mst-todos-tab" [class.mst-todos-tab--active]="activeTab === THISWEEK" (click)="onChangeTab(THISWEEK)">week</div>
-</div>
+<mst-todos-habits></mst-todos-habits>
 
-<ng-container *ngIf="activeTab === TODAY && habits && habits.length > 0">
-  <div>habits</div>
-  <div [mstPadding]="'0 0 0.5rem 1rem'">
-    <mst-habit-item *ngFor="let habit of habits"
-      [habit]="habit"
-      (click)="onShowHabitDetail(habit)">
-    </mst-habit-item>
-  </div>
-</ng-container>
-
-<ng-container *ngIf="activeBookItems && activeBookItems.length > 0">
-  <div>reading</div>
-  <div [mstPadding]="'0 0 0.5rem 1rem'">
-    <mst-book-chapter-item *ngFor="let item of activeBookItems" [bookItem]="item">
-    </mst-book-chapter-item>
-  </div>
-</ng-container>
+<mst-todos-books></mst-todos-books>
 
 <ng-container *ngIf="activeProjectsWithTodos && activeProjectsWithTodos.length > 0">
   <div *ngFor="let pwts of activeProjectsWithTodos">

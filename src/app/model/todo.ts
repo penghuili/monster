@@ -3,8 +3,14 @@ import { last } from 'ramda';
 
 import { Event, MonsterEvents } from './event';
 import { SortableItem, sortByPosition } from './item';
-import { isAfterDay, isBeforeDay, isBeforeToday, isDayOrAfter, isWithin, isWithinDay, now, startOfToday } from './time';
+import { ProjectWithTodos } from './project';
+import { isAfterDay, isBeforeDay, isBeforeToday, isDayOrAfter, isWithin, isWithinDay, now } from './time';
 import { MonsterStorage } from './utils';
+
+export const OVERDUE = 'overdue';
+export const TODAY = 'today';
+export const TOMORROW = 'tomorrow';
+export const THISWEEK = 'this week';
 
 export interface Todo extends SortableItem {
   subprojectId: number;
@@ -82,13 +88,6 @@ export function isFinishTooEarly(todo: Todo): boolean {
 export function isTodayStarted(): boolean {
   const start = MonsterStorage.get('start-today');
   return start && isWithinDay(start, now());
-}
-export function isTodayEnded(): boolean {
-  /**
-   * @todo trigger notification at 11 pm if today is not ended, or end it automatically
-   */
-  const end = MonsterStorage.get('end-today');
-  return end && end < now() && end > startOfToday();
 }
 export function calcUsedTime(startSopEvents: Event[], endOfTimeRange: number, todoId: number): number {
   let startEvents: Event[];
@@ -187,4 +186,10 @@ export function isRedoingOverdue(): boolean {
 export function redoneOverdueForToday(): boolean {
   const start = MonsterStorage.get('redo-overdue-at');
   return start && isToday(start);
+}
+export function getActiveTab() {
+  return MonsterStorage.get('active-tab') || TODAY;
+}
+export function hasTodos(projectsWithTodos: ProjectWithTodos[]): boolean {
+  return projectsWithTodos && projectsWithTodos.length > 0 && !projectsWithTodos.every(a => !a || !a.todos || a.todos.length === 0);
 }
