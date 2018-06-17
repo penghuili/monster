@@ -9,4 +9,5 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 export class IconComponent {
   @Input() name: string;
   @Input() color: string;
+  @Input() size: string;
 }

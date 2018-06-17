@@ -24,3 +24,13 @@ a {
 .dndDraggingSource {
   display: none;
 }
+
+// icon
+mst-icon {
+  width: 24px;
+  height: 24px;
+}
+mst-icon[size="s"] {
+  width: 14px;
+  height: 14px;
+}
