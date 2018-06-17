@@ -52,7 +52,16 @@ export class ReportService {
 
     return combineLatest(todos$, report$).pipe(
       switchMap(([todos, oldReport]) => {
-        const newReport = merge(oldReport, createReport(date, mode, todos));
+        let newReport: Report;
+        if (oldReport) {
+          newReport = merge(createReport(date, mode, todos), {
+            id: oldReport.id,
+            date: oldReport.date,
+            usedTimeOfTimeRange: oldReport.usedTimeOfTimeRange
+          });
+        } else {
+          newReport = createReport(date, mode, todos);
+        }
         reportWithTodos = { report: newReport, todos };
 
         if (newReport && oldReport) {

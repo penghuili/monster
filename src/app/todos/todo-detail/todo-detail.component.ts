@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { EventService, InputService, ProjectService, SubprojectService, TodoService } from '@app/core';
+import { EventService, InputService, ProjectService, ReportService, SubprojectService, TodoService } from '@app/core';
 import {
   EventType,
   isAfterToday,
@@ -65,6 +65,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
     private eventService: EventService,
     private inputService: InputService,
     private projectService: ProjectService,
+    private reportService: ReportService,
     private route: ActivatedRoute,
     private subprojectService: SubprojectService,
     private todoService: TodoService) {
@@ -209,12 +210,16 @@ export class TodoDetailComponent extends Unsub implements OnInit {
   onStop() {
     this.timer.stop();
     this.isDoing = false;
-    this.emitEvent({ action: MonsterEvents.StopTodo });
 
+    const usedTime = Math.round((now() - this.startAt) / 1000);
     const data = {
-      usedTime: this.todo.usedTime + Math.round((now() - this.startAt) / 1000)
+      usedTime: this.todo.usedTime + usedTime
     };
     this.update(data);
+
+    this.emitEvent({ action: MonsterEvents.StopTodo });
+    this.reportService.updateTodayUsedTime(usedTime).subscribe();
+
     this.startAt = undefined;
   }
   onAddCurrentThought() {
