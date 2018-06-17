@@ -13,11 +13,15 @@ import { OverlayModule } from '../overlay/overlay.module';
 import { PipesModule } from '../pipes/pipes.module';
 import { StylingModule } from '../styling/styling.module';
 import { TimelineModule } from '../timeline/timeline.module';
+import { ActivityItemHabitComponent } from './activity-item/activity-item-habit/activity-item-habit.component';
 import { ActivityItemProjectComponent } from './activity-item/activity-item-project/activity-item-project.component';
 import { ActivityItemRecordComponent } from './activity-item/activity-item-record/activity-item-record.component';
 import {
   ActivityItemSubprojectComponent,
 } from './activity-item/activity-item-subproject/activity-item-subproject.component';
+import {
+  ActivityItemTodoThoughtComponent,
+} from './activity-item/activity-item-todo-thought/activity-item-todo-thought.component';
 import { ActivityItemTodoComponent } from './activity-item/activity-item-todo/activity-item-todo.component';
 import { ActivityItemComponent } from './activity-item/activity-item.component';
 import { BookChapterItemComponent } from './book-chapter-item/book-chapter-item.component';
@@ -32,7 +36,6 @@ import { ThoughtCreateComponent } from './thought-create/thought-create.componen
 import { TodoCreateComponent } from './todo-create/todo-create.component';
 import { TodoItemComponent } from './todo-item/todo-item.component';
 import { TodoStatusPickerComponent } from './todo-status-picker/todo-status-picker.component';
-import { ActivityItemTodoThoughtComponent } from './activity-item/activity-item-todo-thought/activity-item-todo-thought.component';
 
 @NgModule({
   imports: [
@@ -69,7 +72,8 @@ import { ActivityItemTodoThoughtComponent } from './activity-item/activity-item-
     HabitItemComponent,
     ThoughtCreateComponent,
     BookChapterItemComponent,
-    ActivityItemTodoThoughtComponent
+    ActivityItemTodoThoughtComponent,
+    ActivityItemHabitComponent
   ],
   exports: [
     TodoStatusPipe,
@@ -85,7 +89,8 @@ import { ActivityItemTodoThoughtComponent } from './activity-item/activity-item-
     ActivityItemComponent,
     HabitItemComponent,
     ThoughtCreateComponent,
-    BookChapterItemComponent
+    BookChapterItemComponent,
+    ActivityItemHabitComponent
   ]
 })
 export class WithinAppModule { }

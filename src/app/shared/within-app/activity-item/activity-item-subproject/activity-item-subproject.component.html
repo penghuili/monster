@@ -1,10 +1,10 @@
 <div *ngIf="activity.action === MonsterEvents.CreateSubproject">
-  create subproject <a [mstFontWeight]="800" [mstColor]="'accent'" routerLink="/{{ROUTES.SUB_PROJECTS}}/{{data.id}}">{{ data.title }}</a>
+  create subproject <a [mstFontWeight]="800" [mstColor]="'accent'" routerLink="/{{ROUTES.PLANS}}/{{ROUTES.SUB_PROJECTS}}/{{data.id}}">{{ data.title }}</a>
 </div>
 <div *ngIf="activity.action === MonsterEvents.InProgressSubproject">
   change sub project
   <a [mstFontWeight]="800" [mstColor]="'accent'"
-    routerLink="/{{ROUTES.SUB_PROJECTS}}/{{data.id}}">{{ data.title }}</a>
+    routerLink="/{{ROUTES.PLANS}}/{{ROUTES.SUB_PROJECTS}}/{{data.id}}">{{ data.title }}</a>
   <span [mstFontWeight]="800">status</span> from
   <span [mstFontWeight]="800">{{ activity.oldValue | projectStatus}}</span> to
   <span [mstFontWeight]="800">{{ activity.newValue | projectStatus}}</span>
@@ -12,7 +12,7 @@
 <div *ngIf="activity.action === MonsterEvents.SomedaySubproject">
   change sub project
   <a [mstFontWeight]="800" [mstColor]="'accent'"
-    routerLink="/{{ROUTES.SUB_PROJECTS}}/{{data.id}}">{{ data.title }}</a>
+    routerLink="/{{ROUTES.PLANS}}/{{ROUTES.SUB_PROJECTS}}/{{data.id}}">{{ data.title }}</a>
   <span [mstFontWeight]="800">status</span> from
   <span [mstFontWeight]="800">{{ activity.oldValue | projectStatus}}</span> to
   <span [mstFontWeight]="800">{{ activity.newValue | projectStatus}}</span>
@@ -20,7 +20,7 @@
 <div *ngIf="activity.action === MonsterEvents.DoneSubproject">
   change sub project
   <a [mstFontWeight]="800" [mstColor]="'accent'"
-    routerLink="/{{ROUTES.SUB_PROJECTS}}/{{data.id}}">{{ data.title }}</a>
+    routerLink="/{{ROUTES.PLANS}}/{{ROUTES.SUB_PROJECTS}}/{{data.id}}">{{ data.title }}</a>
   <span [mstFontWeight]="800">status</span> from
   <span [mstFontWeight]="800">{{ activity.oldValue | projectStatus}}</span> to
   <span [mstFontWeight]="800">{{ activity.newValue | projectStatus}}</span>

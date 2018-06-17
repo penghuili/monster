@@ -6,7 +6,7 @@ import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
 import { catchError, filter, switchMap, tap } from 'rxjs/operators';
 
-import { createProject, Project, ProjectWithTodos, Subproject, ProjectStatus } from '../../model/project';
+import { createProject, Project, ProjectStatus, ProjectWithTodos, Subproject } from '../../model/project';
 import { DbService } from './db.service';
 import { EventService } from './event.service';
 import { LoadingService } from './loading.service';

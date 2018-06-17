@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HabitService } from '@app/core';
+import { EventService, HabitService } from '@app/core';
 import { calcHabitProgress, Habit, HabitItem, HabitStatus, isBeforeToday, mapWeekDay, now, WeekDays } from '@app/model';
 import { InputControl } from '@app/shared';
 import { Unsub } from '@app/static';

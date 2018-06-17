@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import {
+  EventType,
   Habit,
   HabitItem,
   HabitWithItems,
   isWithin,
   mapWeekDay,
+  MonsterEvents,
   now,
   prepareRepostionIds,
   repositionItems,
@@ -17,6 +19,7 @@ import { of } from 'rxjs/observable/of';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 
 import { DbService } from './db.service';
+import { EventService } from './event.service';
 import { LoadingService } from './loading.service';
 import { NotificationService } from './notification.service';
 
@@ -25,6 +28,7 @@ export class HabitService {
 
   constructor(
     private dbService: DbService,
+    private eventService: EventService,
     private loadingService: LoadingService,
     private notificationService: NotificationService) { }
 
@@ -96,6 +100,20 @@ export class HabitService {
       })
     );
   }
+  getHabitsWithIds(ids: number[]): Observable<Habit[]> {
+    this.loadingService.isLoading();
+    return fromPromise(
+      this.dbService.getDB().habits
+        .where('id')
+        .anyOf(ids)
+        .toArray()
+    ).pipe(
+      catchError(() => this.handleError('getHabitsWithIds fails')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
+    );
+  }
   add(habit: Habit): Observable<any> {
     this.loadingService.isLoading();
     return fromPromise(
@@ -113,8 +131,16 @@ export class HabitService {
       this.dbService.getDB().habitItems.add(habitItem)
     ).pipe(
       catchError(error => this.handleError('finishHabitItem fails')),
-      tap(() => {
+      tap(success => {
         this.loadingService.stopLoading();
+        if (success) {
+          this.eventService.add({
+            createdAt: now(),
+            type: EventType.Habit,
+            refId: habitItem.habitId,
+            action: MonsterEvents.FinishHabit
+          }).subscribe();
+        }
       })
     );
   }

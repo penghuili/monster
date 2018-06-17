@@ -1,0 +1,5 @@
+<div *ngIf="activity.action === MonsterEvents.FinishHabit">
+  finish habit
+  <a [mstFontWeight]="800" [mstColor]="'accent'" routerLink="/{{ROUTES.PLANS}}/{{ROUTES.HABITS}}/{{data.id}}">{{ data.title }}</a>
+  for today.
+</div>

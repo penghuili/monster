@@ -21,6 +21,7 @@ import { of } from 'rxjs/observable/of';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 
 import { DbService } from './db.service';
+import { HabitService } from './habit.service';
 import { LoadingService } from './loading.service';
 import { NotificationService } from './notification.service';
 import { ProjectService } from './project.service';
@@ -33,6 +34,7 @@ export class ReportService {
 
   constructor(
     private dbService: DbService,
+    private habitService: HabitService,
     private loadingService: LoadingService,
     private notificationService: NotificationService,
     private projectService: ProjectService,
@@ -125,14 +127,16 @@ export class ReportService {
           const subprojectIds = uniq(activities.filter(a => a.type === EventType.Subproject).map(a => a.refId));
           const todoIds = uniq(activities.filter(a => a.type === EventType.Todo).map(a => a.refId));
           const thoughtIds = uniq(activities.filter(a => a.type === EventType.Thought).map(a => a.refId));
+          const habitIds = uniq(activities.filter(a => a.type === EventType.Habit).map(a => a.refId));
           return combineLatest(
             this.projectService.getProjectsByIds(projectIds),
             this.subprojectService.getSubprojectsByIds(subprojectIds),
             this.todoService.getTodosByIds(todoIds),
-            this.thoughtService.getRecordsByIds(thoughtIds)
+            this.thoughtService.getRecordsByIds(thoughtIds),
+            this.habitService.getHabitsWithIds(habitIds)
           ).pipe(
-            map(([projects, subprojects, todos, thoughts]) => {
-              return { activities, projects, subprojects, todos, thoughts };
+            map(([projects, subprojects, todos, thoughts, habits]) => {
+              return { activities, projects, subprojects, todos, thoughts, habits };
             })
           );
         } else {

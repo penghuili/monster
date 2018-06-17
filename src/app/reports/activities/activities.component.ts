@@ -44,6 +44,7 @@ export class ActivitiesComponent extends Unsub implements OnChanges {
           const subprojects = events.subprojects;
           const todos = events.todos;
           const thoughts = events.thoughts;
+          const habits = events.habits;
           const todoThoughtsActivities = todoThoughts.map(thought => {
             const todo = todos.find(b => b.id === thought.todoId);
             return {
@@ -65,6 +66,8 @@ export class ActivitiesComponent extends Unsub implements OnChanges {
               data = subprojects.find(b => b.id === a.refId);
             } else if (a.type === EventType.Thought) {
               data = thoughts.find(b => b.id === a.refId);
+            } else if (a.type === EventType.Habit) {
+              data = habits.find(b => b.id === a.refId);
             } else {
               data = todos.find(b => b.id === a.refId);
             }

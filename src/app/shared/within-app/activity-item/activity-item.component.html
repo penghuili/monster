@@ -21,4 +21,8 @@
   <div *ngIf="activity.type === EventType.Thought">
     <mst-activity-item-record [activity]="activity" [data]="activity.data"></mst-activity-item-record>
   </div>
+
+  <div *ngIf="activity.type === EventType.Habit">
+    <mst-activity-item-habit [activity]="activity" [data]="activity.data"></mst-activity-item-habit>
+  </div>
 </mst-timeline-item>
