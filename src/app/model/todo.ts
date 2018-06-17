@@ -122,7 +122,7 @@ export function calcUsedTime(startSopEvents: Event[], endOfTimeRange: number, to
     const milisec = startEvents.reduce((total, curr, i) => {
       return total + stopEvents[i].createdAt - curr.createdAt;
     }, 0);
-    return Math.round(milisec / (1000 * 60));
+    return Math.round(milisec / 1000);
   } else {
     return 0;
   }
