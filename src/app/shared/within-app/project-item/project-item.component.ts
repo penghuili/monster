@@ -13,7 +13,8 @@ export class ProjectItemComponent {
   ProjectStatus = ProjectStatus;
 
   getColor(): string {
-    return this.project.status === ProjectStatus.Someday ? 'yellow' :
+    return this.project.status === ProjectStatus.Done ? null :
+      this.project.status === ProjectStatus.Someday ? 'yellow' :
       !(<Subproject>this.project).projectId && isBeforeToday((<Project>this.project).endDate) ? 'error' : null;
   }
 }
