@@ -4,7 +4,6 @@
   <mst-input [control]="titleControl"></mst-input>
   
   <div fxLayout="row" fxLayoutAlign="space-between center" [mstPadding]="'1rem 0'">
-    <mst-project-status-picker [status]="subproject.status" (select)="onSelectStatus($event)"></mst-project-status-picker>
     {{ startDate | date:'shortDate' }}
     <mst-icon name="arrow_forward"></mst-icon>
     {{ endDate | date:'shortDate' }}

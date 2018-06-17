@@ -1,16 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EventService, SubprojectService, TodoService } from '@app/core';
-import {
-  calcStartEndDate,
-  EventType,
-  mapProjectStatusEvent,
-  now,
-  ProjectStatus,
-  sortTodos,
-  Subproject,
-  Todo,
-} from '@app/model';
+import { SubprojectService, TodoService } from '@app/core';
+import { calcStartEndDate, now, sortTodos, Subproject, Todo } from '@app/model';
 import { InputControl } from '@app/shared';
 import { ROUTES, Unsub } from '@app/static';
 import { merge } from 'ramda';
@@ -33,7 +24,6 @@ export class ProjectDetailSubComponent extends Unsub implements OnInit {
   private createdTodo = new Subject<boolean>();
 
   constructor(
-    private eventService: EventService,
     private route: ActivatedRoute,
     private router: Router,
     private subprojectService: SubprojectService,
@@ -85,19 +75,6 @@ export class ProjectDetailSubComponent extends Unsub implements OnInit {
     );
   }
 
-  onSelectStatus(status: ProjectStatus) {
-    const action = mapProjectStatusEvent(status);
-    const event = {
-      createdAt: now(),
-      refId: this.subproject.id,
-      type: EventType.Subproject,
-      action,
-      oldValue: this.subproject.status,
-      newValue: status
-    };
-    this.eventService.add(event).subscribe();
-    this.update({ status });
-  }
   onGotoTodo(id: string) {
     this.router.navigateByUrl(`${ROUTES.TODOS}/${id}`);
   }

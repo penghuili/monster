@@ -2,6 +2,7 @@
 
 <mst-overlay *ngIf="isShow">
   <ng-container *ngIf="isShow">
+    <div [mstColor]="'white'" [mstColor.bg]="'error'" [mstPadding]="'0 0 1rem'" *ngIf="showError">you can have at most 4 active projects.</div>
     <div [mstLineHeight]="'2'" [mstColor]="innerStatus === ProjectStatus.InProgress ? 'accent' : null" (click)="onSelect(ProjectStatus.InProgress)">in progress</div>
     <div [mstLineHeight]="'2'" [mstColor]="innerStatus === ProjectStatus.Someday ? 'accent' : null" (click)="onSelect(ProjectStatus.Someday)">someday</div>
     <div [mstLineHeight]="'2'" [mstColor]="innerStatus === ProjectStatus.Done ? 'accent' : null" (click)="onSelect(ProjectStatus.Done)">done</div>

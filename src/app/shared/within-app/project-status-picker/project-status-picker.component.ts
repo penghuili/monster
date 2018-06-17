@@ -1,5 +1,8 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ProjectStatus } from '@app/model';
+import { Unsub } from '@app/static';
+
+import { ProjectService } from '../../../core/services/project.service';
 
 @Component({
   selector: 'mst-project-status-picker',
@@ -7,7 +10,7 @@ import { ProjectStatus } from '@app/model';
   styleUrls: ['./project-status-picker.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProjectStatusPickerComponent {
+export class ProjectStatusPickerComponent extends Unsub implements OnInit {
   @Input() set status(value: ProjectStatus) {
     this.outerStatus = value;
     this.innerStatus = value;
@@ -15,23 +18,48 @@ export class ProjectStatusPickerComponent {
   @Output() select = new EventEmitter<ProjectStatus>();
   isShow = false;
   ProjectStatus = ProjectStatus;
-  innerStatus = ProjectStatus.InProgress;
-  private outerStatus = ProjectStatus.InProgress;
+  innerStatus = ProjectStatus.Someday;
+  showError: boolean;
+
+  private outerStatus = ProjectStatus.Someday;
+  private activeProjectsCount: number;
+
+  constructor(private projectService: ProjectService) {
+    super();
+  }
+
+  ngOnInit() {
+    this.addSubscription(
+      this.projectService.getActiveProjects().subscribe(projects => {
+        projects = projects || [];
+        this.activeProjectsCount = projects.length;
+      })
+    );
+  }
 
   onOpen() {
     this.isShow = true;
   }
   onSelect(status: ProjectStatus) {
-    this.innerStatus = status;
+    if (this.canSelect(status)) {
+      this.innerStatus = status;
+    }
   }
 
   onConfirm() {
-    this.select.emit(this.innerStatus);
-    this.isShow = false;
+    if (this.canSelect(this.innerStatus)) {
+      this.select.emit(this.innerStatus);
+      this.isShow = false;
+    }
   }
   onCancel() {
     this.innerStatus = this.outerStatus;
     this.isShow = false;
+  }
+
+  private canSelect(status: ProjectStatus): boolean {
+    this.showError = status === ProjectStatus.InProgress && this.activeProjectsCount >= 4;
+   return !this.showError;
   }
 
 }

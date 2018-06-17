@@ -52,7 +52,7 @@ export class ProjectCreateComponent extends Unsub {
           result: this.resultControl.getValue(),
           startDate: this.startDate,
           endDate: this.endDate,
-          status: this.status === undefined ? ProjectStatus.InProgress : this.status
+          status: this.status === undefined ? ProjectStatus.Someday : this.status
         }).subscribe(success => {
           if (success) {
             this.isShow = false;

@@ -6,7 +6,7 @@ import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
 import { catchError, filter, switchMap, tap } from 'rxjs/operators';
 
-import { createProject, Project, ProjectWithTodos, Subproject } from '../../model/project';
+import { createProject, Project, ProjectWithTodos, Subproject, ProjectStatus } from '../../model/project';
 import { DbService } from './db.service';
 import { EventService } from './event.service';
 import { LoadingService } from './loading.service';
@@ -29,6 +29,21 @@ export class ProjectService {
     ).pipe(
       filter(data => !!data),
       catchError(error => this.handleError('getProjects fails')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
+    );
+  }
+  getActiveProjects(): Observable<Project[]> {
+    this.loadingService.isLoading();
+    return fromPromise(
+      this.dbService.getDB().projects
+      .where('status')
+      .equals(ProjectStatus.InProgress)
+      .toArray()
+    ).pipe(
+      filter(data => !!data),
+      catchError(error => this.handleError('getActiveProjects fails')),
       tap(() => {
         this.loadingService.stopLoading();
       })

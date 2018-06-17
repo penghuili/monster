@@ -59,8 +59,7 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private projectService: ProjectService,
-    private subprojectService: SubprojectService,
-    private todoService: TodoService) {
+    private subprojectService: SubprojectService) {
     super();
   }
 
