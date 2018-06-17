@@ -24,7 +24,10 @@
       (selected)="onSelectSubproject($event)">
     </mst-project-list>
     <mst-todo-status-picker [status]="status" [showSomeday]="showSomedayStatus" (select)="onSelectStatus($event)"></mst-todo-status-picker>
-    <mst-datepicker [mode]="TimeRangeType.Day" [startDate]="datePickerStartDate" [endDate]="datePickerEndDate" [disabled]="disableDatePicker()" [defaultDate]="defaultDatepickerDate" (finish)="onFinishPickDate($event)"></mst-datepicker>
+    <div class="mst-todo-detail-datepicker">
+      <mst-datepicker [mode]="TimeRangeType.Day" [startDate]="datePickerStartDate" [endDate]="datePickerEndDate" [disabled]="disableDatePicker()" [defaultDate]="defaultDatepickerDate" (finish)="onFinishPickDate($event)"></mst-datepicker>
+      <div class="mst-happen-date-changed-time" *ngIf="todo.happenDateChangedTimes">{{ todo.happenDateChangedTimes }}</div>
+    </div>
     <mst-duration-picker [defaultValue]="todo.expectedTime / 60" [disabled]="finished" (change)="onDurationChange($event)"></mst-duration-picker>
   </div>
 

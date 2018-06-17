@@ -16,6 +16,7 @@ export interface Todo extends SortableItem {
   subprojectId: number;
   note?: string;
   happenDate: number;
+  happenDateChangedTimes?: number;
   // in seconds
   expectedTime?: number;
   // in seconds

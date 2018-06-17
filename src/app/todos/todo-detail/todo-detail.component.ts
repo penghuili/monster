@@ -197,7 +197,8 @@ export class TodoDetailComponent extends Unsub implements OnInit {
       oldValue: this.todo.happenDate,
       newValue: result.date
     });
-    this.update({ happenDate: result.date });
+    const happenDateChangedTimes = this.todo.happenDateChangedTimes ? this.todo.happenDateChangedTimes : 0;
+    this.update({ happenDate: result.date, happenDateChangedTimes: happenDateChangedTimes + 1 });
   }
   onStart() {
     if (!this.isDoing) {

@@ -19,6 +19,17 @@
   bottom: 0.5rem;
   right: 0;
 }
+.mst-todo-detail-datepicker {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-width: 4.5rem;
+}
+.mst-happen-date-changed-time {
+  margin-top: 0.5rem;
+  padding: 0 0.5rem;
+}
 @media screen and (max-width: $break-point - 1) {
   .mst-hide-top-bottom {
     display: none;
