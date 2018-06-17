@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EventService, ProjectService, SubprojectService, TodoService } from '@app/core';
+import { EventService, ProjectService, SubprojectService } from '@app/core';
 import {
   calcStartEndDate,
   ChartDataItem,
   createChartData,
   EventType,
+  isDayOrBefore,
   mapProjectStatusEvent,
   MonsterEvents,
   now,
@@ -22,6 +23,7 @@ import { DatepickerResult, InputControl } from '@app/shared';
 import { ROUTES, Unsub } from '@app/static';
 import { addDays, differenceInCalendarDays, format } from 'date-fns';
 import { merge } from 'ramda';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 import { debounceTime, first, startWith, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 
@@ -65,8 +67,15 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
 
   ngOnInit() {
     const id = +this.route.snapshot.paramMap.get('id');
+
     this.addSubscription(
-      this.projectService.getProjectById(id).pipe(first()).subscribe(project => {
+      combineLatest(
+        this.projectService.getProjectById(id).pipe(first()),
+        this.createdSub.asObservable().pipe(
+          startWith(true),
+          switchMap(() => this.subprojectService.getSubprojectsWithTodosByProjectId(id))
+        )
+      ).subscribe(([project, sub]) => {
         this.project = project;
         if (project) {
           this.titleControl.setValue(project.title);
@@ -75,18 +84,13 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
           this.startDate = project.startDate;
           this.endDateStartDate = addDays(this.startDate, 1).getTime();
           this.endDate = project.endDate;
-        }
-      })
-    );
 
-    this.addSubscription(
-      this.createdSub.asObservable().pipe(
-        startWith(true),
-        switchMap(() => this.subprojectService.getSubprojectsWithTodosByProjectId(id))
-      ).subscribe(value => {
-        this.subprojects = value.subprojects;
-        this.createChart(value.todos);
-        this.createTimeline(value.subprojects, value.todos);
+          if (sub) {
+            this.subprojects = sub.subprojects;
+            this.createChart(sub.todos, project);
+            this.createTimeline(sub.subprojects, sub.todos);
+          }
+        }
       })
     );
 
@@ -154,7 +158,7 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
     this.activeTab = key;
   }
 
-  private createChart(todos: Todo[]) {
+  private createChart(todos: Todo[], project: Project) {
     if (todos) {
       const items = todos
         .sort((a, b) => a.happenDate - b.happenDate)
@@ -165,7 +169,7 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
         .sort((a, b) => a.finishAt - b.finishAt);
       const lastDoneTodo = doneTodos[doneTodos.length - 1];
       let lastDoneToNow = [];
-      if (lastDoneTodo) {
+      if (lastDoneTodo && isDayOrBefore(now(), project.endDate)) {
         const diff = differenceInCalendarDays(now(), lastDoneTodo.finishAt);
         if (diff > 0) {
           lastDoneToNow = Array(diff).fill(1).map((curr, index) => {
