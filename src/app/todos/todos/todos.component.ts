@@ -73,7 +73,7 @@ export class TodosComponent extends Unsub implements OnInit {
         filter(([projectsWithTodos, tab]) => !!projectsWithTodos && !!tab)
       ).subscribe(([projectsWithTodos, tab]) => {
         this.activeTab = tab;
-        this.projectsWithTodos = projectsWithTodos.filter(a => a.project.status !== ProjectStatus.Done);
+        this.projectsWithTodos = projectsWithTodos.filter(a => a.project.status === ProjectStatus.InProgress);
         this.process(tab, this.projectsWithTodos, this.todos);
       })
     );
