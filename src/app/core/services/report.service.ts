@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import {
-  calcUsedTime,
   createReport,
   EventType,
   getStartEnd,
   isDayOrBefore,
   isValidTodoWithin,
-  MonsterEvents,
   now,
   Report,
   ReportWithTodos,
@@ -14,6 +12,7 @@ import {
   Todo,
   TodoStatus,
 } from '@app/model';
+import { isToday } from 'date-fns';
 import { merge, uniq } from 'ramda';
 import { Observable } from 'rxjs/Observable';
 import { combineLatest } from 'rxjs/observable/combineLatest';
@@ -50,11 +49,10 @@ export class ReportService {
     let reportWithTodos: ReportWithTodos;
     const todos$ = this.getTodosForReport(date, mode);
     const report$ = this.getReport(date, mode);
-    const usedTimeOfSelectedTimeRange$ = this.getUsedTimeOfTimeRange(date, mode);
 
-    return combineLatest(todos$, report$, usedTimeOfSelectedTimeRange$).pipe(
-      switchMap(([todos, oldReport, usedTimeOfTimeRange]) => {
-        const newReport = merge(oldReport, createReport(date, mode, todos, usedTimeOfTimeRange));
+    return combineLatest(todos$, report$).pipe(
+      switchMap(([todos, oldReport]) => {
+        const newReport = merge(oldReport, createReport(date, mode, todos));
         reportWithTodos = { report: newReport, todos };
 
         if (newReport && oldReport) {
@@ -148,6 +146,44 @@ export class ReportService {
       })
     );
   }
+  updateTodayUsedTime(usedTime: number): Observable<any> {
+    this.loadingService.isLoading();
+    return fromPromise(
+      this.dbService.getDB().reports
+      .filter(a => isToday(a.date) && a.type === TimeRangeType.Day)
+      .first()
+    ).pipe(
+      switchMap(report => {
+        if (report) {
+          const usedTimeOfTimeRange = report.usedTimeOfTimeRange ? report.usedTimeOfTimeRange : 0;
+          report = merge(report, {usedTimeOfTimeRange: usedTimeOfTimeRange + usedTime});
+          return this.update(report);
+        } else {
+          report = {
+            type: TimeRangeType.Day,
+            date: now(),
+            planned: undefined,
+            done: undefined,
+            doneOfCurrentRange: undefined,
+            wontDo: undefined,
+            wontDoOfCurrentRange: undefined,
+            finishTooLate: undefined,
+            finishTooEarly: undefined,
+            addedLater: undefined,
+            beforeToday: undefined,
+            plannedTime: undefined,
+            usedTimeOfTimeRange: usedTime
+          };
+          return this.create(report);
+        }
+      }),
+      catchError(error => this.handleError('updateTodayUsedTime fails.')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
+    );
+  }
+
 
 
   renameCreatedAtAndAddType() {
@@ -193,31 +229,6 @@ export class ReportService {
         .toArray()
     ).pipe(
       catchError(error => this.handleError('getTodosForDailyReport fails.')),
-      tap(() => {
-        this.loadingService.stopLoading();
-      })
-    );
-  }
-  private getUsedTimeOfTimeRange(date: number, mode: TimeRangeType, todoId?: number): Observable<number> {
-    this.loadingService.isLoading();
-    let start: number;
-    let end: number;
-    [start, end] = getStartEnd(date, mode);
-    const endPlus6Hours = end + 6 * 60 * 60 * 1000;
-
-    return fromPromise(
-      this.dbService.getDB().events
-        .filter(x => x.createdAt > start && x.createdAt < endPlus6Hours &&
-          (x.action === MonsterEvents.StartTodo || x.action === MonsterEvents.StopTodo) &&
-          (todoId ? x.refId === todoId : true)
-        )
-        .toArray()
-    ).pipe(
-      map(events => calcUsedTime(events, end, todoId)),
-      catchError(error => {
-        this.notificationService.sendMessage('getUsedTime failed');
-        return of(0);
-      }),
       tap(() => {
         this.loadingService.stopLoading();
       })
