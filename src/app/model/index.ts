@@ -13,3 +13,4 @@ export * from './chart';
 export * from './habit';
 export * from './storage';
 export * from './book';
+export * from './following';
