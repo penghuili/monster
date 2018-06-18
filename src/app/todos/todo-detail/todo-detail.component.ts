@@ -234,6 +234,7 @@ export class TodoDetailComponent extends Unsub implements OnInit {
         }).subscribe(success => {
           if (success) {
             this.activities.loadThoughts();
+            this.currentThoughtControl.reset();
           }
         })
       );
