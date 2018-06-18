@@ -59,8 +59,8 @@ export class HabitService {
       })
       .then(items => {
         return habits.map(h => {
-          const e = find(i => i.habitId === h.id, items);
-          if (e) {
+          const item = find(i => i.habitId === h.id, items);
+          if (item) {
             h.doneForToday = true;
           }
           return h;
