@@ -60,7 +60,7 @@ export class TodosTabComponent implements OnInit {
       .reduce((sum, curr) => sum.concat(curr), []);
 
     const todaysTodos = todos.filter(a => isToday(a.happenDate) && a.status === TodoStatus.InProgress);
-    const canStart = calcExpectedTime(todaysTodos) <= 7 * 60;
+    const canStart = calcExpectedTime(todaysTodos) <= 7 * 60 * 60;
     if (canStart) {
       const want = confirm('are you sure to start today now?');
       if (want) {
