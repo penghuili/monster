@@ -27,7 +27,8 @@ export class ThoughtsComponent extends Unsub implements OnInit, OnChanges {
         filter(a => a),
         switchMap(() => this.thoughtService.getRecords(this.date, this.mode))
       ).subscribe(thoughts => {
-        this.thoughts = thoughts || [];
+        thoughts = thoughts || [];
+        this.thoughts = thoughts.reverse();
       })
     );
   }
