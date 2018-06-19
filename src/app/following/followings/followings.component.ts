@@ -43,10 +43,12 @@ export class FollowingsComponent extends Unsub implements OnInit {
   onShowDetail(following: Following) {
     this.router.navigate([following.id], { relativeTo: this.route });
   }
-  onDragStart() {
+  onDragStart(index: number) {
+    console.log(index);
     // todo
   }
-  onDrop() {
+  onDrop(index: number) {
+    console.log(index);
     // todo
   }
   onCreated() {
