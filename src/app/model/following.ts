@@ -3,13 +3,14 @@ import { now } from './time';
 
 export interface Following extends SortableItem {
   status: FollowingStatus;
+  hasPoints: boolean;
 }
 export interface FollowingItem {
   id?: number;
   followingId: number;
   note: string;
   createdAt: number;
-  score?: number;
+  points?: number;
 }
 export enum FollowingStatus {
   InProgress,
@@ -22,6 +23,7 @@ export function createFollowing(data: any): Following {
   return {
     title: data.title,
     status: data.status,
+    hasPoints: data.hasPoints,
     createdAt: timestamp,
     updatedAt: timestamp,
     position: `${timestamp}3`

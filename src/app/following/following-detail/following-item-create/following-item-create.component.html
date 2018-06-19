@@ -1,0 +1,19 @@
+<div mstBorder [mstPadding]="'1rem'" *ngIf="following">
+  what did you do?
+  <mst-input
+    [control]="noteControl"
+    [minHeight]="'3rem'"
+    [autoFocus]="true"></mst-input>
+
+  <div [mstPadding]="'1rem 0 0'" *ngIf="following.hasPoints">
+    <div>how do you feel?</div>
+    <div [mstTextAlign]="'center'" [mstPadding]="'0 0 1rem'">{{ points }}</div>
+    <div [mstPadding]="'0 2rem'">
+      <mst-slider [min]="1" [max]="10" (valueChange)="onValueChange($event)"></mst-slider>
+    </div>
+  </div>
+
+  <div [mstTextAlign]="'right'" [mstPadding]="'1rem 0 0'">
+    <mst-icon name="done" (click)="onAdd()"></mst-icon>
+  </div>
+</div>
