@@ -15,6 +15,7 @@ import { BrowserSupportGuard } from './guards/browser-support.guard';
 import { AppHeaderService } from './services/app-header.service';
 import { DbService } from './services/db.service';
 import { EventService } from './services/event.service';
+import { FollowingService } from './services/following.service';
 import { HabitService } from './services/habit.service';
 import { IconsService } from './services/icons.service';
 import { InputService } from './services/input.service';
@@ -58,7 +59,8 @@ import { TodoService } from './services/todo.service';
     RouterService,
     InputService,
     StorageApiService,
-    ReadingService
+    ReadingService,
+    FollowingService
   ],
   declarations: [NavigationComponent, LoadingComponent, AppHeaderComponent],
   exports: [

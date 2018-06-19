@@ -1,0 +1,23 @@
+<div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'0 1rem 0 0'">
+  <mst-go-back></mst-go-back>
+  <div *ngIf="following">{{ following.createdAt | daysDiff }}</div>
+</div>
+
+<ng-container *ngIf="following">
+  <div fxLayout="row" fxLayoutAlign="space-between">
+    <div>{{ following.title }}</div>
+    <div [mstBorder]="'accent'" (click)="onToggleCreateItem()">add</div>
+    <mst-following-status-picker [status]="following.status" (select)="onSelectStatus($event)"></mst-following-status-picker>
+  </div>
+  
+  <div [mstPadding]="'1rem 0'" *ngIf="showCreate">
+    <mst-following-item-create [following]="following" (created)="onCreatedItem()"></mst-following-item-create>
+  </div>
+
+  <div *ngIf="following.hasPoints && chartData && chartData[0] && chartData[0].series.length > 1" [mstPadding]="'1rem 0'">
+    <mst-progress-chart [data]="chartData"></mst-progress-chart>
+  </div>
+
+  <mst-activity-item *ngFor="let activity of activities; let i = index"
+    [activity]="activity" [nextActivity]="activities[i+1]" [reverse]="true"></mst-activity-item>
+</ng-container>

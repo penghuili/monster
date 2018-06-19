@@ -1,0 +1,30 @@
+<mst-go-back></mst-go-back>
+
+<mst-drop-zone [dragIndex]="dragIndex" (drop)="onDrop($event)">
+  <mst-drag-item *ngFor="let following of activeFollowings; let i = index;"
+    [item]="following"
+    [index]="i"
+    (start)="onDragStart($event)">
+    <div class="mst-habit-item" (click)="onShowDetail(following)">
+      {{ following.title }}
+    </div>
+  </mst-drag-item>
+</mst-drop-zone>
+
+
+<ng-container *ngIf="somedayFollowings && somedayFollowings.length > 0">
+  <div [mstTextAlign]="'center'" [mstPadding]="'2rem 0 0'">Someday</div>
+  <div class="mst-habit-item" *ngFor="let following of somedayFollowings" (click)="onShowDetail(following)">
+    {{ following.title }}
+  </div>
+</ng-container>
+
+
+<ng-container *ngIf="doneFollowings && doneFollowings.length > 0">
+  <div [mstTextAlign]="'center'" [mstPadding]="'2rem 0 0'">Done</div>
+  <div class="mst-habit-item" *ngFor="let following of doneFollowings" (click)="onShowDetail(following)">
+    {{ following.title }}
+  </div>
+</ng-container>
+
+<mst-following-create (created)="onCreated()"></mst-following-create>

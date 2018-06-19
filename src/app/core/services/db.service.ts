@@ -3,6 +3,8 @@ import {
   Book,
   BookItem,
   Event,
+  Following,
+  FollowingItem,
   Habit,
   HabitItem,
   Project,
@@ -32,6 +34,8 @@ class MonsterDB extends Dexie {
   records: Dexie.Table<Thought, number>;
   books: Dexie.Table<Book, number>;
   bookItems: Dexie.Table<BookItem, number>;
+  followings: Dexie.Table<Following, number>;
+  followingItems: Dexie.Table<FollowingItem, number>;
 
   constructor() {
     super('monster');
@@ -72,6 +76,10 @@ class MonsterDB extends Dexie {
     });
     this.version(11).stores({
       todoThoughts: '++id,todoId,createdAt'
+    });
+    this.version(12).stores({
+      followings: '++id,status',
+      followingItems: '++id,followingId,createdAt'
     });
   }
 }

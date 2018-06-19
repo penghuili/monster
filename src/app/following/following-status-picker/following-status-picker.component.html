@@ -1,0 +1,14 @@
+<div (click)="onOpen()">{{ innerStatus | followingStatus }}</div>
+
+<mst-overlay *ngIf="isShow">
+  <ng-container *ngIf="isShow">
+    <div [mstColor]="'white'" [mstColor.bg]="'error'" [mstPadding]="'0 0 1rem'" *ngIf="showError">you can have at most 4 active projects.</div>
+    <div [mstLineHeight]="'2'" [mstColor]="innerStatus === FollowingStatus.InProgress ? 'accent' : null" (click)="onSelect(FollowingStatus.InProgress)">in progress</div>
+    <div [mstLineHeight]="'2'" [mstColor]="innerStatus === FollowingStatus.Someday ? 'accent' : null" (click)="onSelect(FollowingStatus.Someday)">someday</div>
+    <div [mstLineHeight]="'2'" [mstColor]="innerStatus === FollowingStatus.Done ? 'accent' : null" (click)="onSelect(FollowingStatus.Done)">done</div>
+  
+    <mst-cancel-confirm
+    (confirm)="onConfirm()"
+    (cancel)="onCancel()"></mst-cancel-confirm>
+  </ng-container>
+</mst-overlay>

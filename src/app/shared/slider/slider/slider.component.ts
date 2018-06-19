@@ -1,14 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { FONT_SIZE } from '@app/static';
 import * as Hammer from 'hammerjs';
 
@@ -44,7 +34,7 @@ export class SliderComponent implements OnChanges, OnInit {
       this.deltaX = 0;
     });
   }
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     this.setDefaultLeft();
   }
 
@@ -63,7 +53,7 @@ export class SliderComponent implements OnChanges, OnInit {
     return left < 0 ? 0 : left;
   }
   private getValue() {
-    return +(((this.getLeft() + FONT_SIZE / 2) / this.barWidth) * (this.max - this.min)).toFixed(1);
+    return +(((this.getLeft() + FONT_SIZE / 2) / this.barWidth) * (this.max - this.min)).toFixed(1) + this.min;
   }
   private setDefaultLeft() {
     if (this.barWidth) {

@@ -36,6 +36,7 @@ import { ThoughtCreateComponent } from './thought-create/thought-create.componen
 import { TodoCreateComponent } from './todo-create/todo-create.component';
 import { TodoItemComponent } from './todo-item/todo-item.component';
 import { TodoStatusPickerComponent } from './todo-status-picker/todo-status-picker.component';
+import { ActivityItemFollowingItemComponent } from './activity-item/activity-item-following-item/activity-item-following-item.component';
 
 @NgModule({
   imports: [
@@ -73,7 +74,8 @@ import { TodoStatusPickerComponent } from './todo-status-picker/todo-status-pick
     ThoughtCreateComponent,
     BookChapterItemComponent,
     ActivityItemTodoThoughtComponent,
-    ActivityItemHabitComponent
+    ActivityItemHabitComponent,
+    ActivityItemFollowingItemComponent
   ],
   exports: [
     TodoStatusPipe,

@@ -25,4 +25,8 @@
   <div *ngIf="activity.type === EventType.Habit">
     <mst-activity-item-habit [activity]="activity" [data]="activity.data"></mst-activity-item-habit>
   </div>
+
+  <div *ngIf="activity.type === EventType.FollowingItem">
+    <mst-activity-item-following-item [activity]="activity" [data]="activity.data"></mst-activity-item-following-item>
+  </div>
 </mst-timeline-item>
