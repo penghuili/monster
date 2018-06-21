@@ -4,17 +4,17 @@
 </div>
 
 <ng-container *ngIf="following">
-  <div fxLayout="row" fxLayoutAlign="space-between">
+  <div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'0 0 1rem'">
     <div>{{ following.title }}</div>
     <div [mstBorder]="'accent'" (click)="onToggleCreateItem()">add</div>
     <mst-following-status-picker [status]="following.status" (select)="onSelectStatus($event)"></mst-following-status-picker>
   </div>
   
-  <div [mstPadding]="'1rem 0'" *ngIf="showCreate">
+  <div [mstPadding]="'0 0 1rem'" *ngIf="showCreate">
     <mst-following-item-create [following]="following" (created)="onCreatedItem()"></mst-following-item-create>
   </div>
 
-  <div *ngIf="following.hasPoints && chartData && chartData[0] && chartData[0].series.length > 1" [mstPadding]="'1rem 0'">
+  <div *ngIf="following.hasPoints && chartData && chartData[0] && chartData[0].series.length > 1" [mstPadding]="'0 0 1rem'">
     <mst-progress-chart [data]="chartData"></mst-progress-chart>
   </div>
 
