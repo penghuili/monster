@@ -59,7 +59,8 @@ export class ReportService {
           newReport = merge(createReport(date, mode, todos), {
             id: oldReport.id,
             date: oldReport.date,
-            usedTimeOfTimeRange: oldReport.usedTimeOfTimeRange
+            usedTimeOfTimeRange: oldReport.usedTimeOfTimeRange,
+            summary: oldReport.summary
           });
         } else {
           newReport = createReport(date, mode, todos);
