@@ -17,5 +17,6 @@ export * from './services/router.service';
 export * from './services/storage-api.service';
 export * from './services/reading.service';
 export * from './services/following.service';
+export * from './services/motivation.service';
 
 export * from './core.module';

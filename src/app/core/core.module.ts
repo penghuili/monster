@@ -20,6 +20,7 @@ import { HabitService } from './services/habit.service';
 import { IconsService } from './services/icons.service';
 import { InputService } from './services/input.service';
 import { LoadingService } from './services/loading.service';
+import { MotivationService } from './services/motivation.service';
 import { NotificationService } from './services/notification.service';
 import { ProjectService } from './services/project.service';
 import { ReadingService } from './services/reading.service';
@@ -60,7 +61,8 @@ import { TodoService } from './services/todo.service';
     InputService,
     StorageApiService,
     ReadingService,
-    FollowingService
+    FollowingService,
+    MotivationService
   ],
   declarations: [NavigationComponent, LoadingComponent, AppHeaderComponent],
   exports: [

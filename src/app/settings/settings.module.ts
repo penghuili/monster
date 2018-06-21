@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ButtonModule, IconModule, InputModule, MonsterCommonModule, PipesModule, StylingModule } from '@app/shared';
 
+import { MotivationComponent } from './motivation/motivation.component';
 import { SettingsRoutingModule } from './settings-routing.module';
 import { SettingsStorageComponent } from './settings-storage/settings-storage.component';
 import { SettingsComponent } from './settings/settings.component';
@@ -21,7 +22,8 @@ import { SettingsComponent } from './settings/settings.component';
   ],
   declarations: [
     SettingsComponent,
-    SettingsStorageComponent
+    SettingsStorageComponent,
+    MotivationComponent
   ]
 })
 export class SettingsModule { }

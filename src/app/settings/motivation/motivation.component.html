@@ -1,0 +1,13 @@
+<mst-go-back></mst-go-back>
+
+<mst-input
+[control]="motivationControl"
+[minHeight]="'3rem'"></mst-input>
+<div [mstTextAlign]="'right'" [mstPadding]="'1rem 0 0'">
+  <mst-icon name="done" (click)="createMotivation()"></mst-icon>
+</div>
+
+<div *ngFor="let motivation of motivations" [mstPadding]="'0 0 1rem'">
+  <div>{{ motivation.createdAt | mstDate:'shortDate' }}</div>
+  <div>{{ motivation.motivation }}</div>
+</div>

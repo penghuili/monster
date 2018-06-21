@@ -12,5 +12,6 @@ export const ROUTES = {
   STORAGE: 'storage',
   PROCESS: 'process',
   NOT_SUPPORT: 'browser-not-support',
-  FOLLOWING: 'following'
+  FOLLOWING: 'following',
+  MOTIVATION: 'motivation'
 };
