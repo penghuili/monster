@@ -19,6 +19,7 @@ export class DurationPickerComponent {
     }
   }
   @Input() disabled = false;
+  @Input() showHours = false;
   @Output() change = new EventEmitter<number>();
   // never change outerValue
   outerValue = 0;

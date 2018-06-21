@@ -1,11 +1,11 @@
 <div fxLayout="row" fxLayoutAlign="start center" mstNoSelect (click)="onShowSlider()">
-  {{ hours | mstAdd0 }}:{{ minutes | mstAdd0 }}:00
+  <span *ngIf="showHours">{{ hours | mstAdd0 }}:</span>{{ minutes | mstAdd0 }}:00
 </div>
 
 <mst-overlay *ngIf="showSlider">
   <div mstPadding="0 1.5rem" *ngIf="showSlider">
     <div fxLayout="row" mstPadding="0 0 2rem 0">
-      <div mstSize="6rem" [mstColor]="isHoursActive ? 'accent' : null" (click)="onClickHours()">
+      <div mstSize="6rem" [mstColor]="isHoursActive ? 'accent' : null" (click)="onClickHours()" *ngIf="showHours">
         hours: {{ hours }}
       </div>
       <div mstSize="6rem" [mstColor]="!isHoursActive ? 'accent' : null" (click)="onClickMinutes()">
