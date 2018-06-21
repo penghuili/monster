@@ -3,8 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { ROUTES } from '@app/static';
 
 const appRoutes: Routes = [
-  { path: '',   redirectTo: ROUTES.TODOS, pathMatch: 'full' },
-  { path: '**', redirectTo: ROUTES.TODOS }
+  { path: '', redirectTo: `${ROUTES.PLANS}/${ROUTES.PROJECTS}`, pathMatch: 'full' },
+  { path: '**', redirectTo: `${ROUTES.PLANS}/${ROUTES.PROJECTS}` }
 ];
 
 @NgModule({
