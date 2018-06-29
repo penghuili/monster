@@ -57,7 +57,7 @@ export class FollowingDetailComponent extends Unsub implements OnInit {
           {
             name: 'points',
             series: this.followingItems.map(item => ({
-              name: format(item.createdAt, 'YY.MM.DD HH:mm'),
+              name: new Date(item.createdAt),
               value: item.points
             }))
           }
