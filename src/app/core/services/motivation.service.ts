@@ -16,6 +16,18 @@ export class MotivationService {
     private loadingService: LoadingService,
     private notificationService: NotificationService) {}
 
+  getCurrentMotivation(): Observable<Motivation> {
+    this.loadingService.isLoading();
+
+    return fromPromise(
+      this.dbService.getDB().motivations.toCollection().last()
+    ).pipe(
+      catchError(() => this.handleError('getCurrentMotivation fails.')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
+    );
+  }
   getMotivations(): Observable<Motivation[]> {
     this.loadingService.isLoading();
 

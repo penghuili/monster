@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ROUTES, Unsub } from '@app/static';
 
 import { AppHeaderService } from '../../services/app-header.service';
+import { MotivationService } from '../../services/motivation.service';
 import { RouterService } from '../../services/router.service';
 
 @Component({
@@ -11,12 +13,15 @@ import { RouterService } from '../../services/router.service';
 })
 export class AppHeaderComponent extends Unsub implements OnInit {
   titleData: any;
+  motivation: string;
   isTodos: boolean;
 
   isSearching: boolean;
 
   constructor(
     private appHeaderService: AppHeaderService,
+    private motivationService: MotivationService,
+    private router: Router,
     private routerService: RouterService) {
     super();
   }
@@ -33,6 +38,12 @@ export class AppHeaderComponent extends Unsub implements OnInit {
         this.titleData = data;
       })
     );
+
+    this.addSubscription(
+      this.motivationService.getCurrentMotivation().subscribe(m => {
+        this.motivation = m.motivation;
+      })
+    );
   }
 
   onToggleSearch() {
@@ -45,5 +56,8 @@ export class AppHeaderComponent extends Unsub implements OnInit {
   }
   showSearch() {
     return this.isTodos;
+  }
+  goToMotivation() {
+    this.router.navigateByUrl(`${ROUTES.SETTINGS}/${ROUTES.MOTIVATION}`);
   }
 }

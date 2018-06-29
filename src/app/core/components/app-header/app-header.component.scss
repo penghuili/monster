@@ -21,9 +21,19 @@
 .mst-brand {
   color: $white;
 }
+.mst-header-motivation {
+  height: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: $yellow;
+  color: $white;
+  font-weight: bold;
+}
 
 .mst-app-header-placeholder {
-  height: 3rem;
+  height: 4.5rem;
 }
 
 @media screen and (min-width: $break-point) {
