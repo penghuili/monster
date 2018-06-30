@@ -1,4 +1,4 @@
 <mst-timeline-item
   [time]="thought.createdAt" [timeNext]="thoughtNext ? thoughtNext.createdAt : null" [reverse]="true">
-  {{ thought.title }}
+  <mst-paragraphs [text]="thought.title"></mst-paragraphs>
 </mst-timeline-item>

@@ -41,7 +41,7 @@ export class AppHeaderComponent extends Unsub implements OnInit {
 
     this.addSubscription(
       this.motivationService.getCurrentMotivation().subscribe(m => {
-        this.motivation = m.motivation;
+        this.motivation = m ? m.motivation : '';
       })
     );
   }
