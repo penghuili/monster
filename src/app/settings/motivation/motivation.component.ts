@@ -12,8 +12,10 @@ import { Subject } from 'rxjs/Subject';
   styleUrls: ['./motivation.component.scss']
 })
 export class MotivationComponent extends Unsub implements OnInit {
+  currentMotivation: Motivation;
   motivations: Motivation[];
   motivationControl = new InputControl<string>({ required: true });
+  isShowAdd: boolean;
 
   private newMotivation = new Subject<boolean>();
 
@@ -29,6 +31,7 @@ export class MotivationComponent extends Unsub implements OnInit {
       ).subscribe(motivations => {
         motivations = motivations ? motivations : [];
         this.motivations = motivations.reverse();
+        this.currentMotivation = this.motivations[0];
 
         if (this.motivations[0]) {
           this.motivationControl.setValue(this.motivations[0].motivation);
@@ -39,6 +42,9 @@ export class MotivationComponent extends Unsub implements OnInit {
     );
   }
 
+  showAdd() {
+    this.isShowAdd = true;
+  }
   createMotivation() {
     if (this.motivationControl.valid) {
       const motivation: Motivation = {
@@ -49,6 +55,8 @@ export class MotivationComponent extends Unsub implements OnInit {
         this.motivationService.add(motivation).subscribe(success => {
           if (success) {
             this.newMotivation.next(true);
+            this.motivationControl.reset();
+            this.isShowAdd = false;
           }
         })
       );

@@ -1,0 +1,12 @@
+@import '../../static/variables';
+
+.mst-motivation-current {
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+
+  border: 1px solid $accent;
+}
+.mst-motivation-current-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
