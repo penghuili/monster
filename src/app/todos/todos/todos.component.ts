@@ -18,7 +18,7 @@ import {
   TodoStatus,
   TOMORROW,
 } from '@app/model';
-import { Unsub } from '@app/static';
+import { ROUTES, Unsub } from '@app/static';
 import { isToday, isTomorrow } from 'date-fns';
 import { merge } from 'ramda';
 import { combineLatest } from 'rxjs/observable/combineLatest';
@@ -112,6 +112,10 @@ export class TodosComponent extends Unsub implements OnInit {
     this.dragIndex = undefined;
     this.drapProjectId = undefined;
   }
+  goToProjectDetail(projectId: number) {
+    this.router.navigateByUrl(`${ROUTES.PLANS}/${ROUTES.PROJECTS}/${projectId}`);
+  }
+
 
   private bothAreOverdue(dragged: Todo, dropped: Todo): boolean {
     return dragged && dropped && isOverDue(dragged) && isOverDue(dropped);

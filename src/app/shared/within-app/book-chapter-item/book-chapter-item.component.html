@@ -3,7 +3,8 @@ fxLayout="row" fxLayoutAlign="start center"
 [mstLineHeight]="'2rem'"
 [ngStyle]="{
   'text-decoration': bookItem.finished ? 'line-through' : 'none'
-}">
+}"
+(click)="goToBook(bookItem.bookId)">
   <mst-icon name="done" (click)="onFinish()"></mst-icon>
   <div [mstPadding]="'0 0 0 1rem'">{{ bookItem.chapters }}</div>
 </div>

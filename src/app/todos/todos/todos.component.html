@@ -10,10 +10,10 @@
 
 <ng-container *ngIf="activeProjectsWithTodos && activeProjectsWithTodos.length > 0">
   <div *ngFor="let pwts of activeProjectsWithTodos">
-    <div *ngIf="pwts.todos.length > 0">
+    <div [mstPadding]="'0 0 0.5rem'" *ngIf="pwts.todos.length > 0" (click)="goToProjectDetail(pwts.project.id)">
       {{pwts.project.title}} {{ pwts.todos | expectedTime | secondFormatter }}
     </div>
-    <div [mstPadding]="'0.5rem 0 0.5rem 1rem'" *ngIf="pwts.todos.length > 0">
+    <div [mstPadding]="'0 0 1.5rem 1rem'" *ngIf="pwts.todos.length > 0">
       <mst-drop-zone [dragIndex]="dragIndex" (drop)="onDrop($event, pwts.project.id)">
         <mst-drag-item *ngFor="let todo of pwts.todos; let i = index;"
           [item]="todo"
@@ -32,10 +32,10 @@
 <ng-container *ngIf="hasDone && activeTab === TODAY">
   <div [mstTextAlign]="'center'" [mstPadding]="'2rem 0 0'">Done</div>
   <div *ngFor="let pwts of doneProjectsWithTodos">
-    <div [mstPadding]="'0.5rem 0 0'" *ngIf="pwts.todos.length > 0">
+    <div [mstPadding]="'0 0 0.5rem'" *ngIf="pwts.todos.length > 0" (click)="goToProjectDetail(pwts.project.id)">
       {{pwts.project.title}}
     </div>
-    <div [mstPadding]="'0.5rem 0 0.5rem 1rem'" *ngIf="pwts.todos.length > 0">
+    <div [mstPadding]="'0 0 1.5rem 1rem'" *ngIf="pwts.todos.length > 0">
       <mst-todo-item *ngFor="let todo of pwts.todos"
         [todo]="todo"
         (click)="onShowDetail(todo)">

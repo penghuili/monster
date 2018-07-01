@@ -1,6 +1,6 @@
 <ng-container *ngIf="activeTab === TODAY && habits && habits.length > 0">
-  <div>habits</div>
-  <div [mstPadding]="'0 0 0.5rem 1rem'">
+  <div [mstPadding]="'0 0 0.5rem'">habits</div>
+  <div [mstPadding]="'0 0 1.5rem 1rem'">
     <mst-habit-item *ngFor="let habit of habits"
       [habit]="habit"
       (click)="onShowHabitDetail(habit)">
