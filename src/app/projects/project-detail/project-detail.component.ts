@@ -9,6 +9,7 @@ import {
   isDayOrBefore,
   mapProjectStatusEvent,
   MonsterEvents,
+  MonsterStorage,
   now,
   Project,
   ProjectStatus,
@@ -52,7 +53,7 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
     { key: this.GROWTH, value: this.GROWTH },
     { key: this.TIMELINE, value: this.TIMELINE }
   ];
-  activeTab = this.GROWTH;
+  activeTab = MonsterStorage.get('project-active-tab') || this.GROWTH;
 
   private createdSub = new Subject<boolean>();
 
@@ -159,6 +160,7 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
   }
   onChangeTab(key: string) {
     this.activeTab = key;
+    MonsterStorage.set('project-active-tab', key);
   }
 
   private createChart(todos: Todo[], project: Project) {
