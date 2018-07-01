@@ -86,7 +86,10 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
           this.endDate = project.endDate;
 
           if (sub) {
-            this.subprojects = sub.subprojects;
+            const notDoneSub = sub.subprojects.filter(a => a.status !== ProjectStatus.Done);
+            const doneSub = sub.subprojects.filter(a => a.status === ProjectStatus.Done);
+            this.subprojects = notDoneSub.concat(doneSub);
+
             this.createChart(sub.todos, project);
             this.createTimeline(sub.subprojects, sub.todos);
           }
