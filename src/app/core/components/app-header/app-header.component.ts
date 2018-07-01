@@ -13,7 +13,7 @@ import { RouterService } from '../../services/router.service';
 })
 export class AppHeaderComponent extends Unsub implements OnInit {
   titleData: any;
-  motivation: string;
+  want: string;
   isTodos: boolean;
 
   isSearching: boolean;
@@ -40,8 +40,8 @@ export class AppHeaderComponent extends Unsub implements OnInit {
     );
 
     this.addSubscription(
-      this.motivationService.getCurrentMotivation().subscribe(m => {
-        this.motivation = m ? m.motivation : '';
+      this.motivationService.getCurrentWant().subscribe(w => {
+        this.want = w ? w.want : '';
       })
     );
   }

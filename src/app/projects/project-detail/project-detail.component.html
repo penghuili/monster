@@ -21,7 +21,7 @@
     [control]="resultControl"
     minHeight="3rem"></mst-input>
   
-  <mst-tab [tabs]="tabs" [defaultTabKey]="GROWTH" [padding]="'1rem 2rem'" (change)="onChangeTab($event)"></mst-tab>
+  <mst-tab [tabs]="tabs" [defaultTabKey]="activeTab" [padding]="'1rem 2rem'" (change)="onChangeTab($event)"></mst-tab>
   <div fxLayout="row" fxLayoutAlign="center" [mstPadding]="'2rem 0'" *ngIf="activeTab === GROWTH">
     <mst-progress-chart [data]="chartData"></mst-progress-chart>
   </div>

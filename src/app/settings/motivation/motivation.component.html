@@ -1,16 +1,36 @@
 <mst-go-back></mst-go-back>
 
-<div class="mst-motivation-current">
-  <div class="mst-motivation-current-wrapper" *ngIf="currentMotivation">
-    <div><mst-paragraphs [text]="currentMotivation.motivation"></mst-paragraphs></div>
-    <div><mst-icon name="edit" [size]="'s'" (click)="showAdd()"></mst-icon></div>
+<div class="mst-want-current">
+  <div class="mst-motivation-current-wrapper" *ngIf="currentWant">
+    <div><span [mstColor]="'yellow'">now i want:</span> {{currentWant.want}}</div>
+    <div><mst-icon name="edit" [size]="'s'" (click)="toggleAddWant()"></mst-icon></div>
   </div>
-  <div *ngIf="!currentMotivation" (click)="showAdd()">
-    add motivations
+  <div *ngIf="!currentWant" (click)="toggleAddWant()">
+    what do you want now?
+  </div>
+</div>
+<div *ngIf="isShowAddWant">
+  <mst-input [control]="wantControl"></mst-input>
+  <div><span [mstColor]="wantLength > 20 ? 'error' : null">{{wantLength}}</span>/20</div>
+  <div [mstTextAlign]="'right'">
+    <mst-icon name="done" (click)="createWant()"></mst-icon>
   </div>
 </div>
 
-<div *ngIf="isShowAdd">
+
+<div class="mst-motivation-current">
+  <div class="mst-motivation-current-wrapper" *ngIf="currentMotivation">
+    <div>
+      <div [mstPadding]="'0 0 0.5rem'" [mstColor]="'accent'">important to me:</div>
+      <mst-paragraphs [text]="currentMotivation.motivation"></mst-paragraphs>
+    </div>
+    <div><mst-icon name="edit" [size]="'s'" (click)="toggleAddMotivation()"></mst-icon></div>
+  </div>
+  <div *ngIf="!currentMotivation" (click)="toggleAddMotivation()">
+    add motivations
+  </div>
+</div>
+<div *ngIf="isShowAddMotivation">
   <mst-input
   [control]="motivationControl"
   [minHeight]="'3rem'"></mst-input>
@@ -19,9 +39,20 @@
   </div>
 </div>
 
-<div [mstPadding]="'2rem 0 0'">
-  <div *ngFor="let motivation of motivations" [mstPadding]="'0 0 1rem'">
-    <div>{{ motivation.createdAt | mstDate:'shortDate' }}</div>
-    <div>{{ motivation.motivation }}</div>
+
+
+<div [mstPadding]="'2rem 0'">
+  <mst-tab [tabs]="tabs" [defaultTabKey]="activeTab" [padding]="'1rem 2rem'" (change)="onChangeTab($event)"></mst-tab>
+  <div *ngIf="activeTab === MOTIVATION">
+    <div *ngFor="let motivation of motivations" [mstPadding]="'0 0 1rem'">
+      <div>{{ motivation.createdAt | mstDate:'shortDate' }}</div>
+      <mst-paragraphs [text]="motivation.motivation"></mst-paragraphs>
+    </div>
+  </div>
+  <div *ngIf="activeTab === WANT">
+    <div *ngFor="let want of wants" [mstPadding]="'0 0 1rem'">
+      <div>{{ want.createdAt | mstDate:'shortDate' }}</div>
+      <div>{{ want.want }}</div>
+    </div>
   </div>
 </div>

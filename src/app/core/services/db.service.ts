@@ -8,6 +8,7 @@ import {
   Habit,
   HabitItem,
   Motivation,
+  NowIWant,
   Project,
   Report,
   Subproject,
@@ -38,6 +39,7 @@ class MonsterDB extends Dexie {
   followings: Dexie.Table<Following, number>;
   followingItems: Dexie.Table<FollowingItem, number>;
   motivations: Dexie.Table<Motivation, number>;
+  nowIWant: Dexie.Table<NowIWant, number>;
 
   constructor() {
     super('monster');
@@ -89,6 +91,9 @@ class MonsterDB extends Dexie {
     this.version(14).stores({
       motivation: null,
       motivations: '++id,createdAt'
+    });
+    this.version(15).stores({
+      nowIWant: '++id,createdAt'
     });
   }
 }

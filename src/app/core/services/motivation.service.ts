@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Motivation } from '@app/model';
+import { Motivation, NowIWant } from '@app/model';
 import { Observable } from 'rxjs/Observable';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
@@ -32,7 +32,7 @@ export class MotivationService {
     this.loadingService.isLoading();
 
     return fromPromise(
-      this.dbService.getDB().motivations.toArray()
+      this.dbService.getDB().motivations.reverse().toArray()
     ).pipe(
       catchError(() => this.handleError('getMotivations fails.')),
       tap(() => {
@@ -47,6 +47,40 @@ export class MotivationService {
       this.dbService.getDB().motivations.add(motivation)
     ).pipe(
       catchError(() => this.handleError('add motivation fails.')),
+    );
+  }
+
+  getCurrentWant(): Observable<NowIWant> {
+    this.loadingService.isLoading();
+
+    return fromPromise(
+      this.dbService.getDB().nowIWant.toCollection().last()
+    ).pipe(
+      catchError(() => this.handleError('getCurrentWant fails.')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
+    );
+  }
+  getWants(): Observable<NowIWant[]> {
+    this.loadingService.isLoading();
+
+    return fromPromise(
+      this.dbService.getDB().nowIWant.reverse().toArray()
+    ).pipe(
+      catchError(() => this.handleError('getWants fails.')),
+      tap(() => {
+        this.loadingService.stopLoading();
+      })
+    );
+  }
+  addWant(want: NowIWant): Observable<any> {
+    this.loadingService.isLoading();
+
+    return fromPromise(
+      this.dbService.getDB().nowIWant.add(want)
+    ).pipe(
+      catchError(() => this.handleError('addWant fails.')),
     );
   }
 
