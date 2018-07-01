@@ -7,8 +7,9 @@ import { differenceInCalendarDays } from 'date-fns';
 })
 export class DaysDiffPipe implements PipeTransform {
 
-  transform(value: number): any {
-    const diff = differenceInCalendarDays(now(), value);
+  transform(value: number, endDate?: number): any {
+    endDate = endDate || now();
+    const diff = differenceInCalendarDays(endDate, value);
     return diff === 0 ? '1 day' :
       diff > 0 ? `${diff + 1} days` : null;
   }

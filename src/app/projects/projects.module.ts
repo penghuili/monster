@@ -10,6 +10,7 @@ import {
   InputModule,
   MonsterCommonModule,
   OverlayModule,
+  PipesModule,
   StylingModule,
   WithinAppModule,
 } from '@app/shared';
@@ -38,6 +39,7 @@ import { ProjectsComponent } from './projects/projects.component';
     OverlayModule,
     WithinAppModule,
     ChartModule,
+    PipesModule
   ],
   declarations: [
     ProjectsComponent,

@@ -1,4 +1,7 @@
-<mst-go-back></mst-go-back>
+<div fxLayout="row" fxLayoutAlign="space-between" [mstPadding]="'0 1rem 0 0'">
+  <mst-go-back></mst-go-back>
+  <div *ngIf="startDate && endDate">{{ startDate | daysDiff:endDate }}</div>
+</div>
 
 <ng-container *ngIf="project">
   <mst-input [control]="titleControl"></mst-input>
