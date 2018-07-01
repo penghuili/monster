@@ -18,8 +18,22 @@
   justify-content: space-between;
   align-items: center;
 }
-.mst-brand {
+.mst-app-header-brand {
+  min-width: 9rem;
   color: $white;
+}
+.mst-app-header-slogan {
+  font-size: 0.75rem;
+  line-height: 0.75rem;
+  color: $yellow;
+}
+.mst-app-header-data {
+  color: $white;
+}
+.mst-app-header-actions {
+  display: flex;
+  justify-content: flex-end;
+  min-width: 9rem;
 }
 .mst-header-motivation {
   height: 1.5rem;

@@ -1,8 +1,13 @@
 <div class="mst-app-header">
   <div class="mst-app-header-content">
-    <div class="mst-brand">Monster</div>
-    <div class="mst-brand" *ngIf="isTodos && titleData">{{ titleData | expectedTime | secondFormatter }}</div>
-    <div>
+    <div class="mst-app-header-brand">
+      <div>Monster</div>
+      <div class="mst-app-header-slogan">
+        faster and better
+      </div>
+    </div>
+    <div class="mst-app-header-data" *ngIf="isTodos && titleData">{{ titleData | expectedTime | secondFormatter }}</div>
+    <div class="mst-app-header-actions">
       <mst-icon name="search" *ngIf="showSearch()" [color]="isSearching ? 'accent' : 'white'" (click)="onToggleSearch()"></mst-icon>
       <mst-thought-create></mst-thought-create>
       <mst-todo-create [plusColor]="'white'"></mst-todo-create>
