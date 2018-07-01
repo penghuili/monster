@@ -7,6 +7,11 @@
     <div fxLayout="row" fxLayoutAlign="end">
       <mst-icon name="close" (click)="onClose()"></mst-icon>
     </div>
+
+    <div fxLayout="row" fxLayoutAlign="center">
+      <mst-project-create [useActionButton]="false" (created)="onCreatedProject()"></mst-project-create>
+    </div>
+
     <div *ngFor="let project of projects">
       <mst-project-item
         [project]="project"
@@ -14,6 +19,7 @@
       </mst-project-item>
       <div *ngIf="activeProject && activeProject.id === project.id"
         [mstPadding]="'0 0 0 1rem'">
+        <mst-project-create-sub (created)="onCreatedSubproject()" [project]="project"></mst-project-create-sub>
         <mst-project-item
           *ngFor="let subproject of subprojects"
           [project]="subproject"
@@ -31,6 +37,7 @@
       </mst-project-item>
       <div *ngIf="activeProject && activeProject.id === project.id"
         [mstPadding]="'0 0 0 1rem'">
+        <mst-project-create-sub (created)="onCreatedSubproject()" [project]="project"></mst-project-create-sub>
         <mst-project-item
           *ngFor="let subproject of subprojects"
           [project]="subproject"

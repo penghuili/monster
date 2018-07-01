@@ -16,8 +16,6 @@ import {
 } from '@app/shared';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
-import { ProjectCreateSubComponent } from './project-create-sub/project-create-sub.component';
-import { ProjectCreateComponent } from './project-create/project-create.component';
 import { ProjectDetailSubComponent } from './project-detail-sub/project-detail-sub.component';
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { ProjectTimelineItemComponent } from './project-timeline-item/project-timeline-item.component';
@@ -43,9 +41,7 @@ import { ProjectsComponent } from './projects/projects.component';
   ],
   declarations: [
     ProjectsComponent,
-    ProjectCreateComponent,
     ProjectDetailComponent,
-    ProjectCreateSubComponent,
     ProjectDetailSubComponent,
     ProjectTimelineComponent,
     ProjectTimelineItemComponent

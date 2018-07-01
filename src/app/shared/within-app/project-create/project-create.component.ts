@@ -1,9 +1,11 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { ProjectService } from '@app/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { now, ProjectStatus, TimeRangeType } from '@app/model';
-import { DatepickerResult, InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
 import { addDays } from 'date-fns';
+
+import { ProjectService } from '../../../core/services/project.service';
+import { DatepickerResult } from '../../datepicker/model';
+import { InputControl } from '../../input/input-control';
 
 @Component({
   selector: 'mst-project-create',
@@ -11,6 +13,8 @@ import { addDays } from 'date-fns';
   styleUrls: ['./project-create.component.scss']
 })
 export class ProjectCreateComponent extends Unsub {
+  @Input() useActionButton = true;
+  @Input() plusColor = 'primary';
   @Output() created = new EventEmitter<boolean>();
   isShow = false;
 

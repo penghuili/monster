@@ -13,6 +13,9 @@ import { OverlayModule } from '../overlay/overlay.module';
 import { PipesModule } from '../pipes/pipes.module';
 import { StylingModule } from '../styling/styling.module';
 import { TimelineModule } from '../timeline/timeline.module';
+import {
+  ActivityItemFollowingItemComponent,
+} from './activity-item/activity-item-following-item/activity-item-following-item.component';
 import { ActivityItemHabitComponent } from './activity-item/activity-item-habit/activity-item-habit.component';
 import { ActivityItemProjectComponent } from './activity-item/activity-item-project/activity-item-project.component';
 import { ActivityItemRecordComponent } from './activity-item/activity-item-record/activity-item-record.component';
@@ -29,6 +32,8 @@ import { HabitItemComponent } from './habit-item/habit-item.component';
 import { ExpectedTimePipe } from './pipes/expected-time.pipe';
 import { ProjectStatusPipe } from './pipes/project-status.pipe';
 import { TodoStatusPipe } from './pipes/todo-status.pipe';
+import { ProjectCreateSubComponent } from './project-create-sub/project-create-sub.component';
+import { ProjectCreateComponent } from './project-create/project-create.component';
 import { ProjectItemComponent } from './project-item/project-item.component';
 import { ProjectListComponent } from './project-list/project-list.component';
 import { ProjectStatusPickerComponent } from './project-status-picker/project-status-picker.component';
@@ -36,7 +41,6 @@ import { ThoughtCreateComponent } from './thought-create/thought-create.componen
 import { TodoCreateComponent } from './todo-create/todo-create.component';
 import { TodoItemComponent } from './todo-item/todo-item.component';
 import { TodoStatusPickerComponent } from './todo-status-picker/todo-status-picker.component';
-import { ActivityItemFollowingItemComponent } from './activity-item/activity-item-following-item/activity-item-following-item.component';
 
 @NgModule({
   imports: [
@@ -75,7 +79,9 @@ import { ActivityItemFollowingItemComponent } from './activity-item/activity-ite
     BookChapterItemComponent,
     ActivityItemTodoThoughtComponent,
     ActivityItemHabitComponent,
-    ActivityItemFollowingItemComponent
+    ActivityItemFollowingItemComponent,
+    ProjectCreateSubComponent,
+    ProjectCreateComponent
   ],
   exports: [
     TodoStatusPipe,
@@ -92,7 +98,9 @@ import { ActivityItemFollowingItemComponent } from './activity-item/activity-ite
     HabitItemComponent,
     ThoughtCreateComponent,
     BookChapterItemComponent,
-    ActivityItemHabitComponent
+    ActivityItemHabitComponent,
+    ProjectCreateSubComponent,
+    ProjectCreateComponent
   ]
 })
 export class WithinAppModule { }

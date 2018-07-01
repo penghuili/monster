@@ -1,4 +1,5 @@
-<mst-action-button [showPlus]="true" (clicked)="onOpen()"></mst-action-button>
+<mst-action-button *ngIf="useActionButton" [showPlus]="true" (clicked)="onOpen()"></mst-action-button>
+<mst-icon *ngIf="!useActionButton" name="add" [color]="plusColor" (click)="onOpen()"></mst-icon>
 
 <mst-overlay *ngIf="isShow">
   <ng-container *ngIf="isShow">

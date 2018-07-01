@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { SubprojectService } from '@app/core';
 import { Project } from '@app/model';
-import { InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
+
+import { SubprojectService } from '../../../core/services/subproject.service';
+import { InputControl } from '../../input/input-control';
 
 @Component({
   selector: 'mst-project-create-sub',
