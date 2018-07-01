@@ -3,6 +3,6 @@
   <div class="mst-timeline-item-name">
     {{ item.name }}
   </div>
-  <div [style.height.px]="item.end - item.start"  mstColor [mstColor.bg]="item.finished ? 'green': 'accent'">
+  <div [style.height.px]="item.end - item.start || 5"  mstColor [mstColor.bg]="item.finished ? 'green': 'accent'">
   </div>
 </div>
