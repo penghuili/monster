@@ -12,6 +12,8 @@ export interface ProjectBase extends SortableItem {
 export interface Project extends ProjectBase {
   startDate: number;
   endDate: number;
+  startDateChangedTimes: number;
+  endDateChangedTimes: number;
 }
 export interface Subproject extends ProjectBase {
   projectId: number;
@@ -47,6 +49,8 @@ export function createProject(data: any): Project {
     title: data.title,
     startDate: data.startDate,
     endDate: data.endDate,
+    startDateChangedTimes: 0,
+    endDateChangedTimes: 0,
     result: data.result,
     note: data.note,
     status: data.status,

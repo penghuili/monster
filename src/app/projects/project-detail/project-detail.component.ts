@@ -134,12 +134,13 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
     });
 
     this.startDate = result.date;
+    const startDateChangedTimes = this.project.startDateChangedTimes ? this.project.startDateChangedTimes + 1 : 1;
     this.endDateStartDate = addDays(this.startDate, 1).getTime();
     if (this.startDate > this.endDate) {
       this.endDate = addDays(this.startDate, 1).getTime();
-      this.update({ startDate: result.date, endDate: this.endDate });
+      this.update({ startDate: result.date, endDate: this.endDate, startDateChangedTimes });
     } else {
-      this.update({ startDate: result.date });
+      this.update({ startDate: result.date, startDateChangedTimes });
     }
   }
   onPickEndDate(result: DatepickerResult) {
@@ -150,7 +151,8 @@ export class ProjectDetailComponent extends Unsub implements OnInit {
     });
 
     this.endDate = result.date;
-    this.update({ endDate: result.date });
+    const endDateChangedTimes = this.project.endDateChangedTimes ? this.project.endDateChangedTimes + 1 : 1;
+    this.update({ endDate: result.date, endDateChangedTimes });
   }
   onGotoSub(subid: string) {
     this.router.navigateByUrl(`${ROUTES.PLANS}/${ROUTES.SUB_PROJECTS}/${subid}`);

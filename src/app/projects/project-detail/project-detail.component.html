@@ -10,10 +10,16 @@
     <div fxFlex="30%">
       <mst-project-status-picker [status]="status" (select)="onSelectStatus($event)"></mst-project-status-picker>
     </div>
-    <div [mstPadding]="'0 0 0 2rem'" fxFlex="70%" fxLayout="row" fxLayoutAlign="space-between center">
-      <mst-datepicker [mode]="TimeRangeType.Day" [defaultDate]="startDate" (finish)="onPickStartDate($event)"></mst-datepicker>
+    <div [mstPadding]="'0 0 0 2rem'" fxFlex="70%" fxLayout="row" fxLayoutAlign="space-between start">
+      <div class="mst-project-detail-datepicker">
+        <mst-datepicker [mode]="TimeRangeType.Day" [defaultDate]="startDate" (finish)="onPickStartDate($event)"></mst-datepicker>
+        <div class="mst-date-changed-time" *ngIf="project.startDateChangedTimes">{{ project.startDateChangedTimes }}</div>
+      </div>
       <mst-icon name="arrow_forward"></mst-icon>
-      <mst-datepicker [mode]="TimeRangeType.Day" [defaultDate]="endDate" [startDate]="endDateStartDate" (finish)="onPickEndDate($event)"></mst-datepicker>
+      <div class="mst-project-detail-datepicker">
+        <mst-datepicker [mode]="TimeRangeType.Day" [defaultDate]="endDate" [startDate]="endDateStartDate" (finish)="onPickEndDate($event)"></mst-datepicker>
+        <div class="mst-date-changed-time" *ngIf="project.endDateChangedTimes">{{ project.endDateChangedTimes }}</div>
+      </div>
     </div>
   </div>
 
