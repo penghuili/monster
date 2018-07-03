@@ -11,6 +11,7 @@ import { WithinAppModule } from '../shared/within-app/within-app.module';
 import { AppHeaderComponent } from './components/app-header/app-header.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
+import { SleepingComponent } from './components/sleeping/sleeping.component';
 import { BrowserSupportGuard } from './guards/browser-support.guard';
 import { AppHeaderService } from './services/app-header.service';
 import { DbService } from './services/db.service';
@@ -64,11 +65,12 @@ import { TodoService } from './services/todo.service';
     FollowingService,
     MotivationService
   ],
-  declarations: [NavigationComponent, LoadingComponent, AppHeaderComponent],
+  declarations: [NavigationComponent, LoadingComponent, AppHeaderComponent, SleepingComponent],
   exports: [
     NavigationComponent,
     LoadingComponent,
-    AppHeaderComponent
+    AppHeaderComponent,
+    SleepingComponent
   ]
 })
 export class CoreModule { }
