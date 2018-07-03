@@ -1,3 +1,6 @@
 <div *ngIf="activity.action === MonsterEvents.CreateRecord">
-  create thought <span [mstFontWeight]="800" [mstColor]="'accent'">{{ data.title }}</span>
+  add thought:
+  <div [mstFontWeight]="800" [mstColor]="'accent'">
+    <mst-paragraphs [text]="data.title"></mst-paragraphs>
+  </div>
 </div>
