@@ -18,7 +18,8 @@ export class BookChapterItemComponent {
     private readingService: ReadingService,
     private router: Router) {}
 
-  onFinish() {
+  onFinish(event: MouseEvent) {
+    event.stopPropagation();
     if (!this.bookItem.finished) {
       const finishedItem = merge(this.bookItem, {finished: true});
       this.readingService.updateBookItem(finishedItem).subscribe(success => {

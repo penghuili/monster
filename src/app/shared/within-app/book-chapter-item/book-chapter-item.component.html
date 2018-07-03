@@ -5,6 +5,6 @@ fxLayout="row" fxLayoutAlign="start center"
   'text-decoration': bookItem.finished ? 'line-through' : 'none'
 }"
 (click)="goToBook(bookItem.bookId)">
-  <mst-icon name="done" (click)="onFinish()"></mst-icon>
+  <mst-icon name="done" (click)="onFinish($event)"></mst-icon>
   <div [mstPadding]="'0 0 0 1rem'">{{ bookItem.chapters }}</div>
 </div>
