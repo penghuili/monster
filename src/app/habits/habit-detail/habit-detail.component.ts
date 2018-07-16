@@ -1,8 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { EventService, HabitService } from '@app/core';
-import { calcHabitProgress, Habit, HabitItem, HabitStatus, isBeforeToday, mapWeekDay, now, WeekDays } from '@app/model';
-import { InputControl } from '@app/shared';
+import { HabitService } from '@app/core';
+import {
+  calcHabitProgress,
+  Habit,
+  HabitItem,
+  HabitStatus,
+  isBeforeToday,
+  mapWeekDay,
+  now,
+  TimeRangeType,
+  WeekDays,
+} from '@app/model';
+import { DatepickerResult, InputControl } from '@app/shared';
 import { Unsub } from '@app/static';
 import { addDays } from 'date-fns';
 import { merge } from 'ramda';
@@ -25,6 +35,8 @@ export class HabitDetailComponent extends Unsub implements OnInit {
   weekDays: WeekDays;
   progress: WeekDays[];
   needToDo: boolean;
+
+  TimeRangeType = TimeRangeType;
 
   private loadHabit = new Subject<boolean>();
 
@@ -50,7 +62,7 @@ export class HabitDetailComponent extends Unsub implements OnInit {
           this.titleControl.setValue(this.habit.title, {emitEvent: false});
           this.resultControl.setValue(this.habit.result, {emitEvent: false});
           this.startDate = this.habit.startDate;
-          this.endDateStartDate = addDays(this.startDate, 1).getTime();
+          this.endDateStartDate = now();
           this.endDate = this.habit.endDate;
           this.weekDays = {
             monday: this.habit.monday,
@@ -103,6 +115,9 @@ export class HabitDetailComponent extends Unsub implements OnInit {
   }
   isDone() {
     return isBeforeToday(this.endDate);
+  }
+  onPickEndDate(result: DatepickerResult) {
+    this.update({ endDate: result.date });
   }
 
   private update(data: any) {

@@ -19,7 +19,7 @@
   <div fxLayout="row" fxLayoutAlign="space-between center" [mstPadding]="'1rem'">
     <div>{{ startDate | mstDate:'shortDate' }}</div>
     <mst-icon name="arrow_forward"></mst-icon>
-    <div>{{ endDate | mstDate:'shortDate' }}</div>
+    <mst-datepicker [mode]="TimeRangeType.Day" [defaultDate]="endDate" [startDate]="endDateStartDate" (finish)="onPickEndDate($event)"></mst-datepicker>
   </div>
   
   <mst-input
